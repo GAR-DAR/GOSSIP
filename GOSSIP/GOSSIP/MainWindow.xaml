@@ -12,7 +12,11 @@
 
         <Border Margin="10 30">
             <Button Content="Hi" Style="{StaticResource BestDefaultButton}"/>
-        </Border> 
-       
+        </Border>
+
+        <Border Margin="10 30">
+            <Button Content="Hi" Style="{StaticResource BestDefaultButton}"/>
+        </Border>
+
     </StackPanel>
 </Window>
