@@ -21,4 +21,8 @@
 
     <SolidColorBrush x:Key="ButtonBackground" Color="#44414b" />
 
+    <!-- Top Menu Bar -->
+
+    <SolidColorBrush x:Key="TopMenuBackground" Color="#003264"/>
+
 </ResourceDictionary>

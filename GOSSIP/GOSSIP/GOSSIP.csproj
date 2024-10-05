@@ -8,4 +8,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+	<Resource Include="Resources\Fonts\RopaSans-Italic.ttf" />
+    <Resource Include="Resources\Fonts\Roboto-Bold.ttf" />
+    <Resource Include="Resources\Fonts\RopaSans-Regular.ttf" />
+    <Resource Include="Resources\Images\background.png" />
+  </ItemGroup>
+
 </Project>
