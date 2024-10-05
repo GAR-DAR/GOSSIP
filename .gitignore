@@ -24,3 +24,5 @@
 *.db-wal
 *.targets
 *.props
+/.vs/GOSSIP/v17/DocumentLayout.json
+/.vs/GOSSIP/v17/.wsuo
