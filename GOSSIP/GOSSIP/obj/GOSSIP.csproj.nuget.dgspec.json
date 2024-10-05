@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\GOSSIP.csproj": {}
+    "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\GOSSIP.csproj": {}
   },
   "projects": {
-    "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\GOSSIP.csproj": {
+    "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\GOSSIP.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\GOSSIP.csproj",
+        "projectUniqueName": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\GOSSIP.csproj",
         "projectName": "GOSSIP",
-        "projectPath": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\GOSSIP.csproj",
+        "projectPath": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\GOSSIP.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\obj\\",
+        "outputPath": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

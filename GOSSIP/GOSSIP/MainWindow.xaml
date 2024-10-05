@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:GOSSIP"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel>
 
-    </Grid>
+        <Button Content="Hi" Background="Red" Margin="20"/>
+
+    </StackPanel>
 </Window>
