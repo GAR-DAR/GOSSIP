@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GOSSIP"
         mc:Ignorable="d"
+        Background="{StaticResource GradientBackground}"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
 
-        <Button Content="Hi" Background="Red" Margin="20"/>
-        <Button Content="Hi 2" Background="Green" Margin="20"/>
-        <Button Content="Hi 3" Background="Yellow" Margin="20"/>
 
+        <Border Margin="10 30">
+            <Button Content="Hi" Style="{StaticResource BestDefaultButton}"/>
+        </Border> 
+       
     </StackPanel>
 </Window>
