@@ -5,14 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GOSSIP"
         mc:Ignorable="d"
-        Background="{StaticResource GradientBackground}"
-        Title="MainWindow" Height="450" Width="800">
-    <StackPanel>
+        Title="MainWindow" Height="450" Width="800"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent" 
+        WindowStartupLocation="CenterScreen" 
+        WindowState="Maximized">
 
+    <Border Grid.RowSpan="3" CornerRadius="20" BorderThickness="3">
+        <Border.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/background.png"/>
+        </Border.Background>
 
-        <!-- Just a test of image linking -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="85*"/>
+            </Grid.RowDefinitions>
 
-        <Image Source="pack://application:,,,/Resources/Images/background.png"/>
+            <!-- Title bar. Idk about inserting the window title.-->
+            <Border Grid.Row="0" CornerRadius="20 20 0 0" Background="#041A32">
+                <WrapPanel HorizontalAlignment="Right" Margin="0 7">
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 0 15 0">
+                        <Image Source="pack://application:,,,/Resources/Images/minimizeicon.png"/>
+                    </Button>
 
-    </StackPanel>
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 0 15 0">
+                        <Image Source="pack://application:,,,/Resources/Images/maximizeicon.png"/>
+                    </Button>
+
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 0 15 0">
+                        <Image Source="pack://application:,,,/Resources/Images/closeicon.png"/>
+                    </Button>
+                </WrapPanel>
+            </Border>
+
+        </Grid>
+    </Border>
+
 </Window>

@@ -33,7 +33,22 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
     </Style>
-    
+
+    <!-- Close, Minimize and Maximize buttons 
+     Triggers will be added later    -->
+    <Style x:Key="TitleBarButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter>
+                    </ContentPresenter>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+
 </ResourceDictionary>

@@ -13,6 +13,9 @@
     <Resource Include="Resources\Fonts\Roboto-Bold.ttf" />
     <Resource Include="Resources\Fonts\RopaSans-Regular.ttf" />
     <Resource Include="Resources\Images\background.png" />
+    <Resource Include="Resources\Images\closeicon.png" />
+    <Resource Include="Resources\Images\maximizeicon.png" />
+    <Resource Include="Resources\Images\minimizeicon.png" />
   </ItemGroup>
 
 </Project>
