@@ -10,13 +10,9 @@
     <StackPanel>
 
 
-        <Border Margin="10 30">
-            <Button Content="Hi" Style="{StaticResource BestDefaultButton}"/>
-        </Border>
+        <!-- Just a test of image linking -->
 
-        <Border Margin="10 30">
-            <Button Content="Hi" Style="{StaticResource BestDefaultButton}"/>
-        </Border>
+        <Image Source="pack://application:,,,/Resources/Images/background.png"/>
 
     </StackPanel>
 </Window>
