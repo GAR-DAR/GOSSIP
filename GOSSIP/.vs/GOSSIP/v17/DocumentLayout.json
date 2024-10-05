@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\",
+  "WorkspaceRootPath": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{309B360B-A907-4F72-9EF3-E5326BF3F92C}|GOSSIP\\GOSSIP.csproj|d:\\uiniversity\\3 sem\\gossip\\gossip\\gossip\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{309B360B-A907-4F72-9EF3-E5326BF3F92C}|GOSSIP\\GOSSIP.csproj|d:\\uiniversity\\3 sem\\gossip app\\gossip\\gossip\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{309B360B-A907-4F72-9EF3-E5326BF3F92C}|GOSSIP\\GOSSIP.csproj|solutionrelative:gossip\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{309B360B-A907-4F72-9EF3-E5326BF3F92C}|GOSSIP\\GOSSIP.csproj|d:\\uiniversity\\3 sem\\gossip\\gossip\\gossip\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{309B360B-A907-4F72-9EF3-E5326BF3F92C}|GOSSIP\\GOSSIP.csproj|d:\\uiniversity\\3 sem\\gossip app\\gossip\\gossip\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{309B360B-A907-4F72-9EF3-E5326BF3F92C}|GOSSIP\\GOSSIP.csproj|solutionrelative:gossip\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1529,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -45,13 +45,17 @@
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\MainWindow.xaml",
+              "DocumentMoniker": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\MainWindow.xaml",
               "RelativeDocumentMoniker": "GOSSIP\\MainWindow.xaml",
-              "ToolTip": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\MainWindow.xaml",
-              "RelativeToolTip": "GOSSIP\\MainWindow.xaml",
+              "ToolTip": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\MainWindow.xaml*",
+              "RelativeToolTip": "GOSSIP\\MainWindow.xaml*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-10-05T10:23:30.552Z",
               "EditorCaption": ""
@@ -60,14 +64,13 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "GOSSIP\\MainWindow.xaml.cs",
-              "ToolTip": "D:\\UINIVERSITY\\3 SEM\\GOSSIP\\GOSSIP\\GOSSIP\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\UINIVERSITY\\3 SEM\\GOSSIP App\\GOSSIP\\GOSSIP\\MainWindow.xaml.cs",
               "RelativeToolTip": "GOSSIP\\MainWindow.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-05T10:23:26.79Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-05T10:23:26.79Z"
             }
           ]
         },

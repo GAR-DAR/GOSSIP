@@ -9,6 +9,7 @@
     <StackPanel>
 
         <Button Content="Hi" Background="Red" Margin="20"/>
+        <Button Content="Hi 2" Background="Green" Margin="20"/>
 
     </StackPanel>
 </Window>
