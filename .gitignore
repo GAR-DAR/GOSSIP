@@ -30,3 +30,6 @@
 /.gitignore
 /.vs/GOSSIP1/v17/.wsuo
 /.vs/GOSSIP1/v17/DocumentLayout.json
+/.vs/VSWorkspaceState.json
+*.v2
+*.bin
