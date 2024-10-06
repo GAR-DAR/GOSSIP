@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Colors/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="TextBox" x:Key="SearchBar">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="#B0335280" CornerRadius="25" Grid.Column="2">
+                        <Grid VerticalAlignment="Center" Margin="10 0 0 0">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="AcceptsReturn" Value="False"/>
+        <Setter Property="MaxHeight" Value="50"/>
+        <Setter Property="Margin" Value="0 8"/>
+    </Style>
+</ResourceDictionary>

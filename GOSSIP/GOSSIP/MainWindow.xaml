@@ -28,7 +28,7 @@
     </Window.Resources>
 
 
-    <Border Grid.RowSpan="3" CornerRadius="20" BorderThickness="3" BorderBrush="#041A32">
+    <Border Grid.RowSpan="3" CornerRadius="20">
         <Border.Background>
             <ImageBrush ImageSource="pack://application:,,,/Resources/Images/background.png"/>
         </Border.Background>
@@ -37,7 +37,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="10*"/>
-                <RowDefinition Height="85*"/>
+                <RowDefinition Height="92*"/>
             </Grid.RowDefinitions>
 
             <!-- Title bar. Idk about inserting the window title.-->
@@ -57,7 +57,9 @@
                 </WrapPanel>
             </Border>
 
-            <Grid Grid.Row="1" Grid.RowSpan="2">
+            <views:TopBarWithLogIn Grid.Row="1"/>
+
+            <Grid Grid.Row="2" Grid.RowSpan="2">
                 
                 <TabControl SelectedIndex="{Binding SelectedTabIndex}">
 

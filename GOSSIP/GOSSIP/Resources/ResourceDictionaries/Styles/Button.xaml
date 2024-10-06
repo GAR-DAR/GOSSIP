@@ -5,43 +5,12 @@
         <ResourceDictionary Source="../Colors/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="BestDefaultButton" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource ButtonBackground }" />
-        <Setter Property="Foreground" Value="{StaticResource WindowForeground}" />
-        <Setter Property="BorderBrush" Value="{StaticResource WindowBorder}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="5" />
-        <Setter Property="FontWeight" Value="DemiBold" />
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Height" Value="25" />
-        <Setter Property="Margin" Value="6 3"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name ="border"  BorderThickness="{TemplateBinding BorderThickness}" 
-                          Background="{TemplateBinding Background}" 
-                          BorderBrush="{TemplateBinding BorderBrush}" 
-                          Opacity="0.6"
-                          CornerRadius="15">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Opacity" Value="0.8"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- Close, Minimize and Maximize buttons 
-     Triggers will be added later    -->
+    <!-- Close, Minimize and Maximize buttons -->
     <Style x:Key="TitleBarButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Width" Value="35"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -53,9 +22,54 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource MouseOverTitleBarIcon}"/>
+                <Setter Property="Background" Value="{StaticResource SignInButtonBackground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="SignUpButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{StaticResource SignInButtonBackground}" CornerRadius="15" Height="45">
+                        <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="1" Opacity="0.2"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontFamily" Value="{StaticResource Roboto}"/>
+        <Setter Property="MinWidth" Value="125"/>
+        <Setter Property="Margin" Value="0 2 10 0"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="LogInButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="#6393c9" CornerRadius="15" Height="45">
+                        <ContentPresenter 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center"/>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="1" Opacity="0.2"/>
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto"/>
+        <Setter Property="MaxWidth" Value="100"/>
+        <Setter Property="Margin" Value="5 3 10 0"/>
     </Style>
 
 </ResourceDictionary>

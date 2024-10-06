@@ -25,9 +25,8 @@
 
     <SolidColorBrush x:Key="TopMenuBackground" Color="#003264"/>
 
-    <!-- MouseOverTitleBarIcon -->
+    <!-- SignUp Button Colour -->
 
-    <SolidColorBrush x:Key="MouseOverTitleBarIcon" Color="#01467c"/>
-
-
+    <SolidColorBrush x:Key="SignInButtonBackground" Color="#01467c"/>
+     
 </ResourceDictionary>

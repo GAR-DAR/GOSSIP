@@ -6,6 +6,8 @@
         <ResourceDictionary Source="../../Colors/Colors.xaml"/>
         <ResourceDictionary Source="../Border.xaml"/>
         <ResourceDictionary Source="../Button.xaml"/>
+        <ResourceDictionary Source="../TextBox.xaml"/>
+        <ResourceDictionary Source="../../../ResourceDictionaries/Fonts/Fonts.xaml"/>
        
 
     </ResourceDictionary.MergedDictionaries>
