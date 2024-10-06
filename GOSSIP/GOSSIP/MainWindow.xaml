@@ -10,9 +10,9 @@
         AllowsTransparency="True"
         Background="Transparent" 
         WindowStartupLocation="CenterScreen" 
-        WindowState="Maximized">
+        WindowState="Normal">
 
-    <Border Grid.RowSpan="3" CornerRadius="20" BorderThickness="3">
+    <Border Grid.RowSpan="3" CornerRadius="20" BorderThickness="3" BorderBrush="#041A32">
         <Border.Background>
             <ImageBrush ImageSource="pack://application:,,,/Resources/Images/background.png"/>
         </Border.Background>
