@@ -38,17 +38,24 @@
     <!-- Close, Minimize and Maximize buttons 
      Triggers will be added later    -->
     <Style x:Key="TitleBarButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <ContentPresenter>
-                    </ContentPresenter>
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="20"/>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Height" Value="20"/>
-        <Setter Property="Width" Value="20"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource MouseOverTitleBarIcon}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

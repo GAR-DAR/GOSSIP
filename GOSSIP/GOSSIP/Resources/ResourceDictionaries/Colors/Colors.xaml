@@ -25,4 +25,9 @@
 
     <SolidColorBrush x:Key="TopMenuBackground" Color="#003264"/>
 
+    <!-- MouseOverTitleBarIcon -->
+
+    <SolidColorBrush x:Key="MouseOverTitleBarIcon" Color="#01467c"/>
+
+
 </ResourceDictionary>
