@@ -4,13 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GOSSIP"
+        xmlns:viewModels="clr-namespace:GOSSIP.ViewModels" 
+        xmlns:views="clr-namespace:GOSSIP.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="550" Width="900"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent" 
         WindowStartupLocation="CenterScreen" 
         WindowState="Normal">
+
+    <Window.Resources>
+        <local:StringToIntConverter x:Key="StringToIntConverter"/>
+
+        <DataTemplate x:Name="ToolBarTemplate" DataType="{x:Type viewModels:ToolBarVM}">
+            <views:ToolBarView DataContext="{Binding}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Name="StartRegistrationTemplate" DataType="{x:Type viewModels:StartRegistrationVM}">
+            <views:StartRegistrationView DataContext="{Binding}"/>
+        </DataTemplate>
+
+    </Window.Resources>
+
 
     <Border Grid.RowSpan="3" CornerRadius="20" BorderThickness="3" BorderBrush="#041A32">
         <Border.Background>
@@ -25,7 +41,7 @@
             </Grid.RowDefinitions>
 
             <!-- Title bar. Idk about inserting the window title.-->
-            <Border Grid.Row="0" CornerRadius="20 20 0 0" Background="#041A32"  MouseDown="Grid_MouseDown">
+            <Border Grid.Row="0" CornerRadius="20 20 0 0" Background="#041A32" MouseDown="Grid_MouseDown">
                 <WrapPanel HorizontalAlignment="Right" Margin="0 7">
                     <Button Style="{StaticResource TitleBarButton}" Margin="0 0 15 0" Click="MinimizeWindowButton_Click">
                         <Image Source="pack://application:,,,/Resources/Images/minimizeicon.png"/>
@@ -41,6 +57,27 @@
                 </WrapPanel>
             </Border>
 
+            <Grid Grid.Row="1" Grid.RowSpan="2">
+                
+                <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+
+                    <TabControl.Template>
+                        <ControlTemplate TargetType="TabControl">
+                            <ContentPresenter ContentSource="SelectedContent"/>
+                        </ControlTemplate>
+                    </TabControl.Template>
+
+                    <TabItem>
+                        <ContentControl Content="{Binding ToolBar}" ContentTemplate="{DynamicResource ToolBarTemplate}" />
+                    </TabItem>
+                    
+                    <TabItem>
+                        <ContentControl Content="{Binding StartRegistration}" ContentTemplate="{DynamicResource StartRegistrationTemplate}" />
+                    </TabItem>
+
+                </TabControl>
+
+            </Grid>
         </Grid>
     </Border>
 

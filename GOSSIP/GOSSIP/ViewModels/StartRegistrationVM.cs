@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
-    class StartRegistration
+    public class StartRegistrationVM : ObservableObject
     {
     }
 }

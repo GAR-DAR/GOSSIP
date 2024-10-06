@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel;
 
-namespace CHASER_2._0
+namespace GOSSIP
 {
     public class ObservableObject : INotifyPropertyChanged
     {

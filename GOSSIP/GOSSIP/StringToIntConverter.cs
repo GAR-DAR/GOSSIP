@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace CHASER_2._0
+namespace GOSSIP
 {
     public class StringToIntConverter : IValueConverter
     {

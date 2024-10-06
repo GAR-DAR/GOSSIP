@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CHASER_2._0
+namespace GOSSIP
 {
     public class RelayCommand : ICommand
     {
