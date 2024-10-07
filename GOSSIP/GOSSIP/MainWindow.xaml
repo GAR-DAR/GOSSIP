@@ -12,7 +12,7 @@
         AllowsTransparency="True"
         Background="Transparent" 
         WindowStartupLocation="CenterScreen" 
-        WindowState="Normal">
+        WindowState="Maximized">
 
     <Window.Resources>
         <local:StringToIntConverter x:Key="StringToIntConverter"/>
@@ -36,7 +36,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="10*"/>
+                <RowDefinition Height="8*"/>
                 <RowDefinition Height="92*"/>
             </Grid.RowDefinitions>
 
@@ -57,7 +57,7 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBarWithLogIn Grid.Row="1"/>
+            <views:TopBarWithSignIn Grid.Row="1"/>
 
             <Grid Grid.Row="2" Grid.RowSpan="2">
                 

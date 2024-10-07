@@ -44,7 +44,7 @@
         </Setter>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="17"/>
-        <Setter Property="FontFamily" Value="{StaticResource Roboto}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MinWidth" Value="125"/>
         <Setter Property="Margin" Value="0 2 10 0"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -67,7 +67,7 @@
         </Setter>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="17"/>
-        <Setter Property="FontFamily" Value="pack://application:,,,/Fonts/#Roboto"/>
+        <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MaxWidth" Value="100"/>
         <Setter Property="Margin" Value="5 3 10 0"/>
     </Style>
