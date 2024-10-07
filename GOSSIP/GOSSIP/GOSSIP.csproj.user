@@ -7,7 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\TopBarWithSignIn.xaml.cs">
+    <Compile Update="Views\TestTopBar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -21,10 +21,10 @@
     <Page Update="Resources\ResourceDictionaries\Styles\TextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TopBarWithLogIn.xaml">
+    <Page Update="Views\TestTopBar.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TopBarWithSignIn.xaml">
+    <Page Update="Views\TopBarWithLogIn.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
