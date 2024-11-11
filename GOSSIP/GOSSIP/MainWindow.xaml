@@ -57,7 +57,7 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBarWithSignIn Grid.Row="1"/>
+            <views:TopBar Grid.Row="1"/>
 
             <Grid Grid.Row="2" Grid.RowSpan="2">
                 
