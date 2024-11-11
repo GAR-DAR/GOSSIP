@@ -16,7 +16,7 @@
             <ColumnDefinition Width="15*"/>
         </Grid.ColumnDefinitions>
 
-        <Rectangle Grid.ColumnSpan="6" Fill="#003264" Opacity="0.3" Width="auto"/>
+        <Rectangle Grid.ColumnSpan="6" Fill="Green" Opacity="0.3" Width="auto"/>
         <!--<Image Source="pack://application:,,,/Resources/Images/logo.png" MinHeight="50" Grid.Column="0" HorizontalAlignment="Right"/>-->
         <TextBlock Text="gossip" Foreground="#ffffff" FontSize="30" FontFamily="{StaticResource RopaSans}" Margin="5 0 0 0" VerticalAlignment="Center" Grid.Column="1"/>
         <TextBox Grid.Column="2" Style="{StaticResource SearchBar}"/>
