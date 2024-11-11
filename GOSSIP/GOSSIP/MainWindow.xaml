@@ -14,7 +14,7 @@
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized">
 
-    <Window.Resources>
+    <Window.Resources>  
         <local:StringToIntConverter x:Key="StringToIntConverter"/>
 
         <DataTemplate x:Name="ToolBarTemplate" DataType="{x:Type viewModels:ToolBarVM}">
