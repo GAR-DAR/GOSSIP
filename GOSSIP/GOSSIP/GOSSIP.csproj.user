@@ -6,7 +6,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Update="Views\TopBarWithSignInView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
@@ -17,13 +21,7 @@
     <Page Update="Resources\ResourceDictionaries\Styles\TextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TopBar.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\TopBarWithLogIn.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\TopBarWithSignIn.xaml">
+    <Page Update="Views\TopBarWithSignInView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
