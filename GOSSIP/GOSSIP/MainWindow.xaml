@@ -7,11 +7,12 @@
         xmlns:viewModels="clr-namespace:GOSSIP.ViewModels" 
         xmlns:views="clr-namespace:GOSSIP.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="900"
+        Title="MainWindow" 
+        Height="1080" 
+        Width="1920"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent" 
-        WindowStartupLocation="CenterScreen" 
         WindowState="Maximized">
 
     <Window.Resources>  
@@ -46,7 +47,7 @@
                     <Button Style="{StaticResource TitleBarButton}" Click="MinimizeWindowButton_Click">
                         <Image Source="pack://application:,,,/Resources/Images/minimizeicon.png"/>
                     </Button>
-
+                    
                     <Button Style="{StaticResource TitleBarButton}" Click="MaximizeWindowButton_Click">
                         <Image Source="pack://application:,,,/Resources/Images/maximizeicon.png"/>
                     </Button>

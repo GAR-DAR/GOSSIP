@@ -23,4 +23,5 @@
         <Setter Property="MaxHeight" Value="50"/>
         <Setter Property="Margin" Value="0 8"/>
     </Style>
+
 </ResourceDictionary>
