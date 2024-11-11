@@ -57,7 +57,7 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBar Grid.Row="1"/>
+            <views:ToolBarView Grid.Row="1"/>
 
             <Grid Grid.Row="2" Grid.RowSpan="2">
                 
