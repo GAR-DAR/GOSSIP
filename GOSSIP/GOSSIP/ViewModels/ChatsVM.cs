@@ -31,7 +31,7 @@ namespace GOSSIP.ViewModels
                 new OpenedChatVM(new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png", new ObservableCollection<MessageModel>(){
 
                     new MessageModel("OleksaLviv", false, "хєхє", new TimeSpan(4, 2, 0)),
-                    new MessageModel("OleksaLviv", false, "привіт", new TimeSpan(4, 2, 0))
+                    new MessageModel("OleksaLviv", true, "привіт", new TimeSpan(4, 2, 0))
 
                     })),
                 new OpenedChatVM(new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png", [])),

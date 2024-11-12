@@ -30,10 +30,36 @@
             </Border>
 
             <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Messages}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:MessageModel}">
-                        <Border Background="{DynamicResource LogInButtonBackground}" Width="150" Height="40">
-                            <StackPanel>
+                        <Border Width="150" Height="40">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource LogInButtonBackground}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
+                                            <Setter Property="Background" Value="{DynamicResource SignInButtonBackground}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding MessageText}" Margin="3 2"/>
                                 <TextBlock Text="{Binding TimeStamp}" HorizontalAlignment="Right"/>
                             </StackPanel>

@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:GOSSIP.ViewModels" 
         xmlns:views="clr-namespace:GOSSIP.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="900"
+        Title="MainWindow" Height="1080" Width="1920"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent" 
@@ -57,7 +57,7 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBarWithSignIn Grid.Row="1"/>
+            <views:TopBarWithSignInView Grid.Row="1"/>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
