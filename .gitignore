@@ -11,7 +11,6 @@
 *.exe
 *.pdb
 *.cache
-*.cs
 *.lref
 *.BuildWithSkipAnalyzers
 *.resources
