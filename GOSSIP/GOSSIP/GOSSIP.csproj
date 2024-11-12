@@ -3,12 +3,23 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+    <None Remove="Resources\Images\TempUserIcons\OleksaLviv.png" />
+    <None Remove="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Resource Include="Resources\Fonts\Roboto-Medium.ttf" />
 	<Resource Include="Resources\Fonts\RopaSans-Italic.ttf" />
     <Resource Include="Resources\Fonts\Roboto-Bold.ttf" />
     <Resource Include="Resources\Fonts\RopaSans-Regular.ttf" />
@@ -17,6 +28,7 @@
     <Resource Include="Resources\Images\logo.png" />
     <Resource Include="Resources\Images\maximizeicon.png" />
     <Resource Include="Resources\Images\minimizeicon.png" />
+    <Resource Include="Resources\Images\TempUserIcons\OleksaLviv.png" />
   </ItemGroup>
 
 </Project>

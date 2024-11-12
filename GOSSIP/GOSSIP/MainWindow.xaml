@@ -17,12 +17,12 @@
     <Window.Resources>  
         <local:StringToIntConverter x:Key="StringToIntConverter"/>
 
-        <DataTemplate x:Name="ToolBarTemplate" DataType="{x:Type viewModels:ToolBarVM}">
-            <views:ToolBarView DataContext="{Binding}"/>
+        <DataTemplate DataType="{x:Type viewModels:ChatsVM}">
+            <views:ChatsView/>
         </DataTemplate>
 
-        <DataTemplate x:Name="StartRegistrationTemplate" DataType="{x:Type viewModels:StartRegistrationVM}">
-            <views:StartRegistrationView DataContext="{Binding}"/>
+        <DataTemplate DataType="{x:Type viewModels:PostsListVM}">
+            <views:PostsListView/>
         </DataTemplate>
 
     </Window.Resources>
@@ -59,26 +59,14 @@
 
             <views:TopBarWithSignIn Grid.Row="1"/>
 
-            <Grid Grid.Row="2" Grid.RowSpan="2">
-                
-                <TabControl SelectedIndex="{Binding SelectedTabIndex}">
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="80*"/>
+                </Grid.ColumnDefinitions>
 
-                    <TabControl.Template>
-                        <ControlTemplate TargetType="TabControl">
-                            <ContentPresenter ContentSource="SelectedContent"/>
-                        </ControlTemplate>
-                    </TabControl.Template>
-
-                    <TabItem>
-                        <ContentControl Content="{Binding ToolBar}" ContentTemplate="{DynamicResource ToolBarTemplate}" />
-                    </TabItem>
-                    
-                    <TabItem>
-                        <ContentControl Content="{Binding StartRegistration}" ContentTemplate="{DynamicResource StartRegistrationTemplate}" />
-                    </TabItem>
-
-                </TabControl>
-
+                <views:SideBarView DataContext="{Binding}" Grid.Column="0"/>
+                <ContentControl Content="{Binding SelectedVM}" Grid.Column="1"/>
             </Grid>
         </Grid>
     </Border>
