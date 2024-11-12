@@ -6,7 +6,23 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Update="Views\ChatsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OpenedChatView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PostsListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SideBarView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TopBarWithSignInView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
@@ -17,10 +33,19 @@
     <Page Update="Resources\ResourceDictionaries\Styles\TextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TopBarWithLogIn.xaml">
+    <Page Update="Views\ChatsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\TopBarWithSignIn.xaml">
+    <Page Update="Views\OpenedChatView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PostsListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SideBarView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TopBarWithSignInView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

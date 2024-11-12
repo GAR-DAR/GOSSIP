@@ -54,7 +54,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="#6393c9" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource LogInButtonBackground}" CornerRadius="15" Height="45">
                         <ContentPresenter 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center"/>
@@ -70,6 +70,15 @@
         <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MaxWidth" Value="100"/>
         <Setter Property="Margin" Value="5 3 10 0"/>
+    </Style>
+
+    <Style x:Key="SideBarButton" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource TopMenuBackground}"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="{DynamicResource RobotoMedium}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="28"/>
     </Style>
 
 </ResourceDictionary>

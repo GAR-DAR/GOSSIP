@@ -17,16 +17,17 @@
 
     <SolidColorBrush x:Key="WindowBorder" Color="#1a1625" />
     
-    <!-- Button Background -->
-
-    <SolidColorBrush x:Key="ButtonBackground" Color="#44414b" />
-
     <!-- Top Menu Bar -->
 
-    <SolidColorBrush x:Key="TopMenuBackground" Color="#003264"/>
+    <SolidColorBrush x:Key="TopMenuBackground" Color="#002552"/>
 
     <!-- SignUp Button Colour -->
 
     <SolidColorBrush x:Key="SignInButtonBackground" Color="#01467c"/>
-     
+
+    <SolidColorBrush x:Key="LogInButtonBackground" Color="#6393c9"/>
+
+    <SolidColorBrush x:Key="DarkestBlue" Color="#000d1f"/>
+
+    
 </ResourceDictionary>

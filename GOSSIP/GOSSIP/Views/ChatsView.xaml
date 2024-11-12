@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="GOSSIP.Views.ChatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="960" d:DesignWidth="1540">
+    <Border Background="{DynamicResource TopMenuBackground}" CornerRadius="20" Margin="20">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="69*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox ItemsSource="{Binding ChatList}"
+                SelectedItem="{Binding OpenedChatVM}"
+                Background="Transparent"
+                BorderThickness="0"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <Image Source="{Binding IconPath}" Width="40" Height="40" Margin="5"/>
+
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding ChatName}" FontSize="30" Foreground="White" />
+                                <TextBlock Text="{Binding LastMessage}" FontStyle="Italic" Foreground="Gray" FontSize="17"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Rectangle Grid.Column="1" Fill="Black" Width="2"/>
+
+            <ContentControl Grid.Column="2" Content="{Binding OpenedChatVM}">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:OpenedChatVM}">
+                        <local:OpenedChatView DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
+
+        </Grid>
+    </Border>
+    
+</UserControl>

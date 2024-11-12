@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
-    public class StartRegistrationVM : ObservableObject
+    public class PostsListVM : ObservableObject
     {
+
     }
 }

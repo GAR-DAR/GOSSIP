@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace GOSSIP.Views
 {
     /// <summary>
-    /// Interaction logic for StartRegistrationView.xaml
+    /// Interaction logic for OpenedChatView.xaml
     /// </summary>
-    public partial class StartRegistrationView : UserControl
+    public partial class OpenedChatView : UserControl
     {
-        public StartRegistrationView()
+        public OpenedChatView()
         {
             InitializeComponent();
         }

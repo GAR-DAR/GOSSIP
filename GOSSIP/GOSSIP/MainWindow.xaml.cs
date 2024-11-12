@@ -21,19 +21,17 @@ namespace GOSSIP
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public ObservableObject SelectedVM; 
+
         public ToolBarVM ToolBar { get; set; }
-        public StartRegistrationVM StartRegistration { get; set; }
+
+        public ChatsVM Chat { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
 
-            ToolBar = new ToolBarVM();
-            StartRegistration = new StartRegistrationVM();
-
-            SelectedTabIndex = 0; 
-
-            DataContext = this;
+            DataContext = new MainVM();
         }
 
         private int _selectedTabIndex;
