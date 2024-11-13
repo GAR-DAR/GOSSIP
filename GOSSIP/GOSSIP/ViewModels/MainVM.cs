@@ -25,6 +25,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        //Tags will be added here
         public ICommand ShowPostsListCommand { get; set; }
         public ICommand ShowChatsCommand { get; set; }
 
@@ -38,7 +39,6 @@ namespace GOSSIP.ViewModels
         private void ShowChatsMethod(object obj)
         {
             SelectedVM = new ChatsVM();
-            
         }
 
     }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
+    //List of chats displayed to the user in the left menu.
     public class ChatsVM : ObservableObject
     {
         public ObservableCollection<OpenedChatVM> ChatList { get; set; }
@@ -28,7 +29,7 @@ namespace GOSSIP.ViewModels
         {
             ChatList =
             [
-                new OpenedChatVM(new ChatModel(1, DateTime.Now, false, "OleksaLviv", "я був на вечірці підіді і я маю що сказати",
+                new OpenedChatVM(new ChatModel(1, DateTime.Now, false, "OleksaLviv",
                 "OleksaLviv.png", [
 
                     new MessageModel(1, 1, 1, false, "хєхє", DateTime.Now,  true, false),
