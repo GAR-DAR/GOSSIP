@@ -30,6 +30,9 @@
     <Page Update="Resources\ResourceDictionaries\Fonts\Fonts.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ResourceDictionaries\Styles\ListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\ResourceDictionaries\Styles\TextBox.xaml">
       <SubType>Designer</SubType>
     </Page>

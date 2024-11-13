@@ -23,6 +23,6 @@
         <Button Grid.Column="5" Content="Sign Up" Style="{StaticResource SignUpButton}"/>
         <Button Grid.Column="6" Content="Log In" Style="{StaticResource LogInButton}"/>
 
-        <TextBox Grid.Column="3" Style="{StaticResource SearchBar}"/>
+        <TextBox Grid.Column="3" Style="{StaticResource InputField}"/>
     </Grid>
 </UserControl>

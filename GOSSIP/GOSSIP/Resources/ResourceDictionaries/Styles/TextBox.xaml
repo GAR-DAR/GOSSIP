@@ -4,7 +4,7 @@
         <ResourceDictionary Source="../Colors/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="TextBox" x:Key="SearchBar">
+    <Style TargetType="TextBox" x:Key="InputField">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">

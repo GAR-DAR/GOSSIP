@@ -28,13 +28,15 @@ namespace GOSSIP.ViewModels
         {
             ChatList =
             [
-                new OpenedChatVM(new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png", new ObservableCollection<MessageModel>(){
+                new OpenedChatVM(new ChatModel(1, DateTime.Now, false, "OleksaLviv", "я був на вечірці підіді і я маю що сказати",
+                "OleksaLviv.png", [
 
-                    new MessageModel("OleksaLviv", false, "хєхє", new TimeSpan(4, 2, 0)),
-                    new MessageModel("OleksaLviv", true, "привіт", new TimeSpan(4, 2, 0))
+                    new MessageModel(1, 1, 1, false, "хєхє", DateTime.Now,  true, false),
+                    new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
+                    new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
 
-                    })),
-                new OpenedChatVM(new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png", [])),
+                    ])),
+                //new OpenedChatVM(new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png", [])),
                 //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
                 //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
                 //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),

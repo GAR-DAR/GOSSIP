@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Models
 {
-    public class MessageModel (string sender, bool isSentByCurrentUser, string messageText, TimeSpan timeStamp)
+    public class MessageModel (int id, int chatID, int senderID, bool isSentByCurrentUser,
+        string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
     {
-        public string Sender { get; set; } = sender;
+        public int ID { get; set; } = id;
+        public int ChatID { get; set; } = chatID;
+        public int SenderID { get; set; } = senderID;
         public bool IsSentByCurrentUser { get; set; } = isSentByCurrentUser;
         public string MessageText { get; set; } = messageText;
         public string TimeStamp { get; set; } = timeStamp.ToString(@"hh\:mm");
+        public bool IsRead { get; set; } = isRead;
+        public bool IsDeleted { get; set; } = isDeleted;
     }
 }

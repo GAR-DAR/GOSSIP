@@ -8,7 +8,7 @@
         <ResourceDictionary Source="../Button.xaml"/>
         <ResourceDictionary Source="../TextBox.xaml"/>
         <ResourceDictionary Source="../../../ResourceDictionaries/Fonts/Fonts.xaml"/>
-       
+        <ResourceDictionary Source="../ListView.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

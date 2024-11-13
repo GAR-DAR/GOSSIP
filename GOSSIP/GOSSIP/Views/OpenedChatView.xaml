@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
              xmlns:models="clr-namespace:GOSSIP.Models"
              xmlns:local="clr-namespace:GOSSIP.Views"
              mc:Ignorable="d" 
@@ -29,21 +30,10 @@
                 </WrapPanel>
             </Border>
 
-            <ListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Messages}">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalContentAlignment" Value="Top"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
-                                <Setter Property="HorizontalAlignment" Value="Right"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
-                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.ItemContainerStyle>
+            <ListBox Grid.Row="1" Background="Transparent"
+            ItemsSource="{Binding Messages.Messages}"
+            ItemContainerStyle="{StaticResource Message}"
+            BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:MessageModel}">
                         <Border Width="150" Height="40">
@@ -67,6 +57,13 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <Border Grid.Row="2" Background="{DynamicResource DarkestBlue}">
+                <WrapPanel>
+                    <TextBox Style="{DynamicResource InputField}" Text="{Binding EnteredText}" Width="750" Height="60"/>
+                    <Button Style="{DynamicResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
+                </WrapPanel>
+            </Border>
         </Grid>
     </Border>
     

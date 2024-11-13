@@ -37,13 +37,23 @@
             <Rectangle Grid.Column="1" Fill="Black" Width="2"/>
 
             <ContentControl Grid.Column="2" Content="{Binding OpenedChatVM}">
-                <ContentControl.ContentTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:OpenedChatVM}">
-                        <local:OpenedChatView DataContext="{Binding}"/>
-                    </DataTemplate>
-                </ContentControl.ContentTemplate>
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate DataType="{x:Type viewModels:OpenedChatVM}">
+                                    <local:OpenedChatView DataContext="{Binding}"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding OpenedChatVM}" Value="{x:Null}">
+                                <Setter Property="ContentTemplate" Value="{x:Null}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
             </ContentControl>
-
         </Grid>
     </Border>
     

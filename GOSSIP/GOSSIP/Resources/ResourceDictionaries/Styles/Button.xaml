@@ -81,4 +81,18 @@
         <Setter Property="FontSize" Value="28"/>
     </Style>
 
+    <Style x:Key="SendMessageButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border CornerRadius="20" Background="{TemplateBinding Background}">
+                        
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Background" Value="{DynamicResource LogInButtonBackground}"/>
+    </Style>
 </ResourceDictionary>
