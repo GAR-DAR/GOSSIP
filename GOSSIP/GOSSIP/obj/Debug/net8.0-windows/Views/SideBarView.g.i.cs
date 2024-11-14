@@ -53,7 +53,7 @@ namespace GOSSIP.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/GOSSIP;V1.0.0.0;component/views/sidebarview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/GOSSIP;component/views/sidebarview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\SideBarView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

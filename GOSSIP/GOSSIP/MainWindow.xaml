@@ -57,7 +57,13 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBarWithSignInView Grid.Row="1"/>
+            <views:TopBarWithSignInView Grid.Row="1">
+                <views:TopBarWithSignInView.Effect>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="30" Color="Black" Opacity="0.5"/>
+                </views:TopBarWithSignInView.Effect>
+            </views:TopBarWithSignInView>
+            
+
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

@@ -10,11 +10,15 @@
 
   <ItemGroup>
     <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+    <None Remove="Resources\Images\search.png" />
+    <None Remove="Resources\Images\Signup.png" />
     <None Remove="Resources\Images\TempUserIcons\OleksaLviv.png" />
     <None Remove="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\search.png" />
+    <Resource Include="Resources\Images\Signup.png" />
     <Resource Include="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
   </ItemGroup>
 
