@@ -48,6 +48,7 @@
         <Setter Property="MinWidth" Value="125"/>
         <Setter Property="Margin" Value="0 2 10 0"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style TargetType="Button" x:Key="LogInButton">
@@ -70,6 +71,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MaxWidth" Value="100"/>
         <Setter Property="Margin" Value="5 3 10 0"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style x:Key="SideBarButton" TargetType="Button">
@@ -94,5 +96,6 @@
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="40"/>
         <Setter Property="Background" Value="{DynamicResource LogInButtonBackground}"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 </ResourceDictionary>
