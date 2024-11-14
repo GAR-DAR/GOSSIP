@@ -6,22 +6,22 @@
              xmlns:local="clr-namespace:GOSSIP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="1920">
-    <Grid Background="{DynamicResource TopMenuBackground}">
+    <Grid Background="{DynamicResource TopMenuBackground}" Effect="{StaticResource ShadowEffect}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.8*"/>
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
         <Image Grid.Column="0" Source="pack://application:,,,/Resources/Images/logo.png" HorizontalAlignment="Right" Margin="0,0,10,0"/>
         <TextBlock Grid.Column="1" Foreground="White" FontSize="35" VerticalAlignment="Center" Margin="5,0,0,0" Text="gossip" FontFamily="{DynamicResource RopaSans}"/>
 
-        <Button Grid.Column="5" Content="Sign Up" Style="{StaticResource SignUpButton}"/>
-        <Button Grid.Column="6" Content="Log In" Style="{StaticResource LogInButton}"/>
+        <Button Grid.Column="5" Content="Sign Up" Margin="0,0,20,0" Style="{StaticResource SignUpButton}"/>
+        <Button Grid.Column="6" Content="Log In" Margin="0,0,22,0" Style="{StaticResource LogInButton}"/>
 
         <TextBox Grid.Column="3" Style="{StaticResource InputField}"/>
     </Grid>

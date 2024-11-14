@@ -35,7 +35,7 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="5*"/>
                 <RowDefinition Height="8*"/>
                 <RowDefinition Height="92*"/>
             </Grid.RowDefinitions>
@@ -43,15 +43,15 @@
             <!-- Title bar. Idk about inserting the window title.-->
             <Border Grid.Row="0" CornerRadius="20 20 0 0" Background="#041A32" MouseDown="Grid_MouseDown">
                 <WrapPanel HorizontalAlignment="Right">
-                    <Button Style="{StaticResource TitleBarButton}" Click="MinimizeWindowButton_Click">
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 5 0 0" Click="MinimizeWindowButton_Click">
                         <Image Source="pack://application:,,,/Resources/Images/minimizeicon.png"/>
                     </Button>
 
-                    <Button Style="{StaticResource TitleBarButton}" Click="MaximizeWindowButton_Click">
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 5 0 0" Click="MaximizeWindowButton_Click">
                         <Image Source="pack://application:,,,/Resources/Images/maximizeicon.png"/>
                     </Button>
 
-                    <Button Style="{StaticResource TitleBarButton}" Margin="0 0 15 0" Click="CloseWindowButton_Click">
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 5 15 0" Click="CloseWindowButton_Click">
                         <Image Source="pack://application:,,,/Resources/Images/closeicon.png"/>
                     </Button>
                 </WrapPanel>
@@ -61,8 +61,8 @@
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="20*"/> 
+                    <ColumnDefinition Width="80*"/> 
                 </Grid.ColumnDefinitions>
 
                 <views:SideBarView DataContext="{Binding}" Grid.Column="0"/>

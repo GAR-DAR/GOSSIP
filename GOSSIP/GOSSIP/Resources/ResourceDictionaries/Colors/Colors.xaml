@@ -19,7 +19,7 @@
     
     <!-- Top Menu Bar -->
 
-    <SolidColorBrush x:Key="TopMenuBackground" Color="#002552"/>
+    <SolidColorBrush x:Key="TopMenuBackground" Color="#80002552" />
 
     <!-- SignUp Button Colour -->
 
@@ -29,5 +29,4 @@
 
     <SolidColorBrush x:Key="DarkestBlue" Color="#000d1f"/>
 
-    
 </ResourceDictionary>
