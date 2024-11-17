@@ -19,6 +19,15 @@
     <Compile Update="Views\SideBarView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\SignUpViewSecond.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SignUpWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SignUpViewFirst.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\TopBarWithSignInView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -31,6 +40,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\ResourceDictionaries\Styles\ListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\ResourceDictionaries\Styles\ComboBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\ResourceDictionaries\Styles\TextBox.xaml">
@@ -46,6 +58,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SideBarView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpViewSecond.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpViewFirst.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TopBarWithSignInView.xaml">

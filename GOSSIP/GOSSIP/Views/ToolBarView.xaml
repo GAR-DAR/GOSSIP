@@ -13,7 +13,7 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Background="#041A32"  CornerRadius="0,7,7,0"/>
+        <Border Background="{DynamicResource PrussianBlue}"  CornerRadius="0,7,7,0"/>
 
     </Grid>
 </UserControl>

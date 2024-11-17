@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="476">
     <Grid>
-        <Border Background="{DynamicResource TopMenuBackground}">
+        <Border Background="{DynamicResource PrussianBlue}">
             <StackPanel>
                 <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowPostsListCommand}" Content="Topics" Margin="0 40 0 0"/>
                 <Button Style="{DynamicResource SideBarButton}" Content="Tags"/>

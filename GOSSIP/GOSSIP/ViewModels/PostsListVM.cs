@@ -16,7 +16,8 @@ namespace GOSSIP.ViewModels
         public PostsListVM()
         {
             Posts = [
-                new Post(new User("stelmakh_yurii", "stelmakh_yurii.png"), DateTime.Now.AddMinutes(-10), "це пізда", "я їбала, я ваювала, я запускала атамне")
+                new Post(new User("stelmakh_yurii", "stelmakh_yurii.png"), DateTime.Now.AddMinutes(-10), "What C# GUI framework for desktop apps is the best?", "filler text, filler text, filler text, filler text", ["C#", "GUI"], 3, 2),
+                new Post(new User("OleksaLviv", "OleksaLviv.png"), DateTime.Now.AddDays(-20), "Can yall share a quality resource about WinAPI?", "...", ["WinAPI", "Windows"], 3, 2)
                 ];
         }
     }

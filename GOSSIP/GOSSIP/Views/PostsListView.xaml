@@ -13,25 +13,48 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}">
+        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}" BorderThickness="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="White" Margin="5">
+                    <Grid Background="White" Margin="0 0 0 5" Width="1170">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="900"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
 
-                        <WrapPanel>
-                            <Image Source="{Binding Author.IconPath}"/>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Author.Username}" Grid.Row="0" FontWeight="Bold" FontSize="14"/>
-                                <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}"/>
-                            </StackPanel>
-                        </WrapPanel>
-                        <TextBlock Text="{Binding Title}" Grid.Row="1" FontStyle="Italic" FontSize="12"/>
-                        <TextBlock Text="{Binding Content}" Grid.Row="2" TextWrapping="Wrap" FontSize="12"/>
+                        <Image Source="{Binding Author.IconPath}" Width="40" Grid.Row="0" Grid.Column="0" Margin="5" HorizontalAlignment="Left"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                            <TextBlock Text="{Binding Author.Username}" FontWeight="Bold" FontSize="14"/>
+                            <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding Title}" Grid.Row="1" Grid.ColumnSpan="4" FontStyle="Italic" FontSize="12" Margin="5"/>
+                        <TextBlock Text="{Binding Content}" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="12" Margin="5"/>
+
+                        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="5">
+                            <ItemsControl ItemsSource="{Binding Tags}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="0,0,5,0"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" Text="{Binding RepliesCount}" Margin="5"/>
+                        <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Right" Text="{Binding Rating}" Margin="5"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

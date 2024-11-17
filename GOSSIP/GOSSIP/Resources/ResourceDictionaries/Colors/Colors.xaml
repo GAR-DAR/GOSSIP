@@ -3,30 +3,26 @@
 
     <!-- Background -->
 
-    <LinearGradientBrush x:Key="GradientBackground" StartPoint="0,0" EndPoint="0,5">
-        <GradientStop Color="#1a1625" Offset="0.0" />
-        <GradientStop Color="#2f2b3a" Offset="0.5" />
-    </LinearGradientBrush>
-
-
     <!-- Foreground -->
 
-    <SolidColorBrush x:Key="WindowForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="WhiteForeground" Color="#FFF" />
 
     <!-- Window Border -->
 
-    <SolidColorBrush x:Key="WindowBorder" Color="#1a1625" />
-    
+    <SolidColorBrush x:Key="Cinder" Color="#1a1625" />
+
     <!-- Top Menu Bar -->
 
-    <SolidColorBrush x:Key="TopMenuBackground" Color="#002552" Opacity="0.5"/>
+    <SolidColorBrush x:Key="PrussianBlue" Color="#002552" Opacity="0.5"/>
 
     <!-- SignUp Button Colour -->
 
-    <SolidColorBrush x:Key="SignInButtonBackground" Color="#01467c"/>
+    <SolidColorBrush x:Key="RegalBlue" Color="#01467c"/>
 
-    <SolidColorBrush x:Key="LogInButtonBackground" Color="#6393c9"/>
+    <SolidColorBrush x:Key="Danube" Color="#6393c9"/>
 
-    <SolidColorBrush x:Key="DarkestBlue" Color="#000d1f"/>
+    <SolidColorBrush x:Key="BlueCharcoal" Color="#000d1f"/>
 
+    <SolidColorBrush x:Key="Downriver" Color="#0c2a5c"/>
 </ResourceDictionary>
+

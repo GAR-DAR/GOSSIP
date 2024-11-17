@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GOSSIP.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,13 +31,18 @@ namespace GOSSIP.ViewModels
         //Tags will be added here
         public ICommand ShowPostsListCommand { get; set; }
         public ICommand ShowChatsCommand { get; set; }
+        public ICommand ShowSignUpCommand { get; set; }
 
         public MainVM()
-        {
-
+        { 
             SelectedVM = PostsListVM;
             ShowPostsListCommand = new RelayCommand((obj) => SelectedVM = PostsListVM);
             ShowChatsCommand = new RelayCommand((obj) => SelectedVM = ChatsVM);
+            ShowSignUpCommand = new RelayCommand((obj) =>
+            {
+                SignUpWindow signUpView = new() { DataContext = new SignUpMainVM() };
+                signUpView.ShowDialog();
+            });
         }
 
     }

@@ -61,8 +61,6 @@
                     <DropShadowEffect ShadowDepth="2" BlurRadius="30" Color="Black" Opacity="0.5"/>
                 </views:TopBarWithSignInView.Effect>
             </views:TopBarWithSignInView>
-            
-
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

@@ -23,4 +23,9 @@
         <Setter Property="MaxHeight" Value="50"/>
         <Setter Property="Margin" Value="0 8"/>
     </Style>
+
+    <Style TargetType="TextBox" x:Key="AuthTextBox">
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="Height" Value="50"/>
+    </Style>
 </ResourceDictionary>
