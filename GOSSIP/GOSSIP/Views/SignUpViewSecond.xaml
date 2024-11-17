@@ -25,11 +25,11 @@
         </Grid.ColumnDefinitions>
 
 
-        <ComboBox Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}"/>
-        <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}"/>
-        <ComboBox Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}"/>
-        <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}"/>
-        <ComboBox Grid.Row="5" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}"/>
+        <ComboBox Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding StatusOptions}"/>
+        <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding FieldOfStudyOptions}"/>
+        <ComboBox Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding SpecializationOptions}"/>
+        <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding UniversityOptions}"/>
+        <TextBox Grid.Row="5" Grid.ColumnSpan="2" Style="{DynamicResource AuthTextBox}" Text="{Binding TermOfStudying}"/>
 
         <Button Grid.Row="7" Grid.Column="0" Content="Back" Height="40" Width="100" Command="{Binding BackCommand}"/>
         <Button Grid.Row="7" Grid.Column="1" Content="Next" Height="40" Width="100" Command="{Binding NextCommand}"/>
