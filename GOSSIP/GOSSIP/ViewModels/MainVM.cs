@@ -11,6 +11,8 @@ namespace GOSSIP.ViewModels
     public class MainVM : ObservableObject
     {
         private ObservableObject _selectedVM;
+        public ChatsVM ChatsVM = new();
+        private PostsListVM PostsListVM = new();
 
         public ObservableObject SelectedVM
         {
@@ -31,14 +33,10 @@ namespace GOSSIP.ViewModels
 
         public MainVM()
         {
-            SelectedVM = new ChatsVM();
-            ShowPostsListCommand = new RelayCommand((obj) => SelectedVM = new PostsListVM());
-            ShowChatsCommand = new RelayCommand((obj) => SelectedVM = new ChatsVM());
-        }
 
-        private void ShowChatsMethod(object obj)
-        {
-            SelectedVM = new ChatsVM();
+            SelectedVM = PostsListVM;
+            ShowPostsListCommand = new RelayCommand((obj) => SelectedVM = PostsListVM);
+            ShowChatsCommand = new RelayCommand((obj) => SelectedVM = ChatsVM);
         }
 
     }

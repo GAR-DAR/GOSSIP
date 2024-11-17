@@ -4,9 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:conv="clr-namespace:GOSSIP.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Black">
-            
+
+    <UserControl.Resources>
+        <conv:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="White" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <WrapPanel>
+                            <Image Source="{Binding Author.IconPath}"/>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Author.Username}" Grid.Row="0" FontWeight="Bold" FontSize="14"/>
+                                <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}"/>
+                            </StackPanel>
+                        </WrapPanel>
+                        <TextBlock Text="{Binding Title}" Grid.Row="1" FontStyle="Italic" FontSize="12"/>
+                        <TextBlock Text="{Binding Content}" Grid.Row="2" TextWrapping="Wrap" FontSize="12"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

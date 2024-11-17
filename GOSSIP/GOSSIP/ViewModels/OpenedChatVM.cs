@@ -18,16 +18,16 @@ namespace GOSSIP.ViewModels
         private ChatModel _chat;
 
         public string ChatName { get; set; }
-        public string IconPath => $"pack://application:,,,/Resources/Images/TempUserIcons/{_chat.IconName}";
+        public string IconPath => _chat.Interlocutor.IconPath;
         public ObservableCollection<MessageModel> Messages { get; set; }
 
         public OpenedChatVM(ChatModel chat)
         {
             _chat = chat;
-            ChatName = chat.Name;
+            ChatName = chat.Interlocutor.Username;
             Messages = new(chat.Messages);
             LastMessage = Messages.Last().MessageText;
-            Messages.CollectionChanged += Messages_CollectionChanged;
+            _chat.Messages.CollectionChanged += Messages_CollectionChanged;
 
             SendMessageCommand = new RelayCommand(SendMessageMethod);
         }
@@ -58,7 +58,7 @@ namespace GOSSIP.ViewModels
         //First, VM list of messages is changed. Then it passes a signal to model list and it gets changed
         private void SendMessageMethod(object obj)
         {
-            Messages.Add(new MessageModel(1, _chat.ID, 1, true, EnteredText, DateTime.Now, false, false));
+            _chat.AddMessage(new MessageModel(1, _chat.ID, 1, true, EnteredText, DateTime.Now, false, false));
             EnteredText = "";
         }
 
@@ -69,7 +69,7 @@ namespace GOSSIP.ViewModels
             {
                 foreach (MessageModel newMessage in e.NewItems)
                 {
-                    _chat.Messages.Add(newMessage);
+                    Messages.Add(newMessage);
                     LastMessage = Messages.Last().MessageText;
                 }
             }
@@ -78,7 +78,7 @@ namespace GOSSIP.ViewModels
             {
                 foreach (MessageModel oldMessage in e.OldItems)
                 {
-                    _chat.Messages.Remove(oldMessage);
+                    Messages.Remove(oldMessage);
                     LastMessage = Messages.Last().MessageText;
                 }
             }
