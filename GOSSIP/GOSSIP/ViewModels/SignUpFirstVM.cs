@@ -54,12 +54,6 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
-        public List<string> FieldOfStudyOptions { get; set; } = ["Computer ", "Faculty", "Learner", "None"];
-        public List<string> SpecializationOptions { get; set; } = ["", "Faculty", "Learner", "None"];
-
-
-
         public ICommand NextCommand { get; set; }
 
         public SignUpFirstVM(SignUpMainVM signUpMainVM)
