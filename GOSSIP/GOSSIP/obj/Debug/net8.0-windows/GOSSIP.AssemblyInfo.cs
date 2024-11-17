@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GOSSIP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b95360379a005e6aa75f4cec9ddb460c7438a289")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+26ff44b698d7f1e844c35dc8fc946b2489952a7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("GOSSIP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GOSSIP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
