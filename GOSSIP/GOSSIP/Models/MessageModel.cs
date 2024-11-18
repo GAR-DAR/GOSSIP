@@ -1,6 +1,6 @@
 ﻿namespace GOSSIP.Models
 {
-    //Properties of a message
+    //Тимчасова модель повідомлень. Пізніше буде замінена на робочу 
     public class MessageModel(int id, int chatID, int senderID, bool isSentByCurrentUser,
         string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
     {

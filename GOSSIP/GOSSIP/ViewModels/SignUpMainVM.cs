@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
+    //Головний VM реєстрації. Потрібен для збереження всієї введеної інформації для її упорядковування в одному місці
+    //для формування об'єкту Користувач
     public class SignUpMainVM : ObservableObject
     {
         private ObservableObject _selectedVM;
@@ -14,6 +16,7 @@ namespace GOSSIP.ViewModels
         public string Password;
         public string RepeatPassword;
         
+        //Переключення VM реєстрації. Зміна поля змінює вид вікна реєстрації
         public ObservableObject SelectedVM
         {
             get => _selectedVM;

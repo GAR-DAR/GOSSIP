@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
-    //List of chats displayed to the user in the left menu.
+    //Список чатів, представлених зліва екрану чатік
     public class ChatsVM : ObservableObject
     {
+        //Прив'язана до UI.
         public ObservableCollection<OpenedChatVM> ChatList { get; set; }
 
         private OpenedChatVM _openedChatVM;
+        
+        //Визначає, який чат відкритий
         public OpenedChatVM OpenedChatVM
         {
             get => _openedChatVM;
@@ -27,6 +30,7 @@ namespace GOSSIP.ViewModels
 
         public ChatsVM()
         {
+            //Захардкоджені чати
             ChatList =
             [
                 new OpenedChatVM(new ChatModel(1, DateTime.Now, false, 

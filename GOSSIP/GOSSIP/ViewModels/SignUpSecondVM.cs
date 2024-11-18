@@ -7,13 +7,16 @@ using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
 {
+    //Другий VM реєстрації. Містить другорядну інформацію: статус, галузь знань, спеціальність та університет
     public class SignUpSecondVM : ObservableObject
     {
+        //Копія головної VM реєстрації
         private readonly SignUpMainVM _mainVM;
 
         public ICommand BackCommand { get; set; }
         public ICommand CompleteSignUpCommand { get; set; }
 
+        //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
         public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
         public List<string> FieldOfStudyOptions { get; set; } =
         [

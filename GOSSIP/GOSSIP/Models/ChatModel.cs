@@ -2,7 +2,7 @@
 
 namespace GOSSIP.Models
 {
-    //Temporary chat model. Properties will be changed according to the DB.
+    //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
     public class ChatModel(int id, DateTime createdAt, bool isDeleted, User user, ObservableCollection<MessageModel> messages)
     {
         public User Interlocutor { get; set; } = user;
