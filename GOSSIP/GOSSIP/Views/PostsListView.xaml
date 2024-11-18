@@ -13,10 +13,11 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}" BorderThickness="0">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Background="White" Margin="0 0 0 5" Width="1170">
+    <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}" BorderThickness="0">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -30,34 +31,70 @@
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
 
-                        <Image Source="{Binding Author.IconPath}" Width="40" Grid.Row="0" Grid.Column="0" Margin="5" HorizontalAlignment="Left"/>
+                        <Image Source="{Binding Author.IconPath}" Width="40" Grid.Row="0" Grid.Column="0" Margin="5" HorizontalAlignment="Left">
+                            <Image.Clip>
+                                <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                            </Image.Clip>
+                        </Image>
                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
-                            <TextBlock Text="{Binding Author.Username}" FontWeight="Bold" FontSize="14"/>
-                            <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}"/>
+                            <TextBlock Text="{Binding Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                            <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White"/>
                         </StackPanel>
 
-                        <TextBlock Text="{Binding Title}" Grid.Row="1" Grid.ColumnSpan="4" FontStyle="Italic" FontSize="12" Margin="5"/>
-                        <TextBlock Text="{Binding Content}" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="12" Margin="5"/>
-
-                        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="5">
+                        <TextBlock Text="{Binding Title}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontStyle="Italic" FontSize="12" Margin="5"/>
+                        <TextBlock Text="{Binding Content}" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="12" Margin="5"/>
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="5">
                             <ItemsControl ItemsSource="{Binding Tags}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal"/>
+                                        <StackPanel Orientation="Horizontal" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="0,0,5,0"/>
+                                        <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0" >
+                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="5,0,5,0"  HorizontalAlignment="Center"/>
+                                        </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
-                        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" Text="{Binding RepliesCount}" Margin="5"/>
-                        <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Right" Text="{Binding Rating}" Margin="5"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" Text="{Binding RepliesCount}" Margin="5" Foreground="White"/>
+                        <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Right" Text="{Binding Rating}" Margin="5" Foreground="White"/>
                     </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+                </Border>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+
+        <!-- Стиль для ListBox, щоб прибрати фокус і виділення -->
+        <ListBox.Style>
+            <Style TargetType="ListBox">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="IsTabStop" Value="False" />
+            </Style>
+        </ListBox.Style>
+
+        <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                <Setter Property="IsTabStop" Value="False" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Style.Triggers>
+                    <!-- При наведенні миші -->
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                    </Trigger>
+                    <!-- При виборі елемента -->
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ListBox.ItemContainerStyle>
+    </ListBox>
+</Grid>
 </UserControl>

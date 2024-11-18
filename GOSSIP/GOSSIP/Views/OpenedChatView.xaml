@@ -36,29 +36,31 @@
             BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:MessageModel}">
-                        <Border Width="150" Height="40">
+                        <Border Width="150" Height="40" CornerRadius="20" BorderThickness="2">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
                                             <Setter Property="Background" Value="{StaticResource Danube}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource RegalBlue}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
                                             <Setter Property="Background" Value="{StaticResource RegalBlue}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Danube}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding MessageText}" Margin="3 2"/>
-                                <TextBlock Text="{Binding TimeStamp}" HorizontalAlignment="Right"/>
-                            </StackPanel>
+                            <Grid>
+                                <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                <TextBlock Text="{Binding TimeStamp}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="2" Background="{StaticResource BlueCharcoal}">
+            <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <WrapPanel>
                     <TextBox Style="{StaticResource InputField}" Text="{Binding EnteredText}" Width="750" Height="60"/>
                     <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>

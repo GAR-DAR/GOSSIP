@@ -50,7 +50,7 @@
                         <Image Source="pack://application:,,,/Resources/Images/maximizeicon.png"/>
                     </Button>
 
-                    <Button Style="{StaticResource TitleBarButton}" Margin="0 5 15 0" Click="CloseWindowButton_Click">
+                    <Button Style="{StaticResource TitleBarButton}" Margin="0 5 15 0" Click="CloseWindowButton_Click" >
                         <Image Source="pack://application:,,,/Resources/Images/closeicon.png"/>
                     </Button>
                 </WrapPanel>
