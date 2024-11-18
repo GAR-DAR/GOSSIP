@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GOSSIP.Models
+﻿namespace GOSSIP.Models
 {
     //Properties of a message
-    public class MessageModel (int id, int chatID, int senderID, bool isSentByCurrentUser,
+    public class MessageModel(int id, int chatID, int senderID, bool isSentByCurrentUser,
         string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
     {
         public int ID { get; set; } = id;

@@ -9,6 +9,7 @@
         <ResourceDictionary Source="../TextBox.xaml"/>
         <ResourceDictionary Source="../../../ResourceDictionaries/Fonts/Fonts.xaml"/>
         <ResourceDictionary Source="../ListView.xaml"/>
+        <ResourceDictionary Source="../ComboBox.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -22,7 +22,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource SignInButtonBackground}"/>
+                <Setter Property="Background" Value="{DynamicResource RegalBlue}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -31,7 +31,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{StaticResource SignInButtonBackground}" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource RegalBlue}" CornerRadius="15" Height="45">
                         <ContentPresenter 
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
@@ -48,13 +48,14 @@
         <Setter Property="MinWidth" Value="125"/>
         <Setter Property="Margin" Value="0 2 10 0"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style TargetType="Button" x:Key="LogInButton">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{DynamicResource LogInButtonBackground}" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource Danube}" CornerRadius="15" Height="45">
                         <ContentPresenter 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center"/>
@@ -70,10 +71,11 @@
         <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MaxWidth" Value="100"/>
         <Setter Property="Margin" Value="5 3 10 0"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style x:Key="SideBarButton" TargetType="Button">
-        <Setter Property="Background" Value="{DynamicResource TopMenuBackground}"/>
+        <Setter Property="Background" Value="{DynamicResource PrussianBlue}"/>
         <Setter Property="Height" Value="80"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="{DynamicResource RobotoMedium}"/>
@@ -93,6 +95,7 @@
         </Setter>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="40"/>
-        <Setter Property="Background" Value="{DynamicResource LogInButtonBackground}"/>
+        <Setter Property="Background" Value="{DynamicResource Danube}"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 </ResourceDictionary>

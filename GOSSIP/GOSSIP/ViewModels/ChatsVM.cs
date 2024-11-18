@@ -29,8 +29,9 @@ namespace GOSSIP.ViewModels
         {
             ChatList =
             [
-                new OpenedChatVM(new ChatModel(1, DateTime.Now, false, "OleksaLviv",
-                "OleksaLviv.png", [
+                new OpenedChatVM(new ChatModel(1, DateTime.Now, false, 
+                new User("OleksaLviv", "OleksaLviv.png"),
+                [
 
                     new MessageModel(1, 1, 1, false, "хєхє", DateTime.Now,  true, false),
                     new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
