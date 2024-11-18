@@ -11,11 +11,16 @@ namespace GOSSIP.ViewModels
     public class SignUpMainVM : ObservableObject
     {
         private ObservableObject _selectedVM;
-        public string Email;
-        public string Username;
-        public string Password;
-        public string RepeatPassword;
-        
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string RepeatPassword { get; set; }
+        public string Status { get; set; }
+        public string FieldOfStudy { get; set; }
+        public string Specialization { get; set; }
+        public string University { get; set; }
+        public string Degree { get; set; }
+
         //Переключення VM реєстрації. Зміна поля змінює вид вікна реєстрації
         public ObservableObject SelectedVM
         {
