@@ -1,6 +1,6 @@
 ﻿namespace GOSSIP.Models
 {
-    //Тимчасова модель користувача. Пізніше буде замнінена на робочу
+    //Тимчасова модель користувача, використовувана для чатів/постів. Пізніше буде замнінена на робочу
     public class User (string username, string iconName)
     {
         public string Username { get; set; } = username;

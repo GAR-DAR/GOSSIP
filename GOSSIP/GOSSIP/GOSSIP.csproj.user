@@ -28,6 +28,9 @@
     <Compile Update="Views\SignUpViewFirst.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\TopBarLoggedIn.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\TopBarWithSignInView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,6 +70,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SignUpViewFirst.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TopBarLoggedIn.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TopBarWithSignInView.xaml">

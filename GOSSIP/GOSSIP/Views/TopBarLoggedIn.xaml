@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="GOSSIP.Views.TopBarWithSignInView"
+﻿<UserControl x:Class="GOSSIP.Views.TopBarLoggedIn"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -20,15 +20,10 @@
         <Image Grid.Column="0" Source="pack://application:,,,/Resources/Images/logo.png" HorizontalAlignment="Right" Margin="0,0,10,0"/>
         <TextBlock Grid.Column="1" Foreground="White" FontSize="35" VerticalAlignment="Center" Margin="5,0,0,0" Text="gossip" FontFamily="{DynamicResource RopaSans}"/>
 
-        <Button Grid.Column="5" Margin="0,0,20,0" Style="{DynamicResource SignUpButton}" Command="{Binding ShowSignUpCommand}">
-            <WrapPanel>
-                <Image Source="pack://application:,,,/Resources/Images/Signup.png" Height="30" />
-                <TextBlock Text="Sign Up" VerticalAlignment="Center"/>
-            </WrapPanel>
-        </Button>
-
-        <Button Grid.Column="6" Content="Log In" Margin="0,0,22,0" Style="{DynamicResource LogInButton}"/>
-
         <TextBox Grid.Column="3" Style="{DynamicResource InputField}"/>
+
+        
+
+        
     </Grid>
 </UserControl>

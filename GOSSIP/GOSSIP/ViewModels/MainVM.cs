@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -77,10 +78,12 @@ namespace GOSSIP.ViewModels
             ShowPostsListCommand = new RelayCommand(ShowPostsListMethod);
             ShowChatsCommand = new RelayCommand(ShowChatsMethod);
             
-            //Явне підключення DataContext нового вікна
+            //Явне підключення DataContext нового вікна разом з івентами закриття (бо так треба)
             ShowSignUpCommand = new RelayCommand((obj) =>
             {
-                SignUpWindow signUpView = new() { DataContext = new SignUpMainVM() };
+                SignUpMainVM signUpMainVM = new();
+                SignUpWindow signUpView = new() { DataContext = signUpMainVM };
+                signUpMainVM.RequestClose += signUpView.Close;
                 signUpView.ShowDialog();
             });
         }

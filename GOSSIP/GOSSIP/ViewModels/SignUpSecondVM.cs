@@ -1,8 +1,11 @@
-﻿using System;
+﻿using GOSSIP.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -90,11 +93,13 @@ namespace GOSSIP.ViewModels
                         foreach (var term in new[] { "1", "2" }) TermsOptions.Add(term);
                         break;
                     case "Postgraduate":
+                        foreach (var term in new[] { "1", "2", "3", "4"}) TermsOptions.Add(term);
+                        break;
                     case "PhD":
                         foreach (var term in new[] { "1", "2", "3", "4" }) TermsOptions.Add(term);
                         break;
                 }
-                OnPropertyChanged(nameof(TermsOptions)); // Тригерим оновлення прив’язки
+                OnPropertyChanged(nameof(TermsOptions));
             }
         }
 
@@ -169,6 +174,18 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        public int Term
+        {
+            get => _mainVM.Term;
+            set
+            {
+                _mainVM.Term = value;
+                OnPropertyChanged(nameof(Term));
+            }
+        }
+
+        public event Action CloseDialog;
+
         //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
         public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
         public List<string> FieldOfStudyOptions { get; set; } =
@@ -212,8 +229,28 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = signUpMainVM;
             BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = _mainVM.SignUpFirstVM);
-            CompleteSignUpCommand = new RelayCommand((obj) => MessageBox.Show($"{_mainVM.Status}, {_mainVM.FieldOfStudy}, {_mainVM.Specialization}, {_mainVM.University}"));
+            CompleteSignUpCommand = new RelayCommand(CompleteSignUpMethod);
+            
         }
 
+        private void CompleteSignUpMethod(object obj)
+        {
+            UserModel newUser = new(_mainVM.Email, _mainVM.Username, _mainVM.Password, _mainVM.Status, _mainVM.FieldOfStudy, _mainVM.Specialization, _mainVM.University, CalculateTerm(_mainVM.Degree), "stelmakh_yurii.png");
+            var json = JsonSerializer.Serialize(newUser);
+            File.AppendAllText("user_data.json", json);
+            CloseDialog?.Invoke();
+        }
+
+        private int CalculateTerm(string term)
+        {
+            return term switch
+            {
+                "Bachelor" => 0 + _mainVM.Term,
+                "Master" => 4 + _mainVM.Term,
+                "Postgraduate" => 6 + _mainVM.Term,
+                "PhD" => 10 + _mainVM.Term,
+                _ => throw new ArgumentException("Invalid degree", nameof(term))
+            };
+        }
     }
 }
