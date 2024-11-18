@@ -23,7 +23,7 @@ namespace GOSSIP
     {
         public ObservableObject SelectedVM; 
 
-        public ToolBarVM ToolBar { get; set; }
+        public SideBarVM ToolBar { get; set; }
 
         public ChatsVM Chat { get; set; }
 

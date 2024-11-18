@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:GOSSIP"
         xmlns:viewModels="clr-namespace:GOSSIP.ViewModels" 
         xmlns:views="clr-namespace:GOSSIP.Views"
+        xmlns:convs="clr-namespace:GOSSIP.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920"
         WindowStyle="None"
@@ -15,7 +16,8 @@
         WindowState="Maximized">
 
     <Window.Resources>  
-        <local:StringToIntConverter x:Key="StringToIntConverter"/>
+        <convs:StringToIntConverter x:Key="StringToIntConverter"/>
+        <convs:BoolToColorConverter x:Key="BoolToColorConverter"/>
 
         <DataTemplate DataType="{x:Type viewModels:ChatsVM}">
             <views:ChatsView/>

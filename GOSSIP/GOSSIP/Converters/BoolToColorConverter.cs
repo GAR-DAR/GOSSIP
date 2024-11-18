@@ -1,27 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace GOSSIP.Converters
 {
-    public class StringToIntConverter : IValueConverter
+    public class BoolToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int intValue)
+            if (value is bool isActive)
             {
-                return intValue.ToString();
+                return isActive ? "#0c2a5c" : Brushes.Transparent;
             }
-            return "0";
+            return Brushes.Transparent;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (int.TryParse(value as string, out int intValue))
-            {
-                return intValue;
-            }
-            return 0;
+            throw new NotImplementedException();
         }
     }
 }

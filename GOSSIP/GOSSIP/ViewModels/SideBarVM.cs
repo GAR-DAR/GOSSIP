@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
-    public class ToolBarVM : ObservableObject
+    public class SideBarVM : ObservableObject
     {
+        
     }
 }
