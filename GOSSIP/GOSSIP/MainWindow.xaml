@@ -27,6 +27,13 @@
             <views:PostsListView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModels:TopBarSignUpVM}">
+            <views:TopBarWithSignInView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:TopBarLoggedInVM}">
+            <views:TopBarLoggedIn/>
+        </DataTemplate>
     </Window.Resources>
 
 
@@ -58,11 +65,11 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBarWithSignInView Grid.Row="1">
-                <views:TopBarWithSignInView.Effect>
+            <ContentControl Grid.Row="1" Content="{Binding SelectedTopBarVM}">
+                <ContentControl.Effect>
                     <DropShadowEffect ShadowDepth="2" BlurRadius="30" Color="Black" Opacity="0.5"/>
-                </views:TopBarWithSignInView.Effect>
-            </views:TopBarWithSignInView>
+                </ContentControl.Effect>
+            </ContentControl>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

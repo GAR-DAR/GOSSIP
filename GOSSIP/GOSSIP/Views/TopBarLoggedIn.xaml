@@ -13,7 +13,7 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.8*"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
 
@@ -22,8 +22,13 @@
 
         <TextBox Grid.Column="3" Style="{DynamicResource InputField}"/>
 
-        
+        <WrapPanel Grid.Column="5" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Username}" Foreground="White" FontSize="18"/>
+            <Border CornerRadius="5" Margin="5 0">
+                <Image Source="{Binding IconPath}" Width="40"/>
+            </Border>
+        </WrapPanel>
 
-        
+        <Button Grid.Column="6" Content="Settings" Width="50" Height="30"/>
     </Grid>
 </UserControl>

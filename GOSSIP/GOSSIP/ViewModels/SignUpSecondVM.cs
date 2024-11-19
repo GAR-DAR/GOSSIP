@@ -184,7 +184,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public event Action CloseDialog;
+        public event Action<UserModel> CloseDialog;
 
         //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
         public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
@@ -235,14 +235,41 @@ namespace GOSSIP.ViewModels
 
         private void CompleteSignUpMethod(object obj)
         {
-            UserModel newUser = new(_mainVM.Email, _mainVM.Username, _mainVM.Password, _mainVM.Status, _mainVM.FieldOfStudy, _mainVM.Specialization, _mainVM.University, CalculateTerm(_mainVM.Degree), "stelmakh_yurii.png");
-            var json = JsonSerializer.Serialize(newUser);
-            File.AppendAllText("user_data.json", json);
-            CloseDialog?.Invoke();
+            try
+            {
+                ValidateInput();
+                UserModel newUser = new(_mainVM.Email, _mainVM.Username, _mainVM.Password, _mainVM.Status, _mainVM.FieldOfStudy, _mainVM.Specialization, _mainVM.University, CalculateTerm(_mainVM.Degree), "nophotoicon.png");
+                List<UserModel> users;
+                var existingJson = File.ReadAllText("user_data.json");
+                users = existingJson.Length > 0
+                    ? JsonSerializer.Deserialize<List<UserModel>>(existingJson) ?? new List<UserModel>()
+                    : new List<UserModel>();
+                var json = JsonSerializer.Serialize(newUser);
+                users.Add(newUser);
+                var updatedJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText("user_data.json", updatedJson);
+                CloseDialog?.Invoke(newUser);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(Status) || string.IsNullOrEmpty(FieldOfStudy) ||
+                ((Status == "Student" || Status == "Faculty") &&
+                (string.IsNullOrEmpty(Specialization) || string.IsNullOrEmpty(Degree) || Term == 0)))
+            {
+                throw new ArgumentException("Please fill in all fields.");
+            }
         }
 
         private int CalculateTerm(string term)
         {
+            if (string.IsNullOrEmpty(term)) return 0;
+
             return term switch
             {
                 "Bachelor" => 0 + _mainVM.Term,

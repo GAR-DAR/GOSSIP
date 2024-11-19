@@ -1,4 +1,5 @@
-﻿using GOSSIP.Views;
+﻿using GOSSIP.Models;
+using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace GOSSIP.ViewModels
         private bool _isTagsPressed = false;
         private bool _isChatsPressed = false;
 
+        public UserModel AuthorizedUser { get; set; }
+        
         public bool IsTopicsPressed
         {
             get => _isTopicsPressed;
@@ -48,10 +51,13 @@ namespace GOSSIP.ViewModels
         }
 
         private ObservableObject _selectedVM;
+        private ObservableObject _selectedTopBarVM;
 
         //Вікна вкладок, що представлені на тулбарі. В майбутньому будуть ще теги
         public ChatsVM ChatsVM = new();
         private PostsListVM PostsListVM = new();
+        
+        public TopBarSignUpVM TopBarSignUpVM { get; set; }
 
         //Прив'язаний до UI. Його зміна змінить зовнішній вигляд вікна
         public ObservableObject SelectedVM
@@ -67,25 +73,30 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        public ObservableObject SelectedTopBarVM
+        {
+            get
+            {
+                return _selectedTopBarVM;
+            }
+            set
+            {
+                _selectedTopBarVM = value;
+                OnPropertyChanged(nameof(SelectedTopBarVM));
+            }
+        }
+
         //Команди переключеня, ініціалізовані в конструкторі
         public ICommand ShowPostsListCommand { get; set; }
         public ICommand ShowChatsCommand { get; set; }
-        public ICommand ShowSignUpCommand { get; set; }
 
         public MainVM()
-        { 
+        {
+            TopBarSignUpVM = new(this);
             SelectedVM = PostsListVM;
+            SelectedTopBarVM = TopBarSignUpVM;
             ShowPostsListCommand = new RelayCommand(ShowPostsListMethod);
-            ShowChatsCommand = new RelayCommand(ShowChatsMethod);
-            
-            //Явне підключення DataContext нового вікна разом з івентами закриття (бо так треба)
-            ShowSignUpCommand = new RelayCommand((obj) =>
-            {
-                SignUpMainVM signUpMainVM = new();
-                SignUpWindow signUpView = new() { DataContext = signUpMainVM };
-                signUpMainVM.RequestClose += signUpView.Close;
-                signUpView.ShowDialog();
-            });
+            ShowChatsCommand = new RelayCommand(ShowChatsMethod);            
         }
 
         private void ShowPostsListMethod(object obj)
