@@ -9,26 +9,78 @@
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        
-        <TextBox Grid.Row="0" Grid.ColumnSpan="2" Style="{DynamicResource AuthTextBox}" Text="{Binding Email}"/>
-        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource AuthTextBox}" Text="{Binding Username}"/>
-        <TextBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthTextBox}" Text="{Binding Password}"/>
-        <TextBox Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource AuthTextBox}" Text="{Binding RepeatPassword}"/>
-        <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Text="Have an account? Log in." Foreground="White" HorizontalAlignment="Center" FontSize="20"/>
-
-        <Button Grid.Row="5" Grid.Column="1" Content="Next" Height="40" Width="100" Command="{Binding NextCommand}"/>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Email" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="75,0,0,0" FontSize="20"/>
+        <TextBox Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Email}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+            <TextBox.Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                    </Border>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Username" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="75,0,0,0" FontSize="20"/>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Email" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="75,0,0,0" FontSize="20"/>
+        <TextBox Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Username}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+            <TextBox.Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                    </Border>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Text="Password" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="75,0,0,0" FontSize="20"/>
+        <TextBox Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding Password}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+            <TextBox.Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                    </Border>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+        <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="Repeat password" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="75,0,0,0" FontSize="20"/>
+        <TextBox Grid.Row="7" Grid.ColumnSpan="2" Text="{Binding RepeatPassword}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+            <TextBox.Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                    </Border>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+        <TextBlock Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="15">
+    <Run Text="Have an account? " Foreground="White" />
+    <Hyperlink Command="{Binding ShowLogInCommand}" Foreground="{DynamicResource Danube}" TextDecorations="Underline">
+        <Run Text="Log in." />
+    </Hyperlink>
+        </TextBlock>
+        <Button Grid.Row="9" Grid.Column="1" Content="Next" Foreground="White" FontSize="20" Height="40" Width="100" Command="{Binding NextCommand}" Margin="0,0,0,20">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </UserControl>

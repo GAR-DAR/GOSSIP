@@ -30,7 +30,7 @@
                                 <!-- Для тегів і рейтингу -->
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="70"/>
                                 <!-- Для іконки -->
                                 <ColumnDefinition Width="900"/>
                                 <!-- Для тексту -->
@@ -48,13 +48,13 @@
                             </Image>
 
                             <!-- Інформація про автора -->
-                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,8,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,8,0,0" Orientation="Vertical" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
                                 <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White"/>
                             </StackPanel>
 
                             <!-- Заголовок -->
-                            <TextBlock Text="{Binding Title}" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" Margin="5" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Title}" Margin="20,10,0,0" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
                             <!-- Контент -->
                             <TextBlock Text="{Binding Content}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>

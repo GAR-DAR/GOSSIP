@@ -24,7 +24,7 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Border CornerRadius="20" Background="{DynamicResource Downriver}">
+    <Border CornerRadius="20" Background="{DynamicResource Downriver}" BorderThickness="3" BorderBrush="{DynamicResource Danube}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*"/>
@@ -37,8 +37,11 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="SIGN UP" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0"/>
-                <Button Grid.Row="0" Grid.Column="1" Content="X" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Click="Close_Click"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="SIGN UP" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,20,0,0"/>
+                <!--<Button Grid.Row="0" Grid.Column="1" Content="X" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Click="Close_Click"/>-->
+                <Button Style="{StaticResource CloseButton}" Grid.Column="1" Grid.Row="0" Margin="0,20,15,0" Click="Close_Click">
+                    <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
+                </Button>
             </Grid>
 
             <ContentControl Grid.Row="1" Content="{Binding SelectedVM}" DataContext="{Binding}"/>
