@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+    <None Remove="Resources\Images\Comment.png" />
     <None Remove="Resources\Images\Message.png" />
     <None Remove="Resources\Images\search.png" />
     <None Remove="Resources\Images\Send.png" />
@@ -20,9 +21,11 @@
     <None Remove="Resources\Images\TempUserIcons\OleksaLviv.png" />
     <None Remove="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
     <None Remove="Resources\Images\Topics.png" />
+    <None Remove="Resources\Images\Upvote.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Comment.png" />
     <Resource Include="Resources\Images\Message.png" />
     <Resource Include="Resources\Images\search.png" />
     <Resource Include="Resources\Images\Send.png" />
@@ -44,6 +47,7 @@
     <Resource Include="Resources\Images\minimizeicon.png" />
     <Resource Include="Resources\Images\TempUserIcons\OleksaLviv.png" />
     <Resource Include="Resources\Images\Topics.png" />
+    <Resource Include="Resources\Images\Upvote.png" />
   </ItemGroup>
 
 </Project>
