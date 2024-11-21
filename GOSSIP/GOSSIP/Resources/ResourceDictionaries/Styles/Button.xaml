@@ -31,14 +31,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{DynamicResource RegalBlue}" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource RegalBlue}" CornerRadius="15" Height="45" Name="Border">
                         <ContentPresenter 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"/>
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"/>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="1" Opacity="0.2"/>
                         </Border.Effect>
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Danube}" TargetName="Border"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource RegalBlue}" TargetName="Border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -55,14 +66,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{DynamicResource Danube}" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource Danube}" CornerRadius="15" Height="45" Name="Border">
                         <ContentPresenter 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center"/>
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="1" Opacity="0.2"/>
                         </Border.Effect>
                     </Border>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource RegalBlue}" TargetName="Border"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Danube}" TargetName="Border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -84,9 +105,6 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Danube}"/>
-            </Trigger>
-            <Trigger Property="IsFocused" Value="True">
-                <Setter Property="Background" Value="{DynamicResource PrussianBlue}"/>
             </Trigger>
         </Style.Triggers>
     </Style>

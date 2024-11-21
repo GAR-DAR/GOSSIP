@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:GOSSIP"
         xmlns:viewModels="clr-namespace:GOSSIP.ViewModels" 
         xmlns:views="clr-namespace:GOSSIP.Views"
+        xmlns:convs="clr-namespace:GOSSIP.Converters"
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920"
         WindowStyle="None"
@@ -15,7 +16,8 @@
         WindowState="Maximized">
 
     <Window.Resources>  
-        <local:StringToIntConverter x:Key="StringToIntConverter"/>
+        <convs:StringToIntConverter x:Key="StringToIntConverter"/>
+        <convs:BoolToColorConverter x:Key="BoolToColorConverter"/>
 
         <DataTemplate DataType="{x:Type viewModels:ChatsVM}">
             <views:ChatsView/>
@@ -25,6 +27,13 @@
             <views:PostsListView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModels:TopBarSignUpVM}">
+            <views:TopBarWithSignInView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:TopBarLoggedInVM}">
+            <views:TopBarLoggedIn/>
+        </DataTemplate>
     </Window.Resources>
 
 
@@ -56,11 +65,11 @@
                 </WrapPanel>
             </Border>
 
-            <views:TopBarWithSignInView Grid.Row="1">
-                <views:TopBarWithSignInView.Effect>
+            <ContentControl Grid.Row="1" Content="{Binding SelectedTopBarVM}">
+                <ContentControl.Effect>
                     <DropShadowEffect ShadowDepth="2" BlurRadius="30" Color="Black" Opacity="0.5"/>
-                </views:TopBarWithSignInView.Effect>
-            </views:TopBarWithSignInView>
+                </ContentControl.Effect>
+            </ContentControl>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

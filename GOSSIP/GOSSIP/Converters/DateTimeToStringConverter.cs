@@ -3,6 +3,8 @@ using System.Windows.Data;
 
 namespace GOSSIP.Converters
 {
+    //Конвертація з DateTime до стрічки. Містить реалізацію різних часових варіантах у різних одиницях вимірювання
+    //Враховано варіанти від "тільки що" до "рік тому", разом із відповідними формами однини і множини.
     public class DateTimeToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -33,6 +35,4 @@ namespace GOSSIP.Converters
             throw new NotImplementedException();
         }
     }
-
-    
 }

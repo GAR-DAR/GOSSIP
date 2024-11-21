@@ -2,6 +2,7 @@
 
 namespace GOSSIP.Models
 {
+    //Тимчасова модель постів. Пізніше буде замінена на робочу 
     public class Post (User author, DateTime createdAt, string title, string content,
         List<string> tags, int repliesCount, int rating)
     {

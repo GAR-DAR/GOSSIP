@@ -10,8 +10,11 @@ using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
 {
+    //VM першого вікна реєстрації. Поля для вводу імейлу, юзернейму, паролю та зміни паролю.
+    //Заповнення всіх полів обов'язкове.
     public class SignUpFirstVM : ObservableObject
     {
+        //Копія головної моделі реєстрації. Поля будуть заповнюватись одразу в неї
         private readonly SignUpMainVM _mainVM;
 
         public string Email
@@ -63,6 +66,7 @@ namespace GOSSIP.ViewModels
             NextCommand = new RelayCommand(NextMethod);
         }
 
+        //Команда переключення на наступне вікно. Потребує заповнення всіх полей. Інакше ArgumentException
         private void NextMethod(object obj)
         {
             try
@@ -81,6 +85,9 @@ namespace GOSSIP.ViewModels
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Username) ||
                 string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(RepeatPassword))
                 throw new ArgumentException("Please fill in all fields.");
+
+            if (Password != RepeatPassword)
+                throw new ArgumentException("Passwords do not match.");
         }
     }
 }

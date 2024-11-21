@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.ViewModels
 {
+    //Список постів. Поки сиро і плачевно
     public class PostsListVM : ObservableObject
     {
+        //Колекція постів. Треба підключити до БД
         public ObservableCollection<Post> Posts { get; set; }
 
         public PostsListVM()

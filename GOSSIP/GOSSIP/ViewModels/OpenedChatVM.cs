@@ -10,23 +10,30 @@ using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
 {
-    //Info about opened chat. Connected to ChatModel
+    //Інформація про відкритий чат.
     public class OpenedChatVM : ObservableObject
     {
         private string _lastMessage;
         private string _enteredText;
+
+        //Містить копію моделі чатів
         private ChatModel _chat;
 
         public string ChatName { get; set; }
         public string IconPath => _chat.Interlocutor.IconPath;
+
+        //Список повідомлень, прив'язаних до UI. Також, прив'язаний до списку чатів моделі ChatModel
         public ObservableCollection<MessageModel> Messages { get; set; }
 
+        
         public OpenedChatVM(ChatModel chat)
         {
             _chat = chat;
             ChatName = chat.Interlocutor.Username;
             Messages = new(chat.Messages);
             LastMessage = Messages.Last().MessageText;
+
+            //Підписка на зміну колекції з моделі. Модель міняється — міняється UI
             _chat.Messages.CollectionChanged += Messages_CollectionChanged;
 
             SendMessageCommand = new RelayCommand(SendMessageMethod);
@@ -54,15 +61,14 @@ namespace GOSSIP.ViewModels
 
         public ICommand SendMessageCommand { get; set; }
 
-
-        //First, VM list of messages is changed. Then it passes a signal to model list and it gets changed
+        //Метод надсилання повідомлення. Напряму міняється колекція з моделі, через підписку на івент, міняється і UI
         private void SendMessageMethod(object obj)
         {
             _chat.AddMessage(new MessageModel(1, _chat.ID, 1, true, EnteredText, DateTime.Now, false, false));
             EnteredText = "";
         }
 
-        //Signal described above
+        //Те, що буде відбуватись під час зміни списку повідомлень моделей
         private void Messages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
