@@ -22,9 +22,10 @@ namespace GOSSIP.Models
         public string IconName { get; set; }
         //Поки іконки беруться із папки /Images/TempUserIcons.
         public string IconPath => $"pack://application:,,,/Resources/Images/TempUserIcons/{IconName}";
+        public List<ChatModel> Chats { get; set; }
 
         public UserModel(string email, string username, string password, string status,
-            string fieldOfStudy, string specialization, string university, int term, string iconName)
+            string fieldOfStudy, string specialization, string university, int term, string iconName, List<ChatModel> chats)
         {
             Email = email;
             Username = username;
@@ -35,6 +36,7 @@ namespace GOSSIP.Models
             University = university;
             Term = term;
             IconName = iconName;
+            Chats = chats;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace GOSSIP.ViewModels
 {
     public class TopBarLoggedInVM : ObservableObject
     {
+        private MainVM _mainVM;
         private UserModel _authorizedUser;
 
         private string _iconPath;
@@ -33,9 +34,11 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public TopBarLoggedInVM(UserModel userModel)
+        public TopBarLoggedInVM(UserModel userModel, MainVM mainVM)
         {
             _authorizedUser = userModel;
+            _mainVM = mainVM;
+            _mainVM.AuthorizedUser = _authorizedUser;
             _username = _authorizedUser.Username;
             IconPath = _authorizedUser.IconPath;
         }

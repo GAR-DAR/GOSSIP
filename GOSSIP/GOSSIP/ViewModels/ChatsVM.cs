@@ -28,8 +28,17 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ChatsVM()
+        public ChatsVM(UserModel currentUser)
         {
+            ObservableCollection<OpenedChatVM> chatlist = [];
+            if(currentUser.Chats != null)
+            {
+                foreach (ChatModel chatModel in currentUser.Chats)
+                chatlist.Add(new(chatModel));
+            }
+            
+
+            /*ChatList = chatlist;
             //Захардкоджені чати
             ChatList =
             [
@@ -53,7 +62,7 @@ namespace GOSSIP.ViewModels
                 //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
                 //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
                 //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
-            ];
+            ];*/
         }
     }
 }

@@ -54,7 +54,7 @@ namespace GOSSIP.ViewModels
         private ObservableObject _selectedTopBarVM;
 
         //Вікна вкладок, що представлені на тулбарі. В майбутньому будуть ще теги
-        public ChatsVM ChatsVM = new();
+        public ChatsVM ChatsVM;
         private PostsListVM PostsListVM = new();
         
         public TopBarSignUpVM TopBarSignUpVM { get; set; }
@@ -107,8 +107,19 @@ namespace GOSSIP.ViewModels
 
         private void ShowChatsMethod(object obj)
         {
-            SelectedVM = ChatsVM;
-            TurnOffButtonsExcept("Chats");
+            if (AuthorizedUser != null)
+            {
+                if (ChatsVM == null)
+                {
+                    ChatsVM = new ChatsVM(AuthorizedUser);
+                }
+                SelectedVM = ChatsVM;
+                TurnOffButtonsExcept("Chats");
+            }
+            else
+            {
+                MessageBox.Show("Authorize first.");
+            }   
         }
 
         private void TurnOffButtonsExcept(string button)

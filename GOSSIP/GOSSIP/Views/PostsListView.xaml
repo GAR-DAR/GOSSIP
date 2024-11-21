@@ -54,7 +54,7 @@
                             </StackPanel>
 
                             <!-- Заголовок -->
-                            <TextBlock Text="{Binding Title}" Margin="20,10,0,0" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontStyle="Italic" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding Title}" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" Margin="5" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
                             <!-- Контент -->
                             <TextBlock Text="{Binding Content}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>

@@ -238,7 +238,16 @@ namespace GOSSIP.ViewModels
             try
             {
                 ValidateInput();
-                UserModel newUser = new(_mainVM.Email, _mainVM.Username, _mainVM.Password, _mainVM.Status, _mainVM.FieldOfStudy, _mainVM.Specialization, _mainVM.University, CalculateTerm(_mainVM.Degree), "nophotoicon.png");
+                UserModel newUser = new(_mainVM.Email, 
+                    _mainVM.Username,
+                    _mainVM.Password,
+                    _mainVM.Status, 
+                    _mainVM.FieldOfStudy, 
+                    _mainVM.Specialization, 
+                    _mainVM.University, 
+                    CalculateTerm(_mainVM.Degree), 
+                    "nophotoicon.png",
+                    []);
                 List<UserModel> users;
                 var existingJson = File.ReadAllText("user_data.json");
                 users = existingJson.Length > 0
