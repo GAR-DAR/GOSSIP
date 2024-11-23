@@ -34,6 +34,10 @@
         <DataTemplate DataType="{x:Type viewModels:TopBarLoggedInVM}">
             <views:TopBarLoggedIn/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:OpenedPostVM}">
+            <views:OpenedPostView/>
+        </DataTemplate>
     </Window.Resources>
 
 
