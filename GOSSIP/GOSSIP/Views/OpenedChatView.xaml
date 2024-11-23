@@ -5,10 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
              xmlns:models="clr-namespace:GOSSIP.Models"
-             xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:local="clr-namespace:GOSSIP.Views" 
+             xmlns:convs="clr-namespace:GOSSIP.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="935" d:DesignWidth="1040">
-    <Border Background="{DynamicResource TopMenuBackground}">
+
+    <UserControl.Resources>
+        <convs:DateTimeToTimeStringConverter x:Key="dateTimeToTimeStringConverter"/>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource PrussianBlue}">
         <Border.CornerRadius>
             <CornerRadius TopLeft="0" TopRight="20" BottomLeft="0" BottomRight="20"/>
         </Border.CornerRadius>
@@ -20,7 +26,7 @@
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
 
-            <Border Background="{DynamicResource DarkestBlue}">
+            <Border Background="{StaticResource BlueCharcoal}">
                 <Border.CornerRadius>
                     <CornerRadius TopLeft="0" TopRight="20" BottomLeft="0" BottomRight="0"/>
                 </Border.CornerRadius>
@@ -36,32 +42,34 @@
             BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:MessageModel}">
-                        <Border Width="150" Height="40">
+                        <Border Width="150" Height="40" CornerRadius="20" BorderThickness="2">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource LogInButtonBackground}"/>
+                                            <Setter Property="Background" Value="{StaticResource Danube}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource RegalBlue}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
-                                            <Setter Property="Background" Value="{DynamicResource SignInButtonBackground}"/>
+                                            <Setter Property="Background" Value="{StaticResource RegalBlue}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Danube}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding MessageText}" Margin="3 2"/>
-                                <TextBlock Text="{Binding TimeStamp}" HorizontalAlignment="Right"/>
-                            </StackPanel>
+                            <Grid>
+                                <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
+                            </Grid>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Border Grid.Row="2" Background="{DynamicResource DarkestBlue}">
+            <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <WrapPanel>
-                    <TextBox Style="{DynamicResource InputField}" Text="{Binding EnteredText}" Width="750" Height="60"/>
-                    <Button Style="{DynamicResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
+                    <TextBox Style="{StaticResource InputField}" Text="{Binding EnteredText}" Width="750" Height="60"/>
+                    <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
                 </WrapPanel>
             </Border>
         </Grid>

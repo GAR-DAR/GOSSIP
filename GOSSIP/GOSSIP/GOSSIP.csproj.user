@@ -10,6 +10,9 @@
     <Compile Update="Views\ChatsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\LogInWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\OpenedChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -17,6 +20,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SideBarView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SignUpViewSecond.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SignUpWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SignUpViewFirst.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\TopBarLoggedIn.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\TopBarWithSignInView.xaml.cs">
@@ -33,10 +48,16 @@
     <Page Update="Resources\ResourceDictionaries\Styles\ListView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ResourceDictionaries\Styles\ComboBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\ResourceDictionaries\Styles\TextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ChatsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LogInWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\OpenedChatView.xaml">
@@ -46,6 +67,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SideBarView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpViewSecond.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpViewFirst.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TopBarLoggedIn.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TopBarWithSignInView.xaml">

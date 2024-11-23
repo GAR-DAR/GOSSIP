@@ -1,26 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace GOSSIP.Models
 {
-    //Temporary chat model. Properties will be changed according to the DB.
-    public class ChatModel(int id, DateTime createdAt, bool isDeleted, string name, string iconName, List<MessageModel> messages)
+    //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
+    [Serializable]
+    public class ChatModel
     {
-        public int ID { get; set; } = id;
-        public DateTime CreatedAt { get; set; } = createdAt;
-        public bool IsDeleted { get; set; } = isDeleted;
-        public string IconName = iconName;
-        public string Name { get; set; } = name;
-        public string IconPath => $"pack://application:,,,/Resources/Images/TempUserIcons/{IconName}";
-        public List<MessageModel> Messages { get; set; } = messages;
+        public User Interlocutor { get; set; }
+        public int ID { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool IsDeleted { get; set; }
+        public ObservableCollection<MessageModel> Messages { get; set; }
+
+        // Конструктор
+        public ChatModel(User Interlocutor, int ID, DateTime CreatedAt, bool IsDeleted, ObservableCollection<MessageModel> Messages)
+        {
+            this.Interlocutor = Interlocutor;
+            this.ID = ID;
+            this.CreatedAt = CreatedAt;
+            this.IsDeleted = IsDeleted;
+            this.Messages = Messages;
+        }
 
         public void AddMessage(MessageModel message)
         {
             Messages.Add(message);
         }
     }
+
 }

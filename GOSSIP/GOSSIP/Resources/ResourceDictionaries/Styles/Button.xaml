@@ -22,7 +22,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource SignInButtonBackground}"/>
+                <Setter Property="Background" Value="{StaticResource Danube}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -31,14 +31,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{StaticResource SignInButtonBackground}" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource RegalBlue}" CornerRadius="15" Height="45" Name="Border">
                         <ContentPresenter 
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"/>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="1" Opacity="0.2"/>
                         </Border.Effect>
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Danube}" TargetName="Border"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource RegalBlue}" TargetName="Border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -48,20 +59,31 @@
         <Setter Property="MinWidth" Value="125"/>
         <Setter Property="Margin" Value="0 2 10 0"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style TargetType="Button" x:Key="LogInButton">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{DynamicResource LogInButtonBackground}" CornerRadius="15" Height="45">
+                    <Border Background="{DynamicResource Danube}" CornerRadius="15" Height="45" Name="Border">
                         <ContentPresenter 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"/>
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="1" Opacity="0.2"/>
                         </Border.Effect>
                     </Border>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource RegalBlue}" TargetName="Border"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource Danube}" TargetName="Border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -70,29 +92,58 @@
         <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MaxWidth" Value="100"/>
         <Setter Property="Margin" Value="5 3 10 0"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
     <Style x:Key="SideBarButton" TargetType="Button">
-        <Setter Property="Background" Value="{DynamicResource TopMenuBackground}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Height" Value="80"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="{DynamicResource RobotoMedium}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="28"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Danube}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="SendMessageButton" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border CornerRadius="20" Background="{TemplateBinding Background}">
-                        
+                    <Border CornerRadius="20" Background="{DynamicResource Danube}">
+                        <Image Source="pack://application:,,,/Resources/Images/Send.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="3,0,0,0" Height="20" Width="20"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="40"/>
-        <Setter Property="Background" Value="{DynamicResource LogInButtonBackground}"/>
+        <Setter Property="Background" Value="{DynamicResource Danube}"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
+
+    <Style x:Key="CloseButton" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Height="20" Width="20"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Danube}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
 </ResourceDictionary>

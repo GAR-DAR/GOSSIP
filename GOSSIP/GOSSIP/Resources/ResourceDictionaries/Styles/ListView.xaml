@@ -6,16 +6,43 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="ListBoxItem" x:Key="Message">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Top"/>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Top"/>
+    <Setter Property="FocusVisualStyle" Value="{x:Null}"/> <!-- Скасовуємо стиль фокусу -->
+    <Setter Property="BorderBrush" Value="Transparent"/> <!-- Скасовуємо контур -->
+    <Setter Property="BorderThickness" Value="0"/> <!-- Скасовуємо товщину контуру -->
+    <Setter Property="Background" Value="Transparent"/> <!-- Прибираємо фон -->
+    <Setter Property="Foreground" Value="Black"/> <!-- Можливо, вам потрібен чорний або інший колір для тексту -->
+    
+    <Style.Triggers>
+        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            
+        </DataTrigger>
+        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </DataTrigger>
+
+        <!-- Прибираємо фон при виборі елемента -->
+        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/> <!-- Скасовуємо контур для вибраних елементів -->
+        </DataTrigger>
+
+        <!-- Прибираємо фон при наведенні миші -->
+        <Trigger Property="IsMouseOver" Value="True">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/> <!-- Скасовуємо контур при наведенні миші -->
+        </Trigger>
+
+        <!-- Для вибраного елемента, скасовуємо стандартний фон виділення -->
+        <Trigger Property="IsSelected" Value="True">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/> <!-- Якщо ви хочете інший колір для тексту при виборі -->
+        </Trigger>
+    </Style.Triggers>
+</Style>
+
+
 
 </ResourceDictionary>

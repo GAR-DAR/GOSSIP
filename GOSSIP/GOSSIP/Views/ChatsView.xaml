@@ -7,7 +7,7 @@
              xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="960" d:DesignWidth="1540">
-    <Border Background="{DynamicResource TopMenuBackground}" CornerRadius="20" Margin="20">
+    <Border Background="{StaticResource PrussianBlue}" CornerRadius="20" Margin="20">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30*"/>

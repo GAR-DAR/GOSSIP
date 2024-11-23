@@ -1,0 +1,52 @@
+﻿<Window x:Class="GOSSIP.Views.SignUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GOSSIP.Views"
+        xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
+        xmlns:views="clr-namespace:GOSSIP.Views"
+        mc:Ignorable="d"
+        Title="SignUpView" Height="600" Width="350"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen" 
+        ResizeMode="NoResize" 
+        WindowStyle="None">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:SignUpFirstVM}">
+            <views:SignUpViewFirst/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:SignUpSecondVM}">
+            <views:SignUpViewSecond/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Border CornerRadius="20" Background="{DynamicResource Downriver}" BorderThickness="3" BorderBrush="{DynamicResource Danube}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="90*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="SIGN UP" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,20,0,0"/>
+                <!--<Button Grid.Row="0" Grid.Column="1" Content="X" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Click="Close_Click"/>-->
+                <Button Style="{StaticResource CloseButton}" Grid.Column="1" Grid.Row="0" Margin="0,20,15,0" Click="Close_Click">
+                    <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
+                </Button>
+            </Grid>
+
+            <ContentControl Grid.Row="1" Content="{Binding SelectedVM}" DataContext="{Binding}"/>
+            
+        </Grid>
+    </Border>
+    
+</Window>

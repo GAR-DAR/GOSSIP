@@ -4,5 +4,6 @@
     <FontFamily x:Key="Roboto">pack://application:,,,/Resources/Fonts/#Roboto</FontFamily>
     <FontFamily x:Key="RopaSans">pack://application:,,,/Resources/Fonts/#Ropa Sans</FontFamily>
     <FontFamily x:Key="RobotoMedium">pack://application:,,,/Resources/Fonts/#Roboto Medium</FontFamily>
+    <FontFamily x:Key="RobotoBold">pack://application:,,,/Resources/Fonts/#Roboto Bold</FontFamily>
 
 </ResourceDictionary>

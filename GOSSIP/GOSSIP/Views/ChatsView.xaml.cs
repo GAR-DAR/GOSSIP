@@ -24,7 +24,6 @@ namespace GOSSIP.Views
         public ChatsView()
         {
             InitializeComponent();
-            DataContext = new ChatsVM();
         }
     }
 }
