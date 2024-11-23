@@ -3,10 +3,10 @@
 namespace GOSSIP.Models
 {
     //Тимчасова модель постів. Пізніше буде замінена на робочу 
-    public class Post (User author, DateTime createdAt, string title, string content,
+    public class Post (UserModel author, DateTime createdAt, string title, string content,
         List<string> tags, int repliesCount, int rating)
     {
-        public User Author { get; set; } = author;
+        public UserModel Author { get; set; } = author;
         public string Title { get; set; } = title;
         public string Content { get; set; } = content;
         public DateTime CreatedAt { get; set; } = createdAt;

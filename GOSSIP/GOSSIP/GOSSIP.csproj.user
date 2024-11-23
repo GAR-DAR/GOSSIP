@@ -16,6 +16,9 @@
     <Compile Update="Views\OpenedChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\OpenedPostView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PostsListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +64,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\OpenedChatView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OpenedPostView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PostsListView.xaml">
