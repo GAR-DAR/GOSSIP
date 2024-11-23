@@ -6,14 +6,14 @@ namespace GOSSIP.Models
     [Serializable]
     public class ChatModel
     {
-        public User Interlocutor { get; set; }
+        public UserModel Interlocutor { get; set; }
         public int ID { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
         public ObservableCollection<MessageModel> Messages { get; set; }
 
         // Конструктор
-        public ChatModel(User Interlocutor, int ID, DateTime CreatedAt, bool IsDeleted, ObservableCollection<MessageModel> Messages)
+        public ChatModel(UserModel Interlocutor, int ID, DateTime CreatedAt, bool IsDeleted, ObservableCollection<MessageModel> Messages)
         {
             this.Interlocutor = Interlocutor;
             this.ID = ID;

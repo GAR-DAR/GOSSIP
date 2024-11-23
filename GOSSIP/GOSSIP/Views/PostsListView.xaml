@@ -13,7 +13,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}" BorderThickness="0">
+        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}" SelectedItem="{Binding SelectedPost}" BorderThickness="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" Height="200" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
@@ -104,6 +104,7 @@
             <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="OnItemMouseDoubleClick" />
                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                     <Setter Property="IsTabStop" Value="False" />
                     <Setter Property="Background" Value="Transparent" />
@@ -120,9 +121,13 @@
                             <Setter Property="BorderBrush" Value="Transparent" />
                         </Trigger>
                     </Style.Triggers>
+
+
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
+
+        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Content="+" Margin="20"/>
     </Grid>
 
 </UserControl>

@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="GOSSIP.Views.OpenedPostView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:convs="clr-namespace:GOSSIP.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="952" d:DesignWidth="1540">
+
+    <UserControl.Resources>
+        <convs:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="93*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Width="40" Height="40" VerticalAlignment="Top" Margin="10" Content="&lt;-"/>
+
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="20" Grid.Column="1">
+            <Grid Width="700" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Заголовок -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Інформація про автора -->
+                    <RowDefinition Height="*"/>
+                    <!-- Контент -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Теги -->
+                </Grid.RowDefinitions>
+
+                <!-- Заголовок -->
+                <TextBlock Text="{Binding Title}" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Foreground="Black" 
+                   Grid.Row="0" 
+                   Margin="0 0 0 20"
+                   TextWrapping="Wrap"/>
+
+                <!-- Інформація про автора -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0 0 0 20">
+                    <Image Source="{Binding Author.IconPath}" Width="40" Height="40" Margin="0 0 10 0">
+                        <Image.Clip>
+                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                        </Image.Clip>
+                    </Image>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Author.Username}" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           Foreground="Gray"/>
+                        <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" 
+                           FontSize="14" 
+                           Foreground="Gray"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Контент -->
+                <TextBlock Text="{Binding Content}" 
+                   FontSize="16" 
+                   Foreground="Black" 
+                   Grid.Row="2" 
+                   TextWrapping="Wrap"
+                   Margin="0 0 0 20"/>
+
+                <!-- Теги -->
+                <StackPanel Orientation="Horizontal" Grid.Row="3">
+                    <ItemsControl ItemsSource="{Binding Tags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#EEE" CornerRadius="5" Margin="5,0,0,0" Padding="5">
+                                    <TextBlock Text="{Binding}" FontSize="14"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+
+    
+
+</UserControl>

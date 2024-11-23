@@ -1,4 +1,5 @@
-﻿using GOSSIP.ViewModels;
+﻿using GOSSIP.Models;
+using GOSSIP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,20 @@ namespace GOSSIP.Views
         public PostsListView()
         {
             InitializeComponent();
+        }
+
+        private void OnItemMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Отримати елемент ListBoxItem
+            if (sender is ListBoxItem item && DataContext is PostsListVM postsListVM)
+            {
+                // Передати вибраний елемент до команди у ViewModel
+                if (item.DataContext is Post selectedPost)
+                {
+                    if (postsListVM.DoubleClickCommand.CanExecute(selectedPost))
+                        postsListVM.DoubleClickCommand.Execute(selectedPost);
+                }
+            }
         }
     }
 }

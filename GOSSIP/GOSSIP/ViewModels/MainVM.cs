@@ -54,10 +54,9 @@ namespace GOSSIP.ViewModels
         private ObservableObject _selectedTopBarVM;
 
         //Вікна вкладок, що представлені на тулбарі. В майбутньому будуть ще теги
-        public ChatsVM ChatsVM;
-        private PostsListVM PostsListVM = new();
-        
-        public TopBarSignUpVM TopBarSignUpVM { get; set; }
+        private ChatsVM _chatsVM;
+        private PostsListVM _postsListVM;
+        private TopBarSignUpVM _topBarSignUpVM { get; set; }
 
         //Прив'язаний до UI. Його зміна змінить зовнішній вигляд вікна
         public ObservableObject SelectedVM
@@ -89,19 +88,21 @@ namespace GOSSIP.ViewModels
         //Команди переключеня, ініціалізовані в конструкторі
         public ICommand ShowPostsListCommand { get; set; }
         public ICommand ShowChatsCommand { get; set; }
+        public ICommand OpenPostCommand { get; set; }
 
         public MainVM()
         {
-            TopBarSignUpVM = new(this);
-            SelectedVM = PostsListVM;
-            SelectedTopBarVM = TopBarSignUpVM;
+            _postsListVM = new(this);
+            _topBarSignUpVM = new(this);
+            SelectedVM = _postsListVM;
+            SelectedTopBarVM = _topBarSignUpVM;
             ShowPostsListCommand = new RelayCommand(ShowPostsListMethod);
             ShowChatsCommand = new RelayCommand(ShowChatsMethod);            
         }
 
         private void ShowPostsListMethod(object obj)
         {
-            SelectedVM = PostsListVM;
+            SelectedVM = _postsListVM;
             TurnOffButtonsExcept("Topics");
         }
 
@@ -109,17 +110,22 @@ namespace GOSSIP.ViewModels
         {
             if (AuthorizedUser != null)
             {
-                if (ChatsVM == null)
+                if (_chatsVM == null)
                 {
-                    ChatsVM = new ChatsVM(AuthorizedUser);
+                    _chatsVM = new ChatsVM(AuthorizedUser);
                 }
-                SelectedVM = ChatsVM;
+                SelectedVM = _chatsVM;
                 TurnOffButtonsExcept("Chats");
             }
             else
             {
                 MessageBox.Show("Authorize first.");
             }   
+        }
+
+        private void OpenPostMethod(object obj)
+        {
+
         }
 
         private void TurnOffButtonsExcept(string button)
