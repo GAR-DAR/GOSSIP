@@ -54,19 +54,6 @@ namespace GOSSIP.ViewModels
             List<UserModel> users = JsonSerializer.Deserialize<List<UserModel>>(jsonString);
             var user = users.Find(u => (u.Username == EmailOrUsername || u.Email == EmailOrUsername) && u.Password == Password);
 
-            ChatModel chat = new ChatModel(1, DateTime.Now, false, 
-                new User("OleksaLviv", "OleksaLviv.png"),
-                [
-
-                    new MessageModel(1, 1, 1, false, "хєхє", DateTime.Now,  true, false),
-                    new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
-                    new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
-
-                ]);
-
-
-            JsonSerializer.Serialize(chat);
-
             if (user == null)
             {
                 MessageBox.Show("Incorrect username/email or password");

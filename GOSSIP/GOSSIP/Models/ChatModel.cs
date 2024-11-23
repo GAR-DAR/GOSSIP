@@ -3,6 +3,7 @@
 namespace GOSSIP.Models
 {
     //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
+    [Serializable]
     public class ChatModel
     {
         public User Interlocutor { get; set; }
@@ -11,13 +12,14 @@ namespace GOSSIP.Models
         public bool IsDeleted { get; set; }
         public ObservableCollection<MessageModel> Messages { get; set; }
 
-        public ChatModel(int id, DateTime createdAt, bool isDeleted, User user, ObservableCollection<MessageModel> messages)
+        // Конструктор
+        public ChatModel(User Interlocutor, int ID, DateTime CreatedAt, bool IsDeleted, ObservableCollection<MessageModel> Messages)
         {
-            ID = id;
-            CreatedAt = createdAt;
-            IsDeleted = isDeleted;
-            Interlocutor = user;
-            Messages = messages;
+            this.Interlocutor = Interlocutor;
+            this.ID = ID;
+            this.CreatedAt = CreatedAt;
+            this.IsDeleted = IsDeleted;
+            this.Messages = Messages;
         }
 
         public void AddMessage(MessageModel message)

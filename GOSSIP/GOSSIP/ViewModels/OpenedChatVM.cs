@@ -19,8 +19,10 @@ namespace GOSSIP.ViewModels
         //Містить копію моделі чатів
         private ChatModel _chat;
 
+        private ChatService _chatService = new("user_data.json");
+
         public string ChatName { get; set; }
-        public string IconPath => _chat.Interlocutor.IconPath;
+        public string IconPath { get; set; }
 
         //Список повідомлень, прив'язаних до UI. Також, прив'язаний до списку чатів моделі ChatModel
         public ObservableCollection<MessageModel> Messages { get; set; }
@@ -32,6 +34,8 @@ namespace GOSSIP.ViewModels
             ChatName = chat.Interlocutor.Username;
             Messages = new(chat.Messages);
             LastMessage = Messages.Last().MessageText;
+            IconPath = _chat.Interlocutor.IconPath;
+
 
             //Підписка на зміну колекції з моделі. Модель міняється — міняється UI
             _chat.Messages.CollectionChanged += Messages_CollectionChanged;
@@ -75,6 +79,7 @@ namespace GOSSIP.ViewModels
             {
                 foreach (MessageModel newMessage in e.NewItems)
                 {
+                    _chatService.AddMessage(_chat.ID, newMessage);
                     Messages.Add(newMessage);
                     LastMessage = Messages.Last().MessageText;
                 }

@@ -21,6 +21,8 @@ namespace GOSSIP.ViewModels
         public ICommand BackCommand { get; set; }
         public ICommand CompleteSignUpCommand { get; set; }
 
+        private readonly ChatService _chatService = new("user_data.json");
+
         private int _specializationIndex = -1;
         public int SpecializationIndex
         {
@@ -248,16 +250,9 @@ namespace GOSSIP.ViewModels
                     CalculateTerm(_mainVM.Degree), 
                     "nophotoicon.png",
                     []);
-                List<UserModel> users;
-                var existingJson = File.ReadAllText("user_data.json");
-                users = existingJson.Length > 0
-                    ? JsonSerializer.Deserialize<List<UserModel>>(existingJson) ?? new List<UserModel>()
-                    : new List<UserModel>();
-                var json = JsonSerializer.Serialize(newUser);
-                users.Add(newUser);
-                var updatedJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText("user_data.json", updatedJson);
-                CloseDialog?.Invoke(newUser);
+                _chatService.AddUser(newUser);
+
+                CloseDialog.Invoke(newUser);
             }
             catch (Exception ex)
             {

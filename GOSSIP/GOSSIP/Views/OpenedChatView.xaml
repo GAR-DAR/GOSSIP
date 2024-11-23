@@ -5,9 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
              xmlns:models="clr-namespace:GOSSIP.Models"
-             xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:local="clr-namespace:GOSSIP.Views" 
+             xmlns:convs="clr-namespace:GOSSIP.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="935" d:DesignWidth="1040">
+
+    <UserControl.Resources>
+        <convs:DateTimeToTimeStringConverter x:Key="dateTimeToTimeStringConverter"/>
+    </UserControl.Resources>
+
     <Border Background="{StaticResource PrussianBlue}">
         <Border.CornerRadius>
             <CornerRadius TopLeft="0" TopRight="20" BottomLeft="0" BottomRight="20"/>
@@ -53,7 +59,7 @@
                             </Border.Style>
                             <Grid>
                                 <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="10,0,0,0" />
-                                <TextBlock Text="{Binding TimeStamp}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
+                                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
                             </Grid>
                         </Border>
                     </DataTemplate>

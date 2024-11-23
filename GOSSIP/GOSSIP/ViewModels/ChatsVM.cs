@@ -13,7 +13,7 @@ namespace GOSSIP.ViewModels
     public class ChatsVM : ObservableObject
     {
         //Прив'язана до UI.
-        public ObservableCollection<OpenedChatVM> ChatList { get; set; }
+        public ObservableCollection<OpenedChatVM> ChatList { get; set; } = [];
 
         private OpenedChatVM _openedChatVM;
         
@@ -30,11 +30,10 @@ namespace GOSSIP.ViewModels
 
         public ChatsVM(UserModel currentUser)
         {
-            ObservableCollection<OpenedChatVM> chatlist = [];
             if(currentUser.Chats != null)
             {
                 foreach (ChatModel chatModel in currentUser.Chats)
-                chatlist.Add(new(chatModel));
+                ChatList.Add(new(chatModel));
             }
             
 

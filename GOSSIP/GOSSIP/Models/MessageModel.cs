@@ -1,21 +1,42 @@
-﻿namespace GOSSIP.Models
+﻿using System.Text.Json.Serialization;
+
+namespace GOSSIP.Models
 {
     //Тимчасова модель повідомлень. Пізніше буде замінена на робочу 
-    public class MessageModel(int id, int chatID, int senderID, bool isSentByCurrentUser,
-        string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
+    [Serializable]
+    public class MessageModel
     {
-        public int ID { get; set; } = id;
-        public int ChatID { get; set; } = chatID;
-        public int SenderID { get; set; } = senderID;
-        public bool IsSentByCurrentUser { get; set; } = isSentByCurrentUser;
-        public string MessageText { get; set; } = messageText;
-        public string TimeStamp { get; set; } = timeStamp.ToString(@"hh\:mm");
-        public bool IsRead { get; set; } = isRead;
-        public bool IsDeleted { get; set; } = isDeleted;
+        public int ID { get; set; }
+        public int ChatID { get; set; }
+        public int SenderID { get; set; }
+        public bool IsSentByCurrentUser { get; set; }
+        public string MessageText { get; set; }
+        public DateTime TimeStamp { get; set; } // Зберігаємо як DateTime
+        public bool IsRead { get; set; }
+        public bool IsDeleted { get; set; }
 
-        override public string ToString()
+        // Конструктор
+        public MessageModel(int id, int chatID, int senderID, bool isSentByCurrentUser,
+                            string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
         {
-            return MessageText;
+            ID = id;
+            ChatID = chatID;
+            SenderID = senderID;
+            IsSentByCurrentUser = isSentByCurrentUser;
+            MessageText = messageText;
+            TimeStamp = timeStamp;
+            IsRead = isRead;
+            IsDeleted = isDeleted;
+        }
+
+        // Форматована строка часу
+        public string FormattedTime => TimeStamp.ToString("hh:mm");
+
+        // Перевизначення ToString()
+        public override string ToString()
+        {
+            return $"{(IsSentByCurrentUser ? "You" : $"Sender {SenderID}")}: {MessageText} at {FormattedTime}";
         }
     }
 }
+
