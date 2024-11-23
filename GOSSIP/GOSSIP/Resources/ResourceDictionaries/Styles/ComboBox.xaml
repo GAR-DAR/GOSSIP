@@ -6,7 +6,142 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="ComboBox" x:Key="AuthorizationComboBox">
-        <Setter Property="Width" Value="200"/>
+        <Setter Property="Width" Value="300"/>
         <Setter Property="Height" Value="50"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Border
+                    Name="Border"
+                    Background="{DynamicResource PrussianBlue}"
+                    BorderBrush="{DynamicResource Danube}"
+                    BorderThickness="1"
+                    CornerRadius="15">
+                            <Grid>
+                                <ContentPresenter
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="10,0,10,0"
+                            Content="{TemplateBinding SelectionBoxItem}" />
+                                <!-- ToggleButton -->
+                                <ToggleButton
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            BorderThickness="0"
+                            BorderBrush="Transparent"
+                            Background="Transparent"
+                            Margin="0,0,15,0"
+                            IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                            Focusable="False">
+                                    <ToggleButton.Style>
+                                        <Style TargetType="ToggleButton">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                            <Setter Property="Content" Value="▼"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Danube}"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ToggleButton">
+                                                        <ContentPresenter/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                            </Grid>
+                        </Border>
+                        <!-- Popup -->
+                        <Popup
+                    Name="Popup"
+                    Placement="Bottom"
+                    PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                    AllowsTransparency="True"
+                    Focusable="False"
+                    PopupAnimation="Slide">
+                            <Border
+                        Background="{DynamicResource PrussianBlueWithoutOpacity}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10"
+                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ScrollViewer>
+                                    <ScrollViewer.Style>
+                                        <Style TargetType="ScrollViewer">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ScrollViewer">
+                                                        <Grid Background="Transparent">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+                                                            <ScrollContentPresenter Grid.Column="0" Grid.Row="0"/>
+                                                            <!-- Оновлений ScrollBar -->
+                                                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                                                   Grid.Column="1"
+                                                                   Grid.Row="0"
+                                                                   Orientation="Vertical"
+                                                                   Value="{TemplateBinding VerticalOffset}"
+                                                                   Maximum="{TemplateBinding ScrollableHeight}"
+                                                                   ViewportSize="{TemplateBinding ViewportHeight}"
+                                                                   Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}">
+                                                                <ScrollBar.Style>
+                                                                    <Style TargetType="ScrollBar">
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate TargetType="ScrollBar">
+                                                                                    <Grid Background="Transparent">
+                                                                                        <Track Name="PART_Track">
+                                                                                            <!-- Заокруглений Thumb -->
+                                                                                            <Track.Thumb>
+                                                                                                <Thumb Background="{DynamicResource Danube}"
+                                                                                                   BorderBrush="{DynamicResource Danube}"
+                                                                                                   BorderThickness="0"
+                                                                                                   HorizontalAlignment="Stretch"/>
+                                                                                            </Track.Thumb>
+                                                                                        </Track>
+                                                                                    </Grid>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ScrollBar.Style>
+                                                            </ScrollBar>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ScrollViewer.Style>
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="FontSize" Value="16"/>
     </Style>
 </ResourceDictionary>

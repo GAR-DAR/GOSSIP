@@ -9,32 +9,61 @@
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="2.6*"/>
         </Grid.RowDefinitions>
+        
+        
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition />
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Status" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
+        <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding Status}" Foreground="White"/>
+        <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="Field of study" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
+        <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding FieldOfStudyOptions}" SelectedItem="{Binding FieldOfStudy}" Foreground="White"/>
+        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Text="Specialization" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
+        <ComboBox Grid.Row="6" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding SpecializationOptions}" SelectedItem="{Binding Specialization}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding SpecializationIndex}" Foreground="White"/>
+        <TextBlock Grid.Row="7" Grid.ColumnSpan="2" Text="University" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
+        <ComboBox Grid.Row="8" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding UniversityOptions}" SelectedItem="{Binding University}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding UniversityIndex}" Foreground="White"/>
+        <TextBlock Grid.Row="9" Grid.ColumnSpan="2" Text="Term" Foreground="White" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,75,5"/>
+        <TextBlock Grid.Row="9" Grid.ColumnSpan="1" Text="Degree" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
 
-        <ComboBox Grid.Row="1" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding Status}"/>
-        <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding FieldOfStudyOptions}" SelectedItem="{Binding FieldOfStudy}"/>
-        <ComboBox Grid.Row="3" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding SpecializationOptions}" SelectedItem="{Binding Specialization}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding SpecializationIndex}"/>
-        <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding UniversityOptions}" SelectedItem="{Binding University}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding UniversityIndex}"/>
-        <WrapPanel Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ComboBox Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding DegreeOptions}" SelectedItem="{Binding Degree}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding DegreeIndex}" Width="150" Margin="0 0 5 0"/>
-            <ComboBox Style="{DynamicResource AuthorizationComboBox}" Width="40" ItemsSource="{Binding TermsOptions}" IsEnabled="{Binding IsDegreeSelected}" SelectedItem="{Binding Term}"/>
+        <WrapPanel Grid.Row="10" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ComboBox Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding DegreeOptions}" SelectedItem="{Binding Degree}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding DegreeIndex}" Width="198" Margin="0 0 4 0" Foreground="White"/>
+            <ComboBox Style="{DynamicResource AuthorizationComboBox}" Width="98" ItemsSource="{Binding TermsOptions}" IsEnabled="{Binding IsDegreeSelected}" SelectedItem="{Binding Term}" Foreground="White"/>
         </WrapPanel>
 
-        <Button Grid.Row="7" Grid.Column="0" Content="Back" Height="40" Width="100" Command="{Binding BackCommand}"/>
-        <Button Grid.Row="7" Grid.Column="1" Content="Next" Height="40" Width="100" Command="{Binding CompleteSignUpCommand}"/>
+
+        <Button Grid.Row="11" Grid.Column="0" Content="Back" Foreground="White" FontSize="20" Height="40" Width="100" Command="{Binding BackCommand}"  >
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{DynamicResource Danube}" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource PrussianBlue}" >
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Grid.Row="11" Grid.Column="1" Content="Next" Foreground="White" FontSize="20" Height="40" Width="100" Command="{Binding CompleteSignUpCommand}" >
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{DynamicResource Danube}" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource PrussianBlue}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </UserControl>
