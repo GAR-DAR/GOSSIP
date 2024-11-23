@@ -22,19 +22,22 @@
 
         <TextBox Grid.Column="3" Style="{DynamicResource InputField}"/>
 
-        <WrapPanel Grid.Column="5" VerticalAlignment="Center">
+        <WrapPanel Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,30,0">
             <TextBlock Text="{Binding Username}" Foreground="White" FontSize="18" VerticalAlignment="Center"/>
             <!--{Binding Username}-->
             <Border CornerRadius="5"  VerticalAlignment="Center" Margin="10,0,0,0">
                 <Image Source="{Binding IconPath}"  Width="40"/>
                 <!--{Binding IconPath}-->
             </Border>
+            
         </WrapPanel>
 
-        <Button Grid.Column="6" Margin="0,0,0,0" Style="{DynamicResource SettingsButton}" Command="{Binding ShowSignUpCommand}">
+        <Button Grid.Column="6"  Style="{DynamicResource SettingsButton}" Command="{Binding ShowSignUpCommand}" Margin="0,0,20,0">
             <TextBlock Text="Settings" VerticalAlignment="Center"/>
         </Button>
 
-        
+
+
+
     </Grid>
 </UserControl>
