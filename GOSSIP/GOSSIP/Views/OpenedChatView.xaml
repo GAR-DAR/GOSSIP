@@ -12,6 +12,7 @@
 
     <UserControl.Resources>
         <convs:DateTimeToTimeStringConverter x:Key="dateTimeToTimeStringConverter"/>
+        <convs:BoolToMessageColorConverter x:Key="boolToMessageColorConverter"/>
     </UserControl.Resources>
 
     <Border Background="{StaticResource PrussianBlue}">
@@ -58,8 +59,8 @@
                                 </Style>
                             </Border.Style>
                             <Grid>
-                                <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="10,0,0,0" />
-                                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
+                                <TextBlock Text="{Binding MessageText}" Foreground="{Binding IsSentByCurrentUser, Converter={StaticResource boolToMessageColorConverter}}" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" Foreground="{Binding IsSentByCurrentUser, Converter={StaticResource boolToMessageColorConverter}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
                             </Grid>
                         </Border>
                     </DataTemplate>
