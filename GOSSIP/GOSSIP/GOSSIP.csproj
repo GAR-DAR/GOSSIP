@@ -17,6 +17,8 @@
     <None Remove="Resources\Images\Send.png" />
     <None Remove="Resources\Images\Signup.png" />
     <None Remove="Resources\Images\Tags.png" />
+    <None Remove="Resources\Images\TempUserIcons\Ivan Oliinyk.png" />
+    <None Remove="Resources\Images\TempUserIcons\IvanOliinyk.png" />
     <None Remove="Resources\Images\TempUserIcons\nophotoicon.png" />
     <None Remove="Resources\Images\TempUserIcons\nophotoicon1.png" />
     <None Remove="Resources\Images\TempUserIcons\OleksaLviv.png" />
@@ -33,6 +35,7 @@
     <Resource Include="Resources\Images\Send.png" />
     <Resource Include="Resources\Images\Signup.png" />
     <Resource Include="Resources\Images\Tags.png" />
+    <Resource Include="Resources\Images\TempUserIcons\IvanOliinyk.png" />
     <Resource Include="Resources\Images\TempUserIcons\nophotoicon.png" />
     <Resource Include="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
   </ItemGroup>
