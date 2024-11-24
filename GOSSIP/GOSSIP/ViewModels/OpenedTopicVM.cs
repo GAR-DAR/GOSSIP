@@ -21,7 +21,7 @@ namespace GOSSIP.ViewModels
         public ICommand UpVoteTopicCommand { get; set; }
         public ICommand DownVoteTopicCommand { get; set; }
         public ICommand AddReplyCommand { get; set; }
-        
+        public ICommand UpVoteReplyCommand { get; set; }
 
         public UserModel Author
         {
@@ -83,7 +83,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ObservableCollection<ReplyModel> Replies { get; set; }
+        public ObservableCollection<ReplyVM> Replies { get; set; }
 
         private string _enteredReplyText;
         public string EnteredReplyText
@@ -100,12 +100,13 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
             Topic = topic;
-            Replies = new(Topic.Replies);
+            Replies = new(Topic.Replies.Select(x => new ReplyVM(x)));
 
             BackCommand = new RelayCommand(_mainVM.ShowPostsListMethod);
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
             AddReplyCommand = new RelayCommand(AddReplyMethod);
+            UpVoteReplyCommand = new RelayCommand((reply) => UpVoteReplyMethod(reply));
         }
 
         private void UpVoteMethod(object obj)
@@ -169,10 +170,37 @@ namespace GOSSIP.ViewModels
 
             if (!string.IsNullOrEmpty(EnteredReplyText))
             {
-                Replies.Add(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false));
+                Replies.Add(new ReplyVM(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false)));
                 RepliesCount++;
                 Topic.Replies.Add(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false));
                 EnteredReplyText = "";
+            }
+        }
+
+        private void UpVoteReplyMethod(object obj)
+        {
+            if (_mainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+            if (obj is ReplyVM reply)
+            {
+                if (reply.CanUpVote)
+                {
+                    reply.Rating++;
+                    reply.CanUpVote = false;
+                    if (reply.CanDownVote == false)
+                    {
+                        reply.Rating++;
+                        reply.CanDownVote = true;
+                    }
+                }
+                else
+                {
+                    reply.Rating--;
+                    reply.CanUpVote = true;
+                }
             }
         }
     }

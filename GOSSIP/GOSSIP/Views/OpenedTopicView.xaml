@@ -126,42 +126,16 @@
                                     </Grid>
                                     <TextBlock Text="{Binding Content}" Foreground="White" TextWrapping="Wrap" Margin="0 5"/>
                                     <WrapPanel>
-                                        <Button Content="Up" Height="30" Width="30"/>
+                                        <Button Content="Up" 
+                                                Command="{Binding DataContext.UpVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                                CommandParameter="{Binding}" 
+                                                Height="30" 
+                                                Width="30"/>
                                         <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="30" VerticalAlignment="Center" TextAlignment="Center"/>
                                         <Button Content="Down" Height="30" Width="30"/>
                                     </WrapPanel>
 
-                                    <ItemsControl ItemsSource="{Binding Replies}" Margin="20 0 0 0">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Margin="0 5" Padding="10" BorderBrush="Gray" BorderThickness="1">
-                                                    <StackPanel>
-                                                        <Grid Margin="0 5">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="40"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Image Source="{Binding User.IconPath}" Height="40" Width="40">
-                                                                <Image.Clip>
-                                                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                                                                </Image.Clip>
-                                                            </Image>
-                                                            <StackPanel Grid.Column="1" Margin="5 0">
-                                                                <TextBlock Text="{Binding User.Username}" FontWeight="Bold" Foreground="White"/>
-                                                                <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White" FontSize="12"/>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                        <TextBlock Text="{Binding Content}" Foreground="White" TextWrapping="Wrap" Margin="0 5"/>
-                                                        <WrapPanel>
-                                                            <Button Content="Up" Height="30" Width="30"/>
-                                                            <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="30" VerticalAlignment="Center" TextAlignment="Center"/>
-                                                            <Button Content="Down" Height="30" Width="30"/>
-                                                        </WrapPanel>
-                                                    </StackPanel>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                    
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
