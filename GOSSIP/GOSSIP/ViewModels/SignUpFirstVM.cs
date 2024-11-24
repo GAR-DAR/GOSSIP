@@ -82,12 +82,14 @@ namespace GOSSIP.ViewModels
 
         private void ValidateInput()
         {
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Username) ||
-                string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(RepeatPassword))
-                throw new ArgumentException("Please fill in all fields.");
+            
+                if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Username) ||
+                    string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(RepeatPassword))
+                    throw new ArgumentException("Please fill in all fields.");
 
-            if (Password != RepeatPassword)
-                throw new ArgumentException("Passwords do not match.");
+                if (Password != RepeatPassword)
+                    throw new ArgumentException("Passwords do not match.");
+            
         }
     }
 }
