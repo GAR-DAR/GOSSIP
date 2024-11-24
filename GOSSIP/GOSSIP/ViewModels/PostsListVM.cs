@@ -55,7 +55,7 @@ namespace GOSSIP.ViewModels
                     ),
                     DateTime.Now.AddMinutes(-10),
                     "What C# GUI framework for desktop apps is the best?",
-                    "filler text, filler text, filler text, filler text",
+                    "filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,filler text, filler text, filler text, filler text,",
                     new List<string> { "C#", "GUI" },
                     3,
                     2

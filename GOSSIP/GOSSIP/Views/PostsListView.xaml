@@ -10,6 +10,7 @@
 
     <UserControl.Resources>
         <conv:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
+        <conv:StringToShortenedStringConverter x:Key="stringToShortenedStringConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -57,7 +58,7 @@
                             <TextBlock Text="{Binding Title}" Margin="20,10,0,0" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
                             <!-- Контент -->
-                            <TextBlock Text="{Binding Content}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Content, Converter={StaticResource stringToShortenedStringConverter}}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
 
                             <!-- Теги -->
                             <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="10,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Left">
