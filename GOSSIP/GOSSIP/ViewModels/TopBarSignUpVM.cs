@@ -18,31 +18,8 @@ namespace GOSSIP.ViewModels
         public TopBarSignUpVM(MainVM mainVM)
         {
             _mainVM = mainVM;
-            ShowSignUpCommand = new RelayCommand((obj) =>
-            {
-                SignUpMainVM signUpMainVM = new();
-                SignUpWindow signUpView = new() { DataContext = signUpMainVM };
-                signUpMainVM.RequestClose += (user) => 
-                { 
-                    _mainVM.AuthorizedUser = user;
-                    signUpView.Close();
-                    _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM.AuthorizedUser, _mainVM);
-                };
-                signUpView.ShowDialog();
-            });
-
-            ShowLogInCommand = new RelayCommand((obj) =>
-            {
-                LogInVM logInVM = new(_mainVM);
-                LogInWindow logInWindow = new() { DataContext = logInVM };
-                logInVM.RequestClose += (user) =>
-                {
-                    _mainVM.AuthorizedUser = user;
-                    logInWindow.Close();
-                    _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM.AuthorizedUser, _mainVM);
-                };
-                logInWindow.ShowDialog();
-            });
+            ShowSignUpCommand = new RelayCommand(_mainVM.ShowSignUpMethod);
+            ShowLogInCommand = new RelayCommand(_mainVM.ShowLogInMethod);
         }
     }
 }

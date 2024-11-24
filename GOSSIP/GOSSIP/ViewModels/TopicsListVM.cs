@@ -57,7 +57,7 @@ namespace GOSSIP.ViewModels
                     "What C# GUI framework for desktop apps is the best?",
                     "filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text.",
                     new List<string> { "C#", "GUI" },
-                    3,
+                    2,
                     2,
                     new List<ReplyModel>
                     {

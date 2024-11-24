@@ -15,10 +15,13 @@ namespace GOSSIP.ViewModels
 
         private bool _canUpVote = true;
         private bool _canDownVote = true;
+        private MainVM _mainVM;
 
         public ICommand BackCommand { get; set; }
         public ICommand UpVoteTopicCommand { get; set; }
         public ICommand DownVoteTopicCommand { get; set; }
+        public ICommand AddReplyCommand { get; set; }
+        
 
         public UserModel Author
         {
@@ -70,22 +73,49 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public int RepliesCount => Topic.Replies.Count;
+        public int RepliesCount
+        {
+            get => Topic.RepliesCount;
+            set
+            {
+                Topic.RepliesCount = value;
+                OnPropertyChanged(nameof(RepliesCount));
+            }
+        }
 
         public ObservableCollection<ReplyModel> Replies { get; set; }
 
+        private string _enteredReplyText;
+        public string EnteredReplyText
+        {
+            get => _enteredReplyText;
+            set
+            {
+                _enteredReplyText = value;
+                OnPropertyChanged(nameof(EnteredReplyText));
+            }
+        }
+
         public OpenedTopicVM(TopicModel topic, MainVM mainVM)
         {
+            _mainVM = mainVM;
             Topic = topic;
             Replies = new(Topic.Replies);
 
-            BackCommand = new RelayCommand(mainVM.ShowPostsListMethod);
+            BackCommand = new RelayCommand(_mainVM.ShowPostsListMethod);
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
+            AddReplyCommand = new RelayCommand(AddReplyMethod);
         }
 
         private void UpVoteMethod(object obj)
         {
+            if (_mainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+
             if (_canUpVote)
             {
                 Rating++;
@@ -105,6 +135,12 @@ namespace GOSSIP.ViewModels
 
         private void DownVoteMethod(object obj)
         {
+            if (_mainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+
             if (_canDownVote)
             {
                 Rating--;
@@ -119,6 +155,24 @@ namespace GOSSIP.ViewModels
             {
                 Rating++;
                 _canDownVote = true;
+            }
+        }
+
+        private void AddReplyMethod(object obj)
+        {
+            if (_mainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+
+
+            if (!string.IsNullOrEmpty(EnteredReplyText))
+            {
+                Replies.Add(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false));
+                RepliesCount++;
+                Topic.Replies.Add(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false));
+                EnteredReplyText = "";
             }
         }
     }

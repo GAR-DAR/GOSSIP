@@ -119,7 +119,7 @@ namespace GOSSIP.ViewModels
             }
             else
             {
-                MessageBox.Show("Authorize first.");
+                ShowLogInMethod(null);
             }   
         }
 
@@ -128,6 +128,32 @@ namespace GOSSIP.ViewModels
             IsTopicsPressed = button == "Topics" ? true : false;
             IsTagsPressed = button == "Tags" ? true : false;
             IsChatsPressed = button == "Chats" ? true : false;
+        }
+
+        public void ShowSignUpMethod(object obj)
+        {
+            SignUpMainVM signUpMainVM = new();
+                SignUpWindow signUpView = new() { DataContext = signUpMainVM };
+                signUpMainVM.RequestClose += (user) => 
+                { 
+                    AuthorizedUser = user;
+                    signUpView.Close();
+                    SelectedTopBarVM = new TopBarLoggedInVM(AuthorizedUser, this);
+                };
+                signUpView.ShowDialog();
+        }
+
+        public void ShowLogInMethod(object obj)
+        {
+            LogInVM logInVM = new(this);
+            LogInWindow logInWindow = new() { DataContext = logInVM };
+            logInVM.RequestClose += (user) =>
+            {
+                AuthorizedUser = user;
+                logInWindow.Close();
+                SelectedTopBarVM = new TopBarLoggedInVM(AuthorizedUser, this);
+            };
+            logInWindow.ShowDialog();
         }
     }
 }

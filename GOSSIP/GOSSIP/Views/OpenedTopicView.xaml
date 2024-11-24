@@ -53,6 +53,7 @@
                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                         </Image.Clip>
                     </Image>
+
                     <TextBlock Text="{Binding Author.Username}" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Foreground="White" Margin="5 0"/>
                     <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White" Grid.Row="1" Grid.Column="1" Margin="5 0"/>
                 </Grid>
@@ -90,7 +91,18 @@
                 </WrapPanel>
 
                 <!-- Додати коментар. Треба стилізувати-->
-                <TextBox Style="{StaticResource InputField}" Grid.Row="4" Height="50"/>
+                <WrapPanel Grid.Row="4" Margin="0 5">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <TextBox  Text="{Binding EnteredReplyText}"
+                                  TextWrapping="Wrap" 
+                                  FontSize="16"  
+                                  Padding="10"
+                                  Width="1000"
+                                  AcceptsReturn="True"/>            
+                    </ScrollViewer>
+                    <Button Command="{Binding AddReplyCommand}" Width="40" Height="40" Content="Send" Margin="10 0"/>
+                </WrapPanel>
+                
 
                 <ItemsControl Grid.Row="5" ItemsSource="{Binding Replies}">
                     <ItemsControl.ItemTemplate>

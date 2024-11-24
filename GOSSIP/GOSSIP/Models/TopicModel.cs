@@ -1,4 +1,5 @@
-﻿using System.Security.RightsManagement;
+﻿using System.Collections.ObjectModel;
+using System.Security.RightsManagement;
 
 namespace GOSSIP.Models
 {
