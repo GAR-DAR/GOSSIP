@@ -103,11 +103,17 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="28"/>
         <Style.Triggers>
+            <!-- Зміна кольору при наведенні -->
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Danube}"/>
             </Trigger>
+            <!-- Зміна кольору тексту та картинки при натисканні -->
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Foreground" Value="#6393c9"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
+
 
     <Style x:Key="SendMessageButton" TargetType="Button">
         <Setter Property="Template">
@@ -176,6 +182,22 @@
         <Setter Property="FontFamily" Value="{DynamicResource Roboto}"/>
         <Setter Property="MaxWidth" Value="100"/>
         <Setter Property="Margin" Value="5 3 10 0"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+    </Style>
+
+    <Style x:Key="AddPostButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border CornerRadius="100" Background="{DynamicResource PrussianBlue}" BorderBrush="{DynamicResource Danube}" BorderThickness="2">
+                        <Image Source="pack://application:,,,/Resources/Images/AddPost.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0,0,0,0" Height="30" Width="30"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="Background" Value="{DynamicResource PrussianBlue}"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
 
