@@ -127,7 +127,10 @@
             </ListBox.ItemContainerStyle>
         </ListBox>
 
-        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Content="+" Margin="20"/>
+        <Button Style="{DynamicResource AddPostButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Margin="20" >
+            
+        </Button>
+
     </Grid>
 
 </UserControl>

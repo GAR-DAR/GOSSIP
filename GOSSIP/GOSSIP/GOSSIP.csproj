@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+    <None Remove="Resources\Images\AddPost.png" />
     <None Remove="Resources\Images\Close.png" />
     <None Remove="Resources\Images\Comment.png" />
     <None Remove="Resources\Images\Message.png" />
@@ -28,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\AddPost.png" />
     <Resource Include="Resources\Images\Close.png" />
     <Resource Include="Resources\Images\Comment.png" />
     <Resource Include="Resources\Images\Message.png" />
