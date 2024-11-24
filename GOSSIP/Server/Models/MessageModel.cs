@@ -1,12 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace GOSSIP.Models
+namespace Server.Models
 {
-    //Тимчасова модель повідомлень. Пізніше буде замінена на робочу 
-    [Serializable]
     public class MessageModel
     {
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ChatModel Chat { get; set; }
         public UserModel User { get; set; }
         public string MessageText { get; set; }
@@ -14,8 +12,7 @@ namespace GOSSIP.Models
         public bool IsRead { get; set; }
         public bool IsDeleted { get; set; }
 
-        // Конструктор
-        public MessageModel(int id, ChatModel chat, UserModel user,
+        public MessageModel(uint id, ChatModel chat, UserModel user,
             string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
         {
             ID = id;
@@ -27,7 +24,6 @@ namespace GOSSIP.Models
             IsDeleted = isDeleted;
         }
 
-        // Форматована строка часу
         public string FormattedTime => TimeStamp.ToString("hh:mm");
 
         // Перевизначення ToString() TODO: чи потрібно?

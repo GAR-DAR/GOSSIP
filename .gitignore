@@ -7,7 +7,6 @@
 *.vsidx
 *.wsuo
 *.db
-*.json
 *.exe
 *.pdb
 *.cache
@@ -32,3 +31,7 @@
 /.vs/VSWorkspaceState.json
 *.v2
 *.bin
+.vs
+bin
+obj
+GOSSIP/GOSSIP/Server/obj

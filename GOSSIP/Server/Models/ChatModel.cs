@@ -1,21 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace GOSSIP.Models
+namespace Server.Models
 {
-    //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
-    [Serializable]
     public class ChatModel
     {
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public List<UserModel> Users { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
-        public ObservableCollection<MessageModel> Messages { get; set; }
+        public List<MessageModel> Messages { get; set; }
 
-        // Конструктор
         public ChatModel(List<UserModel> users, DateTime createdAt, bool isDeleted, 
-            ObservableCollection<MessageModel> messages, int iD)
+            List<MessageModel> messages, uint iD)
         {
             this.Users = users;
             this.CreatedAt = createdAt;
