@@ -16,10 +16,10 @@
     <Compile Update="Views\OpenedChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\OpenedPostView.xaml.cs">
+    <Compile Update="Views\OpenedTopicView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PostsListView.xaml.cs">
+    <Compile Update="Views\TopicsListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SideBarView.xaml.cs">
@@ -69,10 +69,10 @@
     <Page Update="Views\OpenedChatView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\OpenedPostView.xaml">
+    <Page Update="Views\OpenedTopicView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PostsListView.xaml">
+    <Page Update="Views\TopicsListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SideBarView.xaml">

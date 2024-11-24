@@ -55,7 +55,7 @@ namespace GOSSIP.ViewModels
 
         //Вікна вкладок, що представлені на тулбарі. В майбутньому будуть ще теги
         private ChatsVM _chatsVM;
-        private PostsListVM _postsListVM;
+        private TopicsListVM _topicListVM;
         private TopBarSignUpVM _topBarSignUpVM { get; set; }
 
         //Прив'язаний до UI. Його зміна змінить зовнішній вигляд вікна
@@ -86,23 +86,23 @@ namespace GOSSIP.ViewModels
         }
 
         //Команди переключеня, ініціалізовані в конструкторі
-        public ICommand ShowPostsListCommand { get; set; }
+        public ICommand ShowTopicsListCommand { get; set; }
         public ICommand ShowChatsCommand { get; set; }
-        public ICommand OpenPostCommand { get; set; }
+        public ICommand OpenTopicsCommand { get; set; }
 
         public MainVM()
         {
-            _postsListVM = new(this);
+            _topicListVM = new(this);
             _topBarSignUpVM = new(this);
-            SelectedVM = _postsListVM;
+            SelectedVM = _topicListVM;
             SelectedTopBarVM = _topBarSignUpVM;
-            ShowPostsListCommand = new RelayCommand(ShowPostsListMethod);
+            ShowTopicsListCommand = new RelayCommand(ShowPostsListMethod);
             ShowChatsCommand = new RelayCommand(ShowChatsMethod);            
         }
 
-        private void ShowPostsListMethod(object obj)
+        public void ShowPostsListMethod(object obj)
         {
-            SelectedVM = _postsListVM;
+            SelectedVM = _topicListVM;
             TurnOffButtonsExcept("Topics");
         }
 
@@ -121,11 +121,6 @@ namespace GOSSIP.ViewModels
             {
                 MessageBox.Show("Authorize first.");
             }   
-        }
-
-        private void OpenPostMethod(object obj)
-        {
-
         }
 
         private void TurnOffButtonsExcept(string button)

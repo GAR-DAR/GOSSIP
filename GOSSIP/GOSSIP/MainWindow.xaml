@@ -23,8 +23,8 @@
             <views:ChatsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:PostsListVM}">
-            <views:PostsListView/>
+        <DataTemplate DataType="{x:Type viewModels:TopicsListVM}">
+            <views:TopicsListView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:TopBarSignUpVM}">
@@ -35,7 +35,7 @@
             <views:TopBarLoggedIn/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:OpenedPostVM}">
+        <DataTemplate DataType="{x:Type viewModels:OpenedTopicVM}">
             <views:OpenedPostView/>
         </DataTemplate>
     </Window.Resources>
