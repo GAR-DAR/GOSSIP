@@ -35,3 +35,4 @@
 *.g.i.cs
 *.g.cs
 *.AssemblyInfo.cs
+/GOSSIP/GOSSIP/obj/
