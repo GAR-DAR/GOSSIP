@@ -132,10 +132,12 @@
                                                 Height="30" 
                                                 Width="30"/>
                                         <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="30" VerticalAlignment="Center" TextAlignment="Center"/>
-                                        <Button Content="Down" Height="30" Width="30"/>
+                                        <Button Content="Down" 
+                                                Command="{Binding DataContext.DownVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                                CommandParameter="{Binding}" 
+                                                Height="30" 
+                                                Width="30"/>
                                     </WrapPanel>
-
-                                    
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

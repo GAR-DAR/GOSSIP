@@ -22,6 +22,7 @@ namespace GOSSIP.ViewModels
         public ICommand DownVoteTopicCommand { get; set; }
         public ICommand AddReplyCommand { get; set; }
         public ICommand UpVoteReplyCommand { get; set; }
+        public ICommand DownVoteReplyCommand { get; set; }
 
         public UserModel Author
         {
@@ -106,7 +107,8 @@ namespace GOSSIP.ViewModels
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
             AddReplyCommand = new RelayCommand(AddReplyMethod);
-            UpVoteReplyCommand = new RelayCommand((reply) => UpVoteReplyMethod(reply));
+            UpVoteReplyCommand = new RelayCommand(UpVoteReplyMethod);
+            DownVoteReplyCommand = new RelayCommand(DownVoteReplyMethod);
         }
 
         private void UpVoteMethod(object obj)
@@ -200,6 +202,33 @@ namespace GOSSIP.ViewModels
                 {
                     reply.Rating--;
                     reply.CanUpVote = true;
+                }
+            }
+        }
+
+        private void DownVoteReplyMethod(object obj)
+        {
+            if (_mainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+            if (obj is ReplyVM reply)
+            {
+                if (reply.CanDownVote)
+                {
+                    reply.Rating--;
+                    reply.CanDownVote = false;
+                    if (reply.CanUpVote == false)
+                    {
+                        reply.Rating--;
+                        reply.CanUpVote = true;
+                    }
+                }
+                else
+                {
+                    reply.Rating++;
+                    reply.CanDownVote = true;
                 }
             }
         }
