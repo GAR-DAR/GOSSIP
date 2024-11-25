@@ -32,3 +32,6 @@
 /.vs/VSWorkspaceState.json
 *.v2
 *.bin
+*.g.i.cs
+*.g.cs
+*.AssemblyInfo.cs
