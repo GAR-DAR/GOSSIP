@@ -34,3 +34,6 @@
 *.bin
 /GOSSIP/GOSSIP/obj/Debug/net8.0-windows/Views/
 /GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GOSSIP.AssemblyInfo.cs
+*.g.i.cs
+*.g.cs
+*.AssemblyInfo.cs
