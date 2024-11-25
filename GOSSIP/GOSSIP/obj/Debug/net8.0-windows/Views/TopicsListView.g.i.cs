@@ -54,7 +54,7 @@ namespace GOSSIP.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/GOSSIP;component/views/topicslistview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/GOSSIP;V1.0.0.0;component/views/topicslistview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\TopicsListView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
