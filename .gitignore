@@ -32,3 +32,4 @@
 /.vs/VSWorkspaceState.json
 *.v2
 *.bin
+/GOSSIP/GOSSIP/obj/Debug/net8.0-windows/Views/
