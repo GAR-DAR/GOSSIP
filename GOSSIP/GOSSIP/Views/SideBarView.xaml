@@ -15,22 +15,22 @@
     <Grid>
         <Border Background="{DynamicResource PrussianBlue}">
             <StackPanel>
-                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowPostsListCommand}" Background="{Binding IsTopicsPressed, Converter={StaticResource BoolToColorConverter}}" Margin="0 40 0 0">
-                    <StackPanel Orientation="Horizontal" >
+                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowTopicsListCommand}" Background="{Binding IsTopicsPressed, Converter={StaticResource BoolToColorConverter}}" Margin="0 40 0 0">
+                    <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/Resources/Images/Topics.png" Width="30" Height="30" Margin="0 0 5 0"/>
-                        <TextBlock Text="Topics" Margin="0,0,120,0"/>
+                        <TextBlock Text="Topics"/>
                     </StackPanel>
                 </Button>
-                <Button Style="{DynamicResource SideBarButton}" Background="{Binding IsTagsPressed, Converter={StaticResource BoolToColorConverter}}"  Margin="0 5 0 0">
+                <Button Style="{DynamicResource SideBarButton}" Margin="0 5 0 0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/Resources/Images/Tags.png" Width="30" Height="30" Margin="0 0 5 0"/>
-                        <TextBlock Text="Tags" Margin="0,0,145,0"/>
+                        <TextBlock Text="Tags"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowChatsCommand}" Background="{Binding IsChatsPressed, Converter={StaticResource BoolToColorConverter}}" Margin="0 5 0 0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/Resources/Images/Message.png" Width="30" Height="30" Margin="0 0 5 0"/>
-                        <TextBlock Text="Messages" Margin="0,0,80,0"/>
+                        <TextBlock Text="Messages"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

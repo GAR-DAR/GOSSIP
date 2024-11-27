@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="GOSSIP.Views.PostsListView"
+﻿<UserControl x:Class="GOSSIP.Views.TopicsListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,10 +10,11 @@
 
     <UserControl.Resources>
         <conv:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
+        <conv:StringToShortenedStringConverter x:Key="stringToShortenedStringConverter"/>
     </UserControl.Resources>
 
     <Grid>
-        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Posts}" SelectedItem="{Binding SelectedPost}" BorderThickness="0">
+        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" Height="200" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
@@ -57,7 +58,7 @@
                             <TextBlock Text="{Binding Title}" Margin="20,10,0,0" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
                             <!-- Контент -->
-                            <TextBlock Text="{Binding Content}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Content, Converter={StaticResource stringToShortenedStringConverter}}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
 
                             <!-- Теги -->
                             <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="10,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Left">
@@ -121,16 +122,11 @@
                             <Setter Property="BorderBrush" Value="Transparent" />
                         </Trigger>
                     </Style.Triggers>
-
-
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
 
-        <Button Style="{DynamicResource AddPostButton}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Margin="20" >
-            
-        </Button>
-
+        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Content="+" Margin="20"/>
     </Grid>
 
 </UserControl>

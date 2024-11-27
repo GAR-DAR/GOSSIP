@@ -20,9 +20,9 @@ namespace GOSSIP.Views
     /// <summary>
     /// Interaction logic for PostsListView.xaml
     /// </summary>
-    public partial class PostsListView : UserControl
+    public partial class TopicsListView : UserControl
     {
-        public PostsListView()
+        public TopicsListView()
         {
             InitializeComponent();
         }
@@ -30,13 +30,13 @@ namespace GOSSIP.Views
         private void OnItemMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Отримати елемент ListBoxItem
-            if (sender is ListBoxItem item && DataContext is PostsListVM postsListVM)
+            if (sender is ListBoxItem item && DataContext is TopicsListVM topicsListVM)
             {
                 // Передати вибраний елемент до команди у ViewModel
-                if (item.DataContext is Post selectedPost)
+                if (item.DataContext is TopicModel selectedPost)
                 {
-                    if (postsListVM.DoubleClickCommand.CanExecute(selectedPost))
-                        postsListVM.DoubleClickCommand.Execute(selectedPost);
+                    if (topicsListVM.DoubleClickCommand.CanExecute(selectedPost))
+                        topicsListVM.DoubleClickCommand.Execute(selectedPost);
                 }
             }
         }

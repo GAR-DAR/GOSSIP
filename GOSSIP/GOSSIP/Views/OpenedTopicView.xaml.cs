@@ -18,9 +18,9 @@ namespace GOSSIP.Views
     /// <summary>
     /// Interaction logic for OpenedPostView.xaml
     /// </summary>
-    public partial class OpenedPostView : UserControl
+    public partial class OpenedTopicView : UserControl
     {
-        public OpenedPostView()
+        public OpenedTopicView()
         {
             InitializeComponent();
         }
