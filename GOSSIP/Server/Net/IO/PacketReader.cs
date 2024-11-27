@@ -12,17 +12,22 @@ namespace Server.Net.IO
     {
         private readonly NetworkStream _networkStream;
 
+        public byte Signal { get; private set; }
+
         public PacketReader(NetworkStream networkStream)
         {
             _networkStream = networkStream;
         }
 
-        public Packet<T> ReadPacket<T>()
+        public Packet<T> ReadPacket<T>() 
         {
-            var lengthBuffer = new byte[4];
+            var lengthBuffer = new byte[4]; // 18 000
             _networkStream.Read(lengthBuffer, 0, 4);
 
             int length = BitConverter.ToInt32(lengthBuffer, 0);
+
+            Signal = lengthBuffer[1];
+
             var dataBuffer = new byte[length];
 
             _networkStream.Read(dataBuffer, 0, length);
@@ -30,6 +35,7 @@ namespace Server.Net.IO
             var json = Encoding.UTF8.GetString(dataBuffer);
             return JsonConvert.DeserializeObject<Packet<T>>(json);
         }
+
     }
 
 }

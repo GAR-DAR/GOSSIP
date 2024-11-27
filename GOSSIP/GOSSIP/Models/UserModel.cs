@@ -6,37 +6,21 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Models
 {
-    //Повна модель користувача з потрібними для реєстрації полями. Буде змінена, of course
-
-    [Serializable]
     public class UserModel
     {
+        public uint ID { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
         public string Status { get; set; }
         public string FieldOfStudy { get; set; }
         public string Specialization { get; set; }
         public string University { get; set; }
-        public int Term { get; set; }
-        public string IconName { get; set; }
-        //Поки іконки беруться із папки /Images/TempUserIcons.
-        public string IconPath => $"pack://application:,,,/Resources/Images/TempUserIcons/{IconName}";
+        public uint Term { get; set; }
+        public string Degree { get; set; }
+        public string Role { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public bool IsBanned { get; set; }
+        public string Photo { get; set; }
         public List<ChatModel> Chats { get; set; }
-
-        public UserModel(string email, string username, string password, string status,
-            string fieldOfStudy, string specialization, string university, int term, string iconName, List<ChatModel> chats)
-        {
-            Email = email;
-            Username = username;
-            Password = password;
-            Status = status;
-            FieldOfStudy = fieldOfStudy;
-            Specialization = specialization;
-            University = university;
-            Term = term;
-            IconName = iconName;
-            Chats = chats;
-        }
     }
 }
