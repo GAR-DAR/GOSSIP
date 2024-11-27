@@ -22,25 +22,5 @@ namespace Server.Models
         public bool IsBanned { get; set; }
         public string? Photo { get; set; }
         public List<ChatModel> Chats { get; set; }
-
-        public UserModel(uint iD, string email, string username, string status,
-            string fieldOfStudy, string specialization, string university, uint term, List<ChatModel> chats, string degree, 
-            string role, DateTime createdAt, bool isBanned, string? photo)
-        {
-            ID = iD;
-            Email = email;
-            Username = username;
-            Status = status;
-            FieldOfStudy = fieldOfStudy;
-            Specialization = specialization;
-            University = university;
-            Term = term;
-            Chats = chats;
-            Degree = degree;
-            Role = role;
-            CreatedAt = createdAt;
-            IsBanned = isBanned;
-            Photo = photo;
-        }
     }
 }
