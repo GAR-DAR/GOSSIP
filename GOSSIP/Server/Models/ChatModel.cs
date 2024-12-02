@@ -11,16 +11,6 @@ namespace Server.Models
         public bool IsDeleted { get; set; }
         public List<MessageModel> Messages { get; set; }
 
-        public ChatModel(List<UserModel> users, DateTime createdAt, bool isDeleted, 
-            List<MessageModel> messages, uint iD)
-        {
-            this.Users = users;
-            this.CreatedAt = createdAt;
-            this.IsDeleted = isDeleted;
-            this.Messages = messages;
-            this.ID = iD;
-        }
-
         public void AddMessage(MessageModel message)
         {
             Messages.Add(message);
