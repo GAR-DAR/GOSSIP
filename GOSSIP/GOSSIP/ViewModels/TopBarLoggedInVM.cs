@@ -12,14 +12,14 @@ namespace GOSSIP.ViewModels
         private MainVM _mainVM;
         private UserModel _authorizedUser;
 
-        private string _iconPath;
-        public string IconPath
+        private string _photo;
+        public string Photo
         {
-            get => _iconPath;
+            get => _photo;
             set
             {
-                _iconPath = value;
-                OnPropertyChanged(nameof(IconPath));
+                _photo = value;
+                OnPropertyChanged(nameof(Photo));
             }
         }
 
@@ -40,7 +40,7 @@ namespace GOSSIP.ViewModels
             _mainVM = mainVM;
             _mainVM.AuthorizedUser = _authorizedUser;
             _username = _authorizedUser.Username;
-            IconPath = _authorizedUser.IconPath;
+            Photo = _authorizedUser.Photo;
         }
     }
 }

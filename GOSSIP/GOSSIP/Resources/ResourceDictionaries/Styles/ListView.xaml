@@ -5,43 +5,30 @@
         <ResourceDictionary Source="../Colors/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="ListBoxItem" x:Key="Message">
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-    <Setter Property="VerticalContentAlignment" Value="Top"/>
-    <Setter Property="FocusVisualStyle" Value="{x:Null}"/> <!-- Скасовуємо стиль фокусу -->
-    <Setter Property="BorderBrush" Value="Transparent"/> <!-- Скасовуємо контур -->
-    <Setter Property="BorderThickness" Value="0"/> <!-- Скасовуємо товщину контуру -->
-    <Setter Property="Background" Value="Transparent"/> <!-- Прибираємо фон -->
-    <Setter Property="Foreground" Value="Black"/> <!-- Можливо, вам потрібен чорний або інший колір для тексту -->
-    
-    <Style.Triggers>
-        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            
-        </DataTrigger>
-        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-        </DataTrigger>
+    <Style TargetType="ListBoxItem" x:Key="IncomingMessage">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Background" Value="{StaticResource RegalBlue}"/>
+        <Setter Property="Width" Value="20"/>
+    </Style>
 
-        <!-- Прибираємо фон при виборі елемента -->
-        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/> <!-- Скасовуємо контур для вибраних елементів -->
-        </DataTrigger>
 
-        <!-- Прибираємо фон при наведенні миші -->
-        <Trigger Property="IsMouseOver" Value="True">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/> <!-- Скасовуємо контур при наведенні миші -->
-        </Trigger>
-
-        <!-- Для вибраного елемента, скасовуємо стандартний фон виділення -->
-        <Trigger Property="IsSelected" Value="True">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Black"/> <!-- Якщо ви хочете інший колір для тексту при виборі -->
-        </Trigger>
-    </Style.Triggers>
-</Style>
+    <Style TargetType="ListBoxItem" x:Key="SentMessage">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource Danube}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Background" Value="{StaticResource Danube}"/>
+    </Style>
 
 
 

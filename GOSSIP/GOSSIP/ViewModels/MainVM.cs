@@ -112,7 +112,7 @@ namespace GOSSIP.ViewModels
             {
                 if (_chatsVM == null)
                 {
-                    _chatsVM = new ChatsVM(AuthorizedUser);
+                    _chatsVM = new ChatsVM(AuthorizedUser, this);
                 }
                 SelectedVM = _chatsVM;
                 TurnOffButtonsExcept("Chats");

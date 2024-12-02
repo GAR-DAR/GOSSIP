@@ -16,7 +16,7 @@ namespace GOSSIP.ViewModels
         public bool CanUpVote { get; set; } = true;
         public bool CanDownVote { get; set; } = true;
 
-        public int ID
+        public uint ID
         {
             get => _replyModel.ID;
             set
@@ -52,6 +52,16 @@ namespace GOSSIP.ViewModels
                     _replyModel.Content = value;
                     OnPropertyChanged(nameof(Content));
                 }
+            }
+        }
+
+        public DateTime CreatedAt
+        {
+            get => _replyModel.CreatedAt;
+            set
+            {
+                _replyModel.CreatedAt = value;
+                OnPropertyChanged(nameof(CreatedAt));
             }
         }
 

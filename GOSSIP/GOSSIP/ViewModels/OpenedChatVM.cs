@@ -13,8 +13,10 @@ namespace GOSSIP.ViewModels
     //Інформація про відкритий чат.
     public class OpenedChatVM : ObservableObject
     {
+        public MainVM MainVM { get; set; }
+
         private string _lastMessage;
-        private string _enteredText;
+        private string _enteredText = "";
 
         //Містить копію моделі чатів
         private ChatModel _chat;
@@ -22,24 +24,25 @@ namespace GOSSIP.ViewModels
         private ChatService _chatService = new("user_data.json");
 
         public string ChatName { get; set; }
-        public string IconPath { get; set; }
+        public string Photo { get; set; }
 
         //Список повідомлень, прив'язаних до UI. Також, прив'язаний до списку чатів моделі ChatModel
         public ObservableCollection<MessageModel> Messages { get; set; }
 
         
-        public OpenedChatVM(ChatModel chat)
+        public OpenedChatVM(ChatModel chat, MainVM mainVM)
         {
+            MainVM = mainVM;
             _chat = chat;
-            ChatName = chat.Interlocutor.Username;
+            ChatName = "OleksaLviv"; //Поки хардкод
             Messages = new(chat.Messages);
             LastMessage = Messages.Last().MessageText;
-            IconPath = _chat.Interlocutor.IconPath;
+
+            //IconPath = _chat.Users[0].Photo;
 
 
             //Підписка на зміну колекції з моделі. Модель міняється — міняється UI
-            _chat.Messages.CollectionChanged += Messages_CollectionChanged;
-
+            
             SendMessageCommand = new RelayCommand(SendMessageMethod);
         }
 
@@ -68,7 +71,10 @@ namespace GOSSIP.ViewModels
         //Метод надсилання повідомлення. Напряму міняється колекція з моделі, через підписку на івент, міняється і UI
         private void SendMessageMethod(object obj)
         {
-            _chat.AddMessage(new MessageModel(1, _chat.ID, 1, true, EnteredText, DateTime.Now, false, false));
+            MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUser, this.EnteredText, DateTime.Now, false, false);
+
+            _chat.AddMessage(message);
+            Messages.Add(message);
             EnteredText = "";
         }
 

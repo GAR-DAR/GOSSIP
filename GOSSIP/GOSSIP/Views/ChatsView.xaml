@@ -23,7 +23,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
-                            <Image Source="{Binding IconPath}" Width="40" Height="40" Margin="5"/>
+                            <Image Source="{Binding Photo}" Width="40" Height="40" Margin="5"/>
 
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding ChatName}" FontSize="30" Foreground="White" />

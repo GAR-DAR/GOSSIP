@@ -74,7 +74,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public int RepliesCount
+        public uint RepliesCount
         {
             get => Topic.RepliesCount;
             set

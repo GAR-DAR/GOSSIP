@@ -14,7 +14,7 @@ public class ChatService
     }
 
     // Додати нове повідомлення
-    public void AddMessage(int chatId, MessageModel message)
+    public void AddMessage(uint chatId, MessageModel message)
     {
         var user = _users.FirstOrDefault(u => u.Chats.Any(c => c.ID == chatId));
         if (user == null) throw new Exception("User or chat not found");

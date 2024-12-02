@@ -41,41 +41,43 @@ namespace GOSSIP.ViewModels
             Topics =
             [
                 new TopicModel(
-                    new UserModel(
-                        "stelmakh.yurii@example.com",
-                        "stelmakh_yurii",
-                        "password123",
-                        "active",
-                        "Computer Science",
-                        "Software Development",
-                        "Lviv Polytechnic",
-                        2,
-                        "stelmakh_yurii.png",
-                        new List<ChatModel>()
-                    ),
-                    DateTime.Now.AddMinutes(-10),
+                    1,
+                    new UserModel
+                    {
+                        Email = "stelmakh.yurii@example.com",
+                        Username = "stelmakh_yurii",
+                        Password = "password123",
+                        Status = "active",
+                        FieldOfStudy = "Computer Science",
+                        Specialization = "Software Development",
+                        University = "Lviv Polytechnic",
+                        Term = 2,
+                        Photo = "pack://application:,,,/Resources/Images/TempUserIcons/stelmakh_yurii.png",
+                        Chats = new List<ChatModel>()
+                    },
                     "What C# GUI framework for desktop apps is the best?",
                     "filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text.",
+                    DateTime.Now.AddMinutes(-10),
+                    2,
                     new List<string> { "C#", "GUI" },
-                    2,
-                    2,
                     new List<ReplyModel>
                     {
                         new ReplyModel(
                             1,
-                            new UserModel(
-                                "john.doe@example.com",
-                                "OleksaLviv",
-                                "password456",
-                                "active",
-                                "IT",
-                                "Web Development",
-                                "Harvard University",
-                                5,
-                                "OleksaLviv.png",
-                                new List<ChatModel>()
-                            ),
-                            null, // Topic will be set below
+                            new UserModel
+                            {
+                                Email = "john.doe@example.com",
+                                Username = "OleksaLviv",
+                                Password = "password456",
+                                Status = "active",
+                                FieldOfStudy = "IT",
+                                Specialization = "Web Development",
+                                University = "Harvard University",
+                                Term = 5,
+                                Photo = "pack://application:,,,/Resources/Images/TempUserIcons/OleksaLviv.png",
+                                Chats = new List<ChatModel>()
+                            },
+                            null,
                             null,
                             "I LOVE HER LACK OF ENERGY! GO GIRL, GIVE US NOTHING!",
                             DateTime.Now.AddMinutes(-8),
@@ -84,26 +86,29 @@ namespace GOSSIP.ViewModels
                         ),
                         new ReplyModel(
                             2,
-                            new UserModel(
-                                "jane.smith@example.com",
-                                "stelmakh_yurii",
-                                "password789",
-                                "active",
-                                "Engineering",
-                                "Embedded Systems",
-                                "MIT",
-                                4,
-                                "stelmakh_yurii.png",
-                                new List<ChatModel>()
-                            ),
-                            null, // Topic will be set below
+                            new UserModel
+                            {
+                                Email = "jane.smith@example.com",
+                                Username = "stelmakh_yurii",
+                                Password = "password789",
+                                Status = "active",
+                                FieldOfStudy = "Engineering",
+                                Specialization = "Embedded Systems",
+                                University = "MIT",
+                                Term = 4,
+                                Photo = "pack://application:,,,/Resources/Images/TempUserIcons/stelmakh_yurii.png",
+                                Chats = new List<ChatModel>()
+                            },
+                            null,
                             null,
                             "stfu hoe",
                             DateTime.Now.AddMinutes(-5),
                             5,
                             false
-                        ),
-                    }
+                        )
+                    },
+                    2,
+                    false
                 )
             ];
 
