@@ -48,7 +48,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Source="{Binding Author.IconPath}" Grid.RowSpan="2" Grid.Column="0" Height="40">
+                    <Image Source="{Binding Author.Photo}" Grid.RowSpan="2" Grid.Column="0" Height="40">
                         <Image.Clip>
                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                         </Image.Clip>
@@ -114,7 +114,7 @@
                                             <ColumnDefinition Width="40"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="{Binding User.IconPath}" Height="40" Width="40">
+                                        <Image Source="{Binding User.Photo}" Height="40" Width="40">
                                             <Image.Clip>
                                                 <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                             </Image.Clip>

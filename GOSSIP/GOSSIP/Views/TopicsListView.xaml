@@ -42,7 +42,7 @@
                             </Grid.ColumnDefinitions>
 
                             <!-- Іконка -->
-                            <Image Source="{Binding Author.IconPath}" Margin="10,10,0,0" Width="40" Height="40" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Image Source="{Binding Author.Photo}" Margin="10,10,0,0" Width="40" Height="40" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Image.Clip>
                                     <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                 </Image.Clip>

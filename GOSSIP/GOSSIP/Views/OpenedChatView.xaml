@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <convs:DateTimeToTimeStringConverter x:Key="dateTimeToTimeStringConverter"/>
         <convs:BoolToMessageColorConverter x:Key="boolToMessageColorConverter"/>
+        <convs:MessageFormatConverter x:Key="messageFormatConverter"/>
     </UserControl.Resources>
 
     <Border Background="{StaticResource PrussianBlue}">
@@ -32,40 +33,58 @@
                     <CornerRadius TopLeft="0" TopRight="20" BottomLeft="0" BottomRight="0"/>
                 </Border.CornerRadius>
                 <WrapPanel VerticalAlignment="Center">
-                    <Image Source="{Binding IconPath}" Width="40" Height="40"  Margin="10 0"/>
+                    <Image Source="{Binding Photo}" Width="40" Height="40"  Margin="10 0"/>
                     <TextBlock Text="{Binding ChatName}" Foreground="White"  FontSize="20"/>
                 </WrapPanel>
             </Border>
 
             <ListBox Grid.Row="1" Background="Transparent"
-            ItemsSource="{Binding Messages}"
-            ItemContainerStyle="{StaticResource Message}"
-            BorderThickness="0">
+         ItemsSource="{Binding Messages}"
+         BorderThickness="0">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <DataTrigger>
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource messageFormatConverter}">
+                                        <Binding Path="User" />
+                                        <Binding Path="DataContext.MainVM.AuthorizedUser" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+
+                                <DataTrigger.Value>True</DataTrigger.Value>
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="Background" Value="{StaticResource Danube}" />
+                            </DataTrigger>
+
+                            <DataTrigger>
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource messageFormatConverter}">
+                                        <Binding Path="User"/>
+                                        <Binding Path="DataContext.MainVM.AuthorizedUser" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <DataTrigger.Value>False</DataTrigger.Value>
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="Background" Value="{StaticResource RegalBlue}" />
+                                <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Resources>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type models:MessageModel}">
-                        <Border Width="150" Height="40" CornerRadius="20" BorderThickness="2">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="True">
-                                            <Setter Property="Background" Value="{StaticResource Danube}"/>
-                                            <Setter Property="BorderBrush" Value="{StaticResource RegalBlue}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding IsSentByCurrentUser}" Value="False">
-                                            <Setter Property="Background" Value="{StaticResource RegalBlue}"/>
-                                            <Setter Property="BorderBrush" Value="{StaticResource Danube}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
+                        <Border MinWidth="100" MinHeight="40" MaxWidth="300" CornerRadius="20" BorderThickness="2" VerticalAlignment="Stretch">
                             <Grid>
-                                <TextBlock Text="{Binding MessageText}" Foreground="{Binding IsSentByCurrentUser, Converter={StaticResource boolToMessageColorConverter}}" VerticalAlignment="Center" Margin="10,0,0,0" />
-                                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" Foreground="{Binding IsSentByCurrentUser, Converter={StaticResource boolToMessageColorConverter}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,2" />
+                                <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="5,5,5,5" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" 
+                               HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,3,5,0"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
 
             <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <WrapPanel>

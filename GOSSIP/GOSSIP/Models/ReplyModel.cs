@@ -7,15 +7,28 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Models
 {
-    public class ReplyModel(int id, UserModel user, TopicModel topic, ReplyModel parentReply, string content, DateTime createdAt, int rating, bool isDeleted)
+    public class ReplyModel
     {
-        public int ID { get; set; } = id;
-        public UserModel User { get; set; } = user;
-        public TopicModel Topic { get; set; } = topic;
-        public ReplyModel ParentReply { get; set; } = parentReply;
-        public string Content { get; set; } = content;
-        public DateTime CreatedAt { get; set; } = createdAt;
-        public int Rating { get; set; } = rating;
-        public bool isDeleted { get; set; } = isDeleted;
+        public uint ID { get; set; }
+        public UserModel User { get; set; }
+        public TopicModel Topic { get; set; }
+        public ReplyModel ParentReply { get; set; } = null;
+        public string Content { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int Rating { get; set; } = 0;
+        public bool IsDeleted { get; set; }
+
+        public ReplyModel(uint iD, UserModel user, TopicModel topic, ReplyModel parentReply,
+            string content, DateTime createdAt, int rating, bool isDeleted)
+        {
+            ID = iD;
+            User = user;
+            Topic = topic;
+            ParentReply = parentReply;
+            Content = content;
+            CreatedAt = createdAt;
+            Rating = rating;
+            IsDeleted = isDeleted;
+        }
     }
 }
