@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Net.IO
 {
-    public class PacketBuilder<T>
+    public class PacketBuilder<T> where T : class
     {
         private Packet<T> _packet;
         private byte _signal;
@@ -19,15 +19,16 @@ namespace GOSSIP.Net.IO
             _packet = new Packet<T>();
         }
 
-        public byte[] GetPacketBytes(byte signal, T data) {
-
-            _signal = signal;
+        public byte[] GetPacketBytes(SignalsEnum signal, T data = null) 
+        {
+            _signal = (byte)signal;
             _packet.Data = data;
-
+            
             var json = JsonConvert.SerializeObject(_packet);
             var dataBuffer = Encoding.UTF8.GetBytes(json); //kdfkdmjaflkdmfkldmfkldmfkldmfkfdmkfmd;lamk
 
-            var lengthBuffer = BitConverter.GetBytes(dataBuffer.Length); //18 0 00 
+
+            var lengthBuffer = BitConverter.GetBytes(dataBuffer.Length); //18 0 00
             lengthBuffer[1] = _signal;
 
             var packetBytes = new byte[lengthBuffer.Length + dataBuffer.Length]; //18 000 kdfkdmjaflkdmfkldmfkldmfkldmfkfdmkfmd;lamk
@@ -36,7 +37,5 @@ namespace GOSSIP.Net.IO
 
             return packetBytes;
         }
-
-
     }
 } 

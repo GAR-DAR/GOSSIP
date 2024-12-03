@@ -2,6 +2,8 @@
 
 namespace GOSSIP.Models
 {
+    //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
+    [Serializable]
     public class ChatModel
     {
         public uint ID { get; set; }
@@ -15,6 +17,19 @@ namespace GOSSIP.Models
         {
             Messages.Add(message);
         }
+
+        public ChatModel(uint iD, List<UserModel> users, string name, 
+            DateTime createdAt, bool isDeleted, List<MessageModel> messages)
+        {
+            ID = iD;
+            Users = users;
+            Name = name;
+            CreatedAt = createdAt;
+            IsDeleted = isDeleted;
+            Messages = messages;
+        }
+
+        public ChatModel() { }
     }
 
 }

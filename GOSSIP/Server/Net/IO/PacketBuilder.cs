@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Server.Net.IO
 {
-    public class PacketBuilder<T>
+    public class PacketBuilder<T> where T : class
     {
         private Packet<T> _packet;
         private byte _signal;
@@ -19,14 +19,14 @@ namespace Server.Net.IO
             _packet = new Packet<T>();
         }
 
-        public byte[] GetPacketBytes(byte signal, T data)
+        public byte[] GetPacketBytes(SignalsEnum signal, T? data = null)
         {
-
-            _signal = signal;
+            _signal = (byte)signal;
             _packet.Data = data;
 
             var json = JsonConvert.SerializeObject(_packet);
             var dataBuffer = Encoding.UTF8.GetBytes(json); //kdfkdmjaflkdmfkldmfkldmfkldmfkfdmkfmd;lamk
+
 
             var lengthBuffer = BitConverter.GetBytes(dataBuffer.Length); //18 0 00 
             lengthBuffer[1] = _signal;
