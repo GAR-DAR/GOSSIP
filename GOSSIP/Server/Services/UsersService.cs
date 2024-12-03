@@ -4,6 +4,7 @@ using Server.Models;
 
 namespace Server.Services;
 
+// TODO: ban user
 public static class UsersService
 {
     public static bool SignUp(UserModel user, MySqlConnection conn)
@@ -48,28 +49,29 @@ public static class UsersService
         return affectedRows != 0;
     }
 
-    public static UserModel? SignIn(string username, string password, MySqlConnection conn)
+    public static UserModel? SignIn(string typeOfLogin, string login, string password, MySqlConnection conn)
     {
-        if (!Exists("username", username, conn))
+        // typeOfLogin: email || username
+        if (!Exists(typeOfLogin, login, conn))
             return null; // TODO: may be replaced with an exception
 
         string signInQuery =
-            """
+            $"""
             SELECT users.id, users.username, users.password, users.email, users.photo, statuses.status, 
                    fields_of_study.field, specializations.specialization, universities.university, term, degrees.degree, 
                    roles.role, created_at, is_banned
             FROM users
-            JOIN statuses ON users.status_id = statuses.id
-            JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
-            JOIN specializations ON users.specialization_id = specializations.id
-            JOIN universities ON users.university_id = universities.id
-            JOIN degrees ON users.degree_id = degrees.id
-            JOIN roles ON users.role_id = roles.id
-            WHERE username = @username
+            LEFT JOIN statuses ON users.status_id = statuses.id
+            LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
+            LEFT JOIN specializations ON users.specialization_id = specializations.id
+            LEFT JOIN universities ON users.university_id = universities.id
+            LEFT JOIN degrees ON users.degree_id = degrees.id
+            LEFT JOIN roles ON users.role_id = roles.id
+            WHERE {typeOfLogin} = @value
             """;
 
         using var selectCommand = new MySqlCommand(signInQuery, conn);
-        selectCommand.Parameters.AddWithValue("@username", username);
+        selectCommand.Parameters.AddWithValue("@value", login);
 
         using var reader = selectCommand.ExecuteReader();
         reader.Read();
@@ -79,7 +81,7 @@ public static class UsersService
         if (password != storedPassword)
             return null; // TODO: exception is begging to be thrown here
 
-        return new UserModel
+        var user = new UserModel
         {
             ID = reader.GetUInt32("id"),
             Username = reader.GetString("username"),
@@ -96,6 +98,12 @@ public static class UsersService
             IsBanned = reader.GetBoolean("is_banned")
             // TODO: ChatModels
         };
+        
+        reader.Close();
+
+        user.Chats = ChatsService.SelectByUser(user, conn);
+
+        return user;
     }
 
     public static bool Exists(string findBy, string value, MySqlConnection conn)
@@ -110,6 +118,7 @@ public static class UsersService
         return Convert.ToBoolean(selectCommand.ExecuteScalar());
     }
 
+    // TODO: wtf I've written ????
     public static UserModel Select(uint id, MySqlConnection conn)
     {
         string selectQuery =

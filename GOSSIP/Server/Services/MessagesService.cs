@@ -3,6 +3,8 @@ using Server.Models;
 
 namespace Server.Services;
 
+// TODO: Delete message
+// TODO: Read message
 public static class MessagesService
 {
     public static bool Add(MessageModel message, MySqlConnection conn)

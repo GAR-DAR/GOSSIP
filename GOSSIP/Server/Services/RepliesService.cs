@@ -3,6 +3,7 @@ using Server.Models;
 
 namespace Server.Services;
 
+// TODO: delete reply
 public static class RepliesService
 {
     public static bool Add(ReplyModel reply, MySqlConnection conn)
