@@ -22,8 +22,8 @@ namespace Server.Models
         public string Role { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsBanned { get; set; }
-        public string Photo { get; set; }
-        public List<ChatModel> Chats { get; set; }
+        public string? Photo { get; set; }
+        public List<ChatModel>? Chats { get; set; }
 
         public UserModel() {}
 

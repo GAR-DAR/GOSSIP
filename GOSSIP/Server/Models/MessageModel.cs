@@ -2,7 +2,6 @@
 
 namespace Server.Models
 {
-    //Тимчасова модель повідомлень. Пізніше буде замінена на робочу 
     [Serializable]
     public class MessageModel
     {
