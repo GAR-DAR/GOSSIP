@@ -240,16 +240,24 @@ namespace GOSSIP.ViewModels
             try
             {
                 ValidateInput();
-                UserModel newUser = new(_mainVM.Email, 
-                    _mainVM.Username,
-                    _mainVM.Password,
-                    _mainVM.Status, 
-                    _mainVM.FieldOfStudy, 
-                    _mainVM.Specialization, 
-                    _mainVM.University, 
-                    CalculateTerm(_mainVM.Degree), 
-                    "nophotoicon.png",
-                    []);
+
+                UserModel newUser = new UserModel(
+                    id: 0,
+                    email: _mainVM.Email,
+                    username: _mainVM.Username,
+                    password: _mainVM.Password,
+                    status: _mainVM.Status,
+                    fieldOfStudy: _mainVM.FieldOfStudy,
+                    specialization: _mainVM.Specialization,
+                    university: _mainVM.University,
+                    term: CalculateTerm(_mainVM.Degree),
+                    degree: _mainVM.Degree,
+                    role: "User",
+                    createdAt: DateTime.Now,
+                    isBanned: false,
+                    photo: "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
+                    chats: []
+                );
                 _chatService.AddUser(newUser);
 
                 CloseDialog.Invoke(newUser);

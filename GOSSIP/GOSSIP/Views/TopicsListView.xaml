@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="GOSSIP.Views.TopicsListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:conv="clr-namespace:GOSSIP.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <conv:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
+        <conv:StringToShortenedStringConverter x:Key="stringToShortenedStringConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" Height="200" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
+                        <Grid>
+                            <!-- Використовуємо основну сітку -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <!-- Для іконки та інформації про автора -->
+                                <RowDefinition Height="0.5*"/>
+                                <!-- Для заголовка -->
+                                <RowDefinition Height="*"/>
+                                <!-- Для контенту -->
+                                <RowDefinition Height="*"/>
+                                <!-- Для тегів і рейтингу -->
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <!-- Для іконки -->
+                                <ColumnDefinition Width="900"/>
+                                <!-- Для тексту -->
+                                <ColumnDefinition Width="100"/>
+                                <!-- Для відповідей -->
+                                <ColumnDefinition Width="50"/>
+                                <!-- Для рейтингу -->
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Іконка -->
+                            <Image Source="{Binding Author.Photo}" Margin="10,10,0,0" Width="40" Height="40" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image.Clip>
+                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                </Image.Clip>
+                            </Image>
+
+                            <!-- Інформація про автора -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,8,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White"/>
+                            </StackPanel>
+
+                            <!-- Заголовок -->
+                            <TextBlock Text="{Binding Title}" Margin="20,10,0,0" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
+
+                            <!-- Контент -->
+                            <TextBlock Text="{Binding Content, Converter={StaticResource stringToShortenedStringConverter}}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
+
+                            <!-- Теги -->
+                            <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="10,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <ItemsControl ItemsSource="{Binding Tags}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0">
+                                                <TextBlock Text="{Binding}" FontSize="12" Margin="5,0,5,0"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+
+                            <!-- Кількість відповідей -->
+                            <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                                <Image Source="pack://application:,,,/Resources/Images/Comment.png" Width="16" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding RepliesCount}" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
+                            </StackPanel>
+
+                            <!-- Рейтинг -->
+                            <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                                <Image Source="pack://application:,,,/Resources/Images/Upvote.png" Width="16" Margin="0,0,5,0"/>
+                                <TextBlock Text="{Binding Rating}" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+            <!-- Стиль для ListBox, щоб прибрати фокус і виділення -->
+            <ListBox.Style>
+                <Style TargetType="ListBox">
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="IsTabStop" Value="False" />
+                </Style>
+            </ListBox.Style>
+
+            <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="OnItemMouseDoubleClick" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    <Setter Property="IsTabStop" Value="False" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Style.Triggers>
+                        <!-- При наведенні миші -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                        </Trigger>
+                        <!-- При виборі елемента -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Content="+" Margin="20"/>
+    </Grid>
+
+</UserControl>

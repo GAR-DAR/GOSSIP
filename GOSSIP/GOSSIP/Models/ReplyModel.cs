@@ -1,4 +1,5 @@
-﻿using System;
+using GOSSIP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,6 @@ namespace GOSSIP.Models
             Rating = rating;
             IsDeleted = isDeleted;
         }
-
+		public ReplyModel () {}
     }
 }

@@ -7,21 +7,23 @@
         xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
         xmlns:views="clr-namespace:GOSSIP.Views"
         mc:Ignorable="d"
-        Title="SignUpView" Height="600" Width="350"
+        Title="SignUpView" Height="400" Width="350"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen" 
         ResizeMode="NoResize" 
         WindowStyle="None">
 
-    <Border CornerRadius="20" Background="{DynamicResource Downriver}">
+    <Border CornerRadius="20" Background="{DynamicResource Downriver}" BorderBrush="{DynamicResource Danube}" BorderThickness="2">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.8*"/>
                 <RowDefinition Height="0.75*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -29,22 +31,51 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="LOG IN" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10 0"/>
-            <Button Grid.Row="0" Grid.Column="1" Content="X" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Click="Close_Click"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="LOG IN" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,0,0,0"/>
+            <Button Style="{StaticResource CloseButton}" Grid.Column="1" Grid.Row="0" Margin="0,0,20,0" Click="Close_Click">
+                <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
+            </Button>
 
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center">
-                <TextBlock Text="Email or username" Foreground="LightGray" HorizontalAlignment="Center" FontSize="20" Margin="0 0 40 0"/>
-                <TextBox Style="{DynamicResource AuthTextBox}" Text="{Binding EmailOrUsername}"/>
-            </StackPanel>
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Email or username" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="50,0,0,0"/>
 
-            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center">
-                <TextBlock Text="Password" Foreground="LightGray" HorizontalAlignment="Center" FontSize="20" Margin="0 0 120 0"/>
-                <TextBox Style="{DynamicResource AuthTextBox}" Text="{Binding Password}"/>
-                <TextBlock Text="Forgot password?" Foreground="White" HorizontalAlignment="Center" FontSize="17"/>
-            </StackPanel>
+            <TextBox Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding EmailOrUsername}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
 
-            <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="Already have an account? Sign up." Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="15"/>
-            <Button Grid.Row="4" Grid.Column="1" Content="Log In" Width="100" Height="40" Command="{Binding LogInCommand}"/>
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="Password" Foreground="White" HorizontalAlignment="Left" FontSize="20" VerticalAlignment="Bottom" Margin="50,0,0,0"/>
+
+            <TextBox Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Password}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
+
+            <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">
+                <Run Text="Don't have an account? " Foreground="White" />
+                    <Hyperlink Command="{Binding ShowSignUpCommand}" Foreground="{DynamicResource Danube}" TextDecorations="Underline">
+                        <Run Text="Sign up." />
+                    </Hyperlink>
+            </TextBlock>
+
+            <Button Grid.Row="6" Grid.Column="1" Content="Log in" Foreground="White" FontSize="20" Height="40" Width="100" Command="{Binding LogInCommand}" Margin="30,0,0,10">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{DynamicResource Danube}" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource PrussianBlue}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </Grid>
     </Border>
 

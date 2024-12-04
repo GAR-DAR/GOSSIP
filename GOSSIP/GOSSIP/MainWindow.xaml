@@ -15,7 +15,7 @@
         WindowStartupLocation="CenterScreen" 
         WindowState="Maximized">
 
-    <Window.Resources>  
+    <Window.Resources>
         <convs:StringToIntConverter x:Key="StringToIntConverter"/>
         <convs:BoolToColorConverter x:Key="BoolToColorConverter"/>
 
@@ -23,8 +23,8 @@
             <views:ChatsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:PostsListVM}">
-            <views:PostsListView/>
+        <DataTemplate DataType="{x:Type viewModels:TopicsListVM}">
+            <views:TopicsListView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:TopBarSignUpVM}">
@@ -35,8 +35,8 @@
             <views:TopBarLoggedIn/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:OpenedPostVM}">
-            <views:OpenedPostView/>
+        <DataTemplate DataType="{x:Type viewModels:OpenedTopicVM}">
+            <views:OpenedTopicView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -77,8 +77,8 @@
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20*"/> 
-                    <ColumnDefinition Width="80*"/> 
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="80*"/>
                 </Grid.ColumnDefinitions>
 
                 <views:SideBarView DataContext="{Binding}" Grid.Column="0"/>

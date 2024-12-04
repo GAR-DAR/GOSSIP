@@ -9,13 +9,14 @@
              d:DesignHeight="450" d:DesignWidth="476">
 
     <UserControl.Resources>
-        <convs:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <convs:BoolToColorConverter x:Key="boolToColorConverter"/>
+        <convs:BoolToSideBarTextColorConverter x:Key="boolToSideBarTextColorConverter"/>
     </UserControl.Resources>
 
     <Grid>
         <Border Background="{DynamicResource PrussianBlue}">
             <StackPanel>
-                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowPostsListCommand}" Background="{Binding IsTopicsPressed, Converter={StaticResource BoolToColorConverter}}" Margin="0 40 0 0">
+                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowTopicsListCommand}" Foreground="{Binding IsTopicsPressed, Converter={StaticResource boolToSideBarTextColorConverter}}"  Background="{Binding IsTopicsPressed, Converter={StaticResource boolToColorConverter}}" Margin="0 40 0 0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/Resources/Images/Topics.png" Width="30" Height="30" Margin="0 0 5 0"/>
                         <TextBlock Text="Topics"/>
@@ -27,7 +28,7 @@
                         <TextBlock Text="Tags"/>
                     </StackPanel>
                 </Button>
-                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowChatsCommand}" Background="{Binding IsChatsPressed, Converter={StaticResource BoolToColorConverter}}" Margin="0 5 0 0">
+                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowChatsCommand}" Foreground="{Binding IsChatsPressed, Converter={StaticResource boolToSideBarTextColorConverter}}" Background="{Binding IsChatsPressed, Converter={StaticResource boolToColorConverter}}" Margin="0 5 0 0">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="pack://application:,,,/Resources/Images/Message.png" Width="30" Height="30" Margin="0 0 5 0"/>
                         <TextBlock Text="Messages"/>

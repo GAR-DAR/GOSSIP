@@ -18,3 +18,13 @@ GOSSIP/GOSSIP/Server/obj
 /GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GOSSIP.AssemblyInfo.cs
 /GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GeneratedInternalTypeHelper.g.cs
 /GOSSIP/Server/obj/Debug/net8.0/Server.AssemblyInfo.cs
+*.v2
+*.bin
+*.g.i.cs
+*.g.cs
+*.AssemblyInfo.cs
+/GOSSIP/GOSSIP/obj/
+/GOSSIP/GOSSIP/obj/Debug/net8.0-windows/Views/
+/GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GOSSIP.AssemblyInfo.cs
+/GOSSIP/GOSSIP/obj
+/GOSSIP/GOSSIP/obj/Debug

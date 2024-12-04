@@ -14,6 +14,7 @@ namespace GOSSIP.ViewModels
     {
         //Прив'язана до UI.
         public ObservableCollection<OpenedChatVM> ChatList { get; set; } = [];
+        public uint CurrentUserID { get; set; }
 
         private OpenedChatVM _openedChatVM;
         
@@ -28,14 +29,15 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ChatsVM(UserModel currentUser)
+        public ChatsVM(UserModel currentUser, MainVM mainVM)
         {
             if(currentUser.Chats != null)
             {
                 foreach (ChatModel chatModel in currentUser.Chats)
-                ChatList.Add(new(chatModel));
+                ChatList.Add(new(chatModel, mainVM));
             }
             
+            CurrentUserID = currentUser.ID;
 
             /*ChatList = chatlist;
             //Захардкоджені чати
