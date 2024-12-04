@@ -30,6 +30,6 @@ namespace Server.Models
             IsDeleted = isDeleted;
         }
 
-        ReplyModel() { }
+        public ReplyModel() { }
     }
 }

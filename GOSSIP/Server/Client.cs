@@ -1,11 +1,16 @@
-﻿using Server.Models;
+﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
+using Server.Models;
 using Server.Net.IO;
+using Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -15,20 +20,22 @@ namespace Server
     {
         public Guid UID { get; set; }
         public TcpClient ClientSocket { get; set; }
-        public UserModel user { get; set; }
+        public UserModel User { get; set; }
 
         PacketReader _packetReader;
 
-        public Client(TcpClient client)
+        public Client(TcpClient client, UserModel user)
         {
             ClientSocket = client;
             UID = Guid.NewGuid();
 
-            _packetReader = new PacketReader(ClientSocket.GetStream());
+            User = user;
 
-            var userPacket = _packetReader.ReadPacket<UserModel>();
-            user = userPacket.Data;
+            //_packetReader = new PacketReader(ClientSocket.GetStream());
 
+            //var userPacket = _packetReader.ReadPacket<UserModel>();
+            //user = userPacket.Data;
+            
 
             Console.WriteLine($"{DateTime.Now} - Client {UID} {user.Username} connected :)");
 
@@ -50,21 +57,47 @@ namespace Server
                     switch (signal)
                     {
                         case (byte)SignalsEnum.Login:
-                            var authUserModel = _packetReader.DeserializePacket<AuthUserModel>(rawPacket);
+                            {
+                                var authUserModel = _packetReader.DeserializePacket<AuthUserModel>(rawPacket);
 
-                            //go to bd and find our UserModel
-                            //send userModel
+                                using DatabaseService db = new DatabaseService();
 
-                            user.Username = authUserModel.Username;
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} {user.Username} logged in with password {authUserModel.Password}).");
-                            break;
+                                var options = new JsonSerializerOptions
+                                {
+                                    WriteIndented = true,
+                                    ReferenceHandler = ReferenceHandler.Preserve
+                                };
 
+                                var userModel = UsersService.SignIn("username", authUserModel.Username, authUserModel.Password, db.Connection);
+
+                                if (userModel != null)
+                                {
+                                    // Serialize and deserialize the userModel to handle reference preservation
+                                    var serializedUserModel = JsonSerializer.Serialize(
+                                        JsonSerializer.Deserialize<UserModel?>(
+                                            JsonSerializer.Serialize(userModel, options),
+                                            new JsonSerializerOptions
+                                            {
+                                                ReferenceHandler = ReferenceHandler.Preserve
+                                            }
+                                        ),
+                                        options
+                                    );
+
+                                    SendPacket(SignalsEnum.Login, serializedUserModel);
+                                }
+                                else
+                                {
+                                    // Handle failed login
+                                }
+                                break;
+                            }
                         case (byte)SignalsEnum.Register:
-                            user = _packetReader.DeserializePacket<UserModel>(rawPacket);
+                            User = _packetReader.DeserializePacket<UserModel>(rawPacket);
 
                             //send userModel
 
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} {user.Username} registered).");
+                            Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} registered).");
                             break;
 
                         case (byte)SignalsEnum.GetTopics:
@@ -118,12 +151,35 @@ namespace Server
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine($"{DateTime.Now} - Client {user.Username} disconnected :(");
+                    Console.WriteLine($"{DateTime.Now} - Client {User.Username} disconnected :(");
                     ClientSocket.Close();
                     break;
                 }
             }
         }
+        #region Helpers
+
+        private void SendPacket<T>(SignalsEnum signal, T user) where T : class
+        {
+            if (ClientSocket.Connected)
+            {
+                var authPacket = new PacketBuilder<T>();
+                var packet = authPacket.GetPacketBytes(signal, user);
+                ClientSocket.Client.Send(packet);
+            }
+        }
+
+        private void SendPacket(SignalsEnum signal)
+        {
+            if (ClientSocket.Connected)
+            {
+                var authPacket = new PacketBuilder<object>();
+                var packet = authPacket.GetPacketBytes(signal);
+                ClientSocket.Client.Send(packet);
+            }
+        }
+
+        #endregion
 
     }
 

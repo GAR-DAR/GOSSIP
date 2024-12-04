@@ -12,6 +12,11 @@ namespace GOSSIP.Net
 {
     public class Server
     {
+        public Server()
+        {
+            _client = new TcpClient();
+        }
+
         TcpClient _client;
 
         public PacketReader packetReader;
@@ -26,8 +31,9 @@ namespace GOSSIP.Net
 
         public event Action registerEvent;
         public event Action editUserEvent;
-        public event Action loginEvent;
         public event Action logoutEvent;
+        public event Action<UserModel> loginEvent;
+
 
         //Signals
 
@@ -37,7 +43,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.22.237.81", 7891);
+            _client.Connect("127.0.0.1", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -193,49 +199,44 @@ namespace GOSSIP.Net
                 SendPacket(SignalsEnum.DeleteChat, new { chatID = chatId });
             }
 
-           
 
-            #endregion
 
-            #region Getters
+        #endregion
 
-            #endregion
+        #region Getters
 
-            #region Read Signals From Server
+        #endregion
 
-            private void ReadPackets()
+        #region Read Signals From Server
+
+        private void ReadPackets()
+        {
+            Task.Run(() =>
             {
-                Task.Run(() =>
+                while (true)
                 {
-                    while (true)
+                    if (_cancellationTokenSource.Token.IsCancellationRequested)
                     {
-                        if (_cancellationTokenSource.Token.IsCancellationRequested)
-                        {
-                            break;
-                        }
-                        var signal = packetReader.Signal;
-                        switch (signal)
-                        {
-                            case 0:
-                                connectedEvent?.Invoke();
-                                break;
-
-                            case 255:
-                                userDisonnectedEvent?.Invoke();
-                                break;
-                            default:
-                                Console.WriteLine("Unknown signal");
-                                break;
-                        }
+                        break;
                     }
-                }, _cancellationTokenSource.Token);
-            }
+                    var signal = packetReader.Signal;
+                    switch (signal)
+                    {
+                        case (byte)SignalsEnum.Login:
+                            var user = packetReader.ReadPacket<UserModel>().Data;
+                            loginEvent?.Invoke(user);
+                            break;
+                            // Other cases
+                    }
+                }
+            }, _cancellationTokenSource.Token);
+        }
 
-            #endregion
+        #endregion
 
-            #region Helpers
+        #region Helpers
 
-            private void SendPacket<T>(SignalsEnum signal, T user) where T : class
+        private void SendPacket<T>(SignalsEnum signal, T user) where T : class
             {
                 if (_client.Connected)
                 {
