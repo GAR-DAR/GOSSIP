@@ -6,7 +6,6 @@ namespace Server.Services;
 
 // TODO: Delete a chat
 // TODO: Delete a user from a chat
-// TODO: Retrieve chats
 public static class ChatsService
 {
     public static bool Create(ChatModel chat, MySqlConnection conn)
@@ -56,6 +55,20 @@ public static class ChatsService
         insertCommand.Parameters.AddWithValue("@username", user.Username);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
+    }
+
+    public static bool DeleteUser(UserModel user, MySqlConnection conn)
+    {
+        string deleteUserQuery =
+            """
+            DELETE FROM chats_to_users WHERE user_id = (SELECT id FROM users WHERE username = @username)
+            """;
+
+        using var deleteCommand = new MySqlCommand(deleteUserQuery, conn);
+        deleteCommand.Parameters.AddWithValue("@username", user.Username);
+
+        int rowsAffected = deleteCommand.ExecuteNonQuery();
         return rowsAffected != 0;
     }
 

@@ -4,7 +4,8 @@ using Server.Models;
 
 namespace Server.Services;
 
-// TODO: search by tag
+// TODO: pagination
+// TODO: downvote
 public static class TopicsService
 {
     public static List<TopicModel> SelectAll(MySqlConnection conn)
@@ -382,5 +383,21 @@ public static class TopicsService
         }
         
         return topics;
+    }
+
+    public static bool Upvote(TopicModel topic, MySqlConnection conn)
+    {
+        string upvoteQuery =
+            """
+            UPDATE topics
+            SET votes = votes + 1
+            WHERE id = @topic_id
+            """;
+
+        using var updateCommand = new MySqlCommand(upvoteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@topic_id", topic.ID);
+
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
     }
 }
