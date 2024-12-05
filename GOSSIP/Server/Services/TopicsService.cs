@@ -210,7 +210,7 @@ public static class TopicsService
         return true;
     }
 
-    public static bool Delete(uint id, MySqlConnection conn)
+    public static bool Delete(TopicModel topic, MySqlConnection conn)
     {
         string deleteQuery =
             $"""
@@ -220,7 +220,7 @@ public static class TopicsService
              """;
 
         using var updateCommand = new MySqlCommand(deleteQuery, conn);
-        updateCommand.Parameters.AddWithValue("@id", id);
+        updateCommand.Parameters.AddWithValue("@id", topic.ID);
 
         int affectedRows = updateCommand.ExecuteNonQuery();
         
