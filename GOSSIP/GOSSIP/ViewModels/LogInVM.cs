@@ -50,49 +50,6 @@ namespace GOSSIP.ViewModels
         
         private void LogInMethod(object obj)
         {
-            UserModel userModel = new(
-                 1,
-                 "1",
-                 "pupsaik",
-                 "1",
-                 "Student",
-                 "IT",
-                 "Software Engineering",
-                 "Lviv Polytechnic",
-                 2,
-                 "Bachelor",
-                 "User",
-                 DateTime.Now,
-                 false,
-                 "pack://application:,,,/Resources/Images/TempUserIcons/stelmakh_yurii.png",
-                 null
-                );
-
-            UserModel secondUser = new UserModel(1, "email", "OleksaLviv", "password", "Student", "IT", "Computer Science", "Lviv Polytechnic", 2, "Bachelor", "User", DateTime.Now, false, "pack://application:,,,/Resources/Images/TempUserIcons/OleksaLviv.png", []);
-
-            List<ChatModel> chats = [
-                new ChatModel(
-                    1,
-                    [null, null],
-                    "OleksaLviv",
-                    DateTime.Now,
-                    false,
-                    [])
-            ];
-
-            List<MessageModel> messageModels = [
-                new MessageModel(1, chats[0], null, "привіт", DateTime.Now, false, false),
-                new MessageModel(1, chats[0], null, "привіт", DateTime.Now, false, false)
-                ];
-
-            chats[0].Messages = messageModels;
-            userModel.Chats = chats;
-
-            List<UserModel> list = new() { userModel };
-
-            string jsonString1 = JsonSerializer.Serialize(list);
-            File.WriteAllText("user_data.json", jsonString1);
-
             if (string.IsNullOrEmpty(EmailOrUsername) || string.IsNullOrEmpty(Password))
             {
                 MessageBox.Show("Please fill all fields");

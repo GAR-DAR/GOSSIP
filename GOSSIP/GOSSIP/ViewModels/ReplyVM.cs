@@ -1,6 +1,7 @@
 ﻿using GOSSIP.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -77,6 +78,8 @@ namespace GOSSIP.ViewModels
                 }
             }
         }
+
+        public ObservableCollection<ReplyModel> replyModels { get; set; } = [];
 
         public ReplyVM(ReplyModel replyModel)
         {

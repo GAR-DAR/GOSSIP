@@ -12,6 +12,8 @@
         <convs:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
     </UserControl.Resources>
 
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7*"/>
@@ -137,7 +139,21 @@
                                                 CommandParameter="{Binding}" 
                                                 Height="30" 
                                                 Width="30"/>
+                                        <Button Content="Reply"
+                                                        Width="100"
+                                                        Height="30"
+                                                        Command="{Binding DataContext.ReplyToReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
                                     </WrapPanel>
+
+                                    <!-- Вкладені реплаї -->
+                                    <ItemsControl ItemsSource="{Binding Replies}" Margin="20 0 0 0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <!-- Вкладений шаблон такий самий -->
+                                                <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource ReplyTemplate}"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
