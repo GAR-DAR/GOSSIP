@@ -38,6 +38,10 @@
         <DataTemplate DataType="{x:Type viewModels:OpenedTopicVM}">
             <views:OpenedTopicView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:CreateTopicVM}">
+            <views:CreateTopicView/>
+        </DataTemplate>
     </Window.Resources>
 
 

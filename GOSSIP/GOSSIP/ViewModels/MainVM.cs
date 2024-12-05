@@ -18,6 +18,18 @@ namespace GOSSIP.ViewModels
         private bool _isTagsPressed = false;
         private bool _isChatsPressed = false;
 
+        public string ChatIcon => IsChatsPressed 
+            ? "pack://application:,,,/Resources/Images/MessageDanube.png" 
+            : "pack://application:,,,/Resources/Images/Message.png";
+
+        public string TopicsIcon => IsTopicsPressed
+            ? "pack://application:,,,/Resources/Images/TopicsDanube.png"
+            : "pack://application:,,,/Resources/Images/Topics.png";
+
+         public string TagsIcon => IsTagsPressed
+            ? "pack://application:,,,/Resources/Images/TagsDanube.png"
+            : "pack://application:,,,/Resources/Images/Tags.png";
+
         public UserModel AuthorizedUser { get; set; }
         
         public bool IsTopicsPressed
@@ -27,6 +39,7 @@ namespace GOSSIP.ViewModels
             {
                 _isTopicsPressed = value;
                 OnPropertyChanged(nameof(IsTopicsPressed));
+                OnPropertyChanged(nameof(TopicsIcon));
             }
         }
 
@@ -37,6 +50,7 @@ namespace GOSSIP.ViewModels
             {
                 _isTagsPressed = value;
                 OnPropertyChanged(nameof(IsTagsPressed));
+                OnPropertyChanged(nameof(TagsIcon));
             }
         }
 
@@ -47,6 +61,7 @@ namespace GOSSIP.ViewModels
             {
                 _isChatsPressed = value;
                 OnPropertyChanged(nameof(IsChatsPressed));
+                OnPropertyChanged(nameof(ChatIcon));
             }
         }
 
@@ -89,6 +104,7 @@ namespace GOSSIP.ViewModels
         public ICommand ShowTopicsListCommand { get; set; }
         public ICommand ShowChatsCommand { get; set; }
         public ICommand OpenTopicsCommand { get; set; }
+        public ICommand CreateTopicCommand { get; set; }
 
         public MainVM()
         {
@@ -97,7 +113,20 @@ namespace GOSSIP.ViewModels
             SelectedVM = _topicListVM;
             SelectedTopBarVM = _topBarSignUpVM;
             ShowTopicsListCommand = new RelayCommand(ShowPostsListMethod);
-            ShowChatsCommand = new RelayCommand(ShowChatsMethod);            
+            ShowChatsCommand = new RelayCommand(ShowChatsMethod);
+            CreateTopicCommand = new RelayCommand(CreateTopicMethod);
+        }
+
+        private void CreateTopicMethod(object obj)
+        {
+            if (AuthorizedUser != null)
+            {
+                SelectedVM = new CreateTopicVM(this);
+            }
+            else
+            {
+                ShowLogInMethod(null);
+            }
         }
 
         public void ShowPostsListMethod(object obj)

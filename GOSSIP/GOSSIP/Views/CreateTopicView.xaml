@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="GOSSIP.Views.CreateTopicView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GOSSIP.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="952" d:DesignWidth="1540">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="93*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="10" Content="&lt;-"/>
+
+        <ScrollViewer Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="70*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Create topic" Foreground="White" Grid.Row="0" Grid.Column="1" FontSize="30" FontWeight="Bold" Margin="0 10 0 0"/>
+
+                <StackPanel Grid.Row="1" HorizontalAlignment="Left">
+                    <TextBlock Text="Title" Foreground="White" FontSize="12" />
+                    <TextBox Width="500" Height="40" Text="{Binding Title}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" HorizontalAlignment="Left">
+                    <TextBlock Text="Content" Foreground="White" FontSize="12" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <TextBox  Text="{Binding Content}"
+                                  TextWrapping="Wrap" 
+                                  FontSize="16"  
+                                  Padding="10"
+                                  Width="1000"
+                                  AcceptsReturn="True"
+                                  MinHeight="400"/>
+                    </ScrollViewer>
+                    <Button Content="Post" Command="{Binding CreateTopicCommand}" Width="100" Height="40" HorizontalAlignment="Right" Margin="0 5"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2">
+                    <TextBlock Text="Tags" Foreground="White"/>
+                    <TextBox HorizontalAlignment="Left" Width="300" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" x:Name="SearchBox">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SubmitTagCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                    <Popup IsOpen="{Binding IsEmpty}"
+                           PlacementTarget="{Binding ElementName=SearchBox}"
+                           Placement="Bottom"
+                           StaysOpen="False">       
+                        <Border Background="White">
+                            <ListBox HorizontalAlignment="Left" 
+                                                         ItemsSource="{Binding FilteredTags}" 
+                                                         Width="300"
+                                                         SelectedItem="{Binding SelectedTag}">      
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0">
+                                            <TextBlock Text="{Binding}" FontSize="12" Margin="5,0,5,0"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                        </Border>
+                    </Popup>
+
+                    <ItemsControl ItemsSource="{Binding SelectedTags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0" MinWidth="40">
+                                    <WrapPanel>
+                                        <Button Width="20" Height="20" Content="x" Command="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"/>
+                                        <TextBlock Text="{Binding}" FontSize="18" Margin="5,0,5,0" HorizontalAlignment="Center"/>
+                                    </WrapPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

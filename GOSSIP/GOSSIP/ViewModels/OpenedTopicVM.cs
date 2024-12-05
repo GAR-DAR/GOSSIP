@@ -1,4 +1,5 @@
-﻿using GOSSIP.Models;
+﻿using GOSSIP.JsonHandlers;
+using GOSSIP.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,9 @@ namespace GOSSIP.ViewModels
 
         private bool _canUpVote = true;
         private bool _canDownVote = true;
+
         private MainVM _mainVM;
+        private JsonStorage _jsonStorage = new("topic_data.json");
 
         public ICommand BackCommand { get; set; }
         public ICommand UpVoteTopicCommand { get; set; }
@@ -23,6 +26,7 @@ namespace GOSSIP.ViewModels
         public ICommand AddReplyCommand { get; set; }
         public ICommand UpVoteReplyCommand { get; set; }
         public ICommand DownVoteReplyCommand { get; set; }
+        public ICommand ReplyToReplyCommand { get; set; }
 
         public UserModel Author
         {
@@ -134,6 +138,8 @@ namespace GOSSIP.ViewModels
                 Rating--;
                 _canUpVote = true;
             }
+            
+            _jsonStorage.SaveTopic(Topic);
         }
 
         private void DownVoteMethod(object obj)
@@ -159,6 +165,8 @@ namespace GOSSIP.ViewModels
                 Rating++;
                 _canDownVote = true;
             }
+
+            _jsonStorage.SaveTopic(Topic);
         }
 
         private void AddReplyMethod(object obj)
@@ -177,6 +185,8 @@ namespace GOSSIP.ViewModels
                 Topic.Replies.Add(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false));
                 EnteredReplyText = "";
             }
+
+            _jsonStorage.SaveTopic(Topic);
         }
 
         private void UpVoteReplyMethod(object obj)
@@ -204,6 +214,8 @@ namespace GOSSIP.ViewModels
                     reply.CanUpVote = true;
                 }
             }
+
+            _jsonStorage.SaveTopic(Topic);
         }
 
         private void DownVoteReplyMethod(object obj)
@@ -231,6 +243,8 @@ namespace GOSSIP.ViewModels
                     reply.CanDownVote = true;
                 }
             }
+
+            _jsonStorage.SaveTopic(Topic);
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using GOSSIP.ViewModels;
+﻿using GOSSIP.Models;
+using GOSSIP.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +16,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace GOSSIP
 {
@@ -31,7 +35,90 @@ namespace GOSSIP
         {
             InitializeComponent();
 
+            ReplyModel reply = new ReplyModel(
+                            1,
+                            new UserModel(
+                                1,
+                                "email",
+                                "usename",
+                                "password",
+                                "Student",
+                                "idgaf",
+                                "Software Engineering",
+                                "Lviv Polytechnic",
+                                4,
+                                "Bachelor",
+                                "User",
+                                DateTime.Now,
+                                false,
+                                "nophotoicon.png",
+                                []),
+                            null,
+                            null,
+                            "Reply",
+                            DateTime.Now,
+                            5,
+                            false);
+
+             TopicModel topicModel = new(
+                5,
+                new UserModel(
+                    5,
+                    "email",
+                    "usename",
+                    "password",
+                    "Student",
+                    "idgaf",
+                    "Software Engineering",
+                    "Lviv Polytechnic",
+                    4,
+                    "Bachelor",
+                    "User",
+                    DateTime.Now,
+                    false,
+                    "nophotoicon.png",
+                    []),
+                    "Post",
+                    "Idgaf",
+                    DateTime.Now,
+                    5,
+                    [],
+                    [
+                        reply,
+                        new ReplyModel(
+                            1,
+                            new UserModel(
+                                1,
+                                "email",
+                                "usename",
+                                "password",
+                                "Student",
+                                "idgaf",
+                                "Software Engineering",
+                                "Lviv Polytechnic",
+                                4,
+                                "Bachelor",
+                                "User",
+                                DateTime.Now,
+                                false,
+                                "nophotoicon.png",
+                                []),
+                            null,
+                            reply,
+                            "reply to reply",
+                            DateTime.Now,
+                            6,
+                            false)
+                            
+                    ],
+                    1,
+                    false
+                );
+
+            string json = JsonSerializer.Serialize(new List<TopicModel>() { topicModel }, new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve });
+            File.WriteAllText("topic_data.json", json);
             DataContext = new MainVM();
+           
         }
 
         private int _selectedTabIndex;

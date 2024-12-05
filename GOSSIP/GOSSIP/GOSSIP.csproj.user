@@ -10,6 +10,9 @@
     <Compile Update="Views\ChatsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\CreateTopicView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LogInWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -58,6 +61,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ChatsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CreateTopicView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\LogInWindow.xaml">

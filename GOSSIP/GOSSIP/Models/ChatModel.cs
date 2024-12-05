@@ -29,6 +29,8 @@ namespace GOSSIP.Models
             IsDeleted = isDeleted;
             Messages = messages;
         }
+
+        public ChatModel() { }
     }
 
 }

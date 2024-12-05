@@ -18,19 +18,19 @@
             <StackPanel>
                 <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowTopicsListCommand}" Foreground="{Binding IsTopicsPressed, Converter={StaticResource boolToSideBarTextColorConverter}}"  Background="{Binding IsTopicsPressed, Converter={StaticResource boolToColorConverter}}" Margin="0 40 0 0">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/Resources/Images/Topics.png" Width="30" Height="30" Margin="0 0 5 0"/>
+                        <Image Source="{Binding TopicsIcon}" Width="30" Height="30" Margin="0 0 5 0"/>
                         <TextBlock Text="Topics"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{DynamicResource SideBarButton}" Margin="0 5 0 0">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/Resources/Images/Tags.png" Width="30" Height="30" Margin="0 0 5 0"/>
+                        <Image Source="{Binding TagsIcon}" Width="30" Height="30" Margin="0 0 5 0"/>
                         <TextBlock Text="Tags"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowChatsCommand}" Foreground="{Binding IsChatsPressed, Converter={StaticResource boolToSideBarTextColorConverter}}" Background="{Binding IsChatsPressed, Converter={StaticResource boolToColorConverter}}" Margin="0 5 0 0">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="pack://application:,,,/Resources/Images/Message.png" Width="30" Height="30" Margin="0 0 5 0"/>
+                        <Image Source="{Binding ChatIcon}" Width="30" Height="30" Margin="0 0 5 0"/>
                         <TextBlock Text="Messages"/>
                     </StackPanel>
                 </Button>
