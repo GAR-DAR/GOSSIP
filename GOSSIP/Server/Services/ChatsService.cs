@@ -5,7 +5,6 @@ using Server.Models;
 namespace Server.Services;
 
 // TODO: Delete a chat
-// TODO: Delete a user from a chat
 public static class ChatsService
 {
     public static bool Create(ChatModel chat, MySqlConnection conn)

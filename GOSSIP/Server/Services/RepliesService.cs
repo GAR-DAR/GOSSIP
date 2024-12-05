@@ -33,7 +33,7 @@ public static class RepliesService
         string downvoteQuery =
             """
             UPDATE replies
-            SET votes = votes + 1
+            SET votes = votes - 1
             WHERE id = @reply_id
             """;
 
@@ -42,5 +42,22 @@ public static class RepliesService
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
+    }
+    
+    public static bool Delete(ReplyModel reply, MySqlConnection conn)
+    {
+        string deleteQuery =
+            $"""
+             UPDATE replies
+             SET is_deleted = TRUE
+             WHERE id = @id
+             """;
+
+        using var updateCommand = new MySqlCommand(deleteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@id", reply.ID);
+
+        int affectedRows = updateCommand.ExecuteNonQuery();
+        
+        return affectedRows != 0;
     }
 }
