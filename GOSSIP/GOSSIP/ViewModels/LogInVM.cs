@@ -70,7 +70,7 @@ namespace GOSSIP.ViewModels
 
             var jsonString = File.ReadAllText("user_data.json");
 
-            List<UserModel> users = JsonSerializer.Deserialize<List<UserModel>>(jsonString);
+            List<UserModel> users = JsonSerializer.Deserialize<List<UserModel>>(jsonString, new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve });
             var user = users.Find(u => (u.Username == authUserModel.Username || u.Email == authUserModel.Email) && u.Password == Password);
 
             if (user == null)

@@ -30,7 +30,7 @@ namespace GOSSIP.ViewModels
             ? "pack://application:,,,/Resources/Images/TagsDanube.png"
             : "pack://application:,,,/Resources/Images/Tags.png";
 
-        public UserModel AuthorizedUser { get; set; }
+        static public UserModel AuthorizedUser { get; set; }
         
         public bool IsTopicsPressed
         {
