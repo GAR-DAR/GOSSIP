@@ -9,8 +9,6 @@ namespace Server.Models
     public enum SignalsEnum : byte
     {
         #region User
-        Connect,
-        Disconnect,
         Register,
         Login,
         Logout,
@@ -42,11 +40,7 @@ namespace Server.Models
         DeleteMessage,
         EditMessage,
         ReadMessage,
-        DeleteChat,
-        #endregion
-
-        #region Errors
-        AuthFailed
+        DeleteChat
         #endregion
     }
 }

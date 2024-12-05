@@ -16,34 +16,34 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    public class Client
+    public static class Globals
+    {
+        public static DatabaseService db = new DatabaseService();
+    }
+
+    public class S_Client
     {
         public Guid UID { get; set; }
         public TcpClient ClientSocket { get; set; }
-        public UserModel User { get; set; }
+        public UserModel User { get; set; } = new UserModel { Username = "guest" };
+
+        NetworkStream _networkStream;
 
         PacketReader _packetReader;
 
-        public Client(TcpClient client, UserModel user)
+        public S_Client(TcpClient client)
         {
             ClientSocket = client;
             UID = Guid.NewGuid();
 
-            User = user;
+            _networkStream = new NetworkStream(ClientSocket.Client);
+            _packetReader = new PacketReader(_networkStream);
 
-            //_packetReader = new PacketReader(ClientSocket.GetStream());
-
-            //var userPacket = _packetReader.ReadPacket<UserModel>();
-            //user = userPacket.Data;
-            
-
-            Console.WriteLine($"{DateTime.Now} - Client {UID} {user.Username} connected :)");
+            Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} connected :)");
 
             Task.Run(() => Process());
         }
 
-
-        // BD BD BD BD
 
         void Process()
         {
@@ -51,13 +51,21 @@ namespace Server
             {
                 try
                 {
-                    var rawPacket = _packetReader.ReadRawPacket();
-                    var signal = _packetReader.Signal;
+                    var signal = _packetReader.ReadSignal();
+                    Console.WriteLine($"[BEFORE] Signal {signal} received");
 
                     switch (signal)
                     {
+                        case (byte)SignalsEnum.GetTopics:
+                            {
+                                List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetTopics, allTopics);
+                                break;
+                            }
                         case (byte)SignalsEnum.Login:
                             {
+                                var rawPacket = _packetReader.ReadRawPacket();
+
                                 var authUserModel = _packetReader.DeserializePacket<AuthUserModel>(rawPacket);
 
                                 using DatabaseService db = new DatabaseService();
@@ -93,65 +101,80 @@ namespace Server
                                 break;
                             }
                         case (byte)SignalsEnum.Register:
-                            User = _packetReader.DeserializePacket<UserModel>(rawPacket);
+                            {
 
-                            //send userModel
+                                var rawPacket = _packetReader.ReadRawPacket();
 
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} registered).");
-                            break;
+                                User = _packetReader.DeserializePacket<UserModel>(rawPacket);
 
-                        case (byte)SignalsEnum.GetTopics:
-                            var topics = _packetReader.DeserializePacket<List<TopicModel>>(rawPacket);
+                                //send userModel
 
-                            //renew topic, send topic, send fir 10 replies
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} received topics: {string.Join(", ", topics.Select(t => t.Title))}");
-                            break;
-
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} registered).");
+                                break;
+                            }
                         case (byte)SignalsEnum.CreateTopic:
-                            var newTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
+                            {
+                                var rawPacket = _packetReader.ReadRawPacket();
 
-                            //add topic to bd
+                                var newTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
 
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} created topic: {newTopic.Title}");
-                            break;
+                                //add topic to bd
 
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} created topic: {newTopic.Title}");
+                                break;
+                            }
                         case (byte)SignalsEnum.EditTopic:
-                            var editedTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
+                            {
+                                var rawPacket = _packetReader.ReadRawPacket();
 
-                            //edit topic in bd
+
+                                var editedTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
+
+                                //edit topic in bd
 
 
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} edited topic: {editedTopic.Title}");
-                            break;
-
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} edited topic: {editedTopic.Title}");
+                                break;
+                            }
                         case (byte)SignalsEnum.DeleteTopic:
-                            var deletedTopicId = _packetReader.DeserializePacket<int>(rawPacket);
+                            {
+                                var rawPacket = _packetReader.ReadRawPacket();
 
-                            //delete topic from bd
+                                var deletedTopicId = _packetReader.DeserializePacket<int>(rawPacket);
 
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} deleted topic with ID: {deletedTopicId}");
-                            break;
+                                //delete topic from bd
 
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} deleted topic with ID: {deletedTopicId}");
+                                break;
+                            }
                         case (byte)SignalsEnum.UpvoteTopic:
-                            var upvotedTopicId = _packetReader.DeserializePacket<int>(rawPacket);
+                            {
+                                var rawPacket = _packetReader.ReadRawPacket();
 
 
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} upvoted topic with ID: {upvotedTopicId}");
-                            break;
+                                var upvotedTopicId = _packetReader.DeserializePacket<int>(rawPacket);
 
+
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} upvoted topic with ID: {upvotedTopicId}");
+                                break;
+                            }
                         case (byte)SignalsEnum.ReplyToTopic:
-                            var reply = _packetReader.DeserializePacket<ReplyModel>(rawPacket);
-                            Console.WriteLine($"{DateTime.Now} - Client {UID} replied to topic: {reply.ID}");
-                            break;
+                            {
+                                var rawPacket = _packetReader.ReadRawPacket();
 
+
+                                var reply = _packetReader.DeserializePacket<ReplyModel>(rawPacket);
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} replied to topic: {reply.ID}");
+                                break;
+                            }
                         default:
-                            Console.WriteLine("Unknown signal");
+                            //Console.WriteLine($"[SWITCH]Signal {signal} received");
                             break;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"{DateTime.Now} - Client {User.Username} disconnected :(");
+                    Console.WriteLine($"{DateTime.Now} - Error: {ex.Message}");
                     ClientSocket.Close();
                     break;
                 }

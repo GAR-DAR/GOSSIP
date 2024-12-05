@@ -19,17 +19,33 @@ namespace GOSSIP.Net.IO
             _networkStream = networkStream;
         }
 
+        public byte ReadSignal()
+        {
+            if (_networkStream.CanRead && _networkStream.DataAvailable)
+            {
+                Signal = (byte)_networkStream.ReadByte();
+            }
+            return Signal;
+        }
+
         public Packet<T> ReadPacket<T>()
         {
-            var lengthBuffer = new byte[4]; // 18 000
-            _networkStream.Read(lengthBuffer, 0, 4);
+            if (!_networkStream.CanRead)
+            {
+                Console.WriteLine("Cannot read");
+                return null;
+            }
+            if (!_networkStream.DataAvailable)
+            {
+                Console.WriteLine("No data available");
+                return null;
+            }
 
+            var lengthBuffer = new byte[4];
+            _networkStream.Read(lengthBuffer, 0, 4);
             int length = BitConverter.ToInt32(lengthBuffer, 0);
 
-            Signal = lengthBuffer[1];
-
             var dataBuffer = new byte[length];
-
             _networkStream.Read(dataBuffer, 0, length);
 
             var json = Encoding.UTF8.GetString(dataBuffer);
@@ -38,11 +54,20 @@ namespace GOSSIP.Net.IO
 
         public byte[] ReadRawPacket()
         {
+            if (!_networkStream.CanRead)
+            {
+                Console.WriteLine("Cannot read");
+                return null;
+            }
+            if (!_networkStream.DataAvailable)
+            {
+                Console.WriteLine("No data available");
+                return null;
+            }
+
             var lengthBuffer = new byte[4];
             _networkStream.Read(lengthBuffer, 0, 4);
-
             int length = BitConverter.ToInt32(lengthBuffer, 0);
-            Signal = lengthBuffer[1];
 
             var dataBuffer = new byte[length];
             _networkStream.Read(dataBuffer, 0, length);

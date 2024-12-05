@@ -10,18 +10,25 @@ using GOSSIP.Models;
 
 namespace GOSSIP.Net
 {
+    public static class Globals
+    {
+        public static Server server = new Server();
+    }
+
     public class Server
     {
-        public Server()
-        {
-            _client = new TcpClient();
-        }
+        
 
         TcpClient _client;
 
         public PacketReader packetReader;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        public Server()
+        {
+            _client = new TcpClient();
+        }
 
         //evens gets from server
 
@@ -33,6 +40,7 @@ namespace GOSSIP.Net
         public event Action editUserEvent;
         public event Action logoutEvent;
         public event Action<UserModel> loginEvent;
+        public event Action<List<TopicModel>> getTopicsEvent;
 
 
         //Signals
@@ -43,20 +51,16 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("127.0.0.1", 7891);
+            _client.Connect("172.22.251.137", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
-                ConnectedToServer();
+                SendPacket(SignalsEnum.GetTopics);
                 ReadPackets();
             }
         }
 
-        public void ConnectedToServer()
-        {
-            SendPacket(SignalsEnum.Connect, new UserModel { Username = "Guest" });
-        }
-
+       
         public void Disconnect()
         {
             _client.Close();
@@ -64,13 +68,14 @@ namespace GOSSIP.Net
             _cancellationTokenSource.Cancel();
 
             // all VMs = null...
+
         }
 
         #endregion
 
         #region Senders
 
-        
+
 
         public void Register(UserModel user)
         {
@@ -222,6 +227,10 @@ namespace GOSSIP.Net
                     var signal = packetReader.Signal;
                     switch (signal)
                     {
+                        case (byte)SignalsEnum.GetTopics:
+                            List<TopicModel> topics = packetReader.ReadPacket<List<TopicModel>>().Data;
+                            getTopicsEvent?.Invoke(topics);
+                            break;
                         case (byte)SignalsEnum.Login:
                             var user = packetReader.ReadPacket<UserModel>().Data;
                             loginEvent?.Invoke(user);
@@ -236,7 +245,7 @@ namespace GOSSIP.Net
 
         #region Helpers
 
-        private void SendPacket<T>(SignalsEnum signal, T user) where T : class
+        public void SendPacket<T>(SignalsEnum signal, T user) where T : class
             {
                 if (_client.Connected)
                 {
@@ -246,7 +255,7 @@ namespace GOSSIP.Net
                 }
             }
 
-            private void SendPacket(SignalsEnum signal)
+        public void SendPacket(SignalsEnum signal)
             {
                 if (_client.Connected)
                 {

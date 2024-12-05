@@ -1,4 +1,5 @@
-﻿using GOSSIP.ViewModels;
+﻿using GOSSIP.Net;
+using GOSSIP.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Text;
@@ -30,6 +31,8 @@ namespace GOSSIP
         public MainWindow()
         {
             InitializeComponent();
+         
+            Globals.server.Connect();
 
             DataContext = new MainVM();
         }

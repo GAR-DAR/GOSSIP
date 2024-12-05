@@ -19,25 +19,37 @@ namespace Server.Net.IO
             _packet = new Packet<T>();
         }
 
-        public byte[] GetPacketBytes(SignalsEnum signal, T? data = null)
+        public byte[] GetPacketBytes(SignalsEnum signal)
+        {
+            _signal = (byte)signal;
+            var packetBytes = new byte[1];
+            packetBytes[0] = _signal;
+            return packetBytes;
+        }
+
+        public byte[] GetPacketBytes(SignalsEnum signal, T data)
         {
             _signal = (byte)signal;
             _packet.Data = data;
 
-            var json = JsonConvert.SerializeObject(_packet);
-            var dataBuffer = Encoding.UTF8.GetBytes(json); //kdfkdmjaflkdmfkldmfkldmfkldmfkfdmkfmd;lamk
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
 
+            var json = JsonConvert.SerializeObject(_packet, settings);
+            var dataBuffer = Encoding.UTF8.GetBytes(json);
 
-            var lengthBuffer = BitConverter.GetBytes(dataBuffer.Length); //18 0 00 
-            lengthBuffer[1] = _signal;
+            var lengthBuffer = BitConverter.GetBytes(dataBuffer.Length);
 
-            var packetBytes = new byte[lengthBuffer.Length + dataBuffer.Length]; //18 000 kdfkdmjaflkdmfkldmfkldmfkldmfkfdmkfmd;lamk
-            Buffer.BlockCopy(lengthBuffer, 0, packetBytes, 0, lengthBuffer.Length);
-            Buffer.BlockCopy(dataBuffer, 0, packetBytes, lengthBuffer.Length, dataBuffer.Length);
+            var packetBytes = new byte[1 + lengthBuffer.Length + dataBuffer.Length];
+
+            packetBytes[0] = _signal;
+
+            Buffer.BlockCopy(lengthBuffer, 0, packetBytes, 1, lengthBuffer.Length);
+            Buffer.BlockCopy(dataBuffer, 0, packetBytes, 1 + lengthBuffer.Length, dataBuffer.Length);
 
             return packetBytes;
         }
-
-
     }
 } 

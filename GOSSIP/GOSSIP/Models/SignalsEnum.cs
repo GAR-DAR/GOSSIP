@@ -9,8 +9,6 @@ namespace GOSSIP.Models
     public enum SignalsEnum : byte
     {
         #region User
-            Connect,
-            Disconnect,
             Register,
             Login,
             Logout,

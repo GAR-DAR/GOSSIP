@@ -1,4 +1,6 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
+using GOSSIP.Net.IO;
 using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
@@ -32,92 +34,85 @@ namespace GOSSIP.ViewModels
 
         public ICommand DoubleClickCommand { get; }
 
+        public async Task InitializeTopics()
+        {
+            int a = 0;
+            Globals.server.getTopicsEvent += (topics) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Topics = new ObservableCollection<TopicModel>(topics);
+                    a = 5;
+                    foreach (var topic in Topics)
+                    {
+                        foreach (var reply in topic.Replies)
+                        {
+                            reply.Topic = topic;
+                        }
+                    }
+                });
+            };
+            a += 1;
+            await Task.Run(() => Globals.server.SendPacket(SignalsEnum.GetTopics));
+        }
+
+        public async Task LoadTopicsAsync()
+        {
+            await InitializeTopics();
+
+            if (Topics != null && Topics.Count > 0)
+            {
+                var topic = Topics[0];
+                foreach (var reply in topic.Replies)
+                {
+                    reply.Topic = topic;
+                }
+            }
+        }
+
         public TopicsListVM(MainVM mainVM)
         {
             _mainVM = mainVM;
 
             DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
 
-            Topics =
-            [
-                new TopicModel(
-                    1,
-                    new UserModel
-                    {
-                        Email = "stelmakh.yurii@example.com",
-                        Username = "stelmakh_yurii",
-                        Password = "password123",
-                        Status = "active",
-                        FieldOfStudy = "Computer Science",
-                        Specialization = "Software Development",
-                        University = "Lviv Polytechnic",
-                        Term = 2,
-                        Photo = "pack://application:,,,/Resources/Images/TempUserIcons/stelmakh_yurii.png",
-                        Chats = new List<ChatModel>()
-                    },
-                    "What C# GUI framework for desktop apps is the best?",
-                    "filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text, filler text.",
-                    DateTime.Now.AddMinutes(-10),
-                    2,
-                    new List<string> { "C#", "GUI" },
-                    new List<ReplyModel>
-                    {
-                        new ReplyModel(
-                            1,
-                            new UserModel
-                            {
-                                Email = "john.doe@example.com",
-                                Username = "OleksaLviv",
-                                Password = "password456",
-                                Status = "active",
-                                FieldOfStudy = "IT",
-                                Specialization = "Web Development",
-                                University = "Harvard University",
-                                Term = 5,
-                                Photo = "pack://application:,,,/Resources/Images/TempUserIcons/OleksaLviv.png",
-                                Chats = new List<ChatModel>()
-                            },
-                            null,
-                            null,
-                            "I LOVE HER LACK OF ENERGY! GO GIRL, GIVE US NOTHING!",
-                            DateTime.Now.AddMinutes(-8),
-                            1,
-                            false
-                        ),
-                        new ReplyModel(
-                            2,
-                            new UserModel
-                            {
-                                Email = "jane.smith@example.com",
-                                Username = "stelmakh_yurii",
-                                Password = "password789",
-                                Status = "active",
-                                FieldOfStudy = "Engineering",
-                                Specialization = "Embedded Systems",
-                                University = "MIT",
-                                Term = 4,
-                                Photo = "pack://application:,,,/Resources/Images/TempUserIcons/stelmakh_yurii.png",
-                                Chats = new List<ChatModel>()
-                            },
-                            null,
-                            null,
-                            "stfu hoe",
-                            DateTime.Now.AddMinutes(-5),
-                            5,
-                            false
-                        )
-                    },
-                    2,
-                    false
-                )
-            ];
-
-            var topic = Topics[0];
-            foreach (var reply in topic.Replies)
-            {
-                reply.Topic = topic;
-            }
+            Task.Run(async () => await LoadTopicsAsync());
         }
+
+        //public TopicsListVM(MainVM mainVM)
+        //{
+        //    //Globals.server.getTopicsEvent += (topics) =>
+        //    //{
+        //    //    Application.Current.Dispatcher.Invoke(() =>
+        //    //    {
+                   
+        //    //        Topics = new ObservableCollection<TopicModel>(topics);
+        //    //        foreach (var topic in Topics)
+        //    //        {
+        //    //            foreach (var reply in topic.Replies)
+        //    //            {
+        //    //                reply.Topic = topic;
+        //    //            }
+        //    //        }
+        //    //    });
+        //    //};
+
+        //    _mainVM = mainVM;
+
+        //    Task.Run(async () => await InitializeTopics());
+
+        //    DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
+
+        //    if (Topics != null)
+        //    {
+        //        var topic = Topics[0];
+        //        foreach (var reply in topic.Replies)
+        //        {
+        //            reply.Topic = topic;
+        //        }
+        //    }
+            
+        //}
 
         private void OnItemDoubleClickedMethod(TopicModel post)
         {

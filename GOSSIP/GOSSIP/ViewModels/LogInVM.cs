@@ -128,8 +128,7 @@ namespace GOSSIP.ViewModels
 
         private void LogInMethod(object obj)
         {
-            var server = new Server();
-            server.Connect();
+            
 
             var authUser = new AuthUserModel
             {
@@ -137,9 +136,9 @@ namespace GOSSIP.ViewModels
                 Password = Password
             };
 
-            server.Login(authUser);
+            Globals.server.Login(authUser);
 
-            server.loginEvent += (user) => OnLoginSuccess(user);
+            Globals.server.loginEvent += (user) => OnLoginSuccess(user);
         }
 
         private void OnLoginSuccess(UserModel user)
