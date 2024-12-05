@@ -15,6 +15,9 @@ namespace GOSSIP.Models
             : base(iD, user, topic, content, createdAt, rating, isDeleted)
         {
             ReplyTo = replyTo;
+            Content = "@" + ReplyTo.Username + ", " + content;
         }
+
+        public ChildReplyModel() { }
     }
 }

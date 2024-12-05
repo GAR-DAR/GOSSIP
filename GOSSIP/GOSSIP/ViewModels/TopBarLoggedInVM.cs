@@ -38,7 +38,7 @@ namespace GOSSIP.ViewModels
         {
             _authorizedUser = userModel;
             _mainVM = mainVM;
-            _mainVM.AuthorizedUser = _authorizedUser;
+            MainVM.AuthorizedUser = _authorizedUser;
             _username = _authorizedUser.Username;
             Photo = _authorizedUser.Photo;
         }

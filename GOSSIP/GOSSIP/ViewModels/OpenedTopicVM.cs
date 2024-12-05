@@ -27,6 +27,8 @@ namespace GOSSIP.ViewModels
         public ICommand UpVoteReplyCommand { get; set; }
         public ICommand DownVoteReplyCommand { get; set; }
         public ICommand ReplyToReplyCommand { get; set; }
+        public ICommand UpVoteReplyOnReplyCommand { get; set; }
+        public ICommand DownVoteReplyOnReplyCommand { get; set; }
 
         public UserModel Author
         {
@@ -113,11 +115,13 @@ namespace GOSSIP.ViewModels
             AddReplyCommand = new RelayCommand(AddReplyMethod);
             UpVoteReplyCommand = new RelayCommand(UpVoteReplyMethod);
             DownVoteReplyCommand = new RelayCommand(DownVoteReplyMethod);
+            UpVoteReplyOnReplyCommand = new RelayCommand(UpVoteReplyOnReplyMethod);
+            DownVoteReplyOnReplyCommand = new RelayCommand(DownVoteReplyOnReplyMethod);
         }
 
         private void UpVoteMethod(object obj)
         {
-            if (_mainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUser == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -144,7 +148,7 @@ namespace GOSSIP.ViewModels
 
         private void DownVoteMethod(object obj)
         {
-            if (_mainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUser == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -171,7 +175,7 @@ namespace GOSSIP.ViewModels
 
         private void AddReplyMethod(object obj)
         {
-            if (_mainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUser == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -180,9 +184,9 @@ namespace GOSSIP.ViewModels
 
             if (!string.IsNullOrEmpty(EnteredReplyText))
             {
-                Replies.Add(new ReplyVM(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false)));
+                Replies.Add(new ReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUser, Topic, EnteredReplyText, DateTime.Now, 0, false, [])));
                 RepliesCount++;
-                Topic.Replies.Add(new ReplyModel(1, _mainVM.AuthorizedUser, Topic, null, EnteredReplyText, DateTime.Now, 0, false));
+                Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUser, Topic, EnteredReplyText, DateTime.Now, 0, false, []));
                 EnteredReplyText = "";
             }
 
@@ -191,7 +195,7 @@ namespace GOSSIP.ViewModels
 
         private void UpVoteReplyMethod(object obj)
         {
-            if (_mainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUser == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -218,9 +222,67 @@ namespace GOSSIP.ViewModels
             _jsonStorage.SaveTopic(Topic);
         }
 
+        private void UpVoteReplyOnReplyMethod(object obj)
+        {
+            if (MainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+            if (obj is ChildReplyVM reply)
+            {
+                if (reply.CanUpVote)
+                {
+                    reply.Rating++;
+                    reply.CanUpVote = false;
+                    if (reply.CanDownVote == false)
+                    {
+                        reply.Rating++;
+                        reply.CanDownVote = true;
+                    }
+                }
+                else
+                {
+                    reply.Rating--;
+                    reply.CanUpVote = true;
+                }
+            }
+
+            _jsonStorage.SaveTopic(Topic);
+        }
+
+        private void DownVoteReplyOnReplyMethod(object obj)
+        {
+            if (MainVM.AuthorizedUser == null)
+            {
+                _mainVM.ShowLogInMethod(null);
+                return;
+            }
+            if (obj is ChildReplyVM reply)
+            {
+                if (reply.CanDownVote)
+                {
+                    reply.Rating--;
+                    reply.CanDownVote = false;
+                    if (reply.CanUpVote == false)
+                    {
+                        reply.Rating--;
+                        reply.CanUpVote = true;
+                    }
+                }
+                else
+                {
+                    reply.Rating++;
+                    reply.CanDownVote = true;
+                }
+            }
+
+            _jsonStorage.SaveTopic(Topic);
+        }
+
         private void DownVoteReplyMethod(object obj)
         {
-            if (_mainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUser == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;

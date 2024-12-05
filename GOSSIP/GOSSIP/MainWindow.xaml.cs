@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace GOSSIP
 {
@@ -35,90 +36,85 @@ namespace GOSSIP
         {
             InitializeComponent();
 
-            ReplyModel reply = new ReplyModel(
-                            1,
-                            new UserModel(
-                                1,
-                                "email",
-                                "usename",
-                                "password",
-                                "Student",
-                                "idgaf",
-                                "Software Engineering",
-                                "Lviv Polytechnic",
-                                4,
-                                "Bachelor",
-                                "User",
-                                DateTime.Now,
-                                false,
-                                "nophotoicon.png",
-                                []),
-                            null,
-                            null,
-                            "Reply",
-                            DateTime.Now,
-                            5,
-                            false);
 
-             TopicModel topicModel = new(
-                5,
-                new UserModel(
-                    5,
-                    "email",
-                    "usename",
-                    "password",
-                    "Student",
-                    "idgaf",
-                    "Software Engineering",
-                    "Lviv Polytechnic",
-                    4,
-                    "Bachelor",
-                    "User",
-                    DateTime.Now,
-                    false,
-                    "nophotoicon.png",
-                    []),
-                    "Post",
-                    "Idgaf",
-                    DateTime.Now,
-                    5,
-                    [],
-                    [
-                        reply,
-                        new ReplyModel(
-                            1,
-                            new UserModel(
-                                1,
-                                "email",
-                                "usename",
-                                "password",
-                                "Student",
-                                "idgaf",
-                                "Software Engineering",
-                                "Lviv Polytechnic",
-                                4,
-                                "Bachelor",
-                                "User",
-                                DateTime.Now,
-                                false,
-                                "nophotoicon.png",
-                                []),
-                            null,
-                            reply,
-                            "reply to reply",
-                            DateTime.Now,
-                            6,
-                            false)
-                            
-                    ],
-                    1,
-                    false
-                );
 
-            string json = JsonSerializer.Serialize(new List<TopicModel>() { topicModel }, new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve });
-            File.WriteAllText("topic_data.json", json);
+            //ParentReplyModel parentReplyModel = new ParentReplyModel(
+            //            1,
+            //            new UserModel(
+            //                8,
+            //                "email",
+            //                "user2",
+            //                "password",
+            //                "Student",
+            //                "idgaf",
+            //                "idgaf",
+            //                "Lviv Polytechnic",
+            //                4,
+            //                "Bachelor",
+            //                "User",
+            //                DateTime.Now,
+            //                false,
+            //                null,
+            //                []),
+            //            null,
+            //            "content",
+            //            DateTime.Now,
+            //            5,
+            //            false,
+            //            [   
+            //            ]
+            //            );
+
+
+
+            //ChildReplyModel child = new ChildReplyModel(
+            //                    9,
+            //                    new UserModel(
+            //                        5,
+            //                        "email",
+            //                        "username7",
+            //                        "password",
+            //                        "Student",
+            //                        "idgaf",
+            //                        "idgaf",
+            //                        "Lviv Polytechnic",
+            //                        4,
+            //                        "Bachelor",
+            //                        "User",
+            //                        DateTime.Now,
+            //                        false,
+            //                        null,
+            //                        []
+            //                    ),
+            //                    null,
+            //                    "reply to reply",
+            //                    DateTime.Now,
+            //                    7,
+            //                    false,
+            //                    null);
+
+            //parentReplyModel.Replies.Add(child);
+
+            //TopicModel topic = new(
+            //    6,
+            //    new UserModel(8, "email", "user", "password", "Student", "idgaf", "idgaf", "Lviv Polytechnic", 4, "Bachelor", "User", DateTime.Now, false, null, []),
+            //    "Topic",
+            //    "Content",
+            //    DateTime.Now,
+            //    5,
+            //    [],
+            //    [ parentReplyModel
+            //    ],
+            //    1,
+            //    false
+            //);
+
+            //parentReplyModel.Topic = topic;
+            //child.Topic = topic;
+
+            ////string json = JsonSerializer.Serialize(new ObservableCollection<TopicModel>() { topic }, new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve } );
+            ////File.WriteAllText("topic_data.json", json);
             DataContext = new MainVM();
-           
         }
 
         private int _selectedTabIndex;

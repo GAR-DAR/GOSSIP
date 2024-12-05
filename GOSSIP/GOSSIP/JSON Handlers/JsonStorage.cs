@@ -33,6 +33,10 @@ namespace GOSSIP.JsonHandlers
                 return new List<TopicModel>();
 
             string jsonData = File.ReadAllText(_filePath);
+            if(jsonData == "")
+            {
+                return new List<TopicModel>();
+            }
             return JsonSerializer.Deserialize<List<TopicModel>>(jsonData, options) ?? new List<TopicModel>();
         }
 

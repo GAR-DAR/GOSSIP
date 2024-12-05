@@ -24,8 +24,7 @@ public class TopicService
         _jsonStorage.SaveTopics(_topics);
     }
 
-    // Додати відповідь до поста
-    public void AddReply(uint topicId, ReplyModel reply)
+    public void AddReply(uint topicId, ParentReplyModel reply)
     {
         var topic = _topics.FirstOrDefault(t => t.ID == topicId);
         if (topic == null) throw new Exception("Topic not found");

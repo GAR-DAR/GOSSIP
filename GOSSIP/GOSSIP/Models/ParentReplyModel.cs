@@ -16,5 +16,7 @@ namespace GOSSIP.Models
         {
             Replies = replies;
         }
+
+        public ParentReplyModel() { }
     } 
 }
