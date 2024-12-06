@@ -70,11 +70,11 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
 
-            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
-            foreach(TopicVM topicVM in Topics)
-            {
-                topicVM.ProfileSelectedEvent += ProfileClickHandler;
-            }
+            //Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
+            //foreach(TopicVM topicVM in Topics)
+            //{
+            //    topicVM.ProfileSelectedEvent += ProfileClickHandler;
+            //}
 
             DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
             LoadMoreCommand = new RelayCommand(LoadMoreMethod);
