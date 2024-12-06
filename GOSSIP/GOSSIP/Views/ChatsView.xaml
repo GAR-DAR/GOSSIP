@@ -15,24 +15,29 @@
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
 
-            <ListBox ItemsSource="{Binding ChatList}"
-                SelectedItem="{Binding OpenedChatVM}"
-                Background="Transparent"
-                BorderThickness="0"
-                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <Image Source="{Binding Photo}" Width="40" Height="40" Margin="5"/>
+            <StackPanel>
+                <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Top"/>
 
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding ChatName}" FontSize="30" Foreground="White" />
-                                <TextBlock Text="{Binding LastMessage}" FontStyle="Italic" Foreground="Gray" FontSize="17"/>
+                <ListBox ItemsSource="{Binding ChatList}"
+                         SelectedItem="{Binding OpenedChatVM}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">      
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Image Source="{Binding Photo}" Width="40" Height="40" Margin="5"/>
+
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding ChatName}" FontSize="30" Foreground="White" />
+                                    <TextBlock Text="{Binding LastMessage}" FontStyle="Italic" Foreground="Gray" FontSize="17"/>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            
 
             <Rectangle Grid.Column="1" Fill="Black" Width="2"/>
 
