@@ -10,7 +10,10 @@
 
     <UserControl.Resources>
         <convs:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
+        <convs:IntToReplyCountConverter x:Key="intToReplyCountConverter"/>
     </UserControl.Resources>
+
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -104,7 +107,7 @@
                 </WrapPanel>
 
 
-                <ItemsControl Grid.Row="5" ItemsSource="{Binding Replies}">
+                <ItemsControl Grid.Row="5" ItemsSource="{Binding Replies}" Width="1000" HorizontalAlignment="Left">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="0 5" Padding="10" BorderBrush="Gray" BorderThickness="1">
@@ -137,7 +140,156 @@
                                                 CommandParameter="{Binding}" 
                                                 Height="30" 
                                                 Width="30"/>
+                                        <Button Content="Reply"
+                                                Width="50"
+                                                Height="30"
+                                                Command="{Binding ShowReplyQuery}"
+                                                Margin="5 0 0 0"/>
                                     </WrapPanel>
+
+                                    <WrapPanel>
+                                        <TextBox Width="900" Height="30" Text="{Binding ReplyToReplyContent}">
+                                            <TextBox.Style>
+                                                <Style TargetType="TextBox">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBox.Style>
+                                        </TextBox>
+
+                                        <Button Height="30" Width="30" Content="Send" Margin="5 0 0 0" Command="{Binding SendReplyToReply}">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+
+                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </WrapPanel>
+                                    
+                                    <Button Content="{Binding CountOfReplies, Converter={StaticResource intToReplyCountConverter}}" Command="{Binding ShowRepliesToReplyCommand}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsRepliesListNotEmpty}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsRepliesListNotEmpty}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+
+
+                                    <ItemsControl ItemsSource="{Binding Replies}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0 5" Padding="10" BorderBrush="Gray" BorderThickness="1">
+                                                    <StackPanel>
+                                                        <Grid Margin="0 5">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="40"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Source="{Binding User.Photo}" Height="40" Width="40">
+                                                                <Image.Clip>
+                                                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                                </Image.Clip>
+                                                            </Image>
+                                                            <StackPanel Grid.Column="1" Margin="5 0">
+                                                                <TextBlock Text="{Binding User.Username}" FontWeight="Bold" Foreground="White"/>
+                                                                <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White" FontSize="12"/>
+                                                            </StackPanel>
+                                                        </Grid>
+                                                        <TextBlock Text="{Binding Content}" Foreground="White" TextWrapping="Wrap" Margin="0 5"/>
+                                                        <WrapPanel>
+                                                            <Button Content="Up" 
+                                                                    Command="{Binding DataContext.UpVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                    CommandParameter="{Binding}" 
+                                                                    Height="30" 
+                                                                    Width="30"/>
+                                                            <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="30" VerticalAlignment="Center" TextAlignment="Center"/>
+                                                            <Button Content="Down" 
+                                                                    Command="{Binding DataContext.DownVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                    CommandParameter="{Binding}" 
+                                                                    Height="30" 
+                                                                    Width="30"/>
+                                                            <Button Content="Reply"
+                                                                    Width="50"
+                                                                    Height="30"
+                                                                    Command="{Binding ShowReplyQueryCommand}"/>
+
+                                                            <WrapPanel>
+                                                                <TextBox Width="800" Height="30" Text="{Binding ReplyQuery}">
+                                                                    <TextBox.Style>
+                                                                        <Style TargetType="TextBox">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                                </DataTrigger>
+
+                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBox.Style>
+                                                                </TextBox>
+
+                                                                <Button Height="30" Width="30" Content="Send" Margin="5 0 0 0" Command="{Binding SendReplyCommand}">
+                                                                    <Button.Style>
+                                                                        <Style TargetType="Button">
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
+                                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                                </DataTrigger>
+
+                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
+                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </Button.Style>
+                                                                </Button>
+                                                            </WrapPanel>
+
+                                                        </WrapPanel>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+
+                                        <ItemsControl.Style>
+                                            <Style TargetType="ItemsControl">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsShowRepliesPressed}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding IsShowRepliesPressed}" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ItemsControl.Style>
+                                    </ItemsControl>
+                                    
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

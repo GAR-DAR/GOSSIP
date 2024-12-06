@@ -38,6 +38,14 @@
         <DataTemplate DataType="{x:Type viewModels:OpenedTopicVM}">
             <views:OpenedTopicView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:CreateTopicVM}">
+            <views:CreateTopicView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ProfileVM}">
+            <views:ProfileView/>
+        </DataTemplate>
     </Window.Resources>
 
 

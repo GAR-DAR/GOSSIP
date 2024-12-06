@@ -18,25 +18,25 @@ using System.Windows.Shapes;
 namespace GOSSIP.Views
 {
     /// <summary>
-    /// Interaction logic for PostsListView.xaml
+    /// Interaction logic for ProfileView.xaml
     /// </summary>
-    public partial class TopicsListView : UserControl
+    public partial class ProfileView : UserControl
     {
-        public TopicsListView()
+        public ProfileView()
         {
             InitializeComponent();
         }
-
+        
         private void OnItemMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Отримати елемент ListBoxItem
-            if (sender is ListBoxItem item && DataContext is TopicsListVM topicsListVM)
+            if (sender is ListBoxItem item && DataContext is ProfileVM profileVM)
             {
                 // Передати вибраний елемент до команди у ViewModel
                 if (item.DataContext is TopicVM selectedPost)
                 {
-                    if (topicsListVM.DoubleClickCommand.CanExecute(selectedPost))
-                        topicsListVM.DoubleClickCommand.Execute(selectedPost);
+                    if (profileVM.DoubleClickCommand.CanExecute(selectedPost))
+                        profileVM.DoubleClickCommand.Execute(selectedPost);
                 }
             }
         }

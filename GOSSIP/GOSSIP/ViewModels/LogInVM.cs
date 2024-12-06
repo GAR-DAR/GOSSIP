@@ -128,8 +128,6 @@ namespace GOSSIP.ViewModels
 
         private void LogInMethod(object obj)
         {
-            
-
             var authUser = new AuthUserModel
             {
                 Username = EmailOrUsername,
@@ -137,7 +135,6 @@ namespace GOSSIP.ViewModels
             };
 
             Globals.server.Login(authUser);
-
             Globals.server.loginEvent += (user) => OnLoginSuccess(user);
         }
 

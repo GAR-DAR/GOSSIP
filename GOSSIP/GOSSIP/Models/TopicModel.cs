@@ -12,13 +12,13 @@ namespace GOSSIP.Models
         public DateTime CreatedAt { get; set; }
         public int? Rating { get; set; }
         public List<string> Tags { get; set; }
-        public List<ReplyModel> Replies { get; set; }
+        public List<ParentReplyModel> Replies { get; set; }
         public uint RepliesCount { get; set; }
         public bool IsDeleted { get; set; }
 
         public TopicModel(uint iD, UserModel author, string title, string content,
-            DateTime createdAt, int? rating, List<string> tags, List<ReplyModel> replies,
-            uint repliesCount, bool isDeleted)
+        DateTime createdAt, int? rating, List<string> tags, List<ReplyModel> replies,
+        uint repliesCount, bool isDeleted)
         {
             ID = iD;
             Author = author;

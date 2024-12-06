@@ -10,6 +10,9 @@
     <Compile Update="Views\ChatsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\CreateTopicView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LogInWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -17,6 +20,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\OpenedTopicView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ProfileView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SideBarView.xaml.cs">
@@ -60,6 +66,9 @@
     <Page Update="Views\ChatsView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\CreateTopicView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\LogInWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -67,6 +76,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\OpenedTopicView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ProfileView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SideBarView.xaml">

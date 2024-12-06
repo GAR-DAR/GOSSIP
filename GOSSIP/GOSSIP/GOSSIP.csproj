@@ -14,10 +14,12 @@
     <None Remove="Resources\Images\Close.png" />
     <None Remove="Resources\Images\Comment.png" />
     <None Remove="Resources\Images\Message.png" />
+    <None Remove="Resources\Images\MessageDanube.png" />
     <None Remove="Resources\Images\search.png" />
     <None Remove="Resources\Images\Send.png" />
     <None Remove="Resources\Images\Signup.png" />
     <None Remove="Resources\Images\Tags.png" />
+    <None Remove="Resources\Images\TagsDanube.png" />
     <None Remove="Resources\Images\TempUserIcons\Ivan Oliinyk.png" />
     <None Remove="Resources\Images\TempUserIcons\IvanOliinyk.png" />
     <None Remove="Resources\Images\TempUserIcons\nophotoicon.png" />
@@ -25,6 +27,7 @@
     <None Remove="Resources\Images\TempUserIcons\OleksaLviv.png" />
     <None Remove="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
     <None Remove="Resources\Images\Topics.png" />
+    <None Remove="Resources\Images\TopicsDanube.png" />
     <None Remove="Resources\Images\Upvote.png" />
   </ItemGroup>
 
@@ -37,10 +40,12 @@
     <Resource Include="Resources\Images\Close.png" />
     <Resource Include="Resources\Images\Comment.png" />
     <Resource Include="Resources\Images\Message.png" />
+    <Resource Include="Resources\Images\MessageDanube.png" />
     <Resource Include="Resources\Images\search.png" />
     <Resource Include="Resources\Images\Send.png" />
     <Resource Include="Resources\Images\Signup.png" />
     <Resource Include="Resources\Images\Tags.png" />
+    <Resource Include="Resources\Images\TagsDanube.png" />
     <Resource Include="Resources\Images\TempUserIcons\IvanOliinyk.png" />
     <Resource Include="Resources\Images\TempUserIcons\nophotoicon.png" />
     <Resource Include="Resources\Images\TempUserIcons\stelmakh_yurii.png" />
@@ -58,6 +63,7 @@
     <Resource Include="Resources\Images\minimizeicon.png" />
     <Resource Include="Resources\Images\TempUserIcons\OleksaLviv.png" />
     <Resource Include="Resources\Images\Topics.png" />
+    <Resource Include="Resources\Images\TopicsDanube.png" />
     <Resource Include="Resources\Images\Upvote.png" />
   </ItemGroup>
 

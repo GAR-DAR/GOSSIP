@@ -1,14 +1,15 @@
-﻿using GOSSIP.Models;
+
+﻿using GOSSIP.JsonHandlers;
+using GOSSIP.Models;
 using GOSSIP.Net;
 using GOSSIP.Net.IO;
 using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
@@ -29,9 +30,10 @@ namespace GOSSIP.ViewModels
         }
 
         private MainVM _mainVM;
+        private JsonStorage _storage = new("topic_data.json");
 
-        private TopicModel _selectedTopic;
-        public TopicModel SelectedTopic
+        private TopicVM _selectedTopic;
+        public TopicVM SelectedTopic
         {
             get => _selectedTopic;
             set
@@ -42,6 +44,7 @@ namespace GOSSIP.ViewModels
         }
 
         public ICommand DoubleClickCommand { get; }
+        public ICommand LoadMoreCommand { get; }
 
 
         public async Task LoadTopicsAsync()
@@ -66,52 +69,58 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
 
-            DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
+            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
+            foreach(TopicVM topicVM in Topics)
+            {
+                topicVM.ProfileSelectedEvent += ProfileClickHandler;
+            }
 
+            DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
+            LoadMoreCommand = new RelayCommand(LoadMoreMethod);
             Task.Run(async () => await LoadTopicsAsync());
         }
 
-        //public TopicsListVM(MainVM mainVM)
-        //{
-        //    //Globals.server.getTopicsEvent += (topics) =>
-        //    //{
-        //    //    Application.Current.Dispatcher.Invoke(() =>
-        //    //    {
-                   
-        //    //        Topics = new ObservableCollection<TopicModel>(topics);
-        //    //        foreach (var topic in Topics)
-        //    //        {
-        //    //            foreach (var reply in topic.Replies)
-        //    //            {
-        //    //                reply.Topic = topic;
-        //    //            }
-        //    //        }
-        //    //    });
-        //    //};
-
-        //    _mainVM = mainVM;
-
-        //    Task.Run(async () => await InitializeTopics());
-
-        //    DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
-
-        //    if (Topics != null)
-        //    {
-        //        var topic = Topics[0];
-        //        foreach (var reply in topic.Replies)
-        //        {
-        //            reply.Topic = topic;
-        //        }
-        //    }
-            
-        //}
-
-        private void OnItemDoubleClickedMethod(TopicModel post)
+        private void LoadMoreMethod(object obj)
         {
-            if (post != null)
+            var loadedTopics = _storage.LoadTopics().Select(x => new TopicVM(x)).ToList();
+
+            foreach (var topic in loadedTopics)
             {
-                _mainVM.SelectedVM = new OpenedTopicVM(post, _mainVM);
+                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
+                {
+                    topic.ProfileSelectedEvent += ProfileClickHandler;
+                    Topics.Add(topic);
+                }
             }
+        }
+        
+        private void OnItemDoubleClickedMethod(TopicVM topic)
+        {
+            if (topic != null)
+            {
+                _mainVM.OpenTopic(topic);
+            }
+        }
+        
+        public void UpdateInfo()
+        {
+            JsonStorage jsonStorage = new("topic_data.json");
+            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
+            foreach (var topic in Topics)
+            {
+                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
+                {
+                    Topics.Add(topic);
+                }
+                topic.ProfileSelectedEvent += ProfileClickHandler;
+            }
+        }
+        
+        private void ProfileClickHandler(UserModel user)
+        {
+            ProfileVM profileVM = new(_mainVM, user);
+            _mainVM.SelectedVM = profileVM;
+            _mainVM.StackOfVMs.Add(profileVM);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace GOSSIP.ViewModels
 
 
             //Підписка на зміну колекції з моделі. Модель міняється — міняється UI
-            
+            Messages.CollectionChanged += LastMessageUpdate;
             SendMessageCommand = new RelayCommand(SendMessageMethod);
         }
 
@@ -68,7 +68,6 @@ namespace GOSSIP.ViewModels
 
         public ICommand SendMessageCommand { get; set; }
 
-        //Метод надсилання повідомлення. Напряму міняється колекція з моделі, через підписку на івент, міняється і UI
         private void SendMessageMethod(object obj)
         {
             MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUser.ID, this.EnteredText, DateTime.Now, false, false);
@@ -78,27 +77,9 @@ namespace GOSSIP.ViewModels
             EnteredText = "";
         }
 
-        //Те, що буде відбуватись під час зміни списку повідомлень моделей
-        private void Messages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void LastMessageUpdate(object sender, EventArgs args)
         {
-            if (e.NewItems != null)
-            {
-                foreach (MessageModel newMessage in e.NewItems)
-                {
-                    _chatService.AddMessage(_chat.ID, newMessage);
-                    Messages.Add(newMessage);
-                    LastMessage = Messages.Last().MessageText;
-                }
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (MessageModel oldMessage in e.OldItems)
-                {
-                    Messages.Remove(oldMessage);
-                    LastMessage = Messages.Last().MessageText;
-                }
-            }
+            LastMessage = Messages.Last().MessageText;
         }
     }
 }
