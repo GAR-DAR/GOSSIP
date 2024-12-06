@@ -23,9 +23,9 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="80*"/>
-                <RowDefinition Height="10*"/>
+                <RowDefinition Height="auto" MinHeight="65"/>
+                <RowDefinition Height="600"/>
+                <RowDefinition Height="auto" MinHeight="40"/>
             </Grid.RowDefinitions>
 
             <Border Background="{StaticResource BlueCharcoal}">
@@ -86,17 +86,29 @@
             </ListBox>
 
 
-            <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
                 <WrapPanel>
-                    <TextBox Style="{StaticResource InputField}" Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="750" Height="60">
-                        <TextBox.InputBindings>
-                            <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
+                    <Border VerticalAlignment="Bottom" MinHeight="50" MaxHeight="200" Width="750">
+                        <TextBox Style="{StaticResource MessageInput}" 
+                 Text="{Binding EnteredText}" 
+                 VerticalAlignment="Bottom"
+                 VerticalContentAlignment="Top" 
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 MinHeight="50" 
+                 MaxHeight="200" 
+                 Width="750" >
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                    </Border>
                     <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
                 </WrapPanel>
+
             </Border>
+
         </Grid>
     </Border>
-    
+
 </UserControl>

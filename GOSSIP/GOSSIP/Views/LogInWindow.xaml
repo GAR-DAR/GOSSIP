@@ -67,15 +67,9 @@
                     </Hyperlink>
             </TextBlock>
 
-            <Button Grid.Row="6" Grid.Column="1" Content="Log in" Foreground="White" FontSize="20" Height="40" Width="100" Command="{Binding LogInCommand}" Margin="30,0,0,10">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{DynamicResource Danube}" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource PrussianBlue}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"  />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <Button Grid.Row="6" Grid.Column="1" Content="Log in" Command="{Binding LogInCommand}"
+    Style="{StaticResource NextButton1}" Margin="30,0,0,10"/>
+            
         </Grid>
     </Border>
 

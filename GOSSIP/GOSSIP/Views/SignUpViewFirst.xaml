@@ -74,14 +74,8 @@
         <Run Text="Log in." />
     </Hyperlink>
         </TextBlock>
-        <Button Grid.Row="9" Grid.Column="1" Content="Next" Foreground="White" FontSize="20" Height="40" Width="100" Command="{Binding NextCommand}" Margin="0,0,0,20">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{DynamicResource Danube}" CornerRadius="20" BorderThickness="1" BorderBrush="{DynamicResource PrussianBlue}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"  />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        <Button Grid.Row="9" Grid.Column="1" Content="Next" 
+            Command="{Binding NextCommand}" Margin="0,0,0,20" 
+            Style="{StaticResource NextButton1}" />
     </Grid>
 </UserControl>
