@@ -23,7 +23,7 @@ namespace Server.Models
         DeleteTopic,
         UpvoteTopic,
         DownvoteTopic,
-        ReplyToTopic,
+        
         #endregion
 
         #region Reply

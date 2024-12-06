@@ -23,7 +23,7 @@ namespace GOSSIP.Models
             DeleteTopic,
             UpvoteTopic,
             DownvoteTopic,
-            ReplyToTopic,
+            
         #endregion
 
         #region Reply

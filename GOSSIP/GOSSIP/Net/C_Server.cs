@@ -133,11 +133,7 @@ namespace GOSSIP.Net
             SendPacket(SignalsEnum.DownvoteTopic, new { postId = postID });
         }
 
-            public void ReplyToTopic(ReplyModel reply)
-            {
-                SendPacket(SignalsEnum.ReplyToTopic, reply);
-            }
-
+            
         #endregion
 
         #region Reply
