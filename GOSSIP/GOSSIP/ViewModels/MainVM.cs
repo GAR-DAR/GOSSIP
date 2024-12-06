@@ -180,9 +180,17 @@ namespace GOSSIP.ViewModels
             {
                 AuthorizedUser = user;
                 logInWindow.Close();
-                SelectedTopBarVM = new TopBarLoggedInVM(AuthorizedUser, this);
+                TopBarLoggedInVM topBarLoggedInVM = new(AuthorizedUser, this);
+                SelectedTopBarVM = topBarLoggedInVM;
+                topBarLoggedInVM.ProfileOpeningEvent += ProfileOpeningEventHandler;
             };
             logInWindow.ShowDialog();
         }
+
+        public void ProfileOpeningEventHandler()
+        {
+            SelectedVM = new ProfileVM();
+        }
+
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
 {
@@ -11,6 +13,21 @@ namespace GOSSIP.ViewModels
     {
         private MainVM _mainVM;
         private UserModel _authorizedUser;
+
+        public ICommand ProfilePictureClickCommand { get; set; }
+
+        public event Action ProfileOpeningEvent;
+
+        private bool _isMenuOpen;
+        public bool IsMenuOpen
+        {
+            get => _isMenuOpen;
+            set
+            {
+                _isMenuOpen = value;
+                OnPropertyChanged(nameof(IsMenuOpen));
+            }
+        }
 
         private string _photo;
         public string Photo
@@ -37,10 +54,15 @@ namespace GOSSIP.ViewModels
         public TopBarLoggedInVM(UserModel userModel, MainVM mainVM)
         {
             _authorizedUser = userModel;
-            _mainVM = mainVM;
             MainVM.AuthorizedUser = _authorizedUser;
             _username = _authorizedUser.Username;
             Photo = _authorizedUser.Photo;
+
+            ProfilePictureClickCommand = new RelayCommand((obj) => IsMenuOpen = !IsMenuOpen);
+            
         }
+
+
+       
     }
 }

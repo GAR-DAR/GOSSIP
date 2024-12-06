@@ -88,7 +88,11 @@
 
             <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <WrapPanel>
-                    <TextBox Style="{StaticResource InputField}" Text="{Binding EnteredText}" Width="750" Height="60"/>
+                    <TextBox Style="{StaticResource InputField}" Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="750" Height="60">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
                     <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
                 </WrapPanel>
             </Border>
