@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
@@ -18,8 +19,8 @@ namespace GOSSIP.ViewModels
     public class TopicsListVM : ObservableObject
     {
         //Колекція постів. Треба підключити до БД
-        public ObservableCollection<TopicModel> _topics;
-        public ObservableCollection<TopicModel> Topics
+        public ObservableCollection<TopicVM> _topics;
+        public ObservableCollection<TopicVM> Topics
         {
             get => _topics;
             set
@@ -53,12 +54,12 @@ namespace GOSSIP.ViewModels
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Topics = new ObservableCollection<TopicModel>(topics);
+                    Topics = new ObservableCollection<TopicVM>(topics.Select(x => new TopicVM(x)));
                     foreach (var topic in Topics)
                     {
-                        foreach (var reply in topic.Replies)
+                        foreach (var reply in topic.Topic.Replies)
                         {
-                            reply.Topic = topic;
+                            reply.Topic = topic.Topic;
                         }
                     }
                 });
