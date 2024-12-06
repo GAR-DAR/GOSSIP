@@ -157,9 +157,9 @@ public static class UsersService
     public static bool ChangePassword (UserModel user, string newPassword, MySqlConnection conn)
     {
         string changePasswordQuery =
-           """
+           $"""
             UPDATE users
-            SET password = newPassword
+            SET password = { newPassword }
             WHERE id = @user_id
             """;
 
