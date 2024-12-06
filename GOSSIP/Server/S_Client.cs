@@ -60,7 +60,7 @@ namespace Server
                     }
 
                     mutex.WaitOne();
-                        var signal = _packetReader.ReadSignal();
+                    var signal = _packetReader.ReadSignal();
                     mutex.ReleaseMutex();
 
                     if (signal == 255)
@@ -68,7 +68,7 @@ namespace Server
                         continue;
                     }
 
-                    Console.WriteLine($"[BEFORE] Signal {signal} received");
+                    Console.WriteLine($"[Recived] signal {signal} from user {UID} with name {User.Username}");
 
                     switch (signal)
                     {
@@ -83,46 +83,35 @@ namespace Server
                             {
                                 List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetTopics, allTopics);
+                                Console.WriteLine($"[Sent] signal {signal} for user {UID} with name {User.Username}");
                                 break;
                             }
                         case (byte)SignalsEnum.Login:
                             {
-                                var rawPacket = _packetReader.ReadRawPacket();
+                                mutex.WaitOne();
+                                var authUserModel = _packetReader.ReadPacket<AuthUserModel>().Data;
+                                mutex.ReleaseMutex();
 
-                                var authUserModel = _packetReader.DeserializePacket<AuthUserModel>(rawPacket);
-
-                                using DatabaseService db = new DatabaseService();
-
-                                var options = new JsonSerializerOptions
+                                UserModel userModel;
+                                if(authUserModel.Username == null && authUserModel.Email != null)
                                 {
-                                    WriteIndented = true,
-                                    ReferenceHandler = ReferenceHandler.Preserve
-                                };
+                                    userModel = UsersService.SignIn("email", authUserModel.Email, authUserModel.Password, Globals.db.Connection);
+                                    SendPacket(SignalsEnum.Login, userModel);
 
-                                var userModel = UsersService.SignIn("username", authUserModel.Username, authUserModel.Password, db.Connection);
-
-                                if (userModel != null)
+                                }
+                                if (authUserModel.Username != null && authUserModel.Email == null)
                                 {
-                                    // Serialize and deserialize the userModel to handle reference preservation
-                                    var serializedUserModel = JsonSerializer.Serialize(
-                                        JsonSerializer.Deserialize<UserModel?>(
-                                            JsonSerializer.Serialize(userModel, options),
-                                            new JsonSerializerOptions
-                                            {
-                                                ReferenceHandler = ReferenceHandler.Preserve
-                                            }
-                                        ),
-                                        options
-                                    );
-
-                                    SendPacket(SignalsEnum.Login, serializedUserModel);
+                                    userModel = UsersService.SignIn("username", authUserModel.Username, authUserModel.Password, Globals.db.Connection);
+                                    SendPacket(SignalsEnum.Login, userModel);
                                 }
                                 else
                                 {
-                                    // Handle failed login
+                                    Console.WriteLine($"{DateTime.Now} - Client {UID} {authUserModel.Username} failed to login.");
                                 }
                                 break;
+
                             }
+                            
                         case (byte)SignalsEnum.Register:
                             {
 
