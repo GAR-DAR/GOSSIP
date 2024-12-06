@@ -33,7 +33,7 @@ namespace GOSSIP.Views
             if (sender is ListBoxItem item && DataContext is TopicsListVM topicsListVM)
             {
                 // Передати вибраний елемент до команди у ViewModel
-                if (item.DataContext is TopicModel selectedPost)
+                if (item.DataContext is TopicVM selectedPost)
                 {
                     if (topicsListVM.DoubleClickCommand.CanExecute(selectedPost))
                         topicsListVM.DoubleClickCommand.Execute(selectedPost);

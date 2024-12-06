@@ -12,7 +12,7 @@ namespace GOSSIP.ViewModels
 {
     public class OpenedTopicVM : ObservableObject
     {
-        public TopicModel Topic { get; set; }
+        public TopicVM TopicVM { get; set; }
 
         private bool _canUpVote = true;
         private bool _canDownVote = true;
@@ -32,60 +32,60 @@ namespace GOSSIP.ViewModels
 
         public UserModel Author
         {
-            get => Topic.Author;
+            get => TopicVM.Topic.Author;
             set
             {
-                Topic.Author = value;
+                TopicVM.Topic.Author = value;
                 OnPropertyChanged(nameof(Author));
             }
         }
 
         public int Rating
         {
-            get => Topic.Rating;
+            get => TopicVM.Rating;
             set
             {
-                Topic.Rating = value;
+                TopicVM.Rating = value;
                 OnPropertyChanged(nameof(Rating));
             }
         }
 
         public string Content
         {
-            get => Topic.Content;
+            get => TopicVM.Content;
             set
             {
-                Topic.Content = value;
+                TopicVM.Content = value;
                 OnPropertyChanged(nameof(Content));
             }
         }
 
         public string Title
         {
-            get => Topic.Title;
+            get => TopicVM.Title;
             set
             {
-                Topic.Title = value;
+                TopicVM.Title = value;
                 OnPropertyChanged(nameof(Title));
             }
         }
 
         public DateTime CreatedAt
         {
-            get => Topic.CreatedAt;
+            get => TopicVM.CreatedAt;
             set
             {
-                Topic.CreatedAt = value;
+                TopicVM.CreatedAt = value;
                 OnPropertyChanged(nameof(CreatedAt));
             }
         }
 
         public uint RepliesCount
         {
-            get => Topic.RepliesCount;
+            get => TopicVM.RepliesCount;
             set
             {
-                Topic.RepliesCount = value;
+                TopicVM.RepliesCount = value;
                 OnPropertyChanged(nameof(RepliesCount));
             }
         }
@@ -103,13 +103,13 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public OpenedTopicVM(TopicModel topic, MainVM mainVM)
+        public OpenedTopicVM(TopicVM topic, MainVM mainVM, ObservableObject previousVM)
         {
             _mainVM = mainVM;
-            Topic = topic;
-            Replies = new(Topic.Replies.Select(x => new ReplyVM(x)));
+            TopicVM = topic;
+            Replies = new(TopicVM.Topic.Replies.Select(x => new ReplyVM(x)));
 
-            BackCommand = new RelayCommand(_mainVM.ShowPostsListMethod);
+            BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = previousVM);
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
             AddReplyCommand = new RelayCommand(AddReplyMethod);
@@ -143,7 +143,7 @@ namespace GOSSIP.ViewModels
                 _canUpVote = true;
             }
             
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
         private void DownVoteMethod(object obj)
@@ -170,7 +170,7 @@ namespace GOSSIP.ViewModels
                 _canDownVote = true;
             }
 
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
         private void AddReplyMethod(object obj)
@@ -184,13 +184,13 @@ namespace GOSSIP.ViewModels
 
             if (!string.IsNullOrEmpty(EnteredReplyText))
             {
-                Replies.Add(new ReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUser, Topic, EnteredReplyText, DateTime.Now, 0, false, [])));
+                Replies.Add(new ReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, [])));
                 RepliesCount++;
-                Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUser, Topic, EnteredReplyText, DateTime.Now, 0, false, []));
+                TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
                 EnteredReplyText = "";
             }
 
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
         private void UpVoteReplyMethod(object obj)
@@ -219,7 +219,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
         private void UpVoteReplyOnReplyMethod(object obj)
@@ -248,7 +248,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
         private void DownVoteReplyOnReplyMethod(object obj)
@@ -277,7 +277,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
         private void DownVoteReplyMethod(object obj)
@@ -306,7 +306,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(Topic);
+            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
     }
 }

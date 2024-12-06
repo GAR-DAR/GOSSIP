@@ -11,10 +11,10 @@ namespace GOSSIP.ViewModels
 {
     public class TopBarLoggedInVM : ObservableObject
     {
-        private MainVM _mainVM;
         private UserModel _authorizedUser;
 
         public ICommand ProfilePictureClickCommand { get; set; }
+        public ICommand ViewProfileCommand { get; set; }
 
         public event Action ProfileOpeningEvent;
 
@@ -59,10 +59,7 @@ namespace GOSSIP.ViewModels
             Photo = _authorizedUser.Photo;
 
             ProfilePictureClickCommand = new RelayCommand((obj) => IsMenuOpen = !IsMenuOpen);
-            
-        }
-
-
-       
+            ViewProfileCommand = new RelayCommand((obj) => { mainVM.SelectedVM = new ProfileVM(mainVM, MainVM.AuthorizedUser); IsMenuOpen = false; });
+        }  
     }
 }
