@@ -9,6 +9,7 @@ namespace Server.Models
     public enum SignalsEnum : byte
     {
         #region User
+        Disconnect,
         Register,
         Login,
         Logout,

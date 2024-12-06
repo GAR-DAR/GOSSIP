@@ -78,6 +78,7 @@ namespace GOSSIP
 
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
+            Globals.server.Disconnect();
             this.Close();
         }
     }

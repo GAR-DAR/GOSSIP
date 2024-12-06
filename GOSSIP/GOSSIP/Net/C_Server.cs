@@ -8,6 +8,8 @@ using System.Net.Sockets;
 using GOSSIP.Net.IO;
 using GOSSIP.Models;
 using System.Windows.Controls;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace GOSSIP.Net
 {
@@ -53,7 +55,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.22.226.173", 7891);
+            _client.Connect("172.22.251.137", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -65,12 +67,11 @@ namespace GOSSIP.Net
        
         public void Disconnect()
         {
+            SendPacket(SignalsEnum.Disconnect);
+
             _client.Close();
 
             _cancellationTokenSource.Cancel();
-
-            // all VMs = null...
-
         }
 
         #endregion
@@ -220,6 +221,7 @@ namespace GOSSIP.Net
         {
             Task.Run(() =>
             {
+                int Counter = 5;
                 while (true)
                 {
                     if (_cancellationTokenSource.Token.IsCancellationRequested)
@@ -229,15 +231,28 @@ namespace GOSSIP.Net
                     var signal = packetReader.ReadSignal();
                     switch (signal)
                     {
-                        case 5:
-                            break;
                         case (byte)SignalsEnum.GetTopics:
-                            var rawPacket = packetReader.ReadRawPacket();
-                            var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
-                            List<TopicModel> topics = packet.Data;
-                            getTopicsEvent?.Invoke(topics);
-                            packetReader.ClearStream();
+                            try
+                            {
+                                var rawPacket = packetReader.ReadRawPacket();
+                                var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
+                                List<TopicModel> topics = packet.Data;
+                                getTopicsEvent?.Invoke(topics);
+                                packetReader.ClearStream();
+                                Counter = 5;
+                            }
+                            catch (Exception)
+                            {
+                                if(Counter != 0)
+                                {
+                                    packetReader.ClearStream();
+                                    SendPacket(SignalsEnum.GetTopics);
+                                    Counter--;
+                                    Debug.WriteLine($"Retrying to get topics... Counter {Counter}");
+                                }
+                            }
                             break;
+
                         case (byte)SignalsEnum.Login:
                             var user = packetReader.ReadPacket<UserModel>().Data;
                             loginEvent?.Invoke(user);
@@ -246,9 +261,6 @@ namespace GOSSIP.Net
                     }
                     packetReader.Signal = 255;
                     packetReader.ClearStream();
-
-                    // Add a small delay to allow new data to arrive
-                    //await Task.Delay(10);
                 }
             }, _cancellationTokenSource.Token);
         }

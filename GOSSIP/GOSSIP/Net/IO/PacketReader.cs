@@ -69,8 +69,16 @@ namespace GOSSIP.Net.IO
         public T DeserializePacket<T>(byte[] dataBuffer)
         {
             var json = Encoding.UTF8.GetString(dataBuffer);
-            return JsonConvert.DeserializeObject<T>(json);
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch (JsonReaderException ex)
+            {
+                throw;
+            }
         }
+
 
         public void ClearStream()
         {

@@ -26,10 +26,11 @@ namespace Server
         public Guid UID { get; set; }
         public TcpClient ClientSocket { get; set; }
         public UserModel User { get; set; } = new UserModel { Username = "guest" };
+        public Mutex mutex = new Mutex();
 
         NetworkStream _networkStream;
-
         PacketReader _packetReader;
+        private CancellationTokenSource _cancellationTokenSource;
 
         public S_Client(TcpClient client)
         {
@@ -38,20 +39,29 @@ namespace Server
 
             _networkStream = new NetworkStream(ClientSocket.Client);
             _packetReader = new PacketReader(_networkStream);
+            _cancellationTokenSource = new CancellationTokenSource();
 
             Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} connected :)");
 
-            Task.Run(() => Process());
+            Task.Run(() => Process(_cancellationTokenSource.Token));
         }
 
 
-        void Process()
+        void Process(CancellationToken cancellationToken)
         {
             while (true)
             {
                 try
                 {
-                    var signal = _packetReader.ReadSignal();
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} process cancelled.");
+                        break;
+                    }
+
+                    mutex.WaitOne();
+                        var signal = _packetReader.ReadSignal();
+                    mutex.ReleaseMutex();
 
                     if (signal == 255)
                     {
@@ -62,6 +72,13 @@ namespace Server
 
                     switch (signal)
                     {
+                        case (byte)SignalsEnum.Disconnect:
+                            {
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} disconnected :(");
+                                ClientSocket.Close();
+                                _cancellationTokenSource.Cancel();
+                                break;
+                            }
                         case (byte)SignalsEnum.GetTopics:
                             {
                                 List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
@@ -177,8 +194,10 @@ namespace Server
                             //Console.WriteLine($"[SWITCH]Signal {signal} received");
                             break;
                     }
-                    _packetReader.Signal = 255;
-                    _packetReader.ClearStream();
+                    mutex.WaitOne();
+                        _packetReader.Signal = 255;
+                        _packetReader.ClearStream();
+                    mutex.ReleaseMutex();
                 }
                 catch (Exception ex)
                 {
@@ -196,7 +215,9 @@ namespace Server
             {
                 var authPacket = new PacketBuilder<T>();
                 var packet = authPacket.GetPacketBytes(signal, user);
-                ClientSocket.Client.Send(packet);
+                mutex.WaitOne();
+                    ClientSocket.Client.Send(packet);
+                mutex.ReleaseMutex();
             }
         }
 
@@ -206,7 +227,9 @@ namespace Server
             {
                 var authPacket = new PacketBuilder<object>();
                 var packet = authPacket.GetPacketBytes(signal);
-                ClientSocket.Client.Send(packet);
+                mutex.WaitOne();
+                    ClientSocket.Client.Send(packet);
+                mutex.ReleaseMutex();
             }
         }
 
