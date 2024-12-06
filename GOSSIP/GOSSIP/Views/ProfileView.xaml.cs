@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GOSSIP.Models;
+using GOSSIP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,20 @@ namespace GOSSIP.Views
         public ProfileView()
         {
             InitializeComponent();
+        }
+        
+        private void OnItemMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Отримати елемент ListBoxItem
+            if (sender is ListBoxItem item && DataContext is ProfileVM profileVM)
+            {
+                // Передати вибраний елемент до команди у ViewModel
+                if (item.DataContext is TopicVM selectedPost)
+                {
+                    if (profileVM.DoubleClickCommand.CanExecute(selectedPost))
+                        profileVM.DoubleClickCommand.Execute(selectedPost);
+                }
+            }
         }
     }
 }

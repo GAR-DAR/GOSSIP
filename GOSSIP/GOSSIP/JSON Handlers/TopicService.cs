@@ -46,4 +46,9 @@ public class TopicService
     {
         return _topics.FirstOrDefault(t => t.ID == topicId);
     }
+
+    public List<TopicModel> GetTopicsByID(uint id)
+    {
+        return _topics.Where((TopicModel t) => t.Author.ID == id).ToList();
+    }
 }

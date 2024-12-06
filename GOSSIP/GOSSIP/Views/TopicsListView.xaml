@@ -44,15 +44,27 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Іконка -->
-                                    <Image Source="{Binding Author.Photo}" Margin="10,10,0,0" Width="40" Height="40" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Image.Clip>
-                                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                                        </Image.Clip>
-                                    </Image>
+                                    <Button Command="{Binding PhotoClickCommand}" Margin="10,10,0,0" Width="50" Height="50" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <Image Source="{Binding Topic.Author.Photo}" Width="40" Height="40">
+                                                                <Image.Clip>
+                                                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                                </Image.Clip>
+                                                            </Image>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
 
                                     <!-- Інформація про автора -->
                                     <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,8,0,0" Orientation="Vertical" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                        <TextBlock Text="{Binding Topic.Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
                                         <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White"/>
                                     </StackPanel>
 

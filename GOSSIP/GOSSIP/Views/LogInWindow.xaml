@@ -62,7 +62,7 @@
 
             <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">
                 <Run Text="Don't have an account? " Foreground="White" />
-                    <Hyperlink Command="{Binding ShowSignUpCommand}" Foreground="{DynamicResource Danube}" TextDecorations="Underline">
+                    <Hyperlink Foreground="{DynamicResource Danube}" TextDecorations="Underline">
                         <Run Text="Sign up." />
                     </Hyperlink>
             </TextBlock>

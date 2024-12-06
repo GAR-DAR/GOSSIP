@@ -31,6 +31,8 @@ namespace GOSSIP.ViewModels
             : "pack://application:,,,/Resources/Images/Tags.png";
 
         static public UserModel AuthorizedUser { get; set; }
+
+        public List<ObservableObject> StackOfVMs { get; set; } = [];
         
         public bool IsTopicsPressed
         {
@@ -115,6 +117,7 @@ namespace GOSSIP.ViewModels
             ShowTopicsListCommand = new RelayCommand(ShowPostsListMethod);
             ShowChatsCommand = new RelayCommand(ShowChatsMethod);
             CreateTopicCommand = new RelayCommand(CreateTopicMethod);
+            StackOfVMs.Add(_topicListVM);
         }
 
         private void CreateTopicMethod(object obj)
@@ -131,7 +134,10 @@ namespace GOSSIP.ViewModels
 
         public void ShowPostsListMethod(object obj)
         {
+            StackOfVMs.Add(SelectedVM);
+            _topicListVM.UpdateInfo();
             SelectedVM = _topicListVM;
+            StackOfVMs.RemoveAt(StackOfVMs.Count - 1);
             TurnOffButtonsExcept("Topics");
         }
 
@@ -143,6 +149,7 @@ namespace GOSSIP.ViewModels
                 {
                     _chatsVM = new ChatsVM(AuthorizedUser, this);
                 }
+                StackOfVMs.Add(SelectedVM);
                 SelectedVM = _chatsVM;
                 TurnOffButtonsExcept("Chats");
             }
@@ -152,11 +159,31 @@ namespace GOSSIP.ViewModels
             }   
         }
 
+        public void OpenTopic(TopicVM topiVM)
+        {
+            OpenedTopicVM openedTopicVM = new(topiVM, this, _topicListVM);
+            StackOfVMs.Add(SelectedVM);
+            SelectedVM = openedTopicVM;
+        }
+
         private void TurnOffButtonsExcept(string button)
         {
             IsTopicsPressed = button == "Topics" ? true : false;
             IsTagsPressed = button == "Tags" ? true : false;
             IsChatsPressed = button == "Chats" ? true : false;
+        }
+
+        public void SwitchToPreviousVM()
+        {
+            if (StackOfVMs.Last() is TopicsListVM)
+            {
+                ShowPostsListMethod(null);
+            }
+            else
+            {
+                StackOfVMs.RemoveAt(StackOfVMs.Count - 1);
+                SelectedVM = StackOfVMs.Last();
+            }
         }
 
         public void ShowSignUpMethod(object obj)
@@ -182,15 +209,8 @@ namespace GOSSIP.ViewModels
                 logInWindow.Close();
                 TopBarLoggedInVM topBarLoggedInVM = new(AuthorizedUser, this);
                 SelectedTopBarVM = topBarLoggedInVM;
-                topBarLoggedInVM.ProfileOpeningEvent += ProfileOpeningEventHandler;
             };
             logInWindow.ShowDialog();
         }
-
-        public void ProfileOpeningEventHandler()
-        {
-            SelectedVM = new ProfileVM();
-        }
-
     }
 }
