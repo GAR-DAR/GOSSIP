@@ -4,7 +4,7 @@ using Server.Models;
 namespace Server.Services;
 
 // TODO: delete reply
-// TODO: upvote
+
 public static class RepliesService
 {
     public static bool Add(ReplyModel reply, MySqlConnection conn)
@@ -28,12 +28,28 @@ public static class RepliesService
         return rowsAffected != 0;
     }
 
+    public static bool Upvote(ReplyModel reply, MySqlConnection conn)
+    {
+        string upvoteQuery =
+            """
+            UPDATE replies
+            SET votes = votes + 1
+            WHERE id = @reply_id
+            """;
+
+        using var updateCommand = new MySqlCommand(upvoteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@reply_id", reply.ID);
+
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
+    }
+    
     public static bool Downvote(ReplyModel reply, MySqlConnection conn)
     {
         string downvoteQuery =
             """
             UPDATE replies
-            SET votes = votes + 1
+            SET votes = votes - 1
             WHERE id = @reply_id
             """;
 
@@ -42,5 +58,22 @@ public static class RepliesService
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
+    }
+    
+    public static bool Delete(ReplyModel reply, MySqlConnection conn)
+    {
+        string deleteQuery =
+            $"""
+             UPDATE replies
+             SET is_deleted = TRUE
+             WHERE id = @id
+             """;
+
+        using var updateCommand = new MySqlCommand(deleteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@id", reply.ID);
+
+        int affectedRows = updateCommand.ExecuteNonQuery();
+        
+        return affectedRows != 0;
     }
 }

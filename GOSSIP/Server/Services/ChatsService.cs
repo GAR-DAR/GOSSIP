@@ -5,7 +5,6 @@ using Server.Models;
 namespace Server.Services;
 
 // TODO: Delete a chat
-// TODO: Delete a user from a chat
 public static class ChatsService
 {
     public static bool Create(ChatModel chat, MySqlConnection conn)
@@ -219,5 +218,22 @@ public static class ChatsService
         }
 
         return chats;
+    }
+
+    public static bool Delete(ChatModel chat, MySqlConnection conn)
+    {
+        string deleteQuery =
+            $"""
+             UPDATE chats
+             SET is_deleted = TRUE
+             WHERE id = @id
+             """;
+
+        using var updateCommand = new MySqlCommand(deleteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@id", chat.ID);
+
+        int affectedRows = updateCommand.ExecuteNonQuery();
+
+        return affectedRows != 0;
     }
 }

@@ -5,7 +5,6 @@ using Server.Models;
 namespace Server.Services;
 
 // TODO: ban user
-// TODO: change password
 // TODO: change photo
 // TODO: refactor Exists method
 public static class UsersService
@@ -153,6 +152,22 @@ public static class UsersService
             IsBanned = reader.GetBoolean("is_banned")
             // TODO: ChatModels ? 
         };
+    }
+
+    public static bool ChangePassword (UserModel user, string newPassword, MySqlConnection conn)
+    {
+        string changePasswordQuery =
+           $"""
+            UPDATE users
+            SET password = { newPassword }
+            WHERE id = @user_id
+            """;
+
+        using var updateCommand = new MySqlCommand(changePasswordQuery, conn);
+        updateCommand.Parameters.AddWithValue("@user_id", user.ID);
+
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
     }
     
 }
