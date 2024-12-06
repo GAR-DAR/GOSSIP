@@ -22,8 +22,6 @@ namespace GOSSIP.Net
     {
         TcpClient _client;
 
-       // NetworkStream _networkStream;
-
         public PacketReader packetReader;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -175,7 +173,7 @@ namespace GOSSIP.Net
             }
             #endregion
 
-            #region Chat
+        #region Chat
 
             public void StartChat(ChatModel chat)
             {
@@ -254,10 +252,17 @@ namespace GOSSIP.Net
                             break;
 
                         case (byte)SignalsEnum.Login:
-                            var user = packetReader.ReadPacket<UserModel>().Data;
-                            loginEvent?.Invoke(user);
+
+                            
+                                var user = packetReader.ReadPacket<UserModel>().Data;
+
+                                loginEvent?.Invoke(user);
+
+                                Debug.WriteLine($"User {user.Username} logged in");
+                                Counter = 5;
+                           
                             break;
-                            // Other cases
+
                     }
                     packetReader.Signal = 255;
                     packetReader.ClearStream();

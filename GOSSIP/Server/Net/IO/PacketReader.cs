@@ -21,8 +21,6 @@ namespace Server.Net.IO
 
         public Packet<T> ReadPacket<T>()
         {
-            Signal = (byte)_networkStream.ReadByte();
-
             var lengthBuffer = new byte[4];
             _networkStream.Read(lengthBuffer, 0, 4);
             int length = BitConverter.ToInt32(lengthBuffer, 0);
