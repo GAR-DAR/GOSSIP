@@ -52,6 +52,12 @@ namespace Server
                 try
                 {
                     var signal = _packetReader.ReadSignal();
+
+                    if (signal == 255)
+                    {
+                        continue;
+                    }
+
                     Console.WriteLine($"[BEFORE] Signal {signal} received");
 
                     switch (signal)
@@ -171,6 +177,8 @@ namespace Server
                             //Console.WriteLine($"[SWITCH]Signal {signal} received");
                             break;
                     }
+                    _packetReader.Signal = 255;
+                    _packetReader.ClearStream();
                 }
                 catch (Exception ex)
                 {

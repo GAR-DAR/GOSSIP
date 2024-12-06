@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using GOSSIP.Net.IO;
 using GOSSIP.Models;
+using System.Windows.Controls;
 
 namespace GOSSIP.Net
 {
@@ -17,9 +18,9 @@ namespace GOSSIP.Net
 
     public class Server
     {
-        
-
         TcpClient _client;
+
+       // NetworkStream _networkStream;
 
         public PacketReader packetReader;
 
@@ -28,6 +29,7 @@ namespace GOSSIP.Net
         public Server()
         {
             _client = new TcpClient();
+           // _networkStream = new NetworkStream(_client.Client);
         }
 
         //evens gets from server
@@ -51,7 +53,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.22.251.137", 7891);
+            _client.Connect("172.22.226.173", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -224,12 +226,17 @@ namespace GOSSIP.Net
                     {
                         break;
                     }
-                    var signal = packetReader.Signal;
+                    var signal = packetReader.ReadSignal();
                     switch (signal)
                     {
+                        case 5:
+                            break;
                         case (byte)SignalsEnum.GetTopics:
-                            List<TopicModel> topics = packetReader.ReadPacket<List<TopicModel>>().Data;
+                            var rawPacket = packetReader.ReadRawPacket();
+                            var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
+                            List<TopicModel> topics = packet.Data;
                             getTopicsEvent?.Invoke(topics);
+                            packetReader.ClearStream();
                             break;
                         case (byte)SignalsEnum.Login:
                             var user = packetReader.ReadPacket<UserModel>().Data;
@@ -237,6 +244,11 @@ namespace GOSSIP.Net
                             break;
                             // Other cases
                     }
+                    packetReader.Signal = 255;
+                    packetReader.ClearStream();
+
+                    // Add a small delay to allow new data to arrive
+                    //await Task.Delay(10);
                 }
             }, _cancellationTokenSource.Token);
         }

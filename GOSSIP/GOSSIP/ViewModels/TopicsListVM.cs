@@ -17,7 +17,16 @@ namespace GOSSIP.ViewModels
     public class TopicsListVM : ObservableObject
     {
         //Колекція постів. Треба підключити до БД
-        public ObservableCollection<TopicModel> Topics { get; set; }
+        public ObservableCollection<TopicModel> _topics;
+        public ObservableCollection<TopicModel> Topics
+        {
+            get => _topics;
+            set
+            {
+                _topics = value;
+                OnPropertyChanged(nameof(Topics));
+            }
+        }
 
         private MainVM _mainVM;
 
@@ -34,15 +43,14 @@ namespace GOSSIP.ViewModels
 
         public ICommand DoubleClickCommand { get; }
 
-        public async Task InitializeTopics()
+
+        public async Task LoadTopicsAsync()
         {
-            int a = 0;
             Globals.server.getTopicsEvent += (topics) =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Topics = new ObservableCollection<TopicModel>(topics);
-                    a = 5;
                     foreach (var topic in Topics)
                     {
                         foreach (var reply in topic.Replies)
@@ -52,22 +60,6 @@ namespace GOSSIP.ViewModels
                     }
                 });
             };
-            a += 1;
-            await Task.Run(() => Globals.server.SendPacket(SignalsEnum.GetTopics));
-        }
-
-        public async Task LoadTopicsAsync()
-        {
-            await InitializeTopics();
-
-            if (Topics != null && Topics.Count > 0)
-            {
-                var topic = Topics[0];
-                foreach (var reply in topic.Replies)
-                {
-                    reply.Topic = topic;
-                }
-            }
         }
 
         public TopicsListVM(MainVM mainVM)

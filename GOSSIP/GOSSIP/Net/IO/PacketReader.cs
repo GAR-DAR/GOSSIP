@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GOSSIP.Net.IO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,35 +13,15 @@ namespace GOSSIP.Net.IO
     {
         private readonly NetworkStream _networkStream;
 
-        public byte Signal { get; private set; }
+        public byte Signal { get; set; } = 255;
 
         public PacketReader(NetworkStream networkStream)
         {
             _networkStream = networkStream;
         }
 
-        public byte ReadSignal()
-        {
-            if (_networkStream.CanRead && _networkStream.DataAvailable)
-            {
-                Signal = (byte)_networkStream.ReadByte();
-            }
-            return Signal;
-        }
-
         public Packet<T> ReadPacket<T>()
         {
-            if (!_networkStream.CanRead)
-            {
-                Console.WriteLine("Cannot read");
-                return null;
-            }
-            if (!_networkStream.DataAvailable)
-            {
-                Console.WriteLine("No data available");
-                return null;
-            }
-
             var lengthBuffer = new byte[4];
             _networkStream.Read(lengthBuffer, 0, 4);
             int length = BitConverter.ToInt32(lengthBuffer, 0);
@@ -52,16 +33,26 @@ namespace GOSSIP.Net.IO
             return JsonConvert.DeserializeObject<Packet<T>>(json);
         }
 
+        public byte ReadSignal()
+        {
+            if (_networkStream.CanRead && _networkStream.DataAvailable)
+            {
+                Signal = (byte)_networkStream.ReadByte();
+            }
+            return Signal;
+        }
+
         public byte[] ReadRawPacket()
         {
             if (!_networkStream.CanRead)
             {
-                Console.WriteLine("Cannot read");
+                //Console.WriteLine("Cannot read");
                 return null;
             }
+
             if (!_networkStream.DataAvailable)
             {
-                Console.WriteLine("No data available");
+                //Console.WriteLine("No data available");
                 return null;
             }
 
@@ -79,6 +70,11 @@ namespace GOSSIP.Net.IO
         {
             var json = Encoding.UTF8.GetString(dataBuffer);
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public void ClearStream()
+        {
+            _networkStream.Flush();
         }
 
     }

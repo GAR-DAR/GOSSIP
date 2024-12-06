@@ -12,7 +12,7 @@ namespace Server.Net.IO
     {
         private readonly NetworkStream _networkStream;
 
-        public byte Signal { get; private set; }
+        public byte Signal { get; set; } = 255;
 
         public PacketReader(NetworkStream networkStream)
         {
@@ -71,6 +71,11 @@ namespace Server.Net.IO
         {
             var json = Encoding.UTF8.GetString(dataBuffer);
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public void ClearStream()
+        {
+            _networkStream.Flush();
         }
 
     }
