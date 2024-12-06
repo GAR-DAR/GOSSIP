@@ -1,13 +1,11 @@
-﻿using GOSSIP.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-namespace GOSSIP.Models
+namespace Server.Models
 {
+
     [Serializable]
     public class UserModel
     {
@@ -19,20 +17,19 @@ namespace GOSSIP.Models
         public string FieldOfStudy { get; set; }
         public string Specialization { get; set; }
         public string University { get; set; }
-        public int? Term { get; set; }
+        public uint? Term { get; set; }
         public string Degree { get; set; }
         public string Role { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsBanned { get; set; }
-        public string Photo { get; set; }
-        [System.Text.Json.Serialization.JsonIgnore]
-        public List<ChatModel> Chats { get; set; }
+        public string? Photo { get; set; }
+        public List<ChatModel>? Chats { get; set; }
 
-        public UserModel() { }
+        public UserModel() {}
 
         public UserModel(uint id, string email, string username, string password,
             string status, string fieldOfStudy, string specialization,
-            string university, int? term, string degree, string role,
+            string university, uint term, string degree, string role,
             DateTime createdAt, bool isBanned, string photo, List<ChatModel> chats)
         {
             ID = id;

@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,38 +48,102 @@ namespace GOSSIP.ViewModels
             _mainVM = mainVM;
             LogInCommand = new RelayCommand(LogInMethod);
         }
-        
+
+        //private void LogInMethod(object obj)
+        //{
+        //    UserModel userModel = new(
+        //         1,
+        //         "1",
+        //         "pupsaik",
+        //         "1",
+        //         "Student",
+        //         "IT",
+        //         "Software Engineering",
+        //         "Lviv Polytechnic",
+        //         2,
+        //         "Bachelor",
+        //         "User",
+        //         DateTime.Now,
+        //         false,
+        //         "pack://application:,,,/Resources/Images/TempUserIcons/stelmakh_yurii.png",
+        //         null
+        //        );
+
+        //    UserModel secondUser = new UserModel(1, "email", "OleksaLviv", "password", "Student", "IT", "Computer Science", "Lviv Polytechnic", 2, "Bachelor", "User", DateTime.Now, false, "pack://application:,,,/Resources/Images/TempUserIcons/OleksaLviv.png", []);
+
+        //    List<ChatModel> chats = [
+        //        new ChatModel(
+        //            1,
+        //            [null, null],
+        //            "OleksaLviv",
+        //            DateTime.Now,
+        //            false,
+        //            [])
+        //    ];
+
+        //    List<MessageModel> messageModels = [
+        //        new MessageModel(1, chats[0], 0, "привіт", DateTime.Now, false, false),
+        //        new MessageModel(1, chats[0], 0, "привіт", DateTime.Now, false, false)
+        //        ];
+
+        //    chats[0].Messages = messageModels;
+        //    userModel.Chats = chats;
+
+        //    List<UserModel> list = new() { userModel };
+
+        //    string jsonString1 = JsonSerializer.Serialize(list);
+        //    File.WriteAllText("user_data.json", jsonString1);
+
+        //    if (string.IsNullOrEmpty(EmailOrUsername) || string.IsNullOrEmpty(Password))
+        //    {
+        //        MessageBox.Show("Please fill all fields");
+        //        return;
+        //    }
+
+        //    AuthUserModel authUserModel = new();
+        //    if (EmailOrUsername.Contains('@'))
+        //    {
+        //        authUserModel.Email = EmailOrUsername;
+        //    }
+        //    else
+        //    {
+        //        authUserModel.Username = EmailOrUsername;
+        //    }
+
+        //    authUserModel.Password = Password;
+
+        //    var jsonString = File.ReadAllText("user_data.json");
+
+        //    List<UserModel> users = JsonSerializer.Deserialize<List<UserModel>>(jsonString);
+        //    var user = users.Find(u => (u.Username == authUserModel.Username || u.Email == authUserModel.Email) && u.Password == Password);
+
+        //    if (user == null)
+        //    {
+        //        MessageBox.Show("Incorrect username/email or password");
+        //        return;
+        //    }
+        //    RequestClose.Invoke(user);
+        //}
+
+
         private void LogInMethod(object obj)
         {
-            if (string.IsNullOrEmpty(EmailOrUsername) || string.IsNullOrEmpty(Password))
+            var authUser = new AuthUserModel
             {
-                MessageBox.Show("Please fill all fields");
-                return;
-            }
+                Username = EmailOrUsername,
+                Password = Password
+            };
 
-            AuthUserModel authUserModel = new();
-            if (EmailOrUsername.Contains('@'))
+            Globals.server.Login(authUser);
+            Globals.server.loginEvent += (user) => OnLoginSuccess(user);
+        }
+
+        private void OnLoginSuccess(UserModel user)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                authUserModel.Email = EmailOrUsername;
-            }
-            else
-            {
-                authUserModel.Username = EmailOrUsername;
-            }
-
-            authUserModel.Password = Password;
-
-            var jsonString = File.ReadAllText("user_data.json");
-
-            List<UserModel> users = JsonSerializer.Deserialize<List<UserModel>>(jsonString, new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve });
-            var user = users.Find(u => (u.Username == authUserModel.Username || u.Email == authUserModel.Email) && u.Password == Password);
-
-            if (user == null)
-            {
-                MessageBox.Show("Incorrect username/email or password");
-                return;
-            }
-            RequestClose.Invoke(user);
+                RequestClose?.Invoke(user);
+            });
         }
     }
 }

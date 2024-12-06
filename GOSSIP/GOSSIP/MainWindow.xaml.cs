@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+﻿using GOSSIP.Net;
 using GOSSIP.ViewModels;
 using System;
 using System.ComponentModel;
@@ -35,6 +36,8 @@ namespace GOSSIP
         public MainWindow()
         {
             InitializeComponent();
+         
+            Globals.server.Connect();
 
 
 
@@ -158,6 +161,7 @@ namespace GOSSIP
 
         private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
+            Globals.server.Disconnect();
             this.Close();
         }
     }

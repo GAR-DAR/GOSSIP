@@ -1,11 +1,10 @@
-using GOSSIP.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GOSSIP.Models
+namespace Server.Models
 {
     public class ReplyModel
     {
@@ -30,6 +29,7 @@ namespace GOSSIP.Models
             Rating = rating;
             IsDeleted = isDeleted;
         }
+
         public ReplyModel() { }
     }
 }

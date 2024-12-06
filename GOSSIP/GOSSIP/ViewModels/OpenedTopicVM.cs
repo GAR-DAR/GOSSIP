@@ -40,7 +40,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public int Rating
+        public int? Rating
         {
             get => TopicVM.Rating;
             set

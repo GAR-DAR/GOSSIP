@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Text.Json.Serialization;
 
-namespace GOSSIP.Models
+namespace Server.Models
 {
-    //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
     [Serializable]
     public class ChatModel
     {

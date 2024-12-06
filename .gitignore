@@ -4,25 +4,6 @@
 
 /GOSSIP/.vs/GOSSIP/FileContentIndex/2714e4d9-0e6f-4e6e-8ea2-9214526b3c8a.vsidx
 /GOSSIP/.vs/GOSSIP/FileContentIndex/0a09e9c4-0be7-49f4-90d2-c61fdeff13ab.vsidx
-*.vsidx
-*.wsuo
-*.db
-*.json
-*.exe
-*.pdb
-*.cache
-*.lref
-*.BuildWithSkipAnalyzers
-*.resources
-*.editorconfig
-*.dll
-*.db-shm
-*.suo
-*.txt
-*.baml
-*.db-wal
-*.targets
-*.props
 /.vs/GOSSIP/v17/DocumentLayout.json
 /.vs/GOSSIP/v17/.wsuo
 /.vs/GOSSIP1/v17/.wsuo
@@ -30,6 +11,13 @@
 /.vs/GOSSIP1/v17/.wsuo
 /.vs/GOSSIP1/v17/DocumentLayout.json
 /.vs/VSWorkspaceState.json
+.vs
+bin
+obj
+GOSSIP/GOSSIP/Server/obj
+/GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GOSSIP.AssemblyInfo.cs
+/GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GeneratedInternalTypeHelper.g.cs
+/GOSSIP/Server/obj/Debug/net8.0/Server.AssemblyInfo.cs
 *.v2
 *.bin
 *.g.i.cs
@@ -38,3 +26,5 @@
 /GOSSIP/GOSSIP/obj/
 /GOSSIP/GOSSIP/obj/Debug/net8.0-windows/Views/
 /GOSSIP/GOSSIP/obj/Debug/net8.0-windows/GOSSIP.AssemblyInfo.cs
+/GOSSIP/GOSSIP/obj
+/GOSSIP/GOSSIP/obj/Debug

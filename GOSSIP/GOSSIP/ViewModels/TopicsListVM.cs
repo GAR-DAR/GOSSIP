@@ -1,5 +1,11 @@
+
 ﻿using GOSSIP.JsonHandlers;
 using GOSSIP.Models;
+using GOSSIP.Net;
+using GOSSIP.Net.IO;
+using GOSSIP.Views;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
@@ -12,7 +18,16 @@ namespace GOSSIP.ViewModels
     public class TopicsListVM : ObservableObject
     {
         //Колекція постів. Треба підключити до БД
-        public ObservableCollection<TopicVM> Topics { get; set; }
+        public ObservableCollection<TopicModel> _topics;
+        public ObservableCollection<TopicModel> Topics
+        {
+            get => _topics;
+            set
+            {
+                _topics = value;
+                OnPropertyChanged(nameof(Topics));
+            }
+        }
 
         private MainVM _mainVM;
         private JsonStorage _storage = new("topic_data.json");
@@ -31,6 +46,25 @@ namespace GOSSIP.ViewModels
         public ICommand DoubleClickCommand { get; }
         public ICommand LoadMoreCommand { get; }
 
+
+        public async Task LoadTopicsAsync()
+        {
+            Globals.server.getTopicsEvent += (topics) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Topics = new ObservableCollection<TopicModel>(topics);
+                    foreach (var topic in Topics)
+                    {
+                        foreach (var reply in topic.Replies)
+                        {
+                            reply.Topic = topic;
+                        }
+                    }
+                });
+            };
+        }
+
         public TopicsListVM(MainVM mainVM)
         {
             _mainVM = mainVM;
@@ -43,30 +77,7 @@ namespace GOSSIP.ViewModels
 
             DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
             LoadMoreCommand = new RelayCommand(LoadMoreMethod);
-
-            
-        }
-
-        private void OnItemDoubleClickedMethod(TopicVM topic)
-        {
-            if (topic != null)
-            {
-                _mainVM.OpenTopic(topic);
-            }
-        }
-
-        public void UpdateInfo()
-        {
-            JsonStorage jsonStorage = new("topic_data.json");
-            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
-            foreach (var topic in Topics)
-            {
-                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
-                {
-                    Topics.Add(topic);
-                }
-                topic.ProfileSelectedEvent += ProfileClickHandler;
-            }
+            Task.Run(async () => await LoadTopicsAsync());
         }
 
         private void LoadMoreMethod(object obj)
@@ -82,7 +93,29 @@ namespace GOSSIP.ViewModels
                 }
             }
         }
-
+        
+        private void OnItemDoubleClickedMethod(TopicVM topic)
+        {
+            if (topic != null)
+            {
+                _mainVM.OpenTopic(topic);
+            }
+        }
+        
+        public void UpdateInfo()
+        {
+            JsonStorage jsonStorage = new("topic_data.json");
+            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
+            foreach (var topic in Topics)
+            {
+                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
+                {
+                    Topics.Add(topic);
+                }
+                topic.ProfileSelectedEvent += ProfileClickHandler;
+            }
+        }
+        
         private void ProfileClickHandler(UserModel user)
         {
             ProfileVM profileVM = new(_mainVM, user);
