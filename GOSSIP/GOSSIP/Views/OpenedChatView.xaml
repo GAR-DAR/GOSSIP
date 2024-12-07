@@ -16,16 +16,19 @@
         <convs:MessageFormatConverter x:Key="messageFormatConverter"/>
     </UserControl.Resources>
 
-    <Border Background="{StaticResource PrussianBlue}">
+    <Border Background="#80032247">
         <Border.CornerRadius>
             <CornerRadius TopLeft="0" TopRight="20" BottomLeft="0" BottomRight="20"/>
         </Border.CornerRadius>
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" MinHeight="65"/>
-                <RowDefinition Height="600"/>
-                <RowDefinition Height="auto" MinHeight="40"/>
+                <RowDefinition Height="Auto" MinHeight="60" />
+                <!-- Верхній бордер -->
+                <RowDefinition Height="*" />
+                <!-- Список повідомлень -->
+                <RowDefinition Height="Auto" />
+                <!-- Поле вводу -->
             </Grid.RowDefinitions>
 
             <Border Background="{StaticResource BlueCharcoal}">
@@ -86,26 +89,22 @@
             </ListBox>
 
 
-            <Border Grid.Row="2" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+            <Border Grid.Row="2" Background="Transparent">
                 <WrapPanel>
-                    <Border VerticalAlignment="Bottom" MinHeight="50" MaxHeight="200" Width="750">
-                        <TextBox Style="{StaticResource MessageInput}" 
-                 Text="{Binding EnteredText}" 
-                 VerticalAlignment="Bottom"
-                 VerticalContentAlignment="Top" 
-                 TextWrapping="Wrap"
-                 AcceptsReturn="True"
-                 MinHeight="50" 
-                 MaxHeight="200" 
-                 Width="750" >
-                            <TextBox.InputBindings>
-                                <KeyBinding Command="{Binding SendMessageCommand}" Key="Enter"/>
-                            </TextBox.InputBindings>
-                        </TextBox>
-                    </Border>
+                    <TextBox Style="{StaticResource MessageInput}"
+                     Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Width="750"
+                     MinHeight="60"
+                     MaxHeight="200"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalAlignment="Top"
+                     VerticalContentAlignment="Top"
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                     >
+                    </TextBox>
                     <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
                 </WrapPanel>
-
             </Border>
 
         </Grid>
