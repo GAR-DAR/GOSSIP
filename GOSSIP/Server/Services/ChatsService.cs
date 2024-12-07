@@ -112,8 +112,8 @@ public static class ChatsService
             string selectUsersQuery =
                 """
                 SELECT users.id, users.username, users.password, users.email, users.photo, statuses.status, 
-                       fields_of_study.field, specializations.specialization, universities.university, term, 
-                       degrees.degree, roles.role, created_at, is_banned
+                       fields_of_study.field, specializations.specialization, universities.university, users.term, 
+                       degrees.degree, roles.role, users.created_at, users.is_banned
                 FROM users
                 LEFT JOIN statuses ON users.status_id = statuses.id
                 LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id

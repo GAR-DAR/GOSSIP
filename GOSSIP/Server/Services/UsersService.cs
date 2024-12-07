@@ -9,7 +9,8 @@ public static class UsersService
 {
     public static bool SignUp(UserModel user, MySqlConnection conn)
     {
-        if (Exists("email", user.Email, conn))
+        if (Exists("email", user.Email, conn)
+            || Exists("username", user.Username, conn))
             return false; // TODO: an exception, for sure
         
         string signUpQuery =
