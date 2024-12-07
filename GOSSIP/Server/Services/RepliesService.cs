@@ -18,7 +18,7 @@ public static class RepliesService
         using var insertCommand = new MySqlCommand(addQuery, conn);
         insertCommand.Parameters.AddWithValue("@user_id", reply.User.ID);
         insertCommand.Parameters.AddWithValue("@topic_id", reply.Topic.ID);
-        //insertCommand.Parameters.AddWithValue("@parent_reply_id", reply.ParentReply?.ID);
+        insertCommand.Parameters.AddWithValue("@parent_reply_id", reply.ParentReply?.ID);
         insertCommand.Parameters.AddWithValue("@content", reply.Content);
         insertCommand.Parameters.AddWithValue("@created_at", reply.CreatedAt);
         insertCommand.Parameters.AddWithValue("@votes", reply.Rating);
