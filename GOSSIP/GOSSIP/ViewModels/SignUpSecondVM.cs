@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -258,16 +259,21 @@ namespace GOSSIP.ViewModels
                     photo: "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
                     chats: []
                 );
-                _chatService.AddUser(newUser);
-
-                CloseDialog.Invoke(newUser);
+                Globals.server.SignUp(newUser);
+                Globals.server.signUpEvent += (user) => OnSignUpSuccess(user);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
+        private void OnSignUpSuccess(UserModel user)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                CloseDialog.Invoke(user);
+            });
+        }
         private void ValidateInput()
         {
             if (string.IsNullOrEmpty(Status) || string.IsNullOrEmpty(FieldOfStudy) ||

@@ -1,9 +1,13 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+
 
 namespace GOSSIP.ViewModels
 {
@@ -46,7 +50,6 @@ namespace GOSSIP.ViewModels
             SignUpSecondVM.CloseDialog += RequestCloseMethod;
             SelectedVM = new SignUpFirstVM(this);
         }
-
         public void RequestCloseMethod(UserModel User)
         {
             RequestClose?.Invoke(User);

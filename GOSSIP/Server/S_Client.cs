@@ -20,7 +20,21 @@ namespace Server
     {
         public static DatabaseService db = new DatabaseService();
     }
-
+    public static class Logging
+    {
+        public static void Log(string message, Guid guid, UserModel user)
+        {
+            Console.WriteLine($"{DateTime.Now} - Client {guid} {user.Username} {message} :)");
+        }
+        public static void LogRecived(SignalsEnum signal, Guid guid, UserModel user)
+        {
+            Console.WriteLine($"{DateTime.Now} [Recived] signal {(byte)signal} ({signal}) from user {guid} with name {user.Username}");
+        }
+        public static void LogSent(SignalsEnum signal, Guid guid, UserModel user)
+        {
+            Console.WriteLine($"{DateTime.Now} [Sent] signal {(byte)signal} ({signal}) for user {guid} with name {user.Username}");
+        }
+    }
     public class S_Client
     {
         public Guid UID { get; set; }
@@ -41,7 +55,7 @@ namespace Server
             _packetReader = new PacketReader(_networkStream);
             _cancellationTokenSource = new CancellationTokenSource();
 
-            Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} connected :)");
+            Logging.Log("connected", UID, User);
 
             Task.Run(() => Process(_cancellationTokenSource.Token));
         }
@@ -55,7 +69,7 @@ namespace Server
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} process cancelled.");
+                        Logging.Log("process cancelled", UID, User);
                         break;
                     }
 
@@ -68,13 +82,12 @@ namespace Server
                         continue;
                     }
 
-                    Console.WriteLine($"[Recived] signal {signal} from user {UID} with name {User.Username}");
-
+                    Logging.LogRecived((SignalsEnum)signal, UID, User);
                     switch (signal)
                     {
                         case (byte)SignalsEnum.Disconnect:
                             {
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} disconnected :(");
+                                Logging.Log("disconnected", UID, User);
                                 ClientSocket.Close();
                                 _cancellationTokenSource.Cancel();
                                 break;
@@ -83,7 +96,7 @@ namespace Server
                             {
                                 List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetTopics, allTopics);
-                                Console.WriteLine($"[Sent] signal {signal} for user {UID} with name {User.Username}");
+                                Logging.LogSent(SignalsEnum.GetTopics, UID, User);
                                 break;
                             }
                         case (byte)SignalsEnum.Login:
@@ -96,17 +109,36 @@ namespace Server
                                 if(authUserModel.Username == null && authUserModel.Email != null)
                                 {
                                     userModel = UsersService.SignIn("email", authUserModel.Email, authUserModel.Password, Globals.db.Connection);
-                                    SendPacket(SignalsEnum.Login, userModel);
-
+                                    if (userModel == null)
+                                    {
+                                        Logging.Log("incorrect login or password", UID, User);
+                                        SendPacket(SignalsEnum.LoginError);
+                                        Logging.LogSent(SignalsEnum.LoginError, UID, User);
+                                    }
+                                    else
+                                    {
+                                        SendPacket(SignalsEnum.Login, userModel);
+                                        Logging.LogSent(SignalsEnum.Login, UID, User);
+                                    }
                                 }
                                 if (authUserModel.Username != null && authUserModel.Email == null)
                                 {
                                     userModel = UsersService.SignIn("username", authUserModel.Username, authUserModel.Password, Globals.db.Connection);
-                                    SendPacket(SignalsEnum.Login, userModel);
+                                    if (userModel == null)
+                                    {
+                                        Logging.Log("incorrect login or password", UID, User);
+                                        SendPacket(SignalsEnum.LoginError);
+                                        Logging.LogSent(SignalsEnum.LoginError, UID, User);
+                                    }
+                                    else
+                                    {
+                                        SendPacket(SignalsEnum.Login, userModel);
+                                        Logging.LogSent(SignalsEnum.Login, UID, User);
+                                    }
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{DateTime.Now} - Client {UID} {authUserModel.Username} failed to login.");
+                                    Logging.Log("invalid login packet", UID, User);
                                 }
                                 break;
 
@@ -114,14 +146,23 @@ namespace Server
                             
                         case (byte)SignalsEnum.SignUp:
                             {
+                                mutex.WaitOne();
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                mutex.ReleaseMutex();
+                                User = userModel;
 
-                                var rawPacket = _packetReader.ReadRawPacket();
-
-                                User = _packetReader.DeserializePacket<UserModel>(rawPacket);
-
-                                //send userModel
-
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} {User.Username} registered).");
+                                if (UsersService.SignUp(userModel, Globals.db.Connection))
+                                {
+                                    Logging.Log("registered", UID, User);
+                                    SendPacket(SignalsEnum.SignUp, userModel);
+                                    Logging.LogSent(SignalsEnum.SignUp, UID, User);
+                                }
+                                else
+                                {
+                                    Logging.Log("registration failed", UID, User);
+                                    SendPacket(SignalsEnum.SignUpError);
+                                    Logging.LogSent(SignalsEnum.SignUpError, UID, User);
+                                }
                                 break;
                             }
                         case (byte)SignalsEnum.CreateTopic:

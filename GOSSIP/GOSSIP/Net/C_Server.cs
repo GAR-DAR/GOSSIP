@@ -38,7 +38,7 @@ namespace GOSSIP.Net
         public event Action connectedEvent;
         public event Action userDisonnectedEvent;
 
-        public event Action registerEvent;
+        public event Action<UserModel> signUpEvent;
         public event Action editUserEvent;
         public event Action logoutEvent;
         public event Action<UserModel> loginEvent;
@@ -226,39 +226,44 @@ namespace GOSSIP.Net
                     switch (signal)
                     {
                         case (byte)SignalsEnum.GetTopics:
-                            try
                             {
-                                var rawPacket = packetReader.ReadRawPacket();
-                                var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
-                                List<TopicModel> topics = packet.Data;
-                                getTopicsEvent?.Invoke(topics);
-                                packetReader.ClearStream();
-                                Counter = 5;
-                            }
-                            catch (Exception)
-                            {
-                                if(Counter != 0)
+                                try
                                 {
+                                    var rawPacket = packetReader.ReadRawPacket();
+                                    var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
+                                    List<TopicModel> topics = packet.Data;
+                                    getTopicsEvent?.Invoke(topics);
                                     packetReader.ClearStream();
-                                    SendPacket(SignalsEnum.GetTopics);
-                                    Counter--;
-                                    Debug.WriteLine($"Retrying to get topics... Counter {Counter}");
+                                    Counter = 5;
                                 }
+                                catch (Exception)
+                                {
+                                    if (Counter != 0)
+                                    {
+                                        packetReader.ClearStream();
+                                        SendPacket(SignalsEnum.GetTopics);
+                                        Counter--;
+                                        Debug.WriteLine($"{DateTime.Now} Retrying to get topics... Counter {Counter}");
+                                    }
+                                }
+                                break;
                             }
-                            break;
-
                         case (byte)SignalsEnum.Login:
+                            {
+                                var userModel = packetReader.ReadPacket<UserModel>().Data;
+                                loginEvent?.Invoke(userModel);
 
-                            
-                                var user = packetReader.ReadPacket<UserModel>().Data;
+                                Debug.WriteLine($"{DateTime.Now} User {userModel.Username} logged in");
+                                break;
+                            }
+                        case (byte)SignalsEnum.SignUp:
+                            {
+                                var userModel = packetReader.ReadPacket<UserModel>().Data;
+                                signUpEvent?.Invoke(userModel);
 
-                                loginEvent?.Invoke(user);
-
-                                Debug.WriteLine($"User {user.Username} logged in");
-                                Counter = 5;
-                           
-                            break;
-
+                                Debug.WriteLine($"{DateTime.Now} User {userModel.Username} registered");
+                                break;
+                            }
                     }
                     packetReader.Signal = 255;
                     packetReader.ClearStream();

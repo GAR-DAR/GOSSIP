@@ -389,7 +389,7 @@ CREATE TABLE `users` (
   CONSTRAINT `users_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`),
   CONSTRAINT `users_ibfk_5` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   CONSTRAINT `users_ibfk_6` FOREIGN KEY (`degree_id`) REFERENCES `degrees` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +398,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'oleksalviv@lviv.ua','OleksaLviv','password','photo',1,12,44,106,2,1,1,'2024-11-19 12:17:52',0),(2,'GARDAR@GARD.COM','GARDAR_GARD','PASSWORD','PHOTO',1,12,44,106,2,1,2,'2024-11-19 12:22:31',0),(3,'moneyless@gmail.com','olliinyk','gagagaga','photo',1,12,44,106,2,1,1,'2024-11-19 12:27:57',1),(5,'socutesosweet@pookie.com','kartoplyana','coquette','photo',2,12,44,106,NULL,6,2,'2024-11-19 12:32:33',0),(6,'o@zelinskyi.gov.ua','o_zelinskyi','potyzhnist','jew',3,12,NULL,NULL,NULL,NULL,2,'2024-11-19 12:36:03',0),(7,'yurii.stelmakh.pz.2023@lpnu.ua','stelmakh_yurii','password','photo',1,12,44,106,2,1,2,'2024-11-19 12:38:19',0),(8,'mariia_ltvn@gmail.com','mariia_kolos','password','photo',1,12,44,106,2,1,1,'2024-11-19 12:42:14',0),(9,'andrii.potikha.pz.2023@lpnu.ua','apitlp','password','photo',1,12,44,106,1,1,1,'2024-11-19 12:43:58',0),(10,'kurapov@phd.ua','pavlo_kurapov','phdphdphd','phd',2,11,43,211,NULL,5,1,'2024-11-19 12:46:17',1),(11,'cat.frisky@acode.tk','frisky','tktktktk','frisky',1,15,122,106,2,2,1,'2024-11-19 12:51:18',0),(15,'email@email.com','test_testy','12345678',NULL,3,28,125,106,NULL,6,1,'2024-11-25 12:38:49',0);
+INSERT INTO `users` VALUES (1,'oleksalviv@lviv.ua','OleksaLviv','password','http://gossip.byethost7.com/Icons/oleksa.jpg',1,12,44,106,2,1,1,'2024-11-19 12:17:52',0),(2,'GARDAR@GARD.COM','GARDAR_GARD','PASSWORD','http://gossip.byethost7.com/Icons/gardar.jpg',1,12,44,106,2,1,2,'2024-11-19 12:22:31',0),(3,'moneyless@gmail.com','olliinyk','gagagaga','http://gossip.byethost7.com/Icons/ivan.jpg',1,12,44,106,2,1,1,'2024-11-19 12:27:57',1),(5,'socutesosweet@pookie.com','kartoplyana','coquette','http://gossip.byethost7.com/Icons/polina.jpg',2,12,44,106,NULL,6,2,'2024-11-19 12:32:33',0),(6,'o@zelinskyi.gov.ua','o_zelinskyi','potyzhnist','http://gossip.byethost7.com/Icons/sashko.jpg',3,12,NULL,NULL,NULL,NULL,2,'2024-11-19 12:36:03',0),(7,'yurii.stelmakh.pz.2023@lpnu.ua','stelmakh_yurii','password','http://gossip.byethost7.com/Icons/yarA.jpg',1,12,44,106,2,1,2,'2024-11-19 12:38:19',0),(8,'mariia_ltvn@gmail.com','mariia_kolos','password','http://gossip.byethost7.com/Icons/marichka.jpg',1,12,44,106,2,1,1,'2024-11-19 12:42:14',0),(9,'andrii.bachmetieva.pz.2023@lpnu.ua','apitlp','password','http://gossip.byethost7.com/Icons/andriy.jpg',1,12,44,106,1,1,1,'2024-11-19 12:43:58',0),(10,'kurapov@phd.ua','pavlo_kurapov','phdphdphd','phd',2,11,43,211,NULL,5,1,'2024-11-19 12:46:17',1),(11,'cat.frisky@acode.tk','frisky','tktktktk','frisky',1,15,122,106,2,2,1,'2024-11-19 12:51:18',0),(15,'email@email.com','test_testy','12345678',NULL,3,28,125,106,NULL,6,1,'2024-11-25 12:38:49',0),(16,'S@s.com','Sashko','123','http://gossip.byethost7.com/Icons/dushniykoder.jpg',1,NULL,NULL,NULL,NULL,NULL,1,'0001-01-01 00:00:00',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -411,4 +411,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-03 23:01:14
+-- Dump completed on 2024-12-07 15:09:47

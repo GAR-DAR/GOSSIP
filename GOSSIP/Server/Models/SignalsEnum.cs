@@ -41,7 +41,13 @@ namespace Server.Models
         DeleteMessage,
         EditMessage,
         ReadMessage,
-        DeleteChat
+        DeleteChat,
+        #endregion
+
+        #region Errors
+            PacketError,
+            LoginError,
+            SignUpError,
         #endregion
     }
 }
