@@ -45,6 +45,12 @@ namespace GOSSIP.Net
         public event Action<List<TopicModel>> getTopicsEvent;
         public event Action<TopicModel> createTopicEvent;
 
+
+
+        //public event Action<TopicModel> sendMessageEvent;
+
+        public event Action<UserModel> refreshUserEvent;
+
         //Signals
 
         #endregion
@@ -272,6 +278,14 @@ namespace GOSSIP.Net
                                 createTopicEvent?.Invoke(newTopic);
                                 Debug.WriteLine($"Topic created by {_client}");
 
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.RefreshUser:
+                            {
+                                var user = packetReader.ReadPacket<UserModel>().Data;
+                                refreshUserEvent?.Invoke(user);
+                                Debug.WriteLine($"Refrash user {_client}");
                                 break;
                             }
 

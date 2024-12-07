@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,15 @@ namespace GOSSIP.ViewModels
             get => _isChatsPressed;
             set
             {
+                Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUser);
+                Globals.server.refreshUserEvent += (user) =>
+                {
+                    AuthorizedUser = user;
+                    //TopBarLoggedInVM topBarLoggedInVM = new(AuthorizedUser, this);
+                    //SelectedTopBarVM = topBarLoggedInVM;
+                    OnPropertyChanged(nameof(AuthorizedUser));
+                };
+
                 _isChatsPressed = value;
                 OnPropertyChanged(nameof(IsChatsPressed));
                 OnPropertyChanged(nameof(ChatIcon));
@@ -212,5 +222,7 @@ namespace GOSSIP.ViewModels
             };
             logInWindow.ShowDialog();
         }
+
+       
     }
 }

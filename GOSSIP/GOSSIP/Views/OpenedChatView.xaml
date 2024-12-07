@@ -50,8 +50,8 @@
                             <DataTrigger>
                                 <DataTrigger.Binding>
                                     <MultiBinding Converter="{StaticResource messageFormatConverter}">
-                                        <Binding Path="User" />
-                                        <Binding Path="DataContext.MainVM.AuthorizedUser" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="DataContext.UserID"/>
+                                        <Binding Path="DataContext.MainVM.AuthorizedUser.ID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </DataTrigger.Binding>
 
@@ -63,14 +63,27 @@
                             <DataTrigger>
                                 <DataTrigger.Binding>
                                     <MultiBinding Converter="{StaticResource messageFormatConverter}">
-                                        <Binding Path="User"/>
-                                        <Binding Path="DataContext.MainVM.AuthorizedUser" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="UserID"/>
+                                        <Binding Path="DataContext.MainVM.AuthorizedUser.ID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </DataTrigger.Binding>
                                 <DataTrigger.Value>False</DataTrigger.Value>
                                 <Setter Property="HorizontalAlignment" Value="Left" />
                                 <Setter Property="Background" Value="{StaticResource RegalBlue}" />
                                 <Setter Property="Foreground" Value="White"/>
+                            </DataTrigger>
+
+                            <DataTrigger>
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource messageFormatConverter}">
+                                        <Binding Path="UserID"/>
+                                        <Binding Path="DataContext.MainVM.AuthorizedUser.ID" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <DataTrigger.Value>True</DataTrigger.Value>
+                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                <Setter Property="Background" Value="{StaticResource Danube}" />
+                                <Setter Property="Foreground" Value="Black"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

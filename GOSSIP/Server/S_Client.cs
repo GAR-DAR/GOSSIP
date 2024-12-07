@@ -165,6 +165,32 @@ namespace Server
                                 }
                                 break;
                             }
+                        case (byte)SignalsEnum.RefreshUser:
+                            {
+                                mutex.WaitOne();
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                mutex.ReleaseMutex();
+
+                               
+
+                                User = UsersService.Select(userModel.ID, Globals.db.Connection);
+
+                                User.Status = "Student";
+
+                                if (User != null) {
+                                    Logging.Log("refreshing", UID, User);
+                                    SendPacket(SignalsEnum.RefreshUser, userModel);
+                                    Logging.LogSent(SignalsEnum.RefreshUser, UID, User);
+                                }
+                                else
+                                {
+                                    Logging.Log("User id is not found in db", UID, User);
+                                }
+                                
+                                
+                                break;
+                            }
+                        
                         case (byte)SignalsEnum.CreateTopic:
                             {
                                 mutex.WaitOne();

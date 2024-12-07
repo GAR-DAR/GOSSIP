@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +35,7 @@ namespace GOSSIP.ViewModels
         {
             MainVM = mainVM;
             _chat = chat;
-            ChatName = "OleksaLviv"; //Поки хардкод
+            ChatName = "OleksaLviv"; //Поки хардкод TODO: замінити на форіч
             Messages = new(chat.Messages);
             LastMessage = Messages.Last().MessageText;
 
@@ -75,6 +76,7 @@ namespace GOSSIP.ViewModels
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";
+           
         }
 
         private void LastMessageUpdate(object sender, EventArgs args)
