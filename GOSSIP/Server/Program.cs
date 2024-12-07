@@ -12,28 +12,30 @@ namespace Server
         {
             using var db = new DatabaseService();
 
-            Console.WriteLine(
-                JsonSerializer.Serialize(JsonSerializer.Deserialize<UserModel?>(JsonSerializer.Serialize(
-                    UsersService.SignIn(
-                "email", "yurii.stelmakh.pz.2023@lpnu.ua", "password", db.Connection), 
-                    new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        ReferenceHandler = ReferenceHandler.Preserve 
-                    }
-                    ),
-                    new JsonSerializerOptions
-                    {
-                        ReferenceHandler = ReferenceHandler.Preserve
-                    }),
-                    new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        ReferenceHandler = ReferenceHandler.Preserve
-                    })
-                );
 
-            
+            var reply = new ChildReplyModel
+            {
+                User = new UserModel
+                {
+                    ID = 9
+                },
+                Topic = new TopicModel
+                {
+                    ID = 10
+                },
+                Content = "Хехе",
+                CreatedAt = DateTime.Now,
+                RootReply = new ParentReplyModel
+                {
+                    ID = 4,
+                    User = new UserModel
+                    {
+                        ID = 5
+                    }
+                }
+            };
+
+            RepliesService.Add(reply, db.Connection);
         }
     }
 }

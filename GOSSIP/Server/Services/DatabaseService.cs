@@ -9,7 +9,7 @@ public class DatabaseService : IDisposable
     private const string Server = "localhost";
     private const string Database = "gossip";
     private const string User = "root";
-    private const string Password = "4815162342_mM";
+    private const string Password = "root";
 
     public DatabaseService()
     {

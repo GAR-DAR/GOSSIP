@@ -5,9 +5,6 @@ using Server.Models;
 
 namespace Server.Services;
 
-// TODO: ban user
-// TODO: change photo
-// TODO: refactor Exists method
 public static class UsersService
 {
     public static bool SignUp(UserModel user, MySqlConnection conn)
@@ -52,9 +49,10 @@ public static class UsersService
         return affectedRows != 0;
     }
     
-    /// <param name="typeOfLogin">"email" or "username"</param>
-    public static UserModel? SignIn(string typeOfLogin, string login, string password, MySqlConnection conn)
+    public static UserModel? SignIn(string? email, string? username, string password, MySqlConnection conn)
     {
+        string typeOfLogin = (email == null) ? "username" : "email";
+        string login = (email == null) ? username : email; 
         // typeOfLogin: email || username
         if (!Exists(typeOfLogin, login, conn))
             return null; // TODO: may be replaced with an exception
