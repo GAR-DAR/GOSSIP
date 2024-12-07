@@ -10,7 +10,7 @@ namespace GOSSIP.Models
     {
         #region User
             Disconnect,
-            Register,
+            SignUp,
             Login,
             Logout,
             EditUser,

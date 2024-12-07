@@ -10,7 +10,7 @@ namespace Server.Models
     {
         #region User
         Disconnect,
-        Register,
+        SignUp,
         Login,
         Logout,
         EditUser,

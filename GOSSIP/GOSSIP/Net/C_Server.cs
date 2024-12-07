@@ -78,9 +78,9 @@ namespace GOSSIP.Net
 
 
 
-        public void Register(UserModel user)
+        public void SignUp(UserModel user)
         {
-            SendPacket(SignalsEnum.Register, user);
+            SendPacket(SignalsEnum.SignUp, user);
         }
 
         public void Login(AuthUserModel user)

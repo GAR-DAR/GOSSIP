@@ -112,7 +112,7 @@ namespace Server
 
                             }
                             
-                        case (byte)SignalsEnum.Register:
+                        case (byte)SignalsEnum.SignUp:
                             {
 
                                 var rawPacket = _packetReader.ReadRawPacket();
@@ -168,15 +168,6 @@ namespace Server
 
 
                                 Console.WriteLine($"{DateTime.Now} - Client {UID} upvoted topic with ID: {upvotedTopicId}");
-                                break;
-                            }
-                        case (byte)SignalsEnum.ReplyToTopic:
-                            {
-                                var rawPacket = _packetReader.ReadRawPacket();
-
-
-                                var reply = _packetReader.DeserializePacket<ReplyModel>(rawPacket);
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} replied to topic: {reply.ID}");
                                 break;
                             }
                         default:
