@@ -96,31 +96,23 @@ namespace Server
                                 if(authUserModel.Username == null && authUserModel.Email != null)
                                 {
                                     userModel = UsersService.SignIn("email", authUserModel.Email, authUserModel.Password, Globals.db.Connection);
-                                    if(userModel == null)
-                                    {
-                                        SendPacket(SignalsEnum.LoginError);
-                                    }
                                     SendPacket(SignalsEnum.Login, userModel);
 
                                 }
                                 if (authUserModel.Username != null && authUserModel.Email == null)
                                 {
                                     userModel = UsersService.SignIn("username", authUserModel.Username, authUserModel.Password, Globals.db.Connection);
-                                    if (userModel == null)
-                                    {
-                                        SendPacket(SignalsEnum.LoginError);
-                                    }
                                     SendPacket(SignalsEnum.Login, userModel);
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"{DateTime.Now} - Client {UID} {authUserModel.Username} invalid packet.");
+                                    Console.WriteLine($"{DateTime.Now} - Client {UID} {authUserModel.Username} failed to login.");
                                 }
                                 break;
 
                             }
                             
-                        case (byte)SignalsEnum.SignUp:
+                        case (byte)SignalsEnum.Register:
                             {
 
                                 var rawPacket = _packetReader.ReadRawPacket();
@@ -176,6 +168,15 @@ namespace Server
 
 
                                 Console.WriteLine($"{DateTime.Now} - Client {UID} upvoted topic with ID: {upvotedTopicId}");
+                                break;
+                            }
+                        case (byte)SignalsEnum.ReplyToTopic:
+                            {
+                                var rawPacket = _packetReader.ReadRawPacket();
+
+
+                                var reply = _packetReader.DeserializePacket<ReplyModel>(rawPacket);
+                                Console.WriteLine($"{DateTime.Now} - Client {UID} replied to topic: {reply.ID}");
                                 break;
                             }
                         default:

@@ -248,33 +248,16 @@ namespace GOSSIP.Net
                             break;
 
                         case (byte)SignalsEnum.Login:
-                            {
+
+                            
                                 var user = packetReader.ReadPacket<UserModel>().Data;
 
                                 loginEvent?.Invoke(user);
 
                                 Debug.WriteLine($"User {user.Username} logged in");
                                 Counter = 5;
-
-                                break;
-                            }
-                        case (byte)SignalsEnum.LoginError:
-                            {
-                                // TODO: Show error message
-                                Debug.WriteLine("Login error");
-                                break;
-                            }
-                        case (byte)SignalsEnum.SignUpError:
-                            {
-                                // TODO: Show error message
-                                Debug.WriteLine("SignUp error");
-                                break;
-                            }
-                        case (byte)SignalsEnum.PacketError:
-                            {
-                                // TODO: Send packet again
-                                break;
-                            }
+                           
+                            break;
 
                     }
                     packetReader.Signal = 255;
