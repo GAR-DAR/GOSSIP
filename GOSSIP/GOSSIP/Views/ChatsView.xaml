@@ -7,15 +7,14 @@
              xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="960" d:DesignWidth="1540">
-    <Border Background="{StaticResource PrussianBlue}" CornerRadius="20" Margin="20">
+    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="20" Margin="20">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel>
+            <StackPanel Background="{DynamicResource PrussianBlue}">
                 <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Top"/>
 
                 <ListBox ItemsSource="{Binding ChatList}"
@@ -37,11 +36,11 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </StackPanel>
-            
 
-            <Rectangle Grid.Column="1" Fill="Black" Width="2"/>
 
-            <ContentControl Grid.Column="2" Content="{Binding OpenedChatVM}">
+
+
+            <ContentControl Grid.Column="1" Content="{Binding OpenedChatVM}" Background="#80032247">
                 <ContentControl.Style>
                     <Style TargetType="ContentControl">
                         <Setter Property="ContentTemplate">

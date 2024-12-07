@@ -30,6 +30,4 @@
         <Setter Property="Background" Value="{StaticResource Danube}"/>
     </Style>
 
-
-
 </ResourceDictionary>
