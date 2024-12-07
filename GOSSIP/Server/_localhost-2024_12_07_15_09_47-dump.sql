@@ -163,10 +163,9 @@ DROP TABLE IF EXISTS `replies`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `replies` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `creator_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `topic_id` int NOT NULL,
   `parent_reply_id` int DEFAULT NULL,
-  `reply_to` int DEFAULT NULL,
   `content` mediumtext NOT NULL,
   `created_at` datetime NOT NULL,
   `votes` int NOT NULL,
@@ -174,14 +173,12 @@ CREATE TABLE `replies` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `topic_id` (`topic_id`),
-  KEY `user_id` (`creator_id`),
+  KEY `user_id` (`user_id`),
   KEY `parent_reply_id` (`parent_reply_id`),
-  KEY `replies_users_id_fk` (`reply_to`),
   CONSTRAINT `replies_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`),
-  CONSTRAINT `replies_ibfk_2` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `replies_ibfk_3` FOREIGN KEY (`parent_reply_id`) REFERENCES `replies` (`id`),
-  CONSTRAINT `replies_users_id_fk` FOREIGN KEY (`reply_to`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `replies_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `replies_ibfk_3` FOREIGN KEY (`parent_reply_id`) REFERENCES `replies` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,7 +187,7 @@ CREATE TABLE `replies` (
 
 LOCK TABLES `replies` WRITE;
 /*!40000 ALTER TABLE `replies` DISABLE KEYS */;
-INSERT INTO `replies` VALUES (1,3,3,NULL,NULL,'Ця Ірина...','2024-11-19 17:21:30',5,1),(2,1,1,NULL,NULL,'Windows','2024-11-19 17:24:31',100,0),(3,9,1,2,1,'Windows','2024-11-19 17:25:44',99,0),(4,8,10,NULL,NULL,'Накокетила','2024-12-07 18:13:28',0,0),(6,5,10,4,8,'Оууу єєє','2024-12-07 20:20:38',0,0),(7,9,10,4,5,'Хехе','2024-12-07 20:23:14',0,0),(8,9,10,4,5,'Хехе','2024-12-07 20:28:21',0,0);
+INSERT INTO `replies` VALUES (1,3,3,NULL,'Ця Ірина...','2024-11-19 17:21:30',5,1),(2,1,1,NULL,'Windows','2024-11-19 17:24:31',100,0),(3,9,1,2,'Windows','2024-11-19 17:25:44',99,0);
 /*!40000 ALTER TABLE `replies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -289,7 +286,7 @@ CREATE TABLE `topics` (
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +295,7 @@ CREATE TABLE `topics` (
 
 LOCK TABLES `topics` WRITE;
 /*!40000 ALTER TABLE `topics` DISABLE KEYS */;
-INSERT INTO `topics` VALUES (1,6,'Windows vs Linux','цей лінукс, бляха','2024-11-19 16:35:20',0,71),(2,9,'Я був на практичній з АК і можу багато чого розповісти','ну, це була невимовно класна практична, де Олег Григорович розповів нам компетентно про ігри та український геймдев','2024-11-19 16:48:50',0,69),(3,2,'АААААА ДАВАЙТЕ ДОДАМО ІМЕДЖІ ДО ЧАТУ','АААААААААААААААААААААААААААА','2024-11-19 16:53:11',1,-7),(8,10,'Майнкрафт то святе','хто не погодиться, тому перевірю конспект','2024-11-23 16:45:01',1,69),(9,10,'Майнкрафт то святе','Люблю майн і книжку з кдм','2024-11-25 12:31:19',0,22),(10,5,'Coquette','Накокетила','2024-12-05 13:41:37',0,70),(11,5,'Coquette','Накокетила','2024-12-05 13:41:53',0,69),(12,5,'Coquette','Накокетила','2024-12-05 13:43:13',0,69);
+INSERT INTO `topics` VALUES (1,6,'Windows vs Linux','цей лінукс, бляха','2024-11-19 16:35:20',0,71),(2,9,'Я був на практичній з АК і можу багато чого розповісти','ну, це була невимовно класна практична, де Олег Григорович розповів нам компетентно про ігри та український геймдев','2024-11-19 16:48:50',0,69),(3,2,'АААААА ДАВАЙТЕ ДОДАМО ІМЕДЖІ ДО ЧАТУ','АААААААААААААААААААААААААААА','2024-11-19 16:53:11',1,69),(8,10,'Майнкрафт то святе','хто не погодиться, тому перевірю конспект','2024-11-23 16:45:01',0,69),(9,10,'Майнкрафт то святе','Люблю майн і книжку з кдм','2024-11-25 12:31:19',0,21);
 /*!40000 ALTER TABLE `topics` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -414,8 +411,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<<< HEAD:GOSSIP/Server/_localhost-2024_12_07_15_09_47-dump.sql
 -- Dump completed on 2024-12-07 15:09:47
-========
--- Dump completed on 2024-12-07 20:33:13
->>>>>>>> origin/db-integration-branch:GOSSIP/Server/_localhost-2024_12_07_20_33_12-dump.sql
