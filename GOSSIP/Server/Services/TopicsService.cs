@@ -563,4 +563,20 @@ public static class TopicsService
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
     }
+
+    public static bool DownvoteTopic(TopicModel topic, MySqlConnection conn)
+    {
+        string upvoteQuery =
+            """
+            UPDATE topics
+            SET votes = votes - 1
+            WHERE id = @topic_id
+            """;
+
+        using var updateCommand = new MySqlCommand(upvoteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@topic_id", topic.ID);
+
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
+    }
 }

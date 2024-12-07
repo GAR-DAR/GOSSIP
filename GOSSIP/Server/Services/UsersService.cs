@@ -1,5 +1,6 @@
 using System.Data;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using Server.Models;
 
 namespace Server.Services;
@@ -170,4 +171,40 @@ public static class UsersService
         return rowsAffected != 0;
     }
     
+
+    public static bool BanUser(uint userId, MySqlConnection conn)
+    {
+        string banUserQuery =
+            """
+        UPDATE users
+        SET is_banned = 1
+        WHERE id = @userId
+        """;
+
+        using var updateCommand = new MySqlCommand(banUserQuery, conn);
+        updateCommand.Parameters.AddWithValue("@userId", userId);
+
+        int affectedRows = updateCommand.ExecuteNonQuery();
+
+        return affectedRows != 0;
+    }
+
+    public static bool ChangePhoto(uint userId, string newPhoto, MySqlConnection conn)
+    {
+        string query =
+            """
+        UPDATE users
+        SET photo = @new_photo
+        WHERE id = @user_id
+        """;
+
+        using var command = new MySqlCommand(query, conn);
+        command.Parameters.AddWithValue("@new_photo", newPhoto);
+        command.Parameters.AddWithValue("@user_id", userId);
+
+        int rowsAffected = command.ExecuteNonQuery();
+        return rowsAffected != 0; 
+    }
+
+
 }
