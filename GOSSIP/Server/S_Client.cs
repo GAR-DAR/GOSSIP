@@ -167,13 +167,20 @@ namespace Server
                             }
                         case (byte)SignalsEnum.CreateTopic:
                             {
-                                var rawPacket = _packetReader.ReadRawPacket();
+                                mutex.WaitOne();
+                                    var rawPacket = _packetReader.ReadRawPacket();
+                                mutex.ReleaseMutex();
 
                                 var newTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
 
-                                //add topic to bd
+                                mutex.WaitOne();
+                                    TopicsService.Insert(newTopic, Globals.db.Connection);
+                                mutex.ReleaseMutex();
 
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} created topic: {newTopic.Title}");
+                                Logging.Log("created topic", UID, User);
+                                //TODO: надсилати список топіків, а не лише новий топік
+                                SendPacket(SignalsEnum.CreateTopic, newTopic);
+                                Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
                                 break;
                             }
                         case (byte)SignalsEnum.EditTopic:

@@ -25,7 +25,7 @@ namespace GOSSIP.ViewModels
         public string Specialization { get; set; }
         public string University { get; set; }
         public string Degree { get; set; }
-        public int Term { get; set; }
+        public uint? Term { get; set; }
 
         public event Action<UserModel> RequestClose;
 

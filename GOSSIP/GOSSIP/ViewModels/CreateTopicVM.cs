@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ namespace GOSSIP.ViewModels
     public class CreateTopicVM : ObservableObject
     {
         private MainVM _mainVM;
+        private TopicsListVM _topicsListVM;
         public ICommand BackCommand { get; }
         public ICommand RemoveTagCommand { get; }
         public ICommand CreateTopicCommand { get; }
@@ -162,8 +164,18 @@ namespace GOSSIP.ViewModels
                     false
                 );
 
-            TopicService topicService = new("topic_data.json");
-            topicService.AddTopic(topic);
+            Globals.server.CreateTopic(topic);
+
+
+            Globals.server.createTopicEvent += (newTopic) =>
+            {
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _topicsListVM.Topics.Add(new TopicVM(newTopic));
+                });
+            };
+
+
             _mainVM.ShowPostsListMethod(null);
             
         }

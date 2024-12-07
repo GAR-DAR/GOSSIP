@@ -177,7 +177,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public int Term
+        public uint? Term
         {
             get => _mainVM.Term;
             set
@@ -284,7 +284,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private int CalculateTerm(string term)
+        private uint? CalculateTerm(string term)
         {
             if (string.IsNullOrEmpty(term)) return 0;
 

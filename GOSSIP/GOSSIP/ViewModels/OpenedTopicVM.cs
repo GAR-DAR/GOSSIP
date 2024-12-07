@@ -40,7 +40,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public int? Rating
+        public int Rating
         {
             get => TopicVM.Rating;
             set
@@ -107,7 +107,8 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
             TopicVM = topic;
-            Replies = new(TopicVM.Topic.Replies.Select(x => new ReplyVM(x)));
+            // TODO: uncomment this line, after DB will be ready
+            //Replies = new(TopicVM.Topic.Replies.Select(x => new ReplyVM(x)));
 
             BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = previousVM);
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
@@ -186,7 +187,8 @@ namespace GOSSIP.ViewModels
             {
                 Replies.Add(new ReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, [])));
                 RepliesCount++;
-                TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
+                // TODO: uncomment this line, after DB will be ready
+                //TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
                 EnteredReplyText = "";
             }
 

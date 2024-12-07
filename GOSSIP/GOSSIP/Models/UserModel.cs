@@ -19,7 +19,7 @@ namespace GOSSIP.Models
         public string FieldOfStudy { get; set; }
         public string Specialization { get; set; }
         public string University { get; set; }
-        public int? Term { get; set; }
+        public uint? Term { get; set; }
         public string Degree { get; set; }
         public string Role { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -32,7 +32,7 @@ namespace GOSSIP.Models
 
         public UserModel(uint id, string email, string username, string password,
             string status, string fieldOfStudy, string specialization,
-            string university, int? term, string degree, string role,
+            string university, uint? term, string degree, string role,
             DateTime createdAt, bool isBanned, string photo, List<ChatModel> chats)
         {
             ID = id;

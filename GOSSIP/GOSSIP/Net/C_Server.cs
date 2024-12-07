@@ -43,7 +43,7 @@ namespace GOSSIP.Net
         public event Action logoutEvent;
         public event Action<UserModel> loginEvent;
         public event Action<List<TopicModel>> getTopicsEvent;
-
+        public event Action<TopicModel> createTopicEvent;
 
         //Signals
 
@@ -250,10 +250,10 @@ namespace GOSSIP.Net
                             }
                         case (byte)SignalsEnum.Login:
                             {
-                                var userModel = packetReader.ReadPacket<UserModel>().Data;
-                                loginEvent?.Invoke(userModel);
+                                var user = packetReader.ReadPacket<UserModel>().Data;
+                                loginEvent?.Invoke(user);
 
-                                Debug.WriteLine($"{DateTime.Now} User {userModel.Username} logged in");
+                                Debug.WriteLine($"User {user.Username} logged in");
                                 break;
                             }
                         case (byte)SignalsEnum.SignUp:
@@ -264,6 +264,17 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} User {userModel.Username} registered");
                                 break;
                             }
+                        case (byte)SignalsEnum.CreateTopic:
+                            {
+                                // TODO: підгружати список топіків із сервера, а не лише новий топік
+                                var newTopic = packetReader.ReadPacket<TopicModel>().Data;
+
+                                createTopicEvent?.Invoke(newTopic);
+                                Debug.WriteLine($"Topic created by {_client}");
+
+                                break;
+                            }
+
                     }
                     packetReader.Signal = 255;
                     packetReader.ClearStream();

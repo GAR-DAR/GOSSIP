@@ -29,7 +29,8 @@ public class TopicService
         var topic = _topics.FirstOrDefault(t => t.ID == topicId);
         if (topic == null) throw new Exception("Topic not found");
 
-        topic.Replies.Add(reply);
+        // TODO: uncomment this line, after DB will be ready
+        //topic.Replies.Add(reply);
         topic.RepliesCount++;
 
         _jsonStorage.SaveTopics(_topics);

@@ -48,7 +48,7 @@ namespace GOSSIP.ViewModels
             }
         }
         
-        public int? Rating
+        public int Rating
         {
             get => Topic.Rating;
             set
