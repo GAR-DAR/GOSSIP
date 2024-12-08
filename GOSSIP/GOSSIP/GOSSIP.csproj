@@ -11,12 +11,19 @@
   <ItemGroup>
     <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
     <None Remove="Resources\Images\AddPost.png" />
+    <None Remove="Resources\Images\Back.png" />
+    <None Remove="Resources\Images\BackDanube.png" />
     <None Remove="Resources\Images\Close.png" />
     <None Remove="Resources\Images\Comment.png" />
+    <None Remove="Resources\Images\Downvote.png" />
+    <None Remove="Resources\Images\DownvoteDanube.png" />
+    <None Remove="Resources\Images\LoadMore.png" />
+    <None Remove="Resources\Images\LoadMoreDanube.png" />
     <None Remove="Resources\Images\Message.png" />
     <None Remove="Resources\Images\MessageDanube.png" />
     <None Remove="Resources\Images\search.png" />
     <None Remove="Resources\Images\Send.png" />
+    <None Remove="Resources\Images\SendDanube.png" />
     <None Remove="Resources\Images\Signup.png" />
     <None Remove="Resources\Images\Tags.png" />
     <None Remove="Resources\Images\TagsDanube.png" />
@@ -29,16 +36,24 @@
     <None Remove="Resources\Images\Topics.png" />
     <None Remove="Resources\Images\TopicsDanube.png" />
     <None Remove="Resources\Images\Upvote.png" />
+    <None Remove="Resources\Images\UpvoteDanube.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Images\AddPost.png" />
+    <Resource Include="Resources\Images\Back.png" />
+    <Resource Include="Resources\Images\BackDanube.png" />
     <Resource Include="Resources\Images\Close.png" />
     <Resource Include="Resources\Images\Comment.png" />
+    <Resource Include="Resources\Images\Downvote.png" />
+    <Resource Include="Resources\Images\DownvoteDanube.png" />
+    <Resource Include="Resources\Images\LoadMore.png" />
+    <Resource Include="Resources\Images\LoadMoreDanube.png" />
     <Resource Include="Resources\Images\Message.png" />
     <Resource Include="Resources\Images\MessageDanube.png" />
     <Resource Include="Resources\Images\search.png" />
     <Resource Include="Resources\Images\Send.png" />
+    <Resource Include="Resources\Images\SendDanube.png" />
     <Resource Include="Resources\Images\Signup.png" />
     <Resource Include="Resources\Images\Tags.png" />
     <Resource Include="Resources\Images\TagsDanube.png" />
@@ -61,6 +76,7 @@
     <Resource Include="Resources\Images\Topics.png" />
     <Resource Include="Resources\Images\TopicsDanube.png" />
     <Resource Include="Resources\Images\Upvote.png" />
+    <Resource Include="Resources\Images\UpvoteDanube.png" />
   </ItemGroup>
 
 </Project>

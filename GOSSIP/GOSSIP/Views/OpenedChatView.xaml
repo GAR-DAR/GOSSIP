@@ -94,7 +94,7 @@
                     <TextBox Style="{StaticResource MessageInput}"
                      Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Width="750"
-                     MinHeight="60"
+                     MinHeight="50"
                      MaxHeight="200"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"

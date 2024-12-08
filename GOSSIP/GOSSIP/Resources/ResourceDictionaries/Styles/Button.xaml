@@ -118,18 +118,62 @@
     <Style x:Key="SendMessageButton" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <Border CornerRadius="20" Background="{DynamicResource Danube}">
-                        <Image Source="pack://application:,,,/Resources/Images/Send.png" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="3,0,0,0" Height="20" Width="20"/>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="20" Background="{DynamicResource Danube}">
+                        <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/Send.png" 
+                           HorizontalAlignment="Center" VerticalAlignment="Center" 
+                           Margin="3,0,0,0" Height="20" Width="20"/>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Зміна фону при наведенні -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource PrussianBlue}"/>
+                            <!-- Зміна іконки при наведенні -->
+                            <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/SendDanube.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Width" Value="40"/>
-        <Setter Property="Background" Value="{DynamicResource Danube}"/>
         <Setter Property="UseLayoutRounding" Value="True"/>
     </Style>
+
+    <Style x:Key="SendReplyToReplyButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="20" Background="{DynamicResource Danube}">
+                        <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/Send.png" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       Margin="3,0,0,0" Height="20" Width="20"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Зміна фону при наведенні -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource PrussianBlue}"/>
+                            <!-- Зміна іконки при наведенні -->
+                            <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/SendDanube.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
 
     <Style x:Key="CloseButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -301,5 +345,45 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="Reply" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource Danube}"/>
+        <Setter Property="Width" Value="75"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrussianBlue}"/>
+        <Setter Property="Content" Value="Reply"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="15">
+                        <!-- Заокруглення -->
+                        <ContentPresenter HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource PrussianBlue}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Danube}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    
+
+
+
+
+
 
 </ResourceDictionary>
