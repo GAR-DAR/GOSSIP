@@ -41,6 +41,7 @@ namespace GOSSIP.ViewModels
             get => _isTopicsPressed;
             set
             {
+                Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                 _isTopicsPressed = value;
                 OnPropertyChanged(nameof(IsTopicsPressed));
                 OnPropertyChanged(nameof(TopicsIcon));
@@ -52,6 +53,7 @@ namespace GOSSIP.ViewModels
             get => _isTagsPressed;
             set
             {
+                Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                 _isTagsPressed = value;
                 OnPropertyChanged(nameof(IsTagsPressed));
                 OnPropertyChanged(nameof(TagsIcon));
