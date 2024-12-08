@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,12 +35,13 @@ namespace GOSSIP.ViewModels
         {
             MainVM = mainVM;
             _chat = chat;
-            ChatName = "OleksaLviv"; //Поки хардкод
+            ChatName = chat.Name; //Поки хардкод
             Messages = new(chat.Messages);
-            LastMessage = Messages.Last().MessageText;
 
-            //IconPath = _chat.Users[0].Photo;
+            if(Messages.Count != 0)
+                LastMessage = Messages.Last().MessageText;
 
+            Photo = chat.Users[0].Photo;
 
             //Підписка на зміну колекції з моделі. Модель міняється — міняється UI
             Messages.CollectionChanged += LastMessageUpdate;

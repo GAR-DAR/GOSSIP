@@ -32,5 +32,23 @@ public class ChatService
         _users.Add(user);
         _jsonStorage.SaveUsers(_users);
     }
+
+    public void AddChat(uint userId, ChatModel chat)
+    {
+        // Знайти користувача за ID
+        var user = _users.FirstOrDefault(u => u.ID == userId);
+        if (user == null)
+            throw new Exception("User not found");
+
+        // Перевірити, чи чат із таким ID уже існує у користувача
+        if (user.Chats.Any(c => c.ID == chat.ID))
+            throw new Exception("Chat with this ID already exists for the user");
+
+        // Додати новий чат
+        user.Chats.Add(chat);
+
+        // Зберегти всі зміни
+        _jsonStorage.SaveUsers(_users);
+    }
 }
 
