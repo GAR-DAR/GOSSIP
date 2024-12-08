@@ -103,14 +103,14 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public OpenedTopicVM(TopicVM topic, MainVM mainVM, ObservableObject previousVM)
+        public OpenedTopicVM(TopicVM topic, MainVM mainVM)
         {
             _mainVM = mainVM;
             TopicVM = topic;
             // TODO: uncomment this line, after DB will be ready
             //Replies = new(TopicVM.Topic.Replies.Select(x => new ReplyVM(x)));
 
-            BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = previousVM);
+            BackCommand = new RelayCommand((obj) => _mainVM.SwitchToPreviousVM());
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
             AddReplyCommand = new RelayCommand(AddReplyMethod);

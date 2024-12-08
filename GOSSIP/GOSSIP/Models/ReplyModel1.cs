@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Models
 {
-    public abstract class ReplyModel1
+    public abstract class ReplyModel
     {
         public uint ID { get; set; }
         public UserModel User { get; set; }
@@ -16,7 +16,7 @@ namespace GOSSIP.Models
         public int Rating { get; set; } = 0;
         public bool IsDeleted { get; set; }
 
-        public ReplyModel1(uint iD, UserModel user, TopicModel topic,
+        public ReplyModel(uint iD, UserModel user, TopicModel topic,
             string content, DateTime createdAt, int rating, bool isDeleted)
         {
             ID = iD;
@@ -28,6 +28,6 @@ namespace GOSSIP.Models
             IsDeleted = isDeleted;
         }
 
-        public ReplyModel1() { }
+        public ReplyModel() { }
     }
 }
