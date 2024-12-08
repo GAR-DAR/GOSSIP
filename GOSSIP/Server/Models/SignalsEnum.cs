@@ -15,6 +15,7 @@ namespace Server.Models
         Logout,
         EditUser,
         RefreshUser,
+        ChangeUserPhoto,
         #endregion
 
         #region Topics

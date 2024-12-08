@@ -15,6 +15,7 @@ namespace GOSSIP.Models
         Logout,
         EditUser,
         RefreshUser,
+        ChangeUserPhoto,
         #endregion
 
         #region Topics

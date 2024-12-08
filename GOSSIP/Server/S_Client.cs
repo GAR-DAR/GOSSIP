@@ -191,6 +191,24 @@ namespace Server
                                 
                                 break;
                             }
+                        case (byte)SignalsEnum.ChangeUserPhoto:
+                            {
+                                mutex.WaitOne();
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                mutex.ReleaseMutex();
+
+                                bool res = UsersService.ChangePhoto(userModel.ID, userModel.Photo, Globals.db.Connection);
+                                if (res)
+                                {
+                                    Logging.Log("Change user photo", UID, User);
+                                }
+                                else
+                                {
+                                    Logging.Log("User id is not found in db", UID, User);
+                                }
+
+                                break;
+                            }
                         
                         case (byte)SignalsEnum.CreateTopic:
                             {
