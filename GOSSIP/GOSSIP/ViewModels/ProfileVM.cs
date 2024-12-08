@@ -12,13 +12,11 @@ namespace GOSSIP.ViewModels
 {
     public class ProfileVM : ObservableObject
     {
-
         public UserModel User { get; set; }
         private MainVM _mainVM;
 
-        public ICommand BackCommand { get; }
+        public ICommand BackCommand { get; set; }
         public ICommand DoubleClickCommand { get; }
-
 
         private TopicVM _selectedTopic;
         public TopicVM SelectedTopic
@@ -35,20 +33,19 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
             User = user;
+            BackCommand = new RelayCommand(BackMethod);
 
             TopicService topicService = new("topic_data.json");
             Topics = new(topicService.GetTopicsByID(User.ID).Select(x => new TopicVM(x)));
 
-            BackCommand = new RelayCommand(BackMethod);
             DoubleClickCommand = new RelayCommand(obj => OnItemDoubleClickedMethod(SelectedTopic));
-
         }
 
         private void OnItemDoubleClickedMethod(TopicVM topicVM)
         {
             if (topicVM != null)
             {
-                _mainVM.SelectedVM = new OpenedTopicVM(topicVM, _mainVM);
+                _mainVM.SelectedVM = new OpenedTopicVM(topicVM, _mainVM, this);
             }
         }
 
@@ -59,6 +56,6 @@ namespace GOSSIP.ViewModels
 
         public ObservableCollection<TopicVM> Topics { get; set; }
 
-        
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Models
 {
-    public class ParentReplyModel : ReplyModel
+    public class ParentReplyModel : ReplyModel1
     {
         public List<ChildReplyModel> Replies { get; set; } = [];
 

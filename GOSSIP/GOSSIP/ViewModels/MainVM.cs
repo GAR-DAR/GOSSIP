@@ -171,8 +171,8 @@ namespace GOSSIP.ViewModels
 
         public void OpenTopic(TopicVM topiVM)
         {
-            OpenedTopicVM openedTopicVM = new(topiVM, this);
-            StackOfVMs.Add(openedTopicVM);
+            OpenedTopicVM openedTopicVM = new(topiVM, this, _topicListVM);
+            StackOfVMs.Add(SelectedVM);
             SelectedVM = openedTopicVM;
         }
 
@@ -194,13 +194,6 @@ namespace GOSSIP.ViewModels
                 StackOfVMs.RemoveAt(StackOfVMs.Count - 1);
                 SelectedVM = StackOfVMs.Last();
             }
-        }
-
-        public void OpenProfile(UserModel user)
-        {
-            ObservableObject profileVM = AuthorizedUser != null && AuthorizedUser.ID == user.ID ? new AuthUserProfileVM(this) : new ProfileVM(this, user);
-            SelectedVM = profileVM;
-            StackOfVMs.Add(profileVM);
         }
 
         public void ShowSignUpMethod(object obj)
