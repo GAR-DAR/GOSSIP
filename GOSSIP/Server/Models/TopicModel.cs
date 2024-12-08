@@ -14,7 +14,7 @@
         public bool IsDeleted { get; set; }
 
         public TopicModel(uint iD, UserModel author, string title, string content,
-            DateTime createdAt, int rating, List<string> tags, List<ReplyModel> replies,
+            DateTime createdAt, int rating, List<string> tags, List<ParentReplyModel> replies,
             uint repliesCount, bool isDeleted)
         {
             ID = iD;

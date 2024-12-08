@@ -203,50 +203,41 @@ namespace Server
                                     TopicsService.Insert(newTopic, Globals.db.Connection);
                                 mutex.ReleaseMutex();
 
+                                mutex.WaitOne();
+                                    var topics = TopicsService.SelectAll(Globals.db.Connection);
+                                mutex.ReleaseMutex();
+
                                 Logging.Log("created topic", UID, User);
-                                //TODO: надсилати список топіків, а не лише новий топік
-                                SendPacket(SignalsEnum.CreateTopic, newTopic);
+                                //TODO: [COMPLETED] надсилати список топіків, а не лише новий топік
+                                SendPacket(SignalsEnum.GetTopics, topics);
                                 Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
                                 break;
                             }
-                        case (byte)SignalsEnum.EditTopic:
+                       
+
+                        case (byte)SignalsEnum.SendMessage:
                             {
-                                var rawPacket = _packetReader.ReadRawPacket();
+                                mutex.WaitOne();
+                                var message = _packetReader.ReadPacket<MessageModel>().Data;
+                                mutex.ReleaseMutex();
+
+                                mutex.WaitOne();
+                                MessagesService.Add(message, Globals.db.Connection);
+                                mutex.ReleaseMutex();
+
+                                Logging.Log("Message sent", UID, User);
+
+                                //TODO: multicast
 
 
-                                var editedTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
 
-                                //edit topic in bd
-
-
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} edited topic: {editedTopic.Title}");
-                                break;
-                            }
-                        case (byte)SignalsEnum.DeleteTopic:
-                            {
-                                var rawPacket = _packetReader.ReadRawPacket();
-
-                                var deletedTopicId = _packetReader.DeserializePacket<int>(rawPacket);
-
-                                //delete topic from bd
-
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} deleted topic with ID: {deletedTopicId}");
-                                break;
-                            }
-                        case (byte)SignalsEnum.UpvoteTopic:
-                            {
-                                var rawPacket = _packetReader.ReadRawPacket();
-
-
-                                var upvotedTopicId = _packetReader.DeserializePacket<int>(rawPacket);
-
-
-                                Console.WriteLine($"{DateTime.Now} - Client {UID} upvoted topic with ID: {upvotedTopicId}");
                                 break;
                             }
                         default:
                             //Console.WriteLine($"[SWITCH]Signal {signal} received");
                             break;
+
+
                     }
                     mutex.WaitOne();
                         _packetReader.Signal = 255;

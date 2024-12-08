@@ -166,16 +166,6 @@ namespace GOSSIP.ViewModels
 
             Globals.server.CreateTopic(topic);
 
-
-            Globals.server.createTopicEvent += (newTopic) =>
-            {
-                System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                {
-                    _topicsListVM.Topics.Add(new TopicVM(newTopic));
-                });
-            };
-
-
             _mainVM.ShowPostsListMethod(null);
             
         }

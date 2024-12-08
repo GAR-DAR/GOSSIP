@@ -14,9 +14,9 @@ namespace GOSSIP.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is uint authorID && values[1] is uint currentUserID)
+            if (values[0] is UserModel author && values[1] is UserModel currentUser)
             {
-                return authorID == currentUserID ?
+                return author == currentUser ?
                     true :
                     false;
             }

@@ -17,7 +17,7 @@ namespace Server.Models
             string messageText, DateTime timeStamp, bool isRead, bool isDeleted)
         {
             ID = id;
-            chat = Chat;
+            Chat = chat;
             User = user;
             MessageText = messageText;
             TimeStamp = timeStamp;
