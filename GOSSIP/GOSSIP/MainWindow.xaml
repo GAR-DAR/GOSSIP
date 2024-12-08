@@ -46,6 +46,10 @@
         <DataTemplate DataType="{x:Type viewModels:ProfileVM}">
             <views:ProfileView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:AuthUserProfileVM}">
+            <views:AuthUserProfileView/>
+        </DataTemplate>
     </Window.Resources>
 
 

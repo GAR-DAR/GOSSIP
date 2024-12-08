@@ -6,19 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace GOSSIP.ViewModels
 {
-    public class ProfileVM : ObservableObject
+    public class AuthUserProfileInfoVM : ObservableObject
     {
-
-        public UserModel User { get; set; }
         private MainVM _mainVM;
 
-        public ICommand BackCommand { get; }
-        public ICommand DoubleClickCommand { get; }
+        public UserModel User { get; set; }
+        public string Header => "Profile";
 
+        public ICommand DoubleClickCommand { get; }
 
         private TopicVM _selectedTopic;
         public TopicVM SelectedTopic
@@ -31,34 +29,23 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ProfileVM(MainVM mainVM, UserModel user)
+        public ObservableCollection<TopicVM> Topics { get; set; } 
+
+        public AuthUserProfileInfoVM(UserModel user, MainVM mainVM)
         {
             _mainVM = mainVM;
             User = user;
-
             TopicService topicService = new("topic_data.json");
             Topics = new(topicService.GetTopicsByID(User.ID).Select(x => new TopicVM(x)));
-
-            BackCommand = new RelayCommand(BackMethod);
             DoubleClickCommand = new RelayCommand(obj => OnItemDoubleClickedMethod(SelectedTopic));
-
         }
 
         private void OnItemDoubleClickedMethod(TopicVM topicVM)
         {
             if (topicVM != null)
             {
-                _mainVM.SelectedVM = new OpenedTopicVM(topicVM, _mainVM);
+                _mainVM.OpenTopic(topicVM);
             }
         }
-
-        private void BackMethod(object obj)
-        {
-            _mainVM.SwitchToPreviousVM();
-        }
-
-        public ObservableCollection<TopicVM> Topics { get; set; }
-
-        
     }
 }

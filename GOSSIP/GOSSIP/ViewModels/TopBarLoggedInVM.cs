@@ -59,7 +59,7 @@ namespace GOSSIP.ViewModels
             Photo = _authorizedUser.Photo;
 
             ProfilePictureClickCommand = new RelayCommand((obj) => IsMenuOpen = !IsMenuOpen);
-            ViewProfileCommand = new RelayCommand((obj) => { mainVM.SelectedVM = new ProfileVM(mainVM, MainVM.AuthorizedUser); IsMenuOpen = false; });
+            ViewProfileCommand = new RelayCommand((obj) => { mainVM.OpenProfile(userModel); IsMenuOpen = false; });
         }  
     }
 }
