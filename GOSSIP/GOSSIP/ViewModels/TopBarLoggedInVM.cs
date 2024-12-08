@@ -1,6 +1,7 @@
 ﻿using GOSSIP.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace GOSSIP.ViewModels
 {
     public class TopBarLoggedInVM : ObservableObject
     {
-        private UserModel _authorizedUser;
+        public UserVM AuthorizedUserVM { get; set; }
 
         public ICommand ProfilePictureClickCommand { get; set; }
         public ICommand ViewProfileCommand { get; set; }
@@ -29,37 +30,47 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private string _photo;
         public string Photo
         {
-            get => _photo;
+            get => AuthorizedUserVM.Photo;
             set
             {
-                _photo = value;
+                AuthorizedUserVM.Photo = value;
                 OnPropertyChanged(nameof(Photo));
             }
         }
 
-        private string _username;
         public string Username
         {
-            get => _username;
+            get => AuthorizedUserVM.Username;
             set
             {
-                _username = value;
+                AuthorizedUserVM.Username = value;
                 OnPropertyChanged(nameof(Username));
             }
         }
 
-        public TopBarLoggedInVM(UserModel userModel, MainVM mainVM)
+        public TopBarLoggedInVM(MainVM mainVM)
         {
-            _authorizedUser = userModel;
-            MainVM.AuthorizedUser = _authorizedUser;
-            _username = _authorizedUser.Username;
-            Photo = _authorizedUser.Photo;
+            AuthorizedUserVM = MainVM.AuthorizedUserVM;
+            Photo = AuthorizedUserVM.Photo;
 
             ProfilePictureClickCommand = new RelayCommand((obj) => IsMenuOpen = !IsMenuOpen);
-            ViewProfileCommand = new RelayCommand((obj) => { mainVM.OpenProfile(userModel); IsMenuOpen = false; });
-        }  
+            ViewProfileCommand = new RelayCommand((obj) => { mainVM.OpenProfile(MainVM.AuthorizedUserVM); IsMenuOpen = false; });
+
+            AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
+        }
+
+        private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AuthorizedUserVM.Username))
+            {
+                OnPropertyChanged(nameof(Username));
+            }
+            if (e.PropertyName == nameof(AuthorizedUserVM.Photo))
+            {
+                OnPropertyChanged(nameof(Photo));
+            }
+        }
     }
 }

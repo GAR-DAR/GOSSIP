@@ -30,7 +30,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
-                                    <Image Source="{Binding Photo}" Width="40" Height="40" Margin="10 0 0 0">
+                                    <Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="40" Height="40" Margin="10 0 0 0">
                                         <Image.Clip>
                                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                         </Image.Clip>
@@ -69,7 +69,7 @@
                                                     </Image>
 
                                                     <TextBlock Grid.Column="1" Grid.Row="0" Text="View Profile" FontSize="10" Foreground="Black"/>
-                                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Username}"/>
+                                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                                 </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>

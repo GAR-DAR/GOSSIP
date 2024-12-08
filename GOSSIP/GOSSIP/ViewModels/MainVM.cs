@@ -2,6 +2,7 @@
 using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace GOSSIP.ViewModels
             ? "pack://application:,,,/Resources/Images/TagsDanube.png"
             : "pack://application:,,,/Resources/Images/Tags.png";
 
-        static public UserModel AuthorizedUser { get; set; }
+        static public UserVM AuthorizedUserVM { get; set; }
 
         public List<ObservableObject> StackOfVMs { get; set; } = [];
         
@@ -122,7 +123,7 @@ namespace GOSSIP.ViewModels
 
         private void CreateTopicMethod(object obj)
         {
-            if (AuthorizedUser != null)
+            if (AuthorizedUserVM != null)
             {
                 SelectedVM = new CreateTopicVM(this);
             }
@@ -143,11 +144,11 @@ namespace GOSSIP.ViewModels
 
         private void ShowChatsMethod(object obj)
         {
-            if (AuthorizedUser != null)
+            if (AuthorizedUserVM != null)
             {
                 if (_chatsVM == null)
                 {
-                    _chatsVM = new ChatsVM(AuthorizedUser, this);
+                    _chatsVM = new ChatsVM(AuthorizedUserVM.UserModel, this);
                 }
                 StackOfVMs.Add(SelectedVM);
                 SelectedVM = _chatsVM;
@@ -186,9 +187,9 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public void OpenProfile(UserModel user)
+        public void OpenProfile(UserVM user)
         {
-            ObservableObject profileVM = AuthorizedUser != null && AuthorizedUser.ID == user.ID ? new AuthUserProfileVM(this) : new ProfileVM(this, user);
+            ObservableObject profileVM = AuthorizedUserVM != null && AuthorizedUserVM.UserModel.ID == user.UserModel.ID ? new AuthUserProfileVM(this) : new ProfileVM(this, user);
             SelectedVM = profileVM;
             StackOfVMs.Add(profileVM);
         }
@@ -199,9 +200,9 @@ namespace GOSSIP.ViewModels
                 SignUpWindow signUpView = new() { DataContext = signUpMainVM };
                 signUpMainVM.RequestClose += (user) => 
                 { 
-                    AuthorizedUser = user;
+                    AuthorizedUserVM = user;
                     signUpView.Close();
-                    SelectedTopBarVM = new TopBarLoggedInVM(AuthorizedUser, this);
+                    SelectedTopBarVM = new TopBarLoggedInVM(this);
                 };
                 signUpView.ShowDialog();
         }
@@ -212,9 +213,9 @@ namespace GOSSIP.ViewModels
             LogInWindow logInWindow = new() { DataContext = logInVM };
             logInVM.RequestClose += (user) =>
             {
-                AuthorizedUser = user;
+                AuthorizedUserVM = user;
                 logInWindow.Close();
-                TopBarLoggedInVM topBarLoggedInVM = new(AuthorizedUser, this);
+                TopBarLoggedInVM topBarLoggedInVM = new(this);
                 SelectedTopBarVM = topBarLoggedInVM;
             };
             logInWindow.ShowDialog();

@@ -169,7 +169,7 @@ namespace GOSSIP.ViewModels
                 CreatedAt = DateTime.Now,
                 ID = 0,
                 Rating = 0,
-                User = MainVM.AuthorizedUser,
+                User = MainVM.AuthorizedUserVM.UserModel,
                 ReplyTo = _replyModel.User
             };
 

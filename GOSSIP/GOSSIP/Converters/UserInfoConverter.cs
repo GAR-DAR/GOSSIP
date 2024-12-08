@@ -12,6 +12,9 @@ namespace GOSSIP.Converters
 
             string format = parameter.ToString();
             string stringValue = value.ToString();
+            
+            if(format == "Term" && (int)value == 0)
+              return string.Empty;
 
             return format switch
             {

@@ -11,7 +11,7 @@ namespace GOSSIP.ViewModels
 {
     public class AuthUserProfileVM : ObservableObject
     {
-        public UserModel User { get; set; }
+        public UserVM UserVM { get; set; }
 
         public ObservableCollection<ObservableObject> AvailableVMs { get; set; }
 
@@ -30,10 +30,10 @@ namespace GOSSIP.ViewModels
 
         public AuthUserProfileVM(MainVM mainVM)
         {
-            User = MainVM.AuthorizedUser;
+            UserVM = MainVM.AuthorizedUserVM;
 
-            AuthUserProfileInfoVM authUserProfileInfoVM = new(User, mainVM);
-            AuthUserProfileSettingsVM authUserProfileSettingsVM = new(User);
+            AuthUserProfileInfoVM authUserProfileInfoVM = new(UserVM, mainVM);
+            AuthUserProfileSettingsVM authUserProfileSettingsVM = new(UserVM, mainVM);
             AvailableVMs = [authUserProfileInfoVM, authUserProfileSettingsVM];
 
             SelectedVM = authUserProfileInfoVM;

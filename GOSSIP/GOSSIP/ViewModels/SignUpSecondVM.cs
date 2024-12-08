@@ -186,7 +186,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public event Action<UserModel> CloseDialog;
+        public event Action<UserVM> CloseDialog;
 
         //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
         public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
@@ -250,7 +250,7 @@ namespace GOSSIP.ViewModels
                     fieldOfStudy: _mainVM.FieldOfStudy,
                     specialization: _mainVM.Specialization,
                     university: _mainVM.University,
-                    term: CalculateTerm(_mainVM.Degree),
+                    term: _mainVM.Term,
                     degree: _mainVM.Degree,
                     role: "User",
                     createdAt: DateTime.Now,
@@ -260,7 +260,7 @@ namespace GOSSIP.ViewModels
                 );
                 _chatService.AddUser(newUser);
 
-                CloseDialog.Invoke(newUser);
+                CloseDialog.Invoke(new(newUser));
             }
             catch (Exception ex)
             {
@@ -276,20 +276,6 @@ namespace GOSSIP.ViewModels
             {
                 throw new ArgumentException("Please fill in all fields.");
             }
-        }
-
-        private int CalculateTerm(string term)
-        {
-            if (string.IsNullOrEmpty(term)) return 0;
-
-            return term switch
-            {
-                "Bachelor" => 0 + _mainVM.Term,
-                "Master" => 4 + _mainVM.Term,
-                "Postgraduate" => 6 + _mainVM.Term,
-                "PhD" => 10 + _mainVM.Term,
-                _ => throw new ArgumentException("Invalid degree", nameof(term))
-            };
         }
     }
 }

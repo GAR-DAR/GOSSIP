@@ -36,14 +36,14 @@
             <StackPanel>
 
                 <WrapPanel Margin="0 5">
-                    <Image Source="{Binding User.Photo}" Width="200" Height="200" HorizontalAlignment="Left">
+                    <Image Source="{Binding UserVM.Photo}" Width="200" Height="200" HorizontalAlignment="Left">
                         <Image.Clip>
                             <EllipseGeometry RadiusX="100" RadiusY="100" Center="100,100"/>
                         </Image.Clip>
                     </Image>
                     <StackPanel Margin="10 0 0 0" VerticalAlignment="Center">
-                        <TextBlock Foreground="White" FontSize="35" Text="{Binding User.Username}"/>
-                        <TextBlock Foreground="White" FontSize="18" Text="{Binding User.CreatedAt, Converter={StaticResource userProfileCreatedAtConverter}}" Margin="0 5 0 0"/>
+                        <TextBlock Foreground="White" FontSize="35" Text="{Binding UserVM.Username}"/>
+                        <TextBlock Foreground="White" FontSize="18" Text="{Binding UserVM.CreatedAt, Converter={StaticResource userProfileCreatedAtConverter}}" Margin="0 5 0 0"/>
                     </StackPanel>
                 </WrapPanel>
 

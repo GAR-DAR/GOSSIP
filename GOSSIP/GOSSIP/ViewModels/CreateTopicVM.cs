@@ -151,7 +151,7 @@ namespace GOSSIP.ViewModels
 
             TopicModel topic = new(
                     0,
-                    MainVM.AuthorizedUser,
+                    MainVM.AuthorizedUserVM.UserModel,
                     Title,
                     Content,
                     DateTime.Now,

@@ -38,7 +38,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public event Action<UserModel> RequestClose;
+        public event Action<UserVM> RequestClose;
 
         public ICommand LogInCommand { get; set; }
 
@@ -78,7 +78,7 @@ namespace GOSSIP.ViewModels
                 MessageBox.Show("Incorrect username/email or password");
                 return;
             }
-            RequestClose.Invoke(user);
+            RequestClose.Invoke(new(user));
         }
     }
 }
