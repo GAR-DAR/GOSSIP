@@ -357,14 +357,12 @@ namespace GOSSIP.ViewModels
                         Console.WriteLine($"Upload File Complete, status {response.StatusDescription}");
                     }
 
-           
-
                 }
 
                 _user.UserModel.Photo = "http://gossip.byethost7.com/Icons/" + Path.GetFileName(Photo);
-                OnPropertyChanged(_user.UserModel.Photo);
-                
                 Globals.server.SendPacket(SignalsEnum.ChangeUserPhoto, _user.UserModel);
+
+                Globals.server.SendPacket(SignalsEnum.RefreshUser, _user.UserModel);
 
             });
         }
