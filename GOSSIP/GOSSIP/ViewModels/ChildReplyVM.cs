@@ -120,7 +120,7 @@ namespace GOSSIP.ViewModels
 
             ChildReplyModel childReplyModel = new(
                 ID = 0,
-                MainVM.AuthorizedUser,
+                MainVM.AuthorizedUserVM.UserModel,
                 null,
                 ReplyQuery,
                 DateTime.Now,

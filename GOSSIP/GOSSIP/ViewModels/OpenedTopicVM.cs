@@ -103,13 +103,13 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public OpenedTopicVM(TopicVM topic, MainVM mainVM, ObservableObject previousVM)
+        public OpenedTopicVM(TopicVM topic, MainVM mainVM)
         {
             _mainVM = mainVM;
             TopicVM = topic;
             Replies = new(TopicVM.Topic.Replies.Select(x => new ReplyVM(x)));
 
-            BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = previousVM);
+            BackCommand = new RelayCommand((obj) => _mainVM.SwitchToPreviousVM());
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
             AddReplyCommand = new RelayCommand(AddReplyMethod);
@@ -121,7 +121,7 @@ namespace GOSSIP.ViewModels
 
         private void UpVoteMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -148,7 +148,7 @@ namespace GOSSIP.ViewModels
 
         private void DownVoteMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -175,7 +175,7 @@ namespace GOSSIP.ViewModels
 
         private void AddReplyMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -184,9 +184,9 @@ namespace GOSSIP.ViewModels
 
             if (!string.IsNullOrEmpty(EnteredReplyText))
             {
-                Replies.Add(new ReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, [])));
+                Replies.Add(new ReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, [])));
                 RepliesCount++;
-                TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUser, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
+                TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
                 EnteredReplyText = "";
             }
 
@@ -195,7 +195,7 @@ namespace GOSSIP.ViewModels
 
         private void UpVoteReplyMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -224,7 +224,7 @@ namespace GOSSIP.ViewModels
 
         private void UpVoteReplyOnReplyMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -253,7 +253,7 @@ namespace GOSSIP.ViewModels
 
         private void DownVoteReplyOnReplyMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;
@@ -282,7 +282,7 @@ namespace GOSSIP.ViewModels
 
         private void DownVoteReplyMethod(object obj)
         {
-            if (MainVM.AuthorizedUser == null)
+            if (MainVM.AuthorizedUserVM == null)
             {
                 _mainVM.ShowLogInMethod(null);
                 return;

@@ -23,7 +23,7 @@ namespace GOSSIP.ViewModels
         public string Degree { get; set; }
         public int Term { get; set; }
 
-        public event Action<UserModel> RequestClose;
+        public event Action<UserVM> RequestClose;
 
         //Переключення VM реєстрації. Зміна поля змінює вид вікна реєстрації
         public ObservableObject SelectedVM
@@ -47,7 +47,7 @@ namespace GOSSIP.ViewModels
             SelectedVM = new SignUpFirstVM(this);
         }
 
-        public void RequestCloseMethod(UserModel User)
+        public void RequestCloseMethod(UserVM User)
         {
             RequestClose?.Invoke(User);
         }

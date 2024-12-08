@@ -2,26 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
 {
-    //Другий VM реєстрації. Містить другорядну інформацію: статус, галузь знань, спеціальність та університет
-    public class SignUpSecondVM : ObservableObject
+    public class AuthUserProfileSettingsVM : ObservableObject
     {
-        //Копія головної VM реєстрації
-        private readonly SignUpMainVM _mainVM;
+        public string Header => "Settings";
 
-        public ICommand BackCommand { get; set; }
-        public ICommand CompleteSignUpCommand { get; set; }
-
-        private readonly ChatService _chatService = new("user_data.json");
+        private readonly UserVM _user;
+        private readonly MainVM _mainVM;
 
         private int _specializationIndex = -1;
         public int SpecializationIndex
@@ -86,27 +80,13 @@ namespace GOSSIP.ViewModels
 
                 // Оновлення TermsOptions відповідно до Degree
                 TermsOptions.Clear(); // Очищаємо колекцію перед додаванням нових значень
-                switch (Degree)
-                {
-                    case "Bachelor":
-                        foreach (var term in new[] { "1", "2", "3", "4" }) TermsOptions.Add(term);
-                        break;
-                    case "Master":
-                        foreach (var term in new[] { "1", "2" }) TermsOptions.Add(term);
-                        break;
-                    case "Postgraduate":
-                        foreach (var term in new[] { "1", "2", "3", "4"}) TermsOptions.Add(term);
-                        break;
-                    case "PhD":
-                        foreach (var term in new[] { "1", "2", "3", "4" }) TermsOptions.Add(term);
-                        break;
-                }
+                FillTermsCollection();
                 OnPropertyChanged(nameof(TermsOptions));
             }
         }
 
 
-        private bool _isStudentOrFaculty = false;
+        private bool _isStudentOrFaculty;
         public bool IsStudentOrFaculty
         {
             get => _isStudentOrFaculty;
@@ -124,69 +104,132 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public string Status
+        private string _username;
+        public string Username
         {
-            get => _mainVM.Status;
+            get => _username;
             set
             {
-                _mainVM.Status = value;
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
+        }
+
+        private string _status;
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
                 OnPropertyChanged(nameof(Status));
                 IsStudentOrFaculty = value == "Student" || value == "Faculty";
             }
         }
 
+        private string _fieldOfStudy;
         public string FieldOfStudy
         {
-            get => _mainVM.FieldOfStudy;
+            get => _fieldOfStudy;
             set
             {
-                _mainVM.FieldOfStudy = value;
+                _fieldOfStudy = value;
                 OnPropertyChanged(nameof(FieldOfStudy));
             }
         }
 
+        private string _specialization;
         public string Specialization
         {
-            get => _mainVM.Specialization;
+            get => _specialization;
             set
             {
-                _mainVM.Specialization = value;
+                _specialization = value;
                 OnPropertyChanged(nameof(Specialization));
             }
         }
 
+        private string _university;
         public string University
         {
-            get => _mainVM.University;
+            get => _university;
             set
             {
-                _mainVM.University = value;
+                _university = value;
                 OnPropertyChanged(nameof(University));
             }
         }
 
+        private string _degree;
         public string Degree
         {
-            get => _mainVM.Degree;
+            get => _degree;
             set
             {
-                _mainVM.Degree = value;
+                _degree = value;
                 OnPropertyChanged(nameof(Degree));
                 IsDegreeSelected = value != null; 
             }
         }
 
-        public int Term
+        private string _term;
+        public string Term
         {
-            get => _mainVM.Term;
+            get => _term;
             set
             {
-                _mainVM.Term = value;
+                _term = value;
                 OnPropertyChanged(nameof(Term));
             }
         }
 
-        public event Action<UserVM> CloseDialog;
+        private string _photo;
+        public string Photo
+        {
+            get => _photo;
+            set
+            {
+                _photo = value;
+                OnPropertyChanged(nameof(Photo));
+            }
+        }
+
+        private string _email;
+        public string Email
+        {
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        private string _password;
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        private bool _isSaved;
+        public bool IsSaved
+        {
+            get => _isSaved;
+            set
+            {
+                _isSaved = value;
+                OnPropertyChanged(nameof(IsSaved));
+            }
+        }
+
+
+        public ICommand SaveChangesCommand { get; }
+        public ICommand ChangePhotoCommand { get; }
 
         //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
         public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
@@ -222,60 +265,88 @@ namespace GOSSIP.ViewModels
             "28. Prompt Engineering",
             "29. International Relations"
         ];
-        public List<string> SpecializationOptions { get; set; } = ["Software engineering", "Computer Science", "System Analisys"];
+        public List<string> SpecializationOptions { get; set; } = ["Software Engineering", "Computer Science", "System Analisys"];
         public List<string> UniversityOptions { get; set; } = ["Lviv Polytechnic", "elenu", "Lviv National Forestry University", "Kyiv Polytechnic Institute", "Taras Shevchenko National University of Kyiv"];
         public List<string> DegreeOptions { get; set; } = ["Bachelor", "Master", "Postgraduate", "PhD"];
         public ObservableCollection<string> TermsOptions { get; set; } = [];
 
-        public SignUpSecondVM(SignUpMainVM signUpMainVM)
-        {
-            _mainVM = signUpMainVM;
-            BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = _mainVM.SignUpFirstVM);
-            CompleteSignUpCommand = new RelayCommand(CompleteSignUpMethod);
-            
-        }
 
-        private void CompleteSignUpMethod(object obj)
+        private void FillTermsCollection()
         {
-            try
+            TermsOptions.Clear();
+
+            if(Degree == "Bachelor")
             {
-                ValidateInput();
-
-                UserModel newUser = new UserModel(
-                    id: 0,
-                    email: _mainVM.Email,
-                    username: _mainVM.Username,
-                    password: _mainVM.Password,
-                    status: _mainVM.Status,
-                    fieldOfStudy: _mainVM.FieldOfStudy,
-                    specialization: _mainVM.Specialization,
-                    university: _mainVM.University,
-                    term: _mainVM.Term,
-                    degree: _mainVM.Degree,
-                    role: "User",
-                    createdAt: DateTime.Now,
-                    isBanned: false,
-                    photo: "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
-                    chats: []
-                );
-                _chatService.AddUser(newUser);
-
-                CloseDialog.Invoke(new(newUser));
+                foreach (var term in new[] { "1", "2", "3", "4" }) TermsOptions.Add(term);
             }
-            catch (Exception ex)
+            else if (Degree == "Master")
             {
-                MessageBox.Show(ex.Message);
+                foreach (var term in new[] { "1", "2" }) TermsOptions.Add(term);
+            }
+            else if (Degree == "Postgraduate")
+            {
+                foreach (var term in new[] { "1", "2", "3", "4" }) TermsOptions.Add(term);
+            }
+            else if (Degree == "PhD")
+            {
+                foreach (var term in new[] { "1", "2", "3", "4" }) TermsOptions.Add(term);
             }
         }
 
-        private void ValidateInput()
+        public AuthUserProfileSettingsVM(UserVM user, MainVM mainVM)
         {
-            if (string.IsNullOrEmpty(Status) || string.IsNullOrEmpty(FieldOfStudy) ||
-                ((Status == "Student" || Status == "Faculty") &&
-                (string.IsNullOrEmpty(Specialization) || string.IsNullOrEmpty(Degree) || Term == 0)))
+            _mainVM = mainVM;
+            _user = user;
+            Username = user.Username;
+            Status = user.Status;
+            FieldOfStudy = user.FieldOfStudy;
+            Specialization = user.Specialization;
+            University = user.University;
+            Degree = user.Degree;
+            Term = user.Term.ToString();
+            Photo = user.Photo;
+            Email = user.Email;
+            Password = user.Password;
+
+            FillTermsCollection();
+
+            IsStudentOrFaculty = user.Status == "Student" || user.Status == "Faculty";
+            SpecializationIndex = SpecializationOptions.IndexOf(Specialization);
+            UniversityIndex = UniversityOptions.IndexOf(University);
+            DegreeIndex = DegreeOptions.IndexOf(Degree);
+            TermIndex = TermsOptions.IndexOf(Term.ToString());
+
+            SaveChangesCommand = new RelayCommand(SaveChangesMethod);
+            ChangePhotoCommand = new RelayCommand(obj => { /*TODO: Додати зміну фото*/ });
+        }
+
+        private void SaveChangesMethod(object obj)
+        {
+            //Вставте логіку збереження змін в БД
+
+            _user.Username = Username;
+            _user.Status = Status;
+            _user.FieldOfStudy = FieldOfStudy;
+
+            if (IsStudentOrFaculty)
             {
-                throw new ArgumentException("Please fill in all fields.");
+                _user.Specialization = Specialization;
+                _user.University = University;
+                _user.Degree = Degree;
+                _user.Term = Term;
             }
+            else
+            {
+                _user.Specialization = null;
+                _user.University = null;
+                _user.Degree = null;
+                _user.Term = null;
+            }
+
+            _user.Email = Email;
+            _user.Password = Password;
+
+            IsSaved = true;
         }
     }
 }

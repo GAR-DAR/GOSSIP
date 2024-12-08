@@ -16,7 +16,7 @@ namespace GOSSIP.ViewModels
 
         public ICommand PhotoClickCommand { get; set; }
 
-        public event Action<UserModel> ProfileSelectedEvent;
+        public event Action<UserVM> ProfileSelectedEvent;
 
         public string Content
         {
@@ -86,7 +86,7 @@ namespace GOSSIP.ViewModels
 
         private void PhotoClickMethod(object obj)
         {
-            ProfileSelectedEvent?.Invoke(Topic.Author);
+            ProfileSelectedEvent?.Invoke(new(Topic.Author));
         }
 
     }

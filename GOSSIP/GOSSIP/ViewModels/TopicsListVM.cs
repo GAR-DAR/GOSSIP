@@ -83,11 +83,9 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private void ProfileClickHandler(UserModel user)
+        private void ProfileClickHandler(UserVM user)
         {
-            ProfileVM profileVM = new(_mainVM, user);
-            _mainVM.SelectedVM = profileVM;
-            _mainVM.StackOfVMs.Add(profileVM);
+            _mainVM.OpenProfile(user);
         }
     }
 }

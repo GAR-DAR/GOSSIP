@@ -13,8 +13,8 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="0.8*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+
         </Grid.ColumnDefinitions>
 
         <Image Grid.Column="0" Source="pack://application:,,,/Resources/Images/logo.png" HorizontalAlignment="Right" Margin="0,0,10,0"/>
@@ -30,7 +30,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
-                                    <Image Source="{Binding Photo}" Width="40" Height="40" Margin="10 0 0 0">
+                                    <Image Source="{Binding Photo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="40" Height="40" Margin="10 0 0 0">
                                         <Image.Clip>
                                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                         </Image.Clip>
@@ -69,7 +69,7 @@
                                                     </Image>
 
                                                     <TextBlock Grid.Column="1" Grid.Row="0" Text="View Profile" FontSize="10" Foreground="Black"/>
-                                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Username}"/>
+                                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                                 </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>
@@ -84,7 +84,7 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
                                                 <WrapPanel VerticalAlignment="Center">
-                                                   <!--Встав іконку сюди-->
+                                                    <!--Встав іконку сюди-->
                                                     <TextBlock Text="іконка" Margin="0 0 3 0" FontSize="9"/>
                                                     <TextBlock Text="Log out"/>
                                                 </WrapPanel>
@@ -99,14 +99,5 @@
                 </Border>
             </Popup>
         </WrapPanel>
-        
-
-        <Button Grid.Column="6"  Style="{DynamicResource SettingsButton}" Margin="0,0,20,0">
-            <TextBlock Text="Settings" VerticalAlignment="Center"/>
-        </Button>
-
-
-
-
     </Grid>
 </UserControl>
