@@ -37,7 +37,11 @@ namespace GOSSIP.ViewModels
             _chat = chat;
             ChatName = "OleksaLviv"; //Поки хардкод TODO: замінити на форіч
             Messages = new(chat.Messages);
-            LastMessage = Messages.Last().MessageText;
+            if(Messages.Count > 0)
+            {
+                LastMessage = Messages.Last().MessageText;
+            }
+            
 
             //IconPath = _chat.Users[0].Photo;
 
@@ -71,12 +75,18 @@ namespace GOSSIP.ViewModels
 
         private void SendMessageMethod(object obj)
         {
-            MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUser.ID, this.EnteredText, DateTime.Now, false, false);
+
+          //  _chat = new ChatModel { ID = 1 };
+            MessageModel message = new MessageModel(0, _chat, MainVM.AuthorizedUser, 
+                this.EnteredText, DateTime.Now, false, false);
+
 
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";
-           
+
+            Globals.server.SendPacket(SignalsEnum.SendMessage, message);
+
         }
 
         private void LastMessageUpdate(object sender, EventArgs args)
