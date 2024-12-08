@@ -41,6 +41,10 @@ namespace GOSSIP.ViewModels
             get => _isTopicsPressed;
             set
             {
+                if(AuthorizedUserVM != null)
+                {
+                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                }
                 _isTopicsPressed = value;
                 OnPropertyChanged(nameof(IsTopicsPressed));
                 OnPropertyChanged(nameof(TopicsIcon));
@@ -52,6 +56,10 @@ namespace GOSSIP.ViewModels
             get => _isTagsPressed;
             set
             {
+                if (AuthorizedUserVM != null)
+                {
+                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                }
                 _isTagsPressed = value;
                 OnPropertyChanged(nameof(IsTagsPressed));
                 OnPropertyChanged(nameof(TagsIcon));
@@ -63,15 +71,11 @@ namespace GOSSIP.ViewModels
             get => _isChatsPressed;
             set
             {
-                Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                Globals.server.refreshUserEvent += (user) =>
+                if (AuthorizedUserVM != null)
                 {
-                    AuthorizedUserVM.UserModel = user;
-                    //TopBarLoggedInVM topBarLoggedInVM = new(AuthorizedUser, this);
-                    //SelectedTopBarVM = topBarLoggedInVM;
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel));
-                };
-
+                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                }
+                
                 _isChatsPressed = value;
                 OnPropertyChanged(nameof(IsChatsPressed));
                 OnPropertyChanged(nameof(ChatIcon));
@@ -124,11 +128,33 @@ namespace GOSSIP.ViewModels
             _topicListVM = new(this);
             _topBarSignUpVM = new(this);
             SelectedVM = _topicListVM;
-            SelectedTopBarVM = _topBarSignUpVM;
+
+            if(AuthorizedUserVM != null)
+            {
+                SelectedTopBarVM = new TopBarLoggedInVM(this);
+            }
+            else
+            {
+                SelectedTopBarVM = _topBarSignUpVM;
+            }
+
             ShowTopicsListCommand = new RelayCommand(ShowPostsListMethod);
             ShowChatsCommand = new RelayCommand(ShowChatsMethod);
             CreateTopicCommand = new RelayCommand(CreateTopicMethod);
             StackOfVMs.Add(_topicListVM);
+
+            Globals.server.refreshUserEvent += OnRefreshUser;
+        }
+
+        private void OnRefreshUser(UserModel user)
+        {
+            if (AuthorizedUserVM != null)
+            {
+                AuthorizedUserVM.UserModel = user;
+                OnPropertyChanged(nameof(AuthorizedUserVM));
+                OnPropertyChanged(nameof(AuthorizedUserVM.Username));
+                OnPropertyChanged(nameof(AuthorizedUserVM.Photo));
+            }
         }
 
         private void CreateTopicMethod(object obj)
@@ -231,6 +257,22 @@ namespace GOSSIP.ViewModels
             logInWindow.ShowDialog();
         }
 
-       
+        public void Logout()
+        {
+            AuthorizedUserVM = null;
+            SelectedTopBarVM = _topBarSignUpVM;
+            SelectedVM = _topicListVM;
+
+            // Clear the stack of VMs if necessary
+            StackOfVMs.Clear();
+            StackOfVMs.Add(_topicListVM);
+
+            // Optionally, reset the state of buttons
+            TurnOffButtonsExcept("Topics");
+
+            // Notify property changes if needed
+            OnPropertyChanged(nameof(AuthorizedUserVM));
+        }
+
     }
 }

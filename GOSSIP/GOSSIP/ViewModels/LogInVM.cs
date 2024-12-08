@@ -73,18 +73,30 @@ namespace GOSSIP.ViewModels
             Globals.server.loginEvent += (user) => OnLoginSuccess(user);
         }
 
+        public void OnUserLoggedIn(UserVM user)
+        {
+
+            MainVM.AuthorizedUserVM = user;
+            _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
+        }
+
         private void OnLoginSuccess(UserModel user)
         {
-            if(user == null)
+            Globals.server.loginEvent -= OnLoginSuccess;
+
+            if (user == null)
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show("Incorrect username/email or password");
-                    return;
                 });
             }
-            RequestClose.Invoke(new(user));
+            else
+            {
+                OnUserLoggedIn(new UserVM(user));
 
+                RequestClose?.Invoke(new UserVM(user));
+            }
         }
     }
 }
