@@ -146,7 +146,7 @@ namespace GOSSIP.ViewModels
         public void ShowPostsListMethod(object obj)
         {
             StackOfVMs.Add(SelectedVM);
-            _topicListVM.UpdateInfo();
+            //_topicListVM.UpdateInfo();
             SelectedVM = _topicListVM;
             StackOfVMs.RemoveAt(StackOfVMs.Count - 1);
             TurnOffButtonsExcept("Topics");
