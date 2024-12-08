@@ -76,6 +76,7 @@ namespace GOSSIP.ViewModels
             //    topicVM.ProfileSelectedEvent += ProfileClickHandler;
             //}
 
+
             DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
             LoadMoreCommand = new RelayCommand(LoadMoreMethod);
             Task.Run(async () => await LoadTopicsAsync());
@@ -100,6 +101,28 @@ namespace GOSSIP.ViewModels
             ProfileVM profileVM = new(_mainVM, user);
             _mainVM.SelectedVM = profileVM;
             _mainVM.StackOfVMs.Add(profileVM);
+        }
+
+        private void OnItemDoubleClickedMethod(TopicVM topic)
+        {
+            if (topic != null)
+            {
+                _mainVM.OpenTopic(topic);
+            }
+        }
+
+        public void UpdateInfo()
+        {
+            JsonStorage jsonStorage = new("topic_data.json");
+            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
+            foreach (var topic in Topics)
+            {
+                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
+                {
+                    Topics.Add(topic);
+                }
+                topic.ProfileSelectedEvent += ProfileClickHandler;
+            }
         }
     }
 }

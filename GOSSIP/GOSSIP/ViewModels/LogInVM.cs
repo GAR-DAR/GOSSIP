@@ -75,10 +75,13 @@ namespace GOSSIP.ViewModels
 
         private void OnLoginSuccess(UserModel user)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            if(user == null)
             {
-                MessageBox.Show("Incorrect username/email or password");
-                return;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Incorrect username/email or password");
+                    return;
+                });
             }
             RequestClose.Invoke(new(user));
 

@@ -98,7 +98,7 @@ namespace GOSSIP.ViewModels
             {
                 if (value != null)
                 {
-                    UserModel.Term = int.Parse(value);
+                    UserModel.Term = uint.Parse(value);
                 }
                 else
                 {

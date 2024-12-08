@@ -261,7 +261,7 @@ namespace GOSSIP.ViewModels
                 );
 
                 Globals.server.SignUp(newUser);
-                Globals.server.signUpEvent += (user) => OnSignUpSuccess(user);
+                Globals.server.signUpEvent += (user) => OnSignUpSuccess(new UserVM(user));
 
                 _chatService.AddUser(newUser);
                 CloseDialog.Invoke(new(newUser));
@@ -271,7 +271,7 @@ namespace GOSSIP.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        private void OnSignUpSuccess(UserModel user)
+        private void OnSignUpSuccess(UserVM user)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {

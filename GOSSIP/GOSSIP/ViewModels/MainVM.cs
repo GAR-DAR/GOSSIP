@@ -63,13 +63,13 @@ namespace GOSSIP.ViewModels
             get => _isChatsPressed;
             set
             {
-                Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUser);
+                Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                 Globals.server.refreshUserEvent += (user) =>
                 {
-                    AuthorizedUser = user;
+                    AuthorizedUserVM.UserModel = user;
                     //TopBarLoggedInVM topBarLoggedInVM = new(AuthorizedUser, this);
                     //SelectedTopBarVM = topBarLoggedInVM;
-                    OnPropertyChanged(nameof(AuthorizedUser));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel));
                 };
 
                 _isChatsPressed = value;

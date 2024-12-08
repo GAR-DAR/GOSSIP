@@ -13,8 +13,8 @@
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="0.8*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1.5*"/>
+
         </Grid.ColumnDefinitions>
 
         <Image Grid.Column="0" Source="pack://application:,,,/Resources/Images/logo.png" HorizontalAlignment="Right" Margin="0,0,10,0"/>
@@ -84,7 +84,7 @@
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
                                                 <WrapPanel VerticalAlignment="Center">
-                                                   <!--Встав іконку сюди-->
+                                                    <!--Встав іконку сюди-->
                                                     <TextBlock Text="іконка" Margin="0 0 3 0" FontSize="9"/>
                                                     <TextBlock Text="Log out"/>
                                                 </WrapPanel>
@@ -99,14 +99,5 @@
                 </Border>
             </Popup>
         </WrapPanel>
-        
-
-        <Button Grid.Column="6"  Style="{DynamicResource SettingsButton}" Margin="0,0,20,0">
-            <TextBlock Text="Settings" VerticalAlignment="Center"/>
-        </Button>
-
-
-
-
     </Grid>
 </UserControl>
