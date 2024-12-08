@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 
 namespace GOSSIP.ViewModels
 {
@@ -37,9 +38,12 @@ namespace GOSSIP.ViewModels
                 LogInWindow logInWindow = new() { DataContext = logInVM };
                 logInVM.RequestClose += (user) =>
                 {
-                    MainVM.AuthorizedUserVM = user;
-                    logInWindow.Close();
-                    _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        MainVM.AuthorizedUserVM = user;
+                        logInWindow.Close();
+                        _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
+                    });
                 };
                 logInWindow.ShowDialog();
             });

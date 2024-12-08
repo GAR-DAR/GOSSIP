@@ -9,7 +9,18 @@ namespace GOSSIP.ViewModels
 {
     public class UserVM : ObservableObject
     {
-        public UserModel UserModel { get; set; }
+        private UserModel _userModel;
+        public UserModel UserModel
+        {
+            get => _userModel;
+            set
+            {
+                _userModel = value;
+                OnPropertyChanged(nameof(UserModel));
+                OnPropertyChanged(nameof(Username));
+                OnPropertyChanged(nameof(Photo));
+            }
+        }
 
         public string Username
         {
@@ -98,7 +109,7 @@ namespace GOSSIP.ViewModels
             {
                 if (value != null)
                 {
-                    UserModel.Term = int.Parse(value);
+                    UserModel.Term = uint.Parse(value);
                 }
                 else
                 {

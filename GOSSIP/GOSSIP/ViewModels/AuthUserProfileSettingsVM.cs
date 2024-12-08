@@ -1,9 +1,13 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -317,7 +321,52 @@ namespace GOSSIP.ViewModels
             TermIndex = TermsOptions.IndexOf(Term.ToString());
 
             SaveChangesCommand = new RelayCommand(SaveChangesMethod);
-            ChangePhotoCommand = new RelayCommand(obj => { /*TODO: Додати зміну фото*/ });
+
+            ChangePhotoCommand = new RelayCommand(obj => {
+                /*TODO: Додати зміну фото*/
+
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png";
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    Photo = openFileDialog.FileName;
+
+                    // Proceed to upload the file to the FTP server
+                    string ftpUrl = "ftp://ftp.byethost7.com/htdocs/Icons/" + Path.GetFileName(Photo);
+                    string ftpUsername = "b7_37868429"; // Replace with your FTP username
+                    string ftpPassword = "hello12_"; // Replace with your FTP password
+
+                    // Create an FtpWebRequest
+                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
+                    request.Method = WebRequestMethods.Ftp.UploadFile;
+                    request.Credentials = new NetworkCredential(ftpUsername, ftpPassword);
+
+                    // Read the contents of the file into a byte array
+                    byte[] fileContents = File.ReadAllBytes(Photo);
+
+                    request.ContentLength = fileContents.Length;
+
+                    // Upload the file
+                    using (Stream requestStream = request.GetRequestStream())
+                    {
+                        requestStream.Write(fileContents, 0, fileContents.Length);
+                    }
+
+                    using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+                    {
+                        Console.WriteLine($"Upload File Complete, status {response.StatusDescription}");
+                    }
+
+           
+
+                }
+
+                _user.UserModel.Photo = "http://gossip.byethost7.com/Icons/" + Path.GetFileName(Photo);
+                OnPropertyChanged(_user.UserModel.Photo);
+                
+                Globals.server.SendPacket(SignalsEnum.ChangeUserPhoto, _user.UserModel);
+
+            });
         }
 
         private void SaveChangesMethod(object obj)

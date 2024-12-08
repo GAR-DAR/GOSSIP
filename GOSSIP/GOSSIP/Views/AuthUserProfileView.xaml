@@ -22,6 +22,8 @@
         <DataTemplate DataType="{x:Type viewModels:AuthUserProfileSettingsVM}">
             <local:AuthUserProfileSettingsView/>
         </DataTemplate>
+        
+        
     </UserControl.Resources>
 
     <Grid>

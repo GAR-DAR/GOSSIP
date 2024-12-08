@@ -51,7 +51,7 @@
                                 <DataTrigger.Binding>
                                     <MultiBinding Converter="{StaticResource messageFormatConverter}">
                                         <Binding Path="User" />
-                                        <Binding Path="DataContext.MainVM.AuthorizedUser" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="DataContext.MainVM.AuthorizedUserVM.UserModel" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </DataTrigger.Binding>
 
@@ -64,7 +64,7 @@
                                 <DataTrigger.Binding>
                                     <MultiBinding Converter="{StaticResource messageFormatConverter}">
                                         <Binding Path="User"/>
-                                        <Binding Path="DataContext.MainVM.AuthorizedUser" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        <Binding Path="DataContext.MainVM.AuthorizedUserVM.UserModel" RelativeSource="{RelativeSource AncestorType=UserControl}" />
                                     </MultiBinding>
                                 </DataTrigger.Binding>
                                 <DataTrigger.Value>False</DataTrigger.Value>

@@ -94,7 +94,8 @@ namespace Server
                             }
                         case (byte)SignalsEnum.GetTopics:
                             {
-                                List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
+                                //List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
+                                List<TopicModel> allTopics = [];
                                 SendPacket(SignalsEnum.GetTopics, allTopics);
                                 Logging.LogSent(SignalsEnum.GetTopics, UID, User);
                                 break;
@@ -108,7 +109,7 @@ namespace Server
                                 UserModel userModel;
                                 if(authUserModel.Username == null && authUserModel.Email != null)
                                 {
-                                    userModel = UsersService.SignIn("email", authUserModel.Email, authUserModel.Password, Globals.db.Connection);
+                                    userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
@@ -123,7 +124,7 @@ namespace Server
                                 }
                                 if (authUserModel.Username != null && authUserModel.Email == null)
                                 {
-                                    userModel = UsersService.SignIn("username", authUserModel.Username, authUserModel.Password, Globals.db.Connection);
+                                    userModel = UsersService.SignIn(null, authUserModel.Username ,authUserModel.Password, Globals.db.Connection);
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
@@ -175,11 +176,11 @@ namespace Server
 
                                 User = UsersService.Select(userModel.ID, Globals.db.Connection);
 
-                                User.Status = "Student";
+                               // User.Status = "Student";
 
                                 if (User != null) {
                                     Logging.Log("refreshing", UID, User);
-                                    SendPacket(SignalsEnum.RefreshUser, userModel);
+                                    SendPacket(SignalsEnum.RefreshUser, User);
                                     Logging.LogSent(SignalsEnum.RefreshUser, UID, User);
                                 }
                                 else
@@ -188,6 +189,24 @@ namespace Server
                                 }
                                 
                                 
+                                break;
+                            }
+                        case (byte)SignalsEnum.ChangeUserPhoto:
+                            {
+                                mutex.WaitOne();
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                mutex.ReleaseMutex();
+
+                                bool res = UsersService.ChangePhoto(userModel.ID, userModel.Photo, Globals.db.Connection);
+                                if (res)
+                                {
+                                    Logging.Log("Change user photo", UID, User);
+                                }
+                                else
+                                {
+                                    Logging.Log("User id is not found in db", UID, User);
+                                }
+
                                 break;
                             }
                         
@@ -204,7 +223,8 @@ namespace Server
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();
-                                    var topics = TopicsService.SelectAll(Globals.db.Connection);
+                                    //var topics = TopicsService.SelectAll(Globals.db.Connection);
+                                    List<TopicModel> topics = [];
                                 mutex.ReleaseMutex();
 
                                 Logging.Log("created topic", UID, User);
@@ -231,6 +251,11 @@ namespace Server
 
 
 
+                                break;
+                            }
+                        case (byte)SignalsEnum.Logout:
+                            {
+                                Logging.Log("logged out", UID, User);
                                 break;
                             }
                         default:
