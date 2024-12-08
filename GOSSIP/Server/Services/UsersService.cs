@@ -11,7 +11,8 @@ public static class UsersService
 {
     public static bool SignUp(UserModel user, MySqlConnection conn)
     {
-        if (Exists("email", user.Email, conn))
+        if (Exists("email", user.Email, conn)
+            || Exists("username", user.Username, conn))
             return false; // TODO: an exception, for sure
         
         string signUpQuery =
@@ -122,22 +123,32 @@ public static class UsersService
     }
 
     // TODO: wtf I've written ????
-    public static UserModel Select(uint id, MySqlConnection conn)
+    public static UserModel Select(uint userId, MySqlConnection conn)
     {
         string selectQuery =
             """
-            SELECT * FROM users WHERE id = @id
+            SELECT users.id, users.username, users.email, users.password, users.photo, statuses.status, 
+            fields_of_study.field, specializations.specialization, universities.university, users.term, 
+            degrees.degree, roles.role, users.created_at, users.is_banned
+            FROM users 
+            LEFT JOIN statuses ON users.status_id = statuses.id
+            LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
+            LEFT JOIN specializations ON users.specialization_id = specializations.id
+            LEFT JOIN universities ON users.university_id = universities.id
+            LEFT JOIN degrees ON users.degree_id = degrees.id
+            LEFT JOIN roles ON users.role_id = roles.id
+            WHERE users.id = @user_id
             """;
 
         using var selectCommand = new MySqlCommand(selectQuery, conn);
-        selectCommand.Parameters.AddWithValue("@id", id);
+        selectCommand.Parameters.AddWithValue("@user_id", userId);
 
         using var reader = selectCommand.ExecuteReader();
         reader.Read();
 
-        return new UserModel
+        var user = new UserModel
         {
-            ID = id,
+            ID = userId,
             Username = reader.GetString("username"),
             Email = reader.GetString("email"),
             Photo = reader.IsDBNull("photo") ? null : reader.GetString("photo"),
@@ -152,6 +163,12 @@ public static class UsersService
             IsBanned = reader.GetBoolean("is_banned")
             // TODO: ChatModels ? 
         };
+        
+        reader.Close();
+
+        user.Chats = ChatsService.SelectByUser(user, conn);
+
+        return user;
     }
 
     public static bool ChangePassword (UserModel user, string newPassword, MySqlConnection conn)
