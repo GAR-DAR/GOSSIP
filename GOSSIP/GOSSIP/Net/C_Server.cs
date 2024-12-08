@@ -43,7 +43,6 @@ namespace GOSSIP.Net
         public event Action logoutEvent;
         public event Action<UserModel> loginEvent;
         public event Action<List<TopicModel>> getTopicsEvent;
-        public event Action<TopicModel> createTopicEvent;
 
 
 
@@ -270,17 +269,6 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} User {userModel.Username} registered");
                                 break;
                             }
-                        case (byte)SignalsEnum.CreateTopic:
-                            {
-                                // TODO: підгружати список топіків із сервера, а не лише новий топік
-                                var newTopic = packetReader.ReadPacket<TopicModel>().Data;
-
-                                createTopicEvent?.Invoke(newTopic);
-                                Debug.WriteLine($"Topic created by {_client}");
-
-                                break;
-                            }
-
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 var user = packetReader.ReadPacket<UserModel>().Data;

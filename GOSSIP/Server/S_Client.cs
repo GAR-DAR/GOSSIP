@@ -203,9 +203,13 @@ namespace Server
                                     TopicsService.Insert(newTopic, Globals.db.Connection);
                                 mutex.ReleaseMutex();
 
+                                mutex.WaitOne();
+                                    var topics = TopicsService.SelectAll(Globals.db.Connection);
+                                mutex.ReleaseMutex();
+
                                 Logging.Log("created topic", UID, User);
-                                //TODO: надсилати список топіків, а не лише новий топік
-                                SendPacket(SignalsEnum.CreateTopic, newTopic);
+                                //TODO: [COMPLETED] надсилати список топіків, а не лише новий топік
+                                SendPacket(SignalsEnum.GetTopics, topics);
                                 Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
                                 break;
                             }
