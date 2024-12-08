@@ -176,11 +176,11 @@ namespace Server
 
                                 User = UsersService.Select(userModel.ID, Globals.db.Connection);
 
-                                User.Status = "Student";
+                               // User.Status = "Student";
 
                                 if (User != null) {
                                     Logging.Log("refreshing", UID, User);
-                                    SendPacket(SignalsEnum.RefreshUser, userModel);
+                                    SendPacket(SignalsEnum.RefreshUser, User);
                                     Logging.LogSent(SignalsEnum.RefreshUser, UID, User);
                                 }
                                 else
@@ -233,6 +233,11 @@ namespace Server
 
 
 
+                                break;
+                            }
+                        case (byte)SignalsEnum.Logout:
+                            {
+                                Logging.Log("logged out", UID, User);
                                 break;
                             }
                         default:

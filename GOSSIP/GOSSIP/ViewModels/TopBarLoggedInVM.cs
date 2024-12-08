@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,8 +15,11 @@ namespace GOSSIP.ViewModels
     {
         public UserVM AuthorizedUserVM { get; set; }
 
+        private MainVM _mainVM;
+
         public ICommand ProfilePictureClickCommand { get; set; }
         public ICommand ViewProfileCommand { get; set; }
+        public ICommand LogoutCommand { get; set; }
 
         public event Action ProfileOpeningEvent;
 
@@ -50,14 +54,23 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        private void LogoutMethod(object obj)
+        {
+            Globals.server.LogOut();
+            _mainVM.Logout();
+
+            IsMenuOpen = false;
+        }
+
         public TopBarLoggedInVM(MainVM mainVM)
         {
+            _mainVM = mainVM;
             AuthorizedUserVM = MainVM.AuthorizedUserVM;
             Photo = AuthorizedUserVM.Photo;
 
             ProfilePictureClickCommand = new RelayCommand((obj) => IsMenuOpen = !IsMenuOpen);
-
             ViewProfileCommand = new RelayCommand((obj) => { mainVM.OpenProfile(MainVM.AuthorizedUserVM); IsMenuOpen = false; });
+            LogoutCommand = new RelayCommand(LogoutMethod);
 
             AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
         }

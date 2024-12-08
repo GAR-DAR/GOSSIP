@@ -100,8 +100,8 @@ namespace GOSSIP.Net
 
         public void LogOut()
         {
-            Disconnect();
-            Connect();
+            SendPacket(SignalsEnum.Logout);
+            
         }
 
         #endregion
