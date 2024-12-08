@@ -21,7 +21,22 @@
             <ColumnDefinition Width="93*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Margin="10" Content="&lt;-"/>
+        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,12,0,0" Focusable="False" Background="Transparent">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="{TemplateBinding Background}">
+                        <!-- Іконка кнопки -->
+                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Back.png" Width="24" Height="24"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Зміна іконки при наведенні -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/BackDanube.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
 
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="20" Grid.Column="1">
             <Grid>
@@ -80,37 +95,69 @@
 
                 <WrapPanel Grid.Row="3">
                     <WrapPanel>
-                        <Button Command="{Binding UpVoteTopicCommand}" Content="Up" Height="40" Width="40"/>
-                        <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="40" VerticalAlignment="Center"  TextAlignment="Center"/>
-                        <Button Command="{Binding DownVoteTopicCommand}" Content="Down" Height="40" Width="40"/>
+                        <Button Command="{Binding UpVoteTopicCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="30"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="5"  VerticalAlignment="Center" FontSize="20" TextAlignment="Center" Margin="1,0,0,0"/>
+                        <Button Command="{Binding DownVoteTopicCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <!-- Іконка кнопки -->
+                                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Downvote.png" Width="30"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <!-- Зміна іконки при наведенні -->
+                                        <Trigger Property="IsFocused" Value="True">
+                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </WrapPanel>
 
                     <WrapPanel Margin="10 0" VerticalAlignment="Center">
-                        <!-- Заміни на іконку -->
-
-                        <TextBlock Text="Comms" Foreground="White" TextAlignment="Center"/>
-                        <TextBlock Text="{Binding RepliesCount}" Foreground="White" VerticalAlignment="Center" Margin="5 0"/>
+                        <Image Source="pack://application:,,,/Resources/Images/Comment.png" Height="30"/>
+                        <TextBlock Text="{Binding RepliesCount}" Foreground="White" FontSize="20" VerticalAlignment="Center" Margin="5 0"/>
                     </WrapPanel>
                 </WrapPanel>
 
                 <!-- Додати коментар. Треба стилізувати-->
                 <WrapPanel Grid.Row="4" Margin="0 5">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <TextBox  Text="{Binding EnteredReplyText}"
-                                  TextWrapping="Wrap" 
-                                  FontSize="16"  
-                                  Padding="10"
+                        
+                        <TextBox Style="{StaticResource ReplyInput}"
+                                  Text="{Binding EnteredReplyText}"
                                   Width="1000"
-                                  AcceptsReturn="True"/>
+                                  MinHeight="50"
+                                  MaxHeight="200"
+                                  TextWrapping="Wrap"
+                                  AcceptsReturn="True"
+                                  VerticalAlignment="Top"
+                                  VerticalContentAlignment="Top"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+
                     </ScrollViewer>
-                    <Button Command="{Binding AddReplyCommand}" Width="40" Height="40" Content="Send" Margin="10 0"/>
+                    <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding AddReplyCommand}"/>
                 </WrapPanel>
 
 
                 <ItemsControl Grid.Row="5" ItemsSource="{Binding Replies}" Width="1000" HorizontalAlignment="Left">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="0 5" Padding="10" BorderBrush="Gray" BorderThickness="1">
+                            <Border Margin="0 5" Padding="10" BorderBrush="{DynamicResource Danube}" CornerRadius="20" BorderThickness="1">
                                 <StackPanel>
                                     <Grid Margin="0 5">
                                         <Grid.ColumnDefinitions>
@@ -128,79 +175,119 @@
                                         </StackPanel>
                                     </Grid>
                                     <TextBlock Text="{Binding Content}" Foreground="White" TextWrapping="Wrap" Margin="0 5"/>
-                                    <WrapPanel>
-                                        <Button Content="Up" 
-                                                Command="{Binding DataContext.UpVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                                CommandParameter="{Binding}" 
-                                                Height="30" 
-                                                Width="30"/>
-                                        <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="30" VerticalAlignment="Center" TextAlignment="Center"/>
-                                        <Button Content="Down" 
-                                                Command="{Binding DataContext.DownVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                                CommandParameter="{Binding}" 
-                                                Height="30" 
-                                                Width="30"/>
-                                        <Button Content="Reply"
-                                                Width="50"
-                                                Height="30"
-                                                Command="{Binding ShowReplyQuery}"
-                                                Margin="5 0 0 0"/>
-                                    </WrapPanel>
-
-                                    <WrapPanel>
-                                        <TextBox Width="900" Height="30" Text="{Binding ReplyToReplyContent}">
-                                            <TextBox.Style>
-                                                <Style TargetType="TextBox">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-
-                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBox.Style>
-                                        </TextBox>
-
-                                        <Button Height="30" Width="30" Content="Send" Margin="5 0 0 0" Command="{Binding SendReplyToReply}">
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-
-                                                        <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
+                                    <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal" Margin="5">
+                                        <!-- Кнопка для голосування "вгору" -->
+                                        <Button Command="{Binding DataContext.UpVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+            CommandParameter="{Binding}"  
+            Width="30"  
+            Height="30"
+            Focusable="False" 
+            Background="Transparent"
+            >
+                                            <!-- Мінімальний відступ справа -->
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <!-- Іконка кнопки -->
+                                                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <!-- Зміна іконки при наведенні -->
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
                                         </Button>
+
+                                        <!-- Текстовий блок для відображення рейтингу -->
+                                        <TextBlock Text="{Binding Rating}" 
+               Foreground="White" 
+               FontSize="20"  
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               TextAlignment="Center" />
+                                        
+
+                                        <!-- Кнопка для голосування "вниз" -->
+                                        <Button Command="{Binding DataContext.DownVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+            CommandParameter="{Binding}"  
+            Width="30"  
+            Height="30"
+            Focusable="False" 
+            Background="Transparent"
+            >
+                                            <!-- Мінімальний відступ справа -->
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <!-- Іконка кнопки -->
+                                                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Downvote.png" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <!-- Зміна іконки при наведенні -->
+                                                        <Trigger Property="IsFocused" Value="True">
+                                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+
+                                        <!-- Кнопка для відповіді -->
+                                        <Button Style="{DynamicResource Reply}" Command="{Binding ShowReplyQuery}" HorizontalAlignment="Left"/>
                                     </WrapPanel>
-                                    
-                                    <Button Content="{Binding CountOfReplies, Converter={StaticResource intToReplyCountConverter}}" Command="{Binding ShowRepliesToReplyCommand}">
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsRepliesListNotEmpty}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IsRepliesListNotEmpty}" Value="False">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
+
+
+                                    <WrapPanel>
+                                        <TextBox Style="{StaticResource ReplyToReplyInput}"
+                                            Text="{Binding ReplyToReplyContent}"
+                                            Width="900"
+                                            MinHeight="50"
+                                            MaxHeight="200"
+                                            TextWrapping="Wrap"
+                                            AcceptsReturn="True"
+                                            VerticalAlignment="Top"
+                                            VerticalContentAlignment="Top"
+                                            ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                        </TextBox>
+                                        <Button Style="{StaticResource SendReplyToReplyButton}" Margin="10 0" Command="{Binding SendReplyToReply}"/>
+                                    </WrapPanel>
+
+                                    <Button Content="{Binding CountOfReplies, Converter={StaticResource intToReplyCountConverter}}" Command="{Binding ShowRepliesToReplyCommand}" Background="Transparent">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Grid>
+                                                    <TextBlock x:Name="CountText" Text="{Binding CountOfReplies, Converter={StaticResource intToReplyCountConverter}}" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <!-- Зміна фону при наведенні -->
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="CountText" Property="Foreground" Value="{DynamicResource Danube}"/>
+                                                        <Setter Property="Background" Value="{DynamicResource Danube}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
                                     </Button>
+
+
+
+
+
+
+
+
+
+
 
 
                                     <ItemsControl ItemsSource="{Binding Replies}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Margin="0 5" Padding="10" BorderBrush="Gray" BorderThickness="1">
+                                                <Border Margin="0 5" Padding="10" BorderBrush="{DynamicResource Danube}" BorderThickness="1" CornerRadius="20">
                                                     <StackPanel>
                                                         <Grid Margin="0 5">
                                                             <Grid.ColumnDefinitions>
@@ -219,54 +306,51 @@
                                                         </Grid>
                                                         <TextBlock Text="{Binding Content}" Foreground="White" TextWrapping="Wrap" Margin="0 5"/>
                                                         <WrapPanel>
-                                                            <Button Content="Up" 
-                                                                    Command="{Binding DataContext.UpVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                                    CommandParameter="{Binding}" 
-                                                                    Height="30" 
-                                                                    Width="30"/>
-                                                            <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="30" VerticalAlignment="Center" TextAlignment="Center"/>
-                                                            <Button Content="Down" 
-                                                                    Command="{Binding DataContext.DownVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                                    CommandParameter="{Binding}" 
-                                                                    Height="30" 
-                                                                    Width="30"/>
-                                                            <Button Content="Reply"
-                                                                    Width="50"
-                                                                    Height="30"
-                                                                    Command="{Binding ShowReplyQueryCommand}"/>
-
+                                                            <Button Command="{Binding DataContext.UpVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Width="30" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                                                                <Button.Template>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Grid Background="{TemplateBinding Background}">
+                                                                            <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="20"/>
+                                                                        </Grid>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsFocused" Value="True">
+                                                                                <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Button.Template>
+                                                            </Button>
+                                                            <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="5"  VerticalAlignment="Center" FontSize="20" TextAlignment="Center" Margin="1,0,0,0"/>
+                                                            <Button Command="{Binding DataContext.DownVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Width="30" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                                                                <Button.Template>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Grid Background="{TemplateBinding Background}">
+                                                                            <!-- Іконка кнопки -->
+                                                                            <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Downvote.png" Width="20"/>
+                                                                        </Grid>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <!-- Зміна іконки при наведенні -->
+                                                                            <Trigger Property="IsFocused" Value="True">
+                                                                                <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Button.Template>
+                                                            </Button>
+                                                            <Button Style="{DynamicResource Reply}" Command="{Binding ShowReplyQueryCommand}" HorizontalAlignment="Left"/>
                                                             <WrapPanel>
-                                                                <TextBox Width="800" Height="30" Text="{Binding ReplyQuery}">
-                                                                    <TextBox.Style>
-                                                                        <Style TargetType="TextBox">
-                                                                            <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
-                                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                                </DataTrigger>
-
-                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
-                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                </DataTrigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </TextBox.Style>
+                                                                <TextBox Style="{StaticResource ReplyToReplyInput}"
+                                                                    Text="{Binding ReplyQuery}"
+                                                                       Width="800"
+                                                                       MinHeight="50"
+                                                                       MaxHeight="200"
+                                                                       TextWrapping="Wrap"
+                                                                       AcceptsReturn="True"
+                                                                       VerticalAlignment="Top"
+                                                                       VerticalContentAlignment="Top"
+                                                                       ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                                                 </TextBox>
-
-                                                                <Button Height="30" Width="30" Content="Send" Margin="5 0 0 0" Command="{Binding SendReplyCommand}">
-                                                                    <Button.Style>
-                                                                        <Style TargetType="Button">
-                                                                            <Style.Triggers>
-                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="True">
-                                                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                                                </DataTrigger>
-
-                                                                                <DataTrigger Binding="{Binding IsReplyButtonPressed}" Value="False">
-                                                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                                                </DataTrigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Button.Style>
-                                                                </Button>
+                                                                <Button Style="{StaticResource SendReplyToReplyButton}" Margin="10 0" Command="{Binding SendReplyCommand}"/>
                                                             </WrapPanel>
 
                                                         </WrapPanel>
@@ -289,7 +373,7 @@
                                             </Style>
                                         </ItemsControl.Style>
                                     </ItemsControl>
-                                    
+
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

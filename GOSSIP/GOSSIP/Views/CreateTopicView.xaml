@@ -13,7 +13,28 @@
             <ColumnDefinition Width="93*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="10" Content="&lt;-"/>
+        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,12,0,0" Focusable="False" Background="Transparent">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="{TemplateBinding Background}">
+                        <!-- Іконка кнопки -->
+                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Back.png" Width="24" Height="24"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Зміна іконки при наведенні -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/BackDanube.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
+
+
+
+
 
         <ScrollViewer Grid.Column="1">
             <Grid>
@@ -27,27 +48,82 @@
                 <TextBlock Text="Create topic" Foreground="White" Grid.Row="0" Grid.Column="1" FontSize="30" FontWeight="Bold" Margin="0 10 0 0"/>
 
                 <StackPanel Grid.Row="1" HorizontalAlignment="Left">
-                    <TextBlock Text="Title" Foreground="White" FontSize="12" />
-                    <TextBox Width="500" Height="40" Text="{Binding Title}"/>
+                    <TextBlock Text="Title" Foreground="White" FontSize="20" Margin="10,0,0,2"/>
+                    <TextBox Text="{Binding Title}" Width="500" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="16" Foreground="White" CaretBrush="White">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                                    <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                                </Border>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" HorizontalAlignment="Left">
-                    <TextBlock Text="Content" Foreground="White" FontSize="12" />
+                    <TextBlock Text="Content" Foreground="White" FontSize="20" Margin="10,0,0,2"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <TextBox  Text="{Binding Content}"
-                                  TextWrapping="Wrap" 
-                                  FontSize="16"  
-                                  Padding="10"
-                                  Width="1000"
-                                  AcceptsReturn="True"
-                                  MinHeight="400"/>
+                        <TextBox Text="{Binding Content}" Width="1000" TextWrapping="Wrap" Padding="10" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" MinHeight="400" FontSize="16" Foreground="White" CaretBrush="White">
+                            <TextBox.Template>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                                        <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                                    </Border>
+                                </ControlTemplate>
+                            </TextBox.Template>
+                        </TextBox>
                     </ScrollViewer>
-                    <Button Content="Post" Command="{Binding CreateTopicCommand}" Width="100" Height="40" HorizontalAlignment="Right" Margin="0 5"/>
+                    <Button Content="Post" Command="{Binding CreateTopicCommand}" Width="100" Height="40" HorizontalAlignment="Right" Margin="0,15,0,0" FontSize="15">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <!-- Встановлюємо кольори для кнопки -->
+                                <Setter Property="Background" Value="{DynamicResource Danube}"/>
+                                <!-- Основний колір фону -->
+                                <Setter Property="Foreground" Value="White"/>
+                                <!-- Колір тексту -->
+                                <Setter Property="BorderBrush" Value="{DynamicResource PrussianBlue}"/>
+                                <!-- Колір рамки -->
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <!-- Товщина рамки -->
+
+                                <!-- Додаємо заокруглені кути через Border -->
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="20">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <!-- Тригер для зміни фону при наведенні -->
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource PrussianBlue}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource Danube}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
 
+
                 <StackPanel Grid.Row="2">
-                    <TextBlock Text="Tags" Foreground="White"/>
-                    <TextBox HorizontalAlignment="Left" Width="300" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" x:Name="SearchBox">
+                    <TextBlock Text="Tags" Foreground="White" FontSize="20" Margin="10,0,0,2"/>
+                    
+                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" x:Name="SearchBox" Width="300" HorizontalAlignment="Left" Height="40" FontSize="16" Foreground="White" CaretBrush="White">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
+                                    <ScrollViewer x:Name="PART_ContentHost" Margin="10" Foreground="White" />
+                                </Border>
+                            </ControlTemplate>
+                        </TextBox.Template>
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter" Command="{Binding SubmitTagCommand}"/>
                         </TextBox.InputBindings>
