@@ -71,8 +71,8 @@ namespace GOSSIP.ViewModels
 
         private void SendMessageMethod(object obj)
         {
-            MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUser.ID, this.EnteredText, DateTime.Now, false, false);
 
+            MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUserVM.UserModel, this.EnteredText, DateTime.Now, false, false);
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";

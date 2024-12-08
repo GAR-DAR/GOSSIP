@@ -49,15 +49,7 @@
                 <StackPanel Grid.Row="1" Margin="0 5" Width="800" HorizontalAlignment="Left">
                     <TextBlock Foreground="White" FontSize="20" Text="About" FontWeight="Bold"/>
                     <Border Background="White">
-                        <StackPanel>
-                            <TextBlock Text="{Binding User.Status, Converter={StaticResource userInfoConverter}, ConverterParameter='Status'}" />
-                            <TextBlock Text="{Binding User.FieldOfStudy, Converter={StaticResource userInfoConverter}, ConverterParameter='FieldOfStudy'}" />
-                            <TextBlock Text="{Binding User.Specialization, Converter={StaticResource userInfoConverter}, ConverterParameter='Specialization'}" />
-                            <TextBlock Text="{Binding User.Term, Converter={StaticResource userInfoConverter}, ConverterParameter='Term'}" />
-                            <TextBlock Text="{Binding User.Degree, Converter={StaticResource userInfoConverter}, ConverterParameter='Degree'}" />
-                            <TextBlock Text="{Binding User.University, Converter={StaticResource userInfoConverter}, ConverterParameter='University'}" />
-                            <TextBlock Text="{Binding User.Role, Converter={StaticResource userInfoConverter}, ConverterParameter='Role'}" />
-                        </StackPanel>
+                        <TextBlock Text="{Binding UserInfo}"/>
                     </Border>
                 </StackPanel>
 

@@ -94,30 +94,8 @@ namespace GOSSIP.ViewModels
                 }
             }
         }
-        
-        private void OnItemDoubleClickedMethod(TopicVM topic)
-        {
-            if (topic != null)
-            {
-                _mainVM.OpenTopic(topic);
-            }
-        }
-        
-        public void UpdateInfo()
-        {
-            JsonStorage jsonStorage = new("topic_data.json");
-            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
-            foreach (var topic in Topics)
-            {
-                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
-                {
-                    Topics.Add(topic);
-                }
-                topic.ProfileSelectedEvent += ProfileClickHandler;
-            }
-        }
-        
-        private void ProfileClickHandler(UserModel user)
+
+        private void ProfileClickHandler(UserVM user)
         {
             ProfileVM profileVM = new(_mainVM, user);
             _mainVM.SelectedVM = profileVM;
