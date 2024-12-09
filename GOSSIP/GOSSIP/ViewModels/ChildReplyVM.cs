@@ -12,10 +12,30 @@ namespace GOSSIP.ViewModels
     {
         private readonly ChildReplyModel _replyModel;
         private readonly ParentReplyModel _parentReplyModel;
-        private readonly ReplyVM _replyVM;
+        private readonly ParentReplyVM _replyVM;
 
-        public bool CanUpVote { get; set; } = true;
-        public bool CanDownVote { get; set; } = true;
+
+        private bool _canUpVote = true;
+        public bool CanUpVote
+        {
+            get => _canUpVote;
+            set
+            {
+                _canUpVote = value;
+                OnPropertyChanged(nameof(CanUpVote));
+            }
+        }
+
+        private bool _canDownVote = true;
+        public bool CanDownVote
+        {
+            get => _canDownVote;
+            set
+            {
+                _canDownVote = value;
+                OnPropertyChanged(nameof(CanDownVote));
+            }
+        }
 
         public uint ID
         {
@@ -32,6 +52,9 @@ namespace GOSSIP.ViewModels
 
         public ICommand ShowReplyQueryCommand { get; set; }
         public ICommand SendReplyCommand { get; set; }
+        public ICommand CommentAuthorProfileClickCommand { get; set; }
+        public event Action<UserVM> ProfileClickEvent;
+        public event Action UserIsNotAuthorized;
 
         private string _replyQuery;
         public string ReplyQuery
@@ -104,17 +127,24 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ChildReplyVM(ChildReplyModel replyModel, ParentReplyModel parentReplyModel, ReplyVM replyVM)
+        public ChildReplyVM(ChildReplyModel replyModel, ParentReplyModel parentReplyModel, ParentReplyVM replyVM)
         {
             _replyModel = replyModel;
             _parentReplyModel = parentReplyModel;
             _replyVM = replyVM;
-            ShowReplyQueryCommand = new RelayCommand((obj) => { IsReplyButtonPressed = !IsReplyButtonPressed; });
+            ShowReplyQueryCommand = new RelayCommand(obj => { IsReplyButtonPressed = !IsReplyButtonPressed; });
             SendReplyCommand = new RelayCommand(SendReplyMethod);
+            CommentAuthorProfileClickCommand = new RelayCommand(obj => ProfileClickEvent?.Invoke(new(replyModel.User)));
         }
 
         private void SendReplyMethod(object obj)
         {
+            if(MainVM.AuthorizedUserVM == null)
+            {
+                UserIsNotAuthorized?.Invoke();
+                return;
+            }
+
             if (string.IsNullOrEmpty(ReplyQuery))
                 return;
 
@@ -130,6 +160,7 @@ namespace GOSSIP.ViewModels
 
             _parentReplyModel.Replies.Add(childReplyModel);
             _replyVM.Replies.Add(new(childReplyModel, _parentReplyModel, _replyVM));
+
         }
     }
 }

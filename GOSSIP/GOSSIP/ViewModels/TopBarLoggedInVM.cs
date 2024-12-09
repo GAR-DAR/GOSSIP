@@ -16,6 +16,7 @@ namespace GOSSIP.ViewModels
 
         public ICommand ProfilePictureClickCommand { get; set; }
         public ICommand ViewProfileCommand { get; set; }
+        
 
         public event Action ProfileOpeningEvent;
 

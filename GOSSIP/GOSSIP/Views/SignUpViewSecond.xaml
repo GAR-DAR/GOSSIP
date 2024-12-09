@@ -46,6 +46,21 @@
             <ComboBox Style="{DynamicResource AuthorizationComboBox}" Width="98" ItemsSource="{Binding TermsOptions}" IsEnabled="{Binding IsDegreeSelected}" SelectedItem="{Binding Term}" Foreground="White"/>
         </WrapPanel>
 
+        <TextBlock Foreground="Red" Text="Fill in all fields" Grid.Row="11" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="14" Margin="0 5">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AllFieldsAreNotFilled}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding AllFieldsAreNotFilled}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
         <Button Grid.Row="11" Grid.Column="0" Content="Back" 
     Command="{Binding BackCommand}"  
     Style="{StaticResource BackButton}" />

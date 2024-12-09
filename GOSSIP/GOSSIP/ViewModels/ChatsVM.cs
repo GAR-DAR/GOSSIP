@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
 {
@@ -16,8 +18,12 @@ namespace GOSSIP.ViewModels
         public ObservableCollection<OpenedChatVM> ChatList { get; set; } = [];
         public uint CurrentUserID { get; set; }
 
+        private readonly MainVM _mainVM;
+
         private OpenedChatVM _openedChatVM;
         
+        public ICommand AddNewChatCommand { get; }
+
         //Визначає, який чат відкритий
         public OpenedChatVM OpenedChatVM
         {
@@ -29,41 +35,47 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ChatsVM(UserModel currentUser, MainVM mainVM)
+        private void AddNewChatMethod(object obj)
         {
-            if(currentUser.Chats != null)
+            AddUsersToChatVM addUsersToChatVM = new();
+            AddUsersToChatWindow addUsersToChatWindow = new() { DataContext = addUsersToChatVM };
+
+            // Підписуємось на подію закриття
+            addUsersToChatVM.RequestClose += result =>
             {
-                foreach (ChatModel chatModel in currentUser.Chats)
-                ChatList.Add(new(chatModel, mainVM));
+                addUsersToChatWindow.DialogResult = result;
+                addUsersToChatWindow.Close();
+            };
+
+            // Відкриваємо діалогове вікно
+            bool? dialogResult = addUsersToChatWindow.ShowDialog();
+
+            // Обробляємо результат
+            if (dialogResult == true)
+            {
+                UpdateChats();
             }
-            
-            CurrentUserID = currentUser.ID;
+        }
 
-            /*ChatList = chatlist;
-            //Захардкоджені чати
-            ChatList =
-            [
-                new OpenedChatVM(new ChatModel(1, DateTime.Now, false, 
-                new User("OleksaLviv", "OleksaLviv.png"),
-                [
 
-                    new MessageModel(1, 1, 1, false, "хєхє", DateTime.Now,  true, false),
-                    new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
-                    new MessageModel(2, 1, 2, true, "привіт", DateTime.Now, true, false),
+        public ChatsVM(MainVM mainVM)
+        {
+            _mainVM = mainVM;
 
-                    ])),
-                //new OpenedChatVM(new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png", [])),
-                //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
-                //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
-                //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
-                //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
-                //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
-                //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
-                //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
-                //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
-                //new ChatModel("OleksaLviv", "я був на вечірці підіді і я маю що сказати", "OleksaLviv.png"),
-                //new ChatModel("stelmakh_yurii", "ненавиджу ОС ♥", "stelmakh_yurii.png"),
-            ];*/
+            UpdateChats();
+
+            CurrentUserID = MainVM.AuthorizedUserVM.UserModel.ID;
+            AddNewChatCommand = new RelayCommand(AddNewChatMethod);
+        }
+
+        private void UpdateChats()
+        {
+            if(MainVM.AuthorizedUserVM.UserModel.Chats != null)
+            {
+                ChatList.Clear();
+                foreach (ChatModel chatModel in MainVM.AuthorizedUserVM.UserModel.Chats)
+                    ChatList.Add(new(chatModel, _mainVM));
+            }
         }
     }
 }

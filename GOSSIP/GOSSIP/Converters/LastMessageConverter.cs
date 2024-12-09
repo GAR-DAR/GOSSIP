@@ -8,24 +8,19 @@ using System.Windows.Data;
 
 namespace GOSSIP.Converters
 {
-    public class IntToReplyCountConverter : IValueConverter
+    public class LastMessageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int val)
+            if (value is string str)
             {
-                if (val < 1)
+                str = str.Replace("\r\n", " ");
+                if (str.Length > 30)
                 {
-                    return null;
-                }
-                if (val == 1)
-                {
-                    return "1 reply";
+                    return str.Substring(0, 30) + "...";
                 }
                 else
-                {
-                    return val.ToString() + " replies";
-                }
+                    return str;
             }
             return null;
         }

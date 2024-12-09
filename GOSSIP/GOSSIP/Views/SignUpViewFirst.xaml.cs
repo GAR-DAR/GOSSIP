@@ -24,5 +24,10 @@ namespace GOSSIP.Views
         {
             InitializeComponent();
         }
+
+        private void TextBlock_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+
+        }
     }
 }

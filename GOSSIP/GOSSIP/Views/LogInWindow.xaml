@@ -60,7 +60,23 @@
                 </TextBox.Template>
             </TextBox>
 
-            <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">
+            <TextBlock Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Top" FontSize="14" Foreground="Red" Text="Incorrect login or password" HorizontalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFailed}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsFailed}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="15">
                 <Run Text="Don't have an account? " Foreground="White" />
                     <Hyperlink Foreground="{DynamicResource Danube}" TextDecorations="Underline">
                         <Run Text="Sign up." />

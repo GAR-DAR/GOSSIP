@@ -4,9 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GOSSIP.Views"
+             xmlns:convs="clr-namespace:GOSSIP.Converters"
              xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="960" d:DesignWidth="1540">
+
+    <UserControl.Resources>
+        <convs:LastMessageConverter x:Key="lastMessageConverter"/>
+    </UserControl.Resources>
+
     <Border Background="{DynamicResource PrussianBlue}" CornerRadius="20" Margin="20">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -26,11 +32,15 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding Photo}" Width="40" Height="40" Margin="5"/>
+                                <Image Source="{Binding Photo}" Width="40" Height="40">
+                                    <Image.Clip>
+                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                    </Image.Clip>
+                                </Image>
 
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding ChatName}" FontSize="30" Foreground="White" />
-                                    <TextBlock Text="{Binding LastMessage}" FontStyle="Italic" Foreground="Gray" FontSize="17"/>
+                                    <TextBlock Text="{Binding LastMessage, Converter={StaticResource lastMessageConverter}}" FontStyle="Italic" Foreground="Gray" FontSize="17"/>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
@@ -41,7 +51,7 @@
 
             </StackPanel>
 
-            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom">
+            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{DynamicResource Danube}" >
