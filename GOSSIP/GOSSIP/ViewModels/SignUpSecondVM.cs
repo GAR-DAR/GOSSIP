@@ -68,6 +68,17 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        private bool _allFieldsAreNotFilled;
+        public bool AllFieldsAreNotFilled
+        {
+            get => _allFieldsAreNotFilled;
+            set
+            {
+                _allFieldsAreNotFilled = value;
+                OnPropertyChanged(nameof(AllFieldsAreNotFilled));
+            }
+        }
+
         private bool _isDegreeSelected = false;
         public bool IsDegreeSelected
         {
@@ -268,7 +279,6 @@ namespace GOSSIP.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
             }
         }
         private void OnSignUpSuccess(UserVM user)
@@ -284,8 +294,11 @@ namespace GOSSIP.ViewModels
                 ((Status == "Student" || Status == "Faculty") &&
                 (string.IsNullOrEmpty(Specialization) || string.IsNullOrEmpty(Degree) || Term == 0)))
             {
+                AllFieldsAreNotFilled = true;
                 throw new ArgumentException("Please fill in all fields.");
             }
+
+            AllFieldsAreNotFilled = false;    
         }
 
     }

@@ -18,6 +18,17 @@ namespace GOSSIP.ViewModels
     {
         private MainVM _mainVM;
 
+        private bool _isFailed;
+        public bool IsFailed
+        {
+            get => _isFailed;
+            set
+            {
+                _isFailed = value;
+                OnPropertyChanged(nameof(IsFailed));
+            }
+        }
+
         private string _emailOrUsername;
         public string EmailOrUsername
         {
@@ -86,15 +97,13 @@ namespace GOSSIP.ViewModels
 
             if (user == null)
             {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    MessageBox.Show("Incorrect username/email or password");
-                });
+				
+				IsFailed = true;
+                return;
             }
             else
             {
                 OnUserLoggedIn(new UserVM(user));
-
                 RequestClose?.Invoke(new UserVM(user));
             }
         }

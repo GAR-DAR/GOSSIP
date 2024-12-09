@@ -22,7 +22,7 @@
         <Setter Property="AcceptsReturn" Value="False"/>
         <Setter Property="MaxHeight" Value="50"/>
         <Setter Property="Margin" Value="0 8"/>
-        <Setter Property="IsReadOnly" Value="False"/> <!-- Changed from True to False -->
+        <Setter Property="IsReadOnly" Value="False"/>
         <Setter Property="Text" Value="Search..."/>
         <Setter Property="CaretBrush" Value="White"/>
         <Setter Property="Template">
@@ -124,11 +124,6 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-
-
-
-
-
 
     <Style TargetType="TextBox" x:Key="AuthTextBox">
         <Setter Property="Width" Value="200"/>
