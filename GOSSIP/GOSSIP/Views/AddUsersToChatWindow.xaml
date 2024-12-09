@@ -22,7 +22,31 @@
             <TextBlock Text="Add members" FontSize="30" Foreground="White" Margin="10"/>
             <Button Content="x" Height="40" Width="40" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CloseCommand}" Margin="10"/>
 
-            <TextBox Style="{StaticResource InputField}" Grid.Row="1"/>
+            <StackPanel Orientation="Vertical" Grid.Row="1">
+                <!-- Поле для пошуку -->
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                Style="{StaticResource InputField}" />
+
+                <!-- Popup для списку результатів -->
+                <Popup IsOpen="{Binding IsPopupOpen}"
+           PlacementTarget="{Binding ElementName=SearchBox}" 
+           Placement="Bottom"
+           StaysOpen="False">
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                        <ListBox ItemsSource="{Binding FilteredUsers}" 
+                     SelectionMode="Multiple"
+                     MinWidth="200"
+                     SelectionChanged="ListBox_SelectionChanged">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Username}" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+                </Popup>
+            </StackPanel>
+
 
             <ListView ItemsSource="{Binding AllUsers}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged">
                 <ListView.ItemTemplate>
