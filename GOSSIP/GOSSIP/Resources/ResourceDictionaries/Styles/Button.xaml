@@ -7,6 +7,7 @@
 
     <!-- Close, Minimize and Maximize buttons -->
     <Style x:Key="TitleBarButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Height" Value="35"/>
@@ -28,6 +29,7 @@
     </Style>
 
     <Style TargetType="Button" x:Key="SignUpButton">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -63,6 +65,7 @@
     </Style>
 
     <Style TargetType="Button" x:Key="LogInButton">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -96,6 +99,7 @@
     </Style>
 
     <Style x:Key="SideBarButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Height" Value="80"/>
         <Setter Property="Foreground" Value="White"/>
@@ -116,6 +120,7 @@
 
 
     <Style x:Key="SendMessageButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -141,6 +146,7 @@
     </Style>
 
     <Style x:Key="SendReplyToReplyButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -176,6 +182,7 @@
 
 
     <Style x:Key="CloseButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Height" Value="40"/>
@@ -197,6 +204,7 @@
     </Style>
 
     <Style TargetType="Button" x:Key="SettingsButton">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -230,6 +238,7 @@
     </Style>
 
     <Style x:Key="AddPostButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -247,6 +256,7 @@
 
 
     <Style x:Key="NextButton1" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Height" Value="40" />
@@ -272,6 +282,7 @@
     </Style>
 
     <Style x:Key="NextButton2" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Height" Value="40" />
@@ -297,6 +308,7 @@
     </Style>
 
     <Style x:Key="BackButton" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Height" Value="40" />
@@ -322,6 +334,7 @@
     </Style>
 
     <Style x:Key="LogIn" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Height" Value="40" />
@@ -347,6 +360,7 @@
     </Style>
 
     <Style x:Key="Reply" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="{DynamicResource Danube}"/>
         <Setter Property="Width" Value="75"/>
         <Setter Property="Height" Value="30"/>
@@ -378,12 +392,4 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-    
-
-
-
-
-
-
 </ResourceDictionary>

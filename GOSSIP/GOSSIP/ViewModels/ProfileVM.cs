@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace GOSSIP.ViewModels
 {
@@ -24,9 +23,7 @@ namespace GOSSIP.ViewModels
         }
 
         private MainVM _mainVM;
-
-        public ICommand BackCommand { get; }
-        public ICommand DoubleClickCommand { get; }
+        public ObservableCollection<TopicVM> Topics { get; set; }
 
         private string _userInfo;
         public string UserInfo
@@ -37,16 +34,6 @@ namespace GOSSIP.ViewModels
                 _userInfo = value;
                 OnPropertyChanged(nameof(UserInfo));
             }
-        }
-
-        private void UpdateUserInfo()
-        {
-            UserInfo = $"Status: {User.Status}\nField of study: {User.FieldOfStudy}";
-            if(User.Status == "Student" || User.Status == "Faculty")
-            {
-                UserInfo += $"\nSpecialization: {User.Specialization}\nUniversity: {User.University}\nDegree: {User.Degree}\nTerm: {User.Term}";
-            }
-            UserInfo += $"\nRole: {User.Role}";
         }
 
         private TopicVM _selectedTopic;
@@ -60,6 +47,9 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        public ICommand BackCommand { get; }
+        public ICommand DoubleClickCommand { get; }
+
         public ProfileVM(MainVM mainVM, UserVM user)
         {
             _mainVM = mainVM;
@@ -71,7 +61,23 @@ namespace GOSSIP.ViewModels
 
             BackCommand = new RelayCommand(BackMethod);
             DoubleClickCommand = new RelayCommand(obj => OnItemDoubleClickedMethod(SelectedTopic));
+        }
 
+        private void UpdateUserInfo()
+        {
+            UserInfo = $"Status: {User.Status}\nField of study: {User.FieldOfStudy}";
+
+            if (User.Status == "Student" || User.Status == "Faculty")
+            {
+                UserInfo += $"\nSpecialization: {User.Specialization}\nUniversity: {User.University}\nDegree: {User.Degree}\nTerm: {User.Term}";
+            }
+
+            UserInfo += $"\nRole: {User.Role}";
+        }
+
+        private void BackMethod(object obj)
+        {
+            _mainVM.SwitchToPreviousVM();
         }
 
         private void OnItemDoubleClickedMethod(TopicVM topicVM)
@@ -81,14 +87,5 @@ namespace GOSSIP.ViewModels
                 _mainVM.SelectedVM = new OpenedTopicVM(topicVM, _mainVM);
             }
         }
-
-        private void BackMethod(object obj)
-        {
-            _mainVM.SwitchToPreviousVM();
-        }
-
-        public ObservableCollection<TopicVM> Topics { get; set; }
-
-        
     }
 }

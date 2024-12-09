@@ -1,23 +1,37 @@
 ﻿using GOSSIP.JsonHandlers;
 using GOSSIP.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace GOSSIP.ViewModels
 {
-    public class ReplyVM : ObservableObject
+    public class ParentReplyVM : ObservableObject
     {
         private readonly ParentReplyModel _replyModel;
 
-        public bool CanUpVote { get; set; } = true;
-        public bool CanDownVote { get; set; } = true;
+        private bool _canUpVote = true;
+        public bool CanUpVote
+        {
+            get => _canUpVote;
+            set
+            {
+                _canUpVote = value;
+                OnPropertyChanged(nameof(CanUpVote));
+            }
+        }
+
+        private bool _canDownVote = true;
+        public bool CanDownVote
+        {
+            get => _canDownVote;
+            set
+            {
+                _canDownVote = value;
+                OnPropertyChanged(nameof(CanDownVote));
+            }
+        }
 
         public uint ID
         {
@@ -31,11 +45,6 @@ namespace GOSSIP.ViewModels
                 }
             }
         }
-
-        public ICommand ShowRepliesToReplyCommand { get; set; }
-        public ICommand ShowReplyQuery { get; set; }
-        public ICommand SendReplyToReply { get; set; }
-        public ICommand SendReplyToReplyToReplyCommand { get; set; }
 
         public UserModel User
         {
@@ -141,23 +150,52 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ObservableCollection<ChildReplyVM> Replies { get; set; }
+        public ObservableCollection<ChildReplyVM> Replies { get; }
+        public ICommand ShowRepliesToReplyCommand { get; }
+        public ICommand ShowReplyQuery { get; }
+        public ICommand SendReplyToReply { get; }
+        public ICommand CommentAuthorProfileClickCommand { get; set; }
+        public event Action<UserVM> ProfileClickEvent;
+        public event Action<object> UserIsNotAuthorized;
 
-        public ReplyVM(ParentReplyModel replyModel)
+        public ParentReplyVM(ParentReplyModel replyModel)
         {
             _replyModel = replyModel;
             Replies = new(replyModel.Replies.Select(x => new ChildReplyVM(x, _replyModel, this)));
             CountOfReplies = Replies.Count;
-            
-            ShowRepliesToReplyCommand = new RelayCommand((obj) => IsShowRepliesPressed = !IsShowRepliesPressed);
-            ShowReplyQuery = new RelayCommand((obj) => IsReplyButtonPressed = !IsReplyButtonPressed);
+
+            ShowRepliesToReplyCommand = new RelayCommand(obj => IsShowRepliesPressed = !IsShowRepliesPressed);
+            ShowReplyQuery = new RelayCommand(obj => IsReplyButtonPressed = !IsReplyButtonPressed);
             SendReplyToReply = new RelayCommand(SendReplyToReplyMethod);
-            
+            CommentAuthorProfileClickCommand = new RelayCommand(obj => ProfileClickEvent?.Invoke(new(replyModel.User)));
+
+            foreach(ChildReplyVM childReplyVM in Replies)
+            {
+                childReplyVM.UserIsNotAuthorized += UserIsNotAuthorizedHandler;
+                childReplyVM.ProfileClickEvent += ProfileClickHandler;
+            }
+
             IsRepliesListNotEmpty = Replies.Count > 0;
+        }
+
+        private void ProfileClickHandler(UserVM user)
+        {
+            ProfileClickEvent?.Invoke(user);
+        }
+
+        private void UserIsNotAuthorizedHandler()
+        {
+            UserIsNotAuthorized?.Invoke(null);
         }
 
         private void SendReplyToReplyMethod(object obj)
         {
+            if(MainVM.AuthorizedUserVM == null)
+            {
+                UserIsNotAuthorizedHandler();
+                return;
+            }
+
             if (string.IsNullOrEmpty(ReplyToReplyContent))
             {
                 return;
@@ -173,7 +211,11 @@ namespace GOSSIP.ViewModels
                 ReplyTo = _replyModel.User
             };
 
-            Replies.Add(new ChildReplyVM(childReply, _replyModel, this));
+            ChildReplyVM childReplyVM = new(childReply, _replyModel, this);
+            childReplyVM.ProfileClickEvent += ProfileClickHandler;
+            childReplyVM.UserIsNotAuthorized += UserIsNotAuthorizedHandler;
+
+            Replies.Add(childReplyVM);
             _replyModel.Replies.Add(childReply);
             CountOfReplies++;
             IsReplyButtonPressed = true;
@@ -183,7 +225,7 @@ namespace GOSSIP.ViewModels
             JsonStorage jsonStorage = new("topic_data.json");
             jsonStorage.SaveTopic(_replyModel.Topic);
 
-            ReplyToReplyContent = "";
+            ReplyToReplyContent = string.Empty;
         }
     }
 }
