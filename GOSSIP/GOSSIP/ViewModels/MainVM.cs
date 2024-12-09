@@ -152,6 +152,7 @@ namespace GOSSIP.ViewModels
             StackOfVMs.Add(_topicListVM);
 
             Globals.server.refreshUserEvent += OnRefreshUser;
+            Globals.server.multicastMessageEvent += OnMulticastMessage;
         }
 
         private void OnRefreshUser(UserModel user)
@@ -164,6 +165,18 @@ namespace GOSSIP.ViewModels
                 OnPropertyChanged(nameof(AuthorizedUserVM.Photo));
             }
         }
+
+        private void OnMulticastMessage(MessageModel message)
+        {
+            if (AuthorizedUserVM != null)
+            {
+                AuthorizedUserVM.UserModel.Chats.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
+
+                OnPropertyChanged(nameof(AuthorizedUserVM));
+                OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+            }
+        }
+
 
         private void CreateTopicMethod(object obj)
         {

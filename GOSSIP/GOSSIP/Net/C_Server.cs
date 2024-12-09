@@ -57,6 +57,8 @@ namespace GOSSIP.Net
         //public event Action<TopicModel> sendMessageEvent;
 
         public event Action<UserModel> refreshUserEvent;
+        public event Action<MessageModel> multicastMessageEvent;
+
 
         //Signals
 
@@ -291,6 +293,15 @@ namespace GOSSIP.Net
                                 var user = packetReader.ReadPacket<UserModel>().Data;
                                 refreshUserEvent?.Invoke(user);
                                 Debug.WriteLine($"Refrash user {_client}");
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.MessageMulticast:
+                            {
+                                var message = packetReader.ReadPacket<MessageModel>().Data;
+                                multicastMessageEvent?.Invoke(message);
+                                Debug.WriteLine($"Multicast message to {_client}");
+
                                 break;
                             }
                         case (byte)SignalsEnum.GetStatuses:

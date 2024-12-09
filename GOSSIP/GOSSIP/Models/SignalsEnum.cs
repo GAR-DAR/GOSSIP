@@ -53,6 +53,7 @@ namespace GOSSIP.Models
         EditMessage,
         ReadMessage,
         DeleteChat,
+        MessageMulticast,
         #endregion
 
         #region Errors

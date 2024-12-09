@@ -53,6 +53,7 @@ namespace Server.Models
         EditMessage,
         ReadMessage,
         DeleteChat,
+        MessageMulticast,
         #endregion
 
         #region Errors

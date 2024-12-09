@@ -87,53 +87,6 @@ namespace Server
             }
         }
 
-        //static bool AuthenticateClient(TcpClient tcpClient, out UserModel authenticatedUser)
-        //{
-        //    authenticatedUser = null;
-
-        //    try
-        //    {
-        //        var networkStream = tcpClient.GetStream();
-        //        var packetReader = new PacketReader(networkStream);
-
-        //        var authUserPacket = packetReader.ReadPacket<AuthUserModel>();
-        //        var authUserModel = authUserPacket.Data;
-
-        //        using var db = new DatabaseService();
-
-        //        var userModel = UsersService.SignIn("email", authUserModel.Username, authUserModel.Password, db.Connection);
-
-        //        if (userModel != null)
-        //        {
-        //            // Authentication successful
-        //            authenticatedUser = userModel;
-
-        //            var packetBuilder = new PacketBuilder<UserModel>();
-        //            var packetBytes = packetBuilder.GetPacketBytes(SignalsEnum.Login, userModel);
-
-        //            networkStream.Write(packetBytes, 0, packetBytes.Length);
-        //            networkStream.Flush();
-
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            // Authentication failed
-        //            var packetBuilder = new PacketBuilder<string>();
-        //            var errorMessage = "Invalid username or password.";
-        //            var packetBytes = packetBuilder.GetPacketBytes(SignalsEnum.AuthFailed, errorMessage);
-
-        //            networkStream.Write(packetBytes, 0, packetBytes.Length);
-        //            networkStream.Flush();
-
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error during authentication: {ex.Message}");
-        //        return false;
-        //    }
-        //}
+       
     }
 }

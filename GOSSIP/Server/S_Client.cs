@@ -190,6 +190,8 @@ namespace Server
                                 
                                 break;
                             }
+
+                       
                         case (byte)SignalsEnum.ChangeUserPhoto:
                             {
                                 mutex.WaitOne();
@@ -259,10 +261,20 @@ namespace Server
 
                                 //TODO: multicast
 
+                                var chatUsers = ChatsService.SelectUsersById(message.Chat.ID, Globals.db.Connection);
 
-
+                                foreach (var chatUser in chatUsers)
+                                {
+                                    if (chatUser.ID != User.ID)
+                                    {
+                                        SendPacket(SignalsEnum.MessageMulticast, message);
+                                    }
+                                }
+                                
                                 break;
                             }
+
+                       
 
                         case (byte)SignalsEnum.StartChat:
                             {
