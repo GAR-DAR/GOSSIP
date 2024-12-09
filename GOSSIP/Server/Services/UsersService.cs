@@ -1,6 +1,5 @@
 using System.Data;
 using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using Server.Models;
 
 namespace Server.Services;
@@ -99,7 +98,6 @@ public static class UsersService
             Role = reader.GetString("role"),
             CreatedAt = reader.GetDateTime("created_at"),
             IsBanned = reader.GetBoolean("is_banned")
-            // TODO: ChatModels
         };
         
         reader.Close();
@@ -120,8 +118,7 @@ public static class UsersService
         selectCommand.Parameters.AddWithValue("@value", value);
         return Convert.ToBoolean(selectCommand.ExecuteScalar());
     }
-
-    // TODO: wtf I've written ????
+    
     public static UserModel Select(uint userId, MySqlConnection conn)
     {
         string selectQuery =
@@ -160,17 +157,18 @@ public static class UsersService
             Role = reader.GetString("role"),
             CreatedAt = reader.GetDateTime("created_at"),
             IsBanned = reader.GetBoolean("is_banned")
-            // TODO: ChatModels ? 
         };
         
         reader.Close();
 
         user.Chats = ChatsService.SelectByUser(user, conn);
+        user.TopicVotes = GetTopicVotes(user, conn);
+        user.ReplyVotes = GetReplyVotes(user, conn);
 
         return user;
     }
 
-    public static bool ChangePassword (UserModel user, string newPassword, MySqlConnection conn)
+    public static bool ChangePassword(UserModel user, string newPassword, MySqlConnection conn)
     {
         string changePasswordQuery =
            $"""
@@ -221,5 +219,47 @@ public static class UsersService
         return rowsAffected != 0; 
     }
 
+    private static Dictionary<uint, int> GetTopicVotes(UserModel user, MySqlConnection conn)
+    {
+        Dictionary<uint, int> topicVotes = [];
+        string getTopicVotesQuery =
+            """
+            SELECT user_id, topic_id, vote
+            FROM users_to_votes
+            WHERE user_id = @user_id AND topic_id IS NOT null
+            """;
 
+        using var selectCommand = new MySqlCommand(getTopicVotesQuery, conn);
+        selectCommand.Parameters.AddWithValue("@user_id", user.ID);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            topicVotes.Add(reader.GetUInt32("topic_id"), reader.GetInt32("vote"));
+        }
+
+        return topicVotes;
+    }
+    
+    private static Dictionary<uint, int> GetReplyVotes(UserModel user, MySqlConnection conn)
+    {
+        Dictionary<uint, int> replyVotes = [];
+        string getTopicVotesQuery =
+            """
+            SELECT user_id, reply_id, vote
+            FROM users_to_votes
+            WHERE user_id = @user_id AND reply_id IS NOT null
+            """;
+
+        using var selectCommand = new MySqlCommand(getTopicVotesQuery, conn);
+        selectCommand.Parameters.AddWithValue("@user_id", user.ID);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            replyVotes.Add(reader.GetUInt32("reply_id"), reader.GetInt32("vote"));
+        }
+
+        return replyVotes;
+    }
 }
