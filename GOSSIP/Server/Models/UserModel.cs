@@ -23,9 +23,9 @@ namespace Server.Models
         public DateTime CreatedAt { get; set; }
         public bool IsBanned { get; set; }
         public string? Photo { get; set; }
-        //[System.Text.Json.Serialization.JsonIgnore]
+		
         public List<ChatModel> Chats { get; set; } = [];
-		public Dictionary<uint, int> TopicVotes { get; set; } = [];
+        public Dictionary<uint, int> TopicVotes { get; set; } = [];
         public Dictionary<uint, int> ReplyVotes { get; set; } = [];
 
         public UserModel() {}

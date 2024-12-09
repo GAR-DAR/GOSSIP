@@ -235,4 +235,55 @@ public static class ChatsService
 
         return affectedRows != 0;
     }
+
+    public static List<UserModel> SelectUsersById(uint id, MySqlConnection conn)
+    {
+        List<UserModel> users = [];
+
+        string selectUsersByIdQuery =
+            """
+            SELECT users.id, users.username, users.password, users.email, users.photo, statuses.status, 
+                   fields_of_study.field, specializations.specialization, universities.university, users.term, 
+                   degrees.degree, roles.role, users.created_at, users.is_banned
+            FROM users
+            LEFT JOIN statuses ON users.status_id = statuses.id
+            LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
+            LEFT JOIN specializations ON users.specialization_id = specializations.id
+            LEFT JOIN universities ON users.university_id = universities.id
+            LEFT JOIN degrees ON users.degree_id = degrees.id
+            LEFT JOIN roles ON users.role_id = roles.id
+            LEFT JOIN chats_to_users ON users.id = chats_to_users.user_id
+            WHERE chats_to_users.chat_id = @chat_id 
+            """;
+        
+        using var selectUsersCommand = new MySqlCommand(selectUsersByIdQuery, conn);
+        selectUsersCommand.Parameters.AddWithValue("@chat_id", id);
+
+        using var usersReader = selectUsersCommand.ExecuteReader();
+        while (usersReader.Read())
+        {
+            users.Add(new UserModel
+            {
+                ID = usersReader.GetUInt32("id"),
+                Username = usersReader.GetString("username"),
+                Email = usersReader.GetString("email"),
+                Photo = usersReader.IsDBNull("photo") ? null : usersReader.GetString("photo"),
+                Status = usersReader.GetString("status"),
+                FieldOfStudy = usersReader.IsDBNull("field") ? null : usersReader.GetString("field"),
+                Specialization = usersReader.IsDBNull("specialization") 
+                    ? null 
+                    : usersReader.GetString("specialization"),
+                Degree = usersReader.IsDBNull("degree") ? null : usersReader.GetString("degree"),
+                Term = usersReader.IsDBNull("term") ? null : usersReader.GetUInt32("term"),
+                University = usersReader.IsDBNull("university") 
+                    ? null 
+                    : usersReader.GetString("university"),
+                Role = usersReader.GetString("role"),
+                CreatedAt = usersReader.GetDateTime("created_at"),
+                IsBanned = usersReader.GetBoolean("is_banned")
+            });
+        }
+
+        return users;
+    }
 }
