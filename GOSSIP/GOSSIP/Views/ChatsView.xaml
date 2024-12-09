@@ -13,17 +13,15 @@
         <convs:LastMessageConverter x:Key="lastMessageConverter"/>
     </UserControl.Resources>
 
-    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="20" Margin="20">
+    <Border Background="{DynamicResource PrussianBlue}" Margin="20">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Background="{DynamicResource PrussianBlue}">
+            <StackPanel Background="{DynamicResource BlueCharcoalTrans}">
                 
-
-
                 <ListBox ItemsSource="{Binding ChatList}"
                          SelectedItem="{Binding OpenedChatVM}"
                          Background="Transparent"
@@ -51,20 +49,8 @@
 
             </StackPanel>
 
-            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{DynamicResource Danube}" >
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <!-- Іконка -->
-                                <Image Source="pack://application:,,,/Resources/Images/AddChat.png" Width="25" Margin="5"/>
-                                <!-- Текст -->
-                                <TextBlock Text="New Chat" FontSize="25" VerticalAlignment="Center" Margin="5" Foreground="White"  />
-                            </StackPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}" Style="{StaticResource CustomButtonStyle}" />
+
 
 
             <ContentControl Grid.Column="1" Content="{Binding OpenedChatVM}" Background="#80032247">
