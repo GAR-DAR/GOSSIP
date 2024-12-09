@@ -20,6 +20,7 @@ namespace Server
     {
         public static DatabaseService db = new DatabaseService();
     }
+
     public static class Logging
     {
         public static void Log(string message, Guid guid, UserModel user)
@@ -35,12 +36,15 @@ namespace Server
             Console.WriteLine($"{DateTime.Now} [Sent] signal {(byte)signal} ({signal}) for user {guid} with name {user.Username}");
         }
     }
+
     public class S_Client
     {
         public Guid UID { get; set; }
         public TcpClient ClientSocket { get; set; }
         public UserModel User { get; set; } = new UserModel { Username = "guest" };
         public Mutex mutex = new Mutex();
+
+        public Dictionary<Guid, byte[]> unacknowledgedPackets = new Dictionary<Guid, byte[]>();
 
         NetworkStream _networkStream;
         PacketReader _packetReader;
@@ -63,19 +67,11 @@ namespace Server
 
         void Process(CancellationToken cancellationToken)
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        Logging.Log("process cancelled", UID, User);
-                        break;
-                    }
-
-                    mutex.WaitOne();
                     var signal = _packetReader.ReadSignal();
-                    mutex.ReleaseMutex();
 
                     if (signal == 255)
                     {
@@ -83,8 +79,17 @@ namespace Server
                     }
 
                     Logging.LogRecived((SignalsEnum)signal, UID, User);
+
                     switch (signal)
                     {
+                        
+                        case (byte)SignalsEnum.Acknowledgement:
+                        {
+                                var ackPacket = _packetReader.ReadPacket<object>();
+                                var packetId = ackPacket.PacketId;
+                                HandleAcknowledgement(packetId);
+                                break;
+                        }
                         case (byte)SignalsEnum.Disconnect:
                             {
                                 Logging.Log("disconnected", UID, User);
@@ -113,7 +118,7 @@ namespace Server
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
-                                        SendPacket(SignalsEnum.LoginError);
+                                        SendPacket<object>(SignalsEnum.LoginError);
                                         Logging.LogSent(SignalsEnum.LoginError, UID, User);
                                     }
                                     else
@@ -128,7 +133,7 @@ namespace Server
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
-                                        SendPacket(SignalsEnum.LoginError);
+                                        SendPacket<object>(SignalsEnum.LoginError);
                                         Logging.LogSent(SignalsEnum.LoginError, UID, User);
                                     }
                                     else
@@ -144,7 +149,6 @@ namespace Server
                                 break;
 
                             }
-                            
                         case (byte)SignalsEnum.SignUp:
                             {
                                 mutex.WaitOne();
@@ -161,7 +165,7 @@ namespace Server
                                 else
                                 {
                                     Logging.Log("registration failed", UID, User);
-                                    SendPacket(SignalsEnum.SignUpError);
+                                    SendPacket<object>(SignalsEnum.SignUpError);
                                     Logging.LogSent(SignalsEnum.SignUpError, UID, User);
                                 }
                                 break;
@@ -171,8 +175,6 @@ namespace Server
                                 mutex.WaitOne();
                                 var userModel = _packetReader.ReadPacket<UserModel>().Data;
                                 mutex.ReleaseMutex();
-
-                               
 
                                 User = UsersService.Select(userModel.ID, Globals.db.Connection);
 
@@ -233,8 +235,6 @@ namespace Server
                                 Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
                                 break;
                             }
-                       
-
                         case (byte)SignalsEnum.SendMessage:
                             {
                                 mutex.WaitOne();
@@ -279,28 +279,56 @@ namespace Server
         }
         #region Helpers
 
-        private void SendPacket<T>(SignalsEnum signal, T user) where T : class
+        public void SendPacket<T>(SignalsEnum signal, T data = null) where T : class
         {
-            if (ClientSocket.Connected)
-            {
-                var authPacket = new PacketBuilder<T>();
-                var packet = authPacket.GetPacketBytes(signal, user);
-                mutex.WaitOne();
-                    ClientSocket.Client.Send(packet);
-                mutex.ReleaseMutex();
-            }
+            var packetBuilder = new PacketBuilder<T>();
+            var packetBytes = packetBuilder.GetPacketBytes(signal, data);
+            var packetId = packetBuilder.PacketId;
+
+            mutex.WaitOne();
+            unacknowledgedPackets[packetId] = packetBytes;
+            mutex.ReleaseMutex();
+
+            ClientSocket.Client.Send(packetBytes);
+
+            // Start acknowledgement timer
+            StartAcknowledgementTimer(packetId);
         }
 
-        private void SendPacket(SignalsEnum signal)
+        private void StartAcknowledgementTimer(Guid packetId)
         {
-            if (ClientSocket.Connected)
+            Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ =>
             {
-                var authPacket = new PacketBuilder<object>();
-                var packet = authPacket.GetPacketBytes(signal);
                 mutex.WaitOne();
-                    ClientSocket.Client.Send(packet);
-                mutex.ReleaseMutex();
-            }
+                if (unacknowledgedPackets.ContainsKey(packetId))
+                    {
+                        // Resend packet
+                        var packetBytes = unacknowledgedPackets[packetId];
+                        ClientSocket.Client.Send(packetBytes);
+
+                        // Restart acknowledgement timer
+                        StartAcknowledgementTimer(packetId);
+                    }
+               mutex.ReleaseMutex();
+            });
+        }
+
+
+        private void HandleAcknowledgement(Guid packetId)
+        {
+            mutex.WaitOne();
+                if (unacknowledgedPackets.ContainsKey(packetId))
+                {
+                    unacknowledgedPackets.Remove(packetId);
+                }
+            mutex.ReleaseMutex();
+        }
+
+        public void SendAcknowledgement(Guid packetId)
+        {
+            var packetBuilder = new PacketBuilder<object>();
+            var ackPacketBytes = packetBuilder.GetAcknowledgementPacketBytes(packetId);
+            ClientSocket.Client.Send(ackPacketBytes);
         }
 
         #endregion

@@ -51,5 +51,7 @@ namespace GOSSIP.Models
         LoginError,
         SignUpError,
         #endregion
+
+        Acknowledgement
     }
 }

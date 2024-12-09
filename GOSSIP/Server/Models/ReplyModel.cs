@@ -17,3 +17,4 @@ namespace Server.Models
         public bool IsDeleted { get; set; }
     }
 }
+

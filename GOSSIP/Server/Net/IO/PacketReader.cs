@@ -43,15 +43,8 @@ namespace Server.Net.IO
 
         public byte[] ReadRawPacket()
         {
-            if (!_networkStream.CanRead)
+            if (!_networkStream.CanRead || !_networkStream.DataAvailable)
             {
-                //Console.WriteLine("Cannot read");
-                return null;
-            }
-
-            if (!_networkStream.DataAvailable)
-            {
-                //Console.WriteLine("No data available");
                 return null;
             }
 
@@ -75,7 +68,6 @@ namespace Server.Net.IO
         {
             _networkStream.Flush();
         }
-
     }
 
 }

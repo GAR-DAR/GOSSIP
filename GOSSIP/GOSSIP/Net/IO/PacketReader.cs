@@ -44,15 +44,8 @@ namespace GOSSIP.Net.IO
 
         public byte[] ReadRawPacket()
         {
-            if (!_networkStream.CanRead)
+            if (!_networkStream.CanRead || !_networkStream.DataAvailable)
             {
-                //Console.WriteLine("Cannot read");
-                return null;
-            }
-
-            if (!_networkStream.DataAvailable)
-            {
-                //Console.WriteLine("No data available");
                 return null;
             }
 
@@ -69,22 +62,12 @@ namespace GOSSIP.Net.IO
         public T DeserializePacket<T>(byte[] dataBuffer)
         {
             var json = Encoding.UTF8.GetString(dataBuffer);
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(json);
-            }
-            catch (JsonReaderException ex)
-            {
-                throw;
-            }
+            return JsonConvert.DeserializeObject<T>(json);
         }
-
 
         public void ClearStream()
         {
             _networkStream.Flush();
         }
-
     }
-
 }

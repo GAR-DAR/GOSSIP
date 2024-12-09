@@ -8,6 +8,7 @@ namespace GOSSIP.Net.IO
 {
     public class Packet<T>
     {
+        public Guid PacketId { get; set; }
         public T Data { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace GOSSIP.Net.IO
         private Packet<T> _packet;
         private byte _signal;
 
+        public Guid PacketId => _packet.PacketId;
+
         public PacketBuilder()
         {
             _packet = new Packet<T>();
@@ -22,16 +24,23 @@ namespace GOSSIP.Net.IO
         public byte[] GetPacketBytes(SignalsEnum signal)
         {
             _signal = (byte)signal;
-            var packetBytes = new byte[1];
-            packetBytes[0] = _signal;
-            return packetBytes;
+            _packet.PacketId = Guid.NewGuid(); // Assign a new packet ID
+            _packet.Data = null;
+
+            return BuildPacket();
         }
 
         public byte[] GetPacketBytes(SignalsEnum signal, T data)
         {
             _signal = (byte)signal;
+            _packet.PacketId = Guid.NewGuid(); // Assign a new packet ID
             _packet.Data = data;
 
+            return BuildPacket();
+        }
+
+        private byte[] BuildPacket()
+        {
             var settings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -50,6 +59,15 @@ namespace GOSSIP.Net.IO
             Buffer.BlockCopy(dataBuffer, 0, packetBytes, 1 + lengthBuffer.Length, dataBuffer.Length);
 
             return packetBytes;
+        }
+
+        public byte[] GetAcknowledgementPacketBytes(Guid packetId)
+        {
+            _signal = (byte)SignalsEnum.Acknowledgement;
+            _packet.PacketId = packetId;
+            _packet.Data = null;
+
+            return BuildPacket();
         }
     }
 } 

@@ -16,6 +16,7 @@ namespace GOSSIP.Net
     public static class Globals
     {
         public static Server server = new Server();
+
     }
 
     public class Server
@@ -25,6 +26,9 @@ namespace GOSSIP.Net
         public PacketReader packetReader;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        public Dictionary<Guid, byte[]> unacknowledgedPackets = new Dictionary<Guid, byte[]>();
+        public Mutex mutex = new Mutex();
 
         public Server()
         {
@@ -62,7 +66,7 @@ namespace GOSSIP.Net
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
-                SendPacket(SignalsEnum.GetTopics);
+                SendPacket<object>(SignalsEnum.GetTopics);
                 ReadPackets();
             }
         }
@@ -70,7 +74,7 @@ namespace GOSSIP.Net
        
         public void Disconnect()
         {
-            SendPacket(SignalsEnum.Disconnect);
+            SendPacket<object>(SignalsEnum.Disconnect);
 
             _client.Close();
 
@@ -100,7 +104,7 @@ namespace GOSSIP.Net
 
         public void LogOut()
         {
-            SendPacket(SignalsEnum.Logout);
+            SendPacket<object>(SignalsEnum.Logout);
             
         }
 
@@ -110,7 +114,7 @@ namespace GOSSIP.Net
 
         public void GetTopics()
         {
-            SendPacket(SignalsEnum.GetTopics);
+            SendPacket<object>(SignalsEnum.GetTopics);
         }
 
         public void CreateTopic(TopicModel topic)
@@ -246,7 +250,7 @@ namespace GOSSIP.Net
                                     if (Counter != 0)
                                     {
                                         packetReader.ClearStream();
-                                        SendPacket(SignalsEnum.GetTopics);
+                                        SendPacket<object>(SignalsEnum.GetTopics);
                                         Counter--;
                                         Debug.WriteLine($"{DateTime.Now} Retrying to get topics... Counter {Counter}");
                                     }
@@ -288,26 +292,40 @@ namespace GOSSIP.Net
 
         #region Helpers
 
-        public void SendPacket<T>(SignalsEnum signal, T user) where T : class
-            {
-                if (_client.Connected)
-                {
-                    var authPacket = new PacketBuilder<T>();
-                    var packet = authPacket.GetPacketBytes(signal, user);
-                    _client.Client.Send(packet);
-                }
-            }
+        public void SendPacket<T>(SignalsEnum signal, T data = null) where T : class
+        {
+            var packetBuilder = new PacketBuilder<T>();
+            var packetBytes = packetBuilder.GetPacketBytes(signal, data);
+            var packetId = packetBuilder.PacketId;
 
-        public void SendPacket(SignalsEnum signal)
-            {
-                if (_client.Connected)
-                {
-                    var authPacket = new PacketBuilder<object>();
-                    var packet = authPacket.GetPacketBytes(signal);
-                    _client.Client.Send(packet);
-                }
-            }
+            mutex.WaitOne();
+            unacknowledgedPackets[packetId] = packetBytes;
+            mutex.ReleaseMutex();
 
-            #endregion
+            _client.Client.Send(packetBytes);
+
+            // Start acknowledgement timer
+            StartAcknowledgementTimer(packetId);
+        }
+
+        private void StartAcknowledgementTimer(Guid packetId)
+        {
+            Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ =>
+            {
+                mutex.WaitOne();
+                if (unacknowledgedPackets.ContainsKey(packetId))
+                {
+                        // Resend packet
+                        var packetBytes = unacknowledgedPackets[packetId];
+                        _client.Client.Send(packetBytes);
+
+                        // Restart acknowledgement timer
+                        StartAcknowledgementTimer(packetId);
+                }
+               mutex.ReleaseMutex();
+            });
+        }
+
+        #endregion
     }
 }
