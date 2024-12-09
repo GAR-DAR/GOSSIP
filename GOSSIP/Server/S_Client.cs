@@ -69,12 +69,10 @@ namespace Server
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var signal = _packetReader.ReadSignal();
-                Guid packetId = Guid.Empty;
-
                 try
                 {
-                   
+                    var signal = _packetReader.ReadSignal();
+
                     if (signal == 255)
                     {
                         continue;
@@ -88,7 +86,7 @@ namespace Server
                         case (byte)SignalsEnum.Acknowledgement:
                         {
                                 var ackPacket = _packetReader.ReadPacket<object>();
-                                packetId = ackPacket.PacketId;
+                                var packetId = ackPacket.PacketId;
                                 HandleAcknowledgement(packetId);
                                 break;
                         }
@@ -110,11 +108,7 @@ namespace Server
                         case (byte)SignalsEnum.Login:
                             {
                                 mutex.WaitOne();
-                                var packet = _packetReader.ReadPacket<AuthUserModel>();
-                                var authUserModel = packet.Data;
-                                packetId = packet.PacketId;
-
-
+                                var authUserModel = _packetReader.ReadPacket<AuthUserModel>().Data;
                                 mutex.ReleaseMutex();
 
                                 UserModel userModel;
@@ -157,17 +151,9 @@ namespace Server
                             }
                         case (byte)SignalsEnum.SignUp:
                             {
-
-
                                 mutex.WaitOne();
-
-                                    var packet = _packetReader.ReadPacket<UserModel>();
-                                    var userModel = packet.Data;
-                                    packetId = packet.PacketId;
-
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
                                 mutex.ReleaseMutex();
-
-
                                 User = userModel;
 
                                 if (UsersService.SignUp(userModel, Globals.db.Connection))
@@ -187,11 +173,7 @@ namespace Server
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 mutex.WaitOne();
-
-                                    var packet = _packetReader.ReadPacket<UserModel>();
-                                    var userModel = packet.Data;
-                                    packetId = packet.PacketId;
-                        
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
                                 mutex.ReleaseMutex();
 
                                 User = UsersService.Select(userModel.ID, Globals.db.Connection);
@@ -214,11 +196,7 @@ namespace Server
                         case (byte)SignalsEnum.ChangeUserPhoto:
                             {
                                 mutex.WaitOne();
-
-                                    var packet = _packetReader.ReadPacket<UserModel>();
-                                    var userModel = packet.Data;
-                                    packetId = packet.PacketId;
-
+                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
                                 mutex.ReleaseMutex();
 
                                 bool res = UsersService.ChangePhoto(userModel.ID, userModel.Photo, Globals.db.Connection);
@@ -237,12 +215,10 @@ namespace Server
                         case (byte)SignalsEnum.CreateTopic:
                             {
                                 mutex.WaitOne();
-
-                                    var packet = _packetReader.ReadPacket<TopicModel>();
-                                    var newTopic = packet.Data;
-                                    packetId = packet.PacketId;
-
+                                    var rawPacket = _packetReader.ReadRawPacket();
                                 mutex.ReleaseMutex();
+
+                                var newTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
 
                                 mutex.WaitOne();
                                     TopicsService.Insert(newTopic, Globals.db.Connection);
@@ -262,11 +238,7 @@ namespace Server
                         case (byte)SignalsEnum.SendMessage:
                             {
                                 mutex.WaitOne();
-
-                                    var packet = _packetReader.ReadPacket<MessageModel>();
-                                    var message = packet.Data;
-                                    packetId = packet.PacketId;
-
+                                var message = _packetReader.ReadPacket<MessageModel>().Data;
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();
@@ -297,16 +269,11 @@ namespace Server
                         _packetReader.ClearStream();
                     mutex.ReleaseMutex();
                 }
-                
                 catch (Exception ex)
                 {
                     Console.WriteLine($"{DateTime.Now} - Error: {ex.Message}");
                     ClientSocket.Close();
                     break;
-                }
-                finally
-                {
-                    SendAcknowledgement(packetId);
                 }
             }
         }

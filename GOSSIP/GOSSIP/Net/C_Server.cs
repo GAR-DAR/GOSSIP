@@ -62,7 +62,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.22.237.81", 7891);
+            _client.Connect("127.0.0.1", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -224,70 +224,67 @@ namespace GOSSIP.Net
         {
             Task.Run(() =>
             {
-                Guid packetId = Guid.Empty;
-
-                try
+                int Counter = 5;
+                while (true)
                 {
-
-                    while (true)
+                    if (_cancellationTokenSource.Token.IsCancellationRequested)
                     {
-                        if (_cancellationTokenSource.Token.IsCancellationRequested)
-                        {
-                            break;
-                        }
-                        var signal = packetReader.ReadSignal();
-                        switch (signal)
-                        {
-                            case (byte)SignalsEnum.GetTopics:
+                        break;
+                    }
+                    var signal = packetReader.ReadSignal();
+                    switch (signal)
+                    {
+                        case (byte)SignalsEnum.GetTopics:
+                            {
+                                try
                                 {
                                     var rawPacket = packetReader.ReadRawPacket();
                                     var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
                                     List<TopicModel> topics = packet.Data;
-                                    packetId = packet.PacketId;
                                     getTopicsEvent?.Invoke(topics);
                                     packetReader.ClearStream();
-
-                                    break;
+                                    Counter = 5;
                                 }
-                            case (byte)SignalsEnum.Login:
+                                catch (Exception)
                                 {
-                                    var packet = packetReader.ReadPacket<Packet<UserModel>>().Data;
-                                    packetId = packet.PacketId;
-                                    loginEvent?.Invoke(packet.Data);
-
-                                    Debug.WriteLine($"User {packet.Data.Username} logged in");
-                                    break;
+                                    if (Counter != 0)
+                                    {
+                                        packetReader.ClearStream();
+                                        SendPacket<object>(SignalsEnum.GetTopics);
+                                        Counter--;
+                                        Debug.WriteLine($"{DateTime.Now} Retrying to get topics... Counter {Counter}");
+                                    }
                                 }
-                            case (byte)SignalsEnum.SignUp:
-                                {
-                                    var packet = packetReader.ReadPacket<Packet<UserModel>>().Data;
-                                    signUpEvent?.Invoke(packet.Data);
+                                break;
+                            }
+                        case (byte)SignalsEnum.Login:
+                            {
+                                var user = packetReader.ReadPacket<UserModel>().Data;
+                                loginEvent?.Invoke(user);
 
-                                    Debug.WriteLine($"{DateTime.Now} User {packet.Data.Username} registered");
-                                    break;
-                                }
-                            case (byte)SignalsEnum.RefreshUser:
-                                {
-                                    var packet = packetReader.ReadPacket<Packet<UserModel>>().Data;
-                                    refreshUserEvent?.Invoke(packet.Data);
-                                    Debug.WriteLine($"Refrash user {_client}");
-                                    break;
-                                }
+                                Debug.WriteLine($"User {user.Username} logged in");
+                                break;
+                            }
+                        case (byte)SignalsEnum.SignUp:
+                            {
+                                var userModel = packetReader.ReadPacket<UserModel>().Data;
+                                signUpEvent?.Invoke(userModel);
 
-                        }
-                        packetReader.Signal = 255;
-                        packetReader.ClearStream();
+                                Debug.WriteLine($"{DateTime.Now} User {userModel.Username} registered");
+                                break;
+                            }
+                        case (byte)SignalsEnum.RefreshUser:
+                            {
+                                var user = packetReader.ReadPacket<UserModel>().Data;
+                                refreshUserEvent?.Invoke(user);
+                                Debug.WriteLine($"Refrash user {_client}");
+                                break;
+                            }
+
                     }
+                    packetReader.Signal = 255;
+                    packetReader.ClearStream();
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                }
-                finally
-                {
-                    SendAcknowledgement(packetId);
-                }
-
             }, _cancellationTokenSource.Token);
         }
 
@@ -327,23 +324,6 @@ namespace GOSSIP.Net
                 }
                mutex.ReleaseMutex();
             });
-        }
-
-        private void HandleAcknowledgement(Guid packetId)
-        {
-            mutex.WaitOne();
-            if (unacknowledgedPackets.ContainsKey(packetId))
-            {
-                unacknowledgedPackets.Remove(packetId);
-            }
-            mutex.ReleaseMutex();
-        }
-
-        public void SendAcknowledgement(Guid packetId)
-        {
-            var packetBuilder = new PacketBuilder<object>();
-            var ackPacketBytes = packetBuilder.GetAcknowledgementPacketBytes(packetId);
-            _client.Client.Send(ackPacketBytes);
         }
 
         #endregion
