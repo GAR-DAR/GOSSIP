@@ -47,7 +47,9 @@ namespace GOSSIP.ViewModels
                 if(AuthorizedUserVM != null)
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                    OnPropertyChanged(nameof(AuthorizedUserVM));
                 }
+
                 _isTopicsPressed = value;
                 OnPropertyChanged(nameof(IsTopicsPressed));
                 OnPropertyChanged(nameof(TopicsIcon));
@@ -62,7 +64,9 @@ namespace GOSSIP.ViewModels
                 if (AuthorizedUserVM != null)
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                    OnPropertyChanged(nameof(AuthorizedUserVM));
                 }
+
                 _isTagsPressed = value;
                 OnPropertyChanged(nameof(IsTagsPressed));
                 OnPropertyChanged(nameof(TagsIcon));
@@ -77,6 +81,7 @@ namespace GOSSIP.ViewModels
                 if (AuthorizedUserVM != null)
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                    OnPropertyChanged(nameof(AuthorizedUserVM));
                 }
                 
                 _isChatsPressed = value;

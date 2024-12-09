@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using GOSSIP.Net;
 
 namespace GOSSIP.ViewModels
 {
@@ -31,6 +32,10 @@ namespace GOSSIP.ViewModels
             set
             {
                 _openedChatVM = value;
+
+                Globals.server.SendPacket(SignalsEnum.RefreshUser, MainVM.AuthorizedUserVM.UserModel);
+                OnPropertyChanged(nameof(MainVM.AuthorizedUserVM.UserModel));
+
                 OnPropertyChanged(nameof(OpenedChatVM));
             }
         }

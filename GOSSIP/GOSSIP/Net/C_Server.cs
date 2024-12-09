@@ -66,7 +66,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.22.251.137", 7891);
+            _client.Connect("172.22.237.81", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
