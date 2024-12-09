@@ -44,6 +44,12 @@ namespace GOSSIP.Net
         public event Action<UserModel> loginEvent;
         public event Action<List<TopicModel>> getTopicsEvent;
 
+        public event Action<List<string>> getStatusesEvent;
+        public event Action<List<string>> getFieldOfStudyEvent;
+        public event Action<List<string>> getSpecializationsEvent;
+        public event Action<List<string>> getUniversitiesEvent;
+        public event Action<List<string>> getDegreesEvent;
+
 
 
         //public event Action<TopicModel> sendMessageEvent;
@@ -79,9 +85,7 @@ namespace GOSSIP.Net
 
         #endregion
 
-        #region Senders
-
-
+        #region User
 
         public void SignUp(UserModel user)
         {
@@ -101,9 +105,19 @@ namespace GOSSIP.Net
         public void LogOut()
         {
             SendPacket(SignalsEnum.Logout);
-            
         }
 
+        #endregion
+
+        #region SignUp
+        public void GetInformationForSignUp()
+        {
+            SendPacket(SignalsEnum.GetStatuses);
+            SendPacket(SignalsEnum.GetFieldsOfStudy);
+            SendPacket(SignalsEnum.GetSpecializations);
+            SendPacket(SignalsEnum.GetUniversities);
+            SendPacket(SignalsEnum.GetDegrees);
+        }
         #endregion
 
         #region Post
@@ -210,10 +224,6 @@ namespace GOSSIP.Net
 
         #endregion
 
-        #region Getters
-
-        #endregion
-
         #region Read Signals From Server
 
         private void ReadPackets()
@@ -276,6 +286,38 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"Refrash user {_client}");
                                 break;
                             }
+                        case (byte)SignalsEnum.GetStatuses:
+                            {
+                                var statuses = packetReader.ReadPacket<List<string>>().Data;
+                                getStatusesEvent?.Invoke(statuses);
+                                Debug.WriteLine(statuses);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetFieldsOfStudy:
+                            {
+                                var fields = packetReader.ReadPacket<List<string>>().Data;
+                                getFieldOfStudyEvent?.Invoke(fields);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetSpecializations:
+                            {
+                                var specializations = packetReader.ReadPacket<List<string>>().Data;
+                                getSpecializationsEvent?.Invoke(specializations);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetUniversities:
+                            {
+                                var uni = packetReader.ReadPacket<List<string>>().Data;
+                                getUniversitiesEvent?.Invoke(uni);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetDegrees:
+                            {
+                                var degrees = packetReader.ReadPacket<List<string>>().Data;
+                                getDegreesEvent?.Invoke(degrees);
+                                break;
+                            }
+
 
                     }
                     packetReader.Signal = 255;
@@ -308,6 +350,6 @@ namespace GOSSIP.Net
                 }
             }
 
-            #endregion
+        #endregion
     }
 }

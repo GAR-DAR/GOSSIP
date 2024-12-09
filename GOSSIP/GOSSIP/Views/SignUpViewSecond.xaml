@@ -31,13 +31,13 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Status" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
-        <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding Status}" Foreground="White"/>
+        <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding StatusOptions, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Status}" Foreground="White"/>
         <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="Field of study" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
-        <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding FieldOfStudyOptions}" SelectedItem="{Binding FieldOfStudy}" Foreground="White"/>
+        <ComboBox Grid.Row="4" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding FieldOfStudyOptions, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding FieldOfStudy}" Foreground="White"/>
         <TextBlock Grid.Row="5" Grid.ColumnSpan="2" Text="Specialization" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
-        <ComboBox Grid.Row="6" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding SpecializationOptions}" SelectedItem="{Binding Specialization}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding SpecializationIndex}" Foreground="White"/>
+        <ComboBox Grid.Row="6" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding SpecializationOptions, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Specialization}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding SpecializationIndex}" Foreground="White"/>
         <TextBlock Grid.Row="7" Grid.ColumnSpan="2" Text="University" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
-        <ComboBox Grid.Row="8" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding UniversityOptions}" SelectedItem="{Binding University}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding UniversityIndex}" Foreground="White"/>
+        <ComboBox Grid.Row="8" Grid.ColumnSpan="2" Style="{DynamicResource AuthorizationComboBox}" ItemsSource="{Binding UniversityOptions, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding University}" IsEnabled="{Binding IsStudentOrFaculty}" SelectedIndex="{Binding UniversityIndex}" Foreground="White"/>
         <TextBlock Grid.Row="9" Grid.ColumnSpan="2" Text="Term" Foreground="White" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,75,5"/>
         <TextBlock Grid.Row="9" Grid.ColumnSpan="1" Text="Degree" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="30,0,0,5"/>
 

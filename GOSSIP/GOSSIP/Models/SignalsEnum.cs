@@ -18,6 +18,14 @@ namespace GOSSIP.Models
         ChangeUserPhoto,
         #endregion
 
+        #region SignUp
+        GetStatuses,
+        GetFieldsOfStudy,
+        GetSpecializations,
+        GetUniversities,
+        GetDegrees,
+        #endregion
+
         #region Topics
         GetTopics,
         CreateTopic,

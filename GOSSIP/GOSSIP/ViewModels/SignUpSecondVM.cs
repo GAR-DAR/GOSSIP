@@ -201,42 +201,48 @@ namespace GOSSIP.ViewModels
         public event Action<UserVM> CloseDialog;
 
         //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
-        public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
-        public List<string> FieldOfStudyOptions { get; set; } =
-        [
-            "1. Education",
-            "2. Arts & Culture",
-            "3. Human Sciences",
-            "4. Religion & Theology",
-            "5. Social Sciences",
-            "6. Journalism",
-            "7. Management & Administration",
-            "8. Law",
-            "9. Biology",
-            "10. Natural Sciences",
-            "11. Mathematics & Statistics",
-            "12. Information Technology",
-            "13. Mechanical Engineering",
-            "14. Electrical Engineering",
-            "15. Cat Sciences",
-            "16. Chemical Engineering & Bioengineering",
-            "17. Electronics & Automation",
-            "18. Production & Technology",
-            "19. Architecture & Building",
-            "20. Agricultural Sciences",
-            "21. Veterinary",
-            "22. Healthcare",
-            "23. Social Work",
-            "24. Service Sector",
-            "25. Military & Defence",
-            "26. Civil Security",
-            "27. Transport",
-            "28. Prompt Engineering",
-            "29. International Relations"
-        ];
-        public List<string> SpecializationOptions { get; set; } = ["Software engineering", "Computer Science", "System Analisys"];
-        public List<string> UniversityOptions { get; set; } = ["Lviv Polytechnic", "elenu", "Lviv National Forestry University", "Kyiv Polytechnic Institute", "Taras Shevchenko National University of Kyiv"];
-        public List<string> DegreeOptions { get; set; } = ["Bachelor", "Master", "Postgraduate", "PhD"];
+        //public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
+        //public List<string> FieldOfStudyOptions { get; set; } =
+        //[
+        //    "1. Education",
+        //    "2. Arts & Culture",
+        //    "3. Human Sciences",
+        //    "4. Religion & Theology",
+        //    "5. Social Sciences",
+        //    "6. Journalism",
+        //    "7. Management & Administration",
+        //    "8. Law",
+        //    "9. Biology",
+        //    "10. Natural Sciences",
+        //    "11. Mathematics & Statistics",
+        //    "12. Information Technology",
+        //    "13. Mechanical Engineering",
+        //    "14. Electrical Engineering",
+        //    "15. Cat Sciences",
+        //    "16. Chemical Engineering & Bioengineering",
+        //    "17. Electronics & Automation",
+        //    "18. Production & Technology",
+        //    "19. Architecture & Building",
+        //    "20. Agricultural Sciences",
+        //    "21. Veterinary",
+        //    "22. Healthcare",
+        //    "23. Social Work",
+        //    "24. Service Sector",
+        //    "25. Military & Defence",
+        //    "26. Civil Security",
+        //    "27. Transport",
+        //    "28. Prompt Engineering",
+        //    "29. International Relations"
+        //];
+        //public List<string> SpecializationOptions { get; set; } = ["Software engineering", "Computer Science", "System Analisys"];
+        //public List<string> UniversityOptions { get; set; } = ["Lviv Polytechnic", "elenu", "Lviv National Forestry University", "Kyiv Polytechnic Institute", "Taras Shevchenko National University of Kyiv"];
+        //public List<string> DegreeOptions { get; set; } = ["Bachelor", "Master", "Postgraduate", "PhD"];
+        public List<string> StatusOptions { get; set; } = [];
+        public List<string> FieldOfStudyOptions { get; set; } = [];
+        public List<string> SpecializationOptions { get; set; } = [];
+        public List<string> UniversityOptions { get; set; } = [];
+        public List<string> DegreeOptions { get; set; } = [];
+
         public ObservableCollection<string> TermsOptions { get; set; } = [];
 
         public SignUpSecondVM(SignUpMainVM signUpMainVM)
@@ -244,7 +250,44 @@ namespace GOSSIP.ViewModels
             _mainVM = signUpMainVM;
             BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = _mainVM.SignUpFirstVM);
             CompleteSignUpCommand = new RelayCommand(CompleteSignUpMethod);
-            
+
+            Globals.server.GetInformationForSignUp();
+
+            Globals.server.getStatusesEvent += getStatuses;
+            Globals.server.getFieldOfStudyEvent += getFieldOfStudy;
+            Globals.server.getUniversitiesEvent += getUniversityOptions;
+            Globals.server.getSpecializationsEvent += getSpecializationOptions;
+            Globals.server.getDegreesEvent += getDegreeOptions;
+        }
+
+        private void getDegreeOptions(List<string> degreeOptions)
+        {
+            DegreeOptions = degreeOptions;
+            OnPropertyChanged(nameof(DegreeOptions));
+        }
+
+        private void getUniversityOptions(List<string> universityOptions)
+        {
+            UniversityOptions = universityOptions;
+            OnPropertyChanged(nameof(UniversityOptions));
+        }
+
+        private void getSpecializationOptions(List<string> specializationOptions)
+        {
+            SpecializationOptions = specializationOptions;
+            OnPropertyChanged(nameof(SpecializationOptions));
+        }
+
+        private void getFieldOfStudy(List<string> fieldsOfStudy)
+        {
+            FieldOfStudyOptions = fieldsOfStudy;
+            OnPropertyChanged(nameof(FieldOfStudyOptions));
+        }
+
+        private void getStatuses(List<string> statuses)
+        {
+            StatusOptions = statuses;
+            OnPropertyChanged(nameof(StatusOptions));
         }
 
         private void CompleteSignUpMethod(object obj)
