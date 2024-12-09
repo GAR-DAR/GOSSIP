@@ -11,7 +11,7 @@ public static class UsersService
         if (Exists("email", user.Email, conn)
             || Exists("username", user.Username, conn))
             return false; // TODO: an exception, for sure
-        
+
         string signUpQuery =
             $"""
              INSERT INTO users (username, email, password, photo, status_id, field_of_study_id, specialization_id, 
@@ -48,36 +48,36 @@ public static class UsersService
 
         return affectedRows != 0;
     }
-    
+
     public static UserModel? SignIn(string? email, string? username, string password, MySqlConnection conn)
     {
         string typeOfLogin = (email == null) ? "username" : "email";
-        string login = (email == null) ? username : email; 
+        string login = (email == null) ? username : email;
         // typeOfLogin: email || username
         if (!Exists(typeOfLogin, login, conn))
             return null; // TODO: may be replaced with an exception
 
         string signInQuery =
             $"""
-            SELECT users.id, users.username, users.password, users.email, users.photo, statuses.status, 
-                   fields_of_study.field, specializations.specialization, universities.university, term, degrees.degree, 
-                   roles.role, created_at, is_banned
-            FROM users
-            LEFT JOIN statuses ON users.status_id = statuses.id
-            LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
-            LEFT JOIN specializations ON users.specialization_id = specializations.id
-            LEFT JOIN universities ON users.university_id = universities.id
-            LEFT JOIN degrees ON users.degree_id = degrees.id
-            LEFT JOIN roles ON users.role_id = roles.id
-            WHERE {typeOfLogin} = @value
-            """;
+             SELECT users.id, users.username, users.password, users.email, users.photo, statuses.status, 
+                    fields_of_study.field, specializations.specialization, universities.university, term, degrees.degree, 
+                    roles.role, created_at, is_banned
+             FROM users
+             LEFT JOIN statuses ON users.status_id = statuses.id
+             LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
+             LEFT JOIN specializations ON users.specialization_id = specializations.id
+             LEFT JOIN universities ON users.university_id = universities.id
+             LEFT JOIN degrees ON users.degree_id = degrees.id
+             LEFT JOIN roles ON users.role_id = roles.id
+             WHERE {typeOfLogin} = @value
+             """;
 
         using var selectCommand = new MySqlCommand(signInQuery, conn);
         selectCommand.Parameters.AddWithValue("@value", login);
 
         using var reader = selectCommand.ExecuteReader();
         reader.Read();
-        
+
         string storedPassword = reader.GetString("password");
 
         if (password != storedPassword)
@@ -99,14 +99,14 @@ public static class UsersService
             CreatedAt = reader.GetDateTime("created_at"),
             IsBanned = reader.GetBoolean("is_banned")
         };
-        
+
         reader.Close();
 
         user.Chats = ChatsService.SelectByUser(user, conn);
 
         return user;
     }
-    
+
     public static bool Exists(string findBy, string value, MySqlConnection conn)
     {
         string existsQuery =
@@ -118,7 +118,7 @@ public static class UsersService
         selectCommand.Parameters.AddWithValue("@value", value);
         return Convert.ToBoolean(selectCommand.ExecuteScalar());
     }
-    
+
     public static UserModel Select(uint userId, MySqlConnection conn)
     {
         string selectQuery =
@@ -158,7 +158,7 @@ public static class UsersService
             CreatedAt = reader.GetDateTime("created_at"),
             IsBanned = reader.GetBoolean("is_banned")
         };
-        
+
         reader.Close();
 
         user.Chats = ChatsService.SelectByUser(user, conn);
@@ -171,11 +171,11 @@ public static class UsersService
     public static bool ChangePassword(UserModel user, string newPassword, MySqlConnection conn)
     {
         string changePasswordQuery =
-           $"""
-            UPDATE users
-            SET password = { newPassword }
-            WHERE id = @user_id
-            """;
+            $"""
+             UPDATE users
+             SET password = {newPassword}
+             WHERE id = @user_id
+             """;
 
         using var updateCommand = new MySqlCommand(changePasswordQuery, conn);
         updateCommand.Parameters.AddWithValue("@user_id", user.ID);
@@ -183,16 +183,16 @@ public static class UsersService
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
     }
-    
+
 
     public static bool BanUser(uint userId, MySqlConnection conn)
     {
         string banUserQuery =
             """
-        UPDATE users
-        SET is_banned = 1
-        WHERE id = @userId
-        """;
+            UPDATE users
+            SET is_banned = 1
+            WHERE id = @userId
+            """;
 
         using var updateCommand = new MySqlCommand(banUserQuery, conn);
         updateCommand.Parameters.AddWithValue("@userId", userId);
@@ -206,17 +206,17 @@ public static class UsersService
     {
         string query =
             """
-        UPDATE users
-        SET photo = @new_photo
-        WHERE id = @user_id
-        """;
+            UPDATE users
+            SET photo = @new_photo
+            WHERE id = @user_id
+            """;
 
         using var command = new MySqlCommand(query, conn);
         command.Parameters.AddWithValue("@new_photo", newPhoto);
         command.Parameters.AddWithValue("@user_id", userId);
 
         int rowsAffected = command.ExecuteNonQuery();
-        return rowsAffected != 0; 
+        return rowsAffected != 0;
     }
 
     private static Dictionary<uint, int> GetTopicVotes(UserModel user, MySqlConnection conn)
@@ -240,7 +240,7 @@ public static class UsersService
 
         return topicVotes;
     }
-    
+
     private static Dictionary<uint, int> GetReplyVotes(UserModel user, MySqlConnection conn)
     {
         Dictionary<uint, int> replyVotes = [];
@@ -261,5 +261,90 @@ public static class UsersService
         }
 
         return replyVotes;
+    }
+
+    public static List<string> GetStatuses(MySqlConnection conn)
+    {
+        var statuses = new List<string>();
+
+        string query = "SELECT status FROM statuses";
+
+        using var command = new MySqlCommand(query, conn);
+
+        using var read = command.ExecuteReader();
+        while (read.Read())
+        {
+            statuses.Add(read["status"].ToString() ?? string.Empty);
+        }
+
+        return statuses;
+    }
+
+    public static List<string> GetFieldsOfStudy(MySqlConnection conn)
+    {
+        var fields = new List<string>();
+
+        string query = "SELECT field FROM fields_of_study";
+
+        using var command = new MySqlCommand(query, conn);
+
+        using var read = command.ExecuteReader();
+        while (read.Read())
+        {
+            fields.Add(read["field"].ToString() ?? string.Empty);
+        }
+
+        return fields;
+    }
+
+    public static List<string> GetSpecializations(MySqlConnection conn)
+    {
+        var specialization = new List<string>();
+
+        string query = "SELECT specialization FROM specializations";
+
+        using var command = new MySqlCommand(query, conn);
+
+        using var read = command.ExecuteReader();
+        while (read.Read())
+        {
+            specialization.Add(read["specialization"].ToString() ?? string.Empty);
+        }
+
+        return specialization;
+    }
+
+    public static List<string> GetUniversities(MySqlConnection conn)
+    {
+        var universities = new List<string>();
+
+        string query = "SELECT university FROM universities";
+
+        using var command = new MySqlCommand(query, conn);
+
+        using var read = command.ExecuteReader();
+        while (read.Read())
+        {
+            universities.Add(read["university"].ToString() ?? string.Empty);
+        }
+
+        return universities;
+    }
+
+    public static List<string> GetDegrees(MySqlConnection conn)
+    {
+        var degrees = new List<string>();
+
+        string query = "SELECT degree FROM degrees";
+
+        using var command = new MySqlCommand(query, conn);
+
+        using var read = command.ExecuteReader();
+        while (read.Read())
+        {
+            degrees.Add(read["degree"].ToString() ?? string.Empty);
+        }
+
+        return degrees;
     }
 }
