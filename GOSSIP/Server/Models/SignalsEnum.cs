@@ -51,7 +51,5 @@ namespace Server.Models
             LoginError,
             SignUpError,
         #endregion
-
-        Acknowledgement
     }
 }

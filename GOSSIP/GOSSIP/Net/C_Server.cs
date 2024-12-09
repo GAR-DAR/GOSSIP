@@ -16,7 +16,6 @@ namespace GOSSIP.Net
     public static class Globals
     {
         public static Server server = new Server();
-
     }
 
     public class Server
@@ -26,9 +25,6 @@ namespace GOSSIP.Net
         public PacketReader packetReader;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-        public Dictionary<Guid, byte[]> unacknowledgedPackets = new Dictionary<Guid, byte[]>();
-        public Mutex mutex = new Mutex();
 
         public Server()
         {
@@ -66,7 +62,7 @@ namespace GOSSIP.Net
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
-                SendPacket<object>(SignalsEnum.GetTopics);
+                SendPacket(SignalsEnum.GetTopics);
                 ReadPackets();
             }
         }
@@ -74,7 +70,7 @@ namespace GOSSIP.Net
        
         public void Disconnect()
         {
-            SendPacket<object>(SignalsEnum.Disconnect);
+            SendPacket(SignalsEnum.Disconnect);
 
             _client.Close();
 
@@ -104,7 +100,7 @@ namespace GOSSIP.Net
 
         public void LogOut()
         {
-            SendPacket<object>(SignalsEnum.Logout);
+            SendPacket(SignalsEnum.Logout);
             
         }
 
@@ -114,7 +110,7 @@ namespace GOSSIP.Net
 
         public void GetTopics()
         {
-            SendPacket<object>(SignalsEnum.GetTopics);
+            SendPacket(SignalsEnum.GetTopics);
         }
 
         public void CreateTopic(TopicModel topic)
@@ -250,7 +246,7 @@ namespace GOSSIP.Net
                                     if (Counter != 0)
                                     {
                                         packetReader.ClearStream();
-                                        SendPacket<object>(SignalsEnum.GetTopics);
+                                        SendPacket(SignalsEnum.GetTopics);
                                         Counter--;
                                         Debug.WriteLine($"{DateTime.Now} Retrying to get topics... Counter {Counter}");
                                     }
@@ -292,40 +288,26 @@ namespace GOSSIP.Net
 
         #region Helpers
 
-        public void SendPacket<T>(SignalsEnum signal, T data = null) where T : class
-        {
-            var packetBuilder = new PacketBuilder<T>();
-            var packetBytes = packetBuilder.GetPacketBytes(signal, data);
-            var packetId = packetBuilder.PacketId;
-
-            mutex.WaitOne();
-            unacknowledgedPackets[packetId] = packetBytes;
-            mutex.ReleaseMutex();
-
-            _client.Client.Send(packetBytes);
-
-            // Start acknowledgement timer
-            StartAcknowledgementTimer(packetId);
-        }
-
-        private void StartAcknowledgementTimer(Guid packetId)
-        {
-            Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ =>
+        public void SendPacket<T>(SignalsEnum signal, T user) where T : class
             {
-                mutex.WaitOne();
-                if (unacknowledgedPackets.ContainsKey(packetId))
+                if (_client.Connected)
                 {
-                        // Resend packet
-                        var packetBytes = unacknowledgedPackets[packetId];
-                        _client.Client.Send(packetBytes);
-
-                        // Restart acknowledgement timer
-                        StartAcknowledgementTimer(packetId);
+                    var authPacket = new PacketBuilder<T>();
+                    var packet = authPacket.GetPacketBytes(signal, user);
+                    _client.Client.Send(packet);
                 }
-               mutex.ReleaseMutex();
-            });
-        }
+            }
 
-        #endregion
+        public void SendPacket(SignalsEnum signal)
+            {
+                if (_client.Connected)
+                {
+                    var authPacket = new PacketBuilder<object>();
+                    var packet = authPacket.GetPacketBytes(signal);
+                    _client.Client.Send(packet);
+                }
+            }
+
+            #endregion
     }
 }
