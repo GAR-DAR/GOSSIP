@@ -20,6 +20,7 @@
     <None Remove="Resources\Images\DownvoteDanube.png" />
     <None Remove="Resources\Images\LoadMore.png" />
     <None Remove="Resources\Images\LoadMoreDanube.png" />
+    <None Remove="Resources\Images\Logout.png" />
     <None Remove="Resources\Images\Message.png" />
     <None Remove="Resources\Images\MessageDanube.png" />
     <None Remove="Resources\Images\search.png" />
@@ -51,6 +52,7 @@
     <Resource Include="Resources\Images\DownvoteDanube.png" />
     <Resource Include="Resources\Images\LoadMore.png" />
     <Resource Include="Resources\Images\LoadMoreDanube.png" />
+    <Resource Include="Resources\Images\Logout.png" />
     <Resource Include="Resources\Images\Message.png" />
     <Resource Include="Resources\Images\MessageDanube.png" />
     <Resource Include="Resources\Images\search.png" />
