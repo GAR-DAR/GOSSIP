@@ -168,6 +168,50 @@ public static class UsersService
         return user;
     }
 
+    public static List<UserModel> SelectAll(MySqlConnection conn)
+    {
+        List<UserModel> allUsers = [];
+        string selectQuery =
+            """
+            SELECT users.id, users.username, users.email, users.password, users.photo, statuses.status, 
+            fields_of_study.field, specializations.specialization, universities.university, users.term, 
+            degrees.degree, roles.role, users.created_at, users.is_banned
+            FROM users 
+            LEFT JOIN statuses ON users.status_id = statuses.id
+            LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
+            LEFT JOIN specializations ON users.specialization_id = specializations.id
+            LEFT JOIN universities ON users.university_id = universities.id
+            LEFT JOIN degrees ON users.degree_id = degrees.id
+            LEFT JOIN roles ON users.role_id = roles.id
+            """;
+
+        using var selectCommand = new MySqlCommand(selectQuery, conn);
+        using var reader = selectCommand.ExecuteReader();
+
+        while (reader.Read())
+        {
+            allUsers.Add(new UserModel
+            {
+                ID = reader.GetUInt32("id"),
+                Username = reader.GetString("username"),
+                Email = reader.GetString("email"),
+                Photo = reader.IsDBNull("photo") ? null : reader.GetString("photo"),
+                Status = reader.GetString("status"),
+                FieldOfStudy = reader.IsDBNull("field") ? null : reader.GetString("field"),
+                Specialization = reader.IsDBNull("specialization") 
+                    ? null : reader.GetString("specialization"),
+                Degree = reader.IsDBNull("degree") ? null : reader.GetString("degree"),
+                Term = reader.IsDBNull("term") ? null : reader.GetUInt32("term"),
+                University = reader.IsDBNull("university") ? null : reader.GetString("university"),
+                Role = reader.GetString("role"),
+                CreatedAt = reader.GetDateTime("created_at"),
+                IsBanned = reader.GetBoolean("is_banned")
+            });
+        }
+
+        return allUsers;
+    }
+
     public static bool ChangePassword(UserModel user, string newPassword, MySqlConnection conn)
     {
         string changePasswordQuery =
