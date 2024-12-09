@@ -28,10 +28,10 @@
                         <TextBlock Text="Tags" Margin="0,0,155,0"/>
                     </StackPanel>
                 </Button>
-                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowChatsCommand}" Foreground="{Binding IsChatsPressed, Converter={StaticResource boolToSideBarTextColorConverter}}" Background="{Binding IsChatsPressed, Converter={StaticResource boolToColorConverter}}" Margin="0 5 50 0">
+                <Button Style="{DynamicResource SideBarButton}" Command="{Binding ShowChatsCommand}" Foreground="{Binding IsChatsPressed, Converter={StaticResource boolToSideBarTextColorConverter}}" Background="{Binding IsChatsPressed, Converter={StaticResource boolToColorConverter}}" Margin="0 5 0 0">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding ChatIcon}" Width="30" Height="30" Margin="0 0 7 0"/>
-                        <TextBlock Text="Chats" Margin="0,0,90,0"/>
+                        <Image Source="{Binding ChatIcon}" Width="30" Height="30" Margin="0 0 10 0"/>
+                        <TextBlock Text="Chats" Margin="0,0,140,0"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

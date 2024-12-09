@@ -57,6 +57,28 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        private bool _allFieldsAreNotFilled;
+        public bool AllFieldsAreNotFilled
+        {
+            get => _allFieldsAreNotFilled;
+            set
+            {
+                _allFieldsAreNotFilled = value;
+                OnPropertyChanged(nameof(AllFieldsAreNotFilled));
+            }
+        }
+
+        private bool _passwordsDoNotMatch;
+        public bool PasswordsDoNotMatch
+        {
+            get => _passwordsDoNotMatch;
+            set
+            {
+                _passwordsDoNotMatch = value;
+                OnPropertyChanged(nameof(PasswordsDoNotMatch));
+            }
+        }
+
         public ICommand NextCommand { get; set; }
 
         public SignUpFirstVM(SignUpMainVM signUpMainVM)
@@ -76,20 +98,31 @@ namespace GOSSIP.ViewModels
             }
             catch (ArgumentException ex)
             {
-                MessageBox.Show(ex.Message);
             }
         }
 
         private void ValidateInput()
         {
-            
-                if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Username) ||
-                    string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(RepeatPassword))
-                    throw new ArgumentException("Please fill in all fields.");
 
-                if (Password != RepeatPassword)
-                    throw new ArgumentException("Passwords do not match.");
-            
+            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Username) ||
+                string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(RepeatPassword))
+            {
+                AllFieldsAreNotFilled = true;
+                throw new ArgumentException("Please fill in all fields.");
+            }
+            else
+                AllFieldsAreNotFilled = false;
+
+
+            if (Password != RepeatPassword)
+            {
+                PasswordsDoNotMatch = true;
+                throw new ArgumentException("Passwords do not match.");
+            }
+            else
+                PasswordsDoNotMatch = false;
         }
+
+
     }
 }
