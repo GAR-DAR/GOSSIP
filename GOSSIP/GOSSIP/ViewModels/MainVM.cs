@@ -300,7 +300,10 @@ namespace GOSSIP.ViewModels
                 signUpMainVM.RequestClose += (user) => 
                 { 
                     AuthorizedUserVM = user;
-                    signUpView.Close();
+                    signUpView.Dispatcher.Invoke(() =>
+                    {
+                        signUpView.Close();
+                    }); 
                     SelectedTopBarVM = new TopBarLoggedInVM(this);
                 };
                 signUpView.ShowDialog();
@@ -313,7 +316,10 @@ namespace GOSSIP.ViewModels
             logInVM.RequestClose += (user) =>
             {
                 AuthorizedUserVM = user;
-                logInWindow.Close();
+                logInWindow.Dispatcher.Invoke(() =>
+                {
+                    logInWindow.Close();
+                });
                 TopBarLoggedInVM topBarLoggedInVM = new(this);
                 SelectedTopBarVM = topBarLoggedInVM;
             };

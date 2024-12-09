@@ -94,8 +94,7 @@ namespace Server
                             }
                         case (byte)SignalsEnum.GetTopics:
                             {
-                                //List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
-                                List<TopicModel> allTopics = [];
+                                List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetTopics, allTopics);
                                 Logging.LogSent(SignalsEnum.GetTopics, UID, User);
                                 break;
@@ -258,6 +257,37 @@ namespace Server
                                 Logging.Log("logged out", UID, User);
                                 break;
                             }
+                        case (byte)SignalsEnum.GetStatuses:
+                            {
+                                List<string> statuses = UsersService.GetStatuses(Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetStatuses, statuses);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetFieldsOfStudy:
+                            {
+                                List<string> fields = UsersService.GetFieldsOfStudy(Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetFieldsOfStudy, fields);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetSpecializations:
+                            {
+                                List<string> specializations = UsersService.GetSpecializations(Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetSpecializations, specializations);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetUniversities:
+                            {
+                                List<string> universities = UsersService.GetUniversities(Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetUniversities, universities);
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetDegrees:
+                            {
+                                List<string> degrees = UsersService.GetDegrees(Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetDegrees, degrees);
+                                break;
+                            }
+
                         default:
                             //Console.WriteLine($"[SWITCH]Signal {signal} received");
                             break;
@@ -279,12 +309,12 @@ namespace Server
         }
         #region Helpers
 
-        private void SendPacket<T>(SignalsEnum signal, T user) where T : class
+        private void SendPacket<T>(SignalsEnum signal, T data) where T : class
         {
             if (ClientSocket.Connected)
             {
                 var authPacket = new PacketBuilder<T>();
-                var packet = authPacket.GetPacketBytes(signal, user);
+                var packet = authPacket.GetPacketBytes(signal, data);
                 mutex.WaitOne();
                     ClientSocket.Client.Send(packet);
                 mutex.ReleaseMutex();

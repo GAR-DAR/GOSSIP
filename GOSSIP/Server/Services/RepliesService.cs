@@ -16,7 +16,7 @@ public static class RepliesService
         using var insertCommand = new MySqlCommand(addQuery, conn);
         insertCommand.Parameters.AddWithValue("@user_id", reply.User.ID);
         insertCommand.Parameters.AddWithValue("@topic_id", reply.Topic.ID);
-        insertCommand.Parameters.AddWithValue("@parent_reply_id", 
+        insertCommand.Parameters.AddWithValue("@parent_reply_id",
             (reply is ChildReplyModel childReplyRoot) ? childReplyRoot.RootReply.ID : null);
         insertCommand.Parameters.AddWithValue("@reply_to",
             (reply is ChildReplyModel childReplyReplyTo) ? childReplyReplyTo.ReplyTo.ID : null);
@@ -47,7 +47,7 @@ public static class RepliesService
 
         return AttachVote(reply, user, 1, conn);
     }
-    
+
     public static bool Downvote(ReplyModel reply, UserModel user, MySqlConnection conn)
     {
         string downvoteQuery =
@@ -66,7 +66,7 @@ public static class RepliesService
 
         return AttachVote(reply, user, -1, conn);
     }
-    
+
     public static bool Delete(ReplyModel reply, MySqlConnection conn)
     {
         string deleteQuery =
@@ -80,10 +80,10 @@ public static class RepliesService
         updateCommand.Parameters.AddWithValue("@id", reply.ID);
 
         int affectedRows = updateCommand.ExecuteNonQuery();
-        
+
         return affectedRows != 0;
     }
-    
+
     private static bool AttachVote(ReplyModel reply, UserModel user, int vote, MySqlConnection conn)
     {
         string attachVoteQuery = VoteExists(reply, user, conn)
@@ -105,7 +105,7 @@ public static class RepliesService
         int rowsAffected = command.ExecuteNonQuery();
         return rowsAffected != 0;
     }
-    
+
     private static bool VoteExists(ReplyModel reply, UserModel user, MySqlConnection conn)
     {
         string voteExistsQuery =

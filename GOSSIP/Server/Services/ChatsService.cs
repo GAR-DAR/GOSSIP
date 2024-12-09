@@ -73,7 +73,7 @@ public static class ChatsService
     public static List<ChatModel>? SelectByUser(UserModel user, MySqlConnection conn)
     {
         List<ChatModel> chats = [];
-        
+
         string selectByUserQuery =
             """
             SELECT chats.id as chat_id, chats.name, chats.created_at as chat_created_at, 
@@ -102,9 +102,9 @@ public static class ChatsService
 
         if (chats.Count == 0)
             return null;
-        
+
         reader.Close();
-        
+
         foreach (var chat in chats)
         {
             List<UserModel> users = [];
@@ -139,13 +139,13 @@ public static class ChatsService
                     Photo = usersReader.IsDBNull("photo") ? null : usersReader.GetString("photo"),
                     Status = usersReader.GetString("status"),
                     FieldOfStudy = usersReader.IsDBNull("field") ? null : usersReader.GetString("field"),
-                    Specialization = usersReader.IsDBNull("specialization") 
-                        ? null 
+                    Specialization = usersReader.IsDBNull("specialization")
+                        ? null
                         : usersReader.GetString("specialization"),
                     Degree = usersReader.IsDBNull("degree") ? null : usersReader.GetString("degree"),
                     Term = usersReader.IsDBNull("term") ? null : usersReader.GetUInt32("term"),
-                    University = usersReader.IsDBNull("university") 
-                        ? null 
+                    University = usersReader.IsDBNull("university")
+                        ? null
                         : usersReader.GetString("university"),
                     Role = usersReader.GetString("role"),
                     CreatedAt = usersReader.GetDateTime("created_at"),
@@ -192,16 +192,16 @@ public static class ChatsService
                         Email = messagesReader.GetString("email"),
                         Photo = messagesReader.IsDBNull("photo") ? null : messagesReader.GetString("photo"),
                         Status = messagesReader.GetString("status"),
-                        FieldOfStudy = messagesReader.IsDBNull("field") 
-                            ? null 
+                        FieldOfStudy = messagesReader.IsDBNull("field")
+                            ? null
                             : messagesReader.GetString("field"),
-                        Specialization = messagesReader.IsDBNull("specialization") 
-                            ? null 
+                        Specialization = messagesReader.IsDBNull("specialization")
+                            ? null
                             : messagesReader.GetString("specialization"),
                         Degree = messagesReader.IsDBNull("degree") ? null : messagesReader.GetString("degree"),
                         Term = messagesReader.IsDBNull("term") ? null : messagesReader.GetUInt32("term"),
-                        University = messagesReader.IsDBNull("university") 
-                            ? null 
+                        University = messagesReader.IsDBNull("university")
+                            ? null
                             : messagesReader.GetString("university"),
                         Role = messagesReader.GetString("role"),
                         CreatedAt = messagesReader.GetDateTime("created_at"),

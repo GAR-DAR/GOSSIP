@@ -18,6 +18,14 @@ namespace Server.Models
         ChangeUserPhoto,
         #endregion
 
+        #region SignUp
+        GetStatuses,
+        GetFieldsOfStudy,
+        GetSpecializations,
+        GetUniversities,
+        GetDegrees,
+        #endregion
+
         #region Topics
         GetTopics,
         CreateTopic,
@@ -25,7 +33,7 @@ namespace Server.Models
         DeleteTopic,
         UpvoteTopic,
         DownvoteTopic,
-        
+
         #endregion
 
         #region Reply
@@ -47,9 +55,9 @@ namespace Server.Models
         #endregion
 
         #region Errors
-            PacketError,
-            LoginError,
-            SignUpError,
+        PacketError,
+        LoginError,
+        SignUpError,
         #endregion
     }
 }
