@@ -1,0 +1,46 @@
+﻿<Window x:Class="GOSSIP.Views.AddUsersToChatWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GOSSIP.Views"
+        mc:Ignorable="d"
+        Title="AddUsersToChatWindow" Height="600" Width="350" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    <Border Background="{StaticResource Downriver}" CornerRadius="20" BorderBrush="{StaticResource Danube}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="70*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Add members" FontSize="30" Foreground="White" Margin="10"/>
+            <Button Content="x" Height="40" Width="40" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CloseCommand}" Margin="10"/>
+
+            <TextBox Style="{StaticResource InputField}" Grid.Row="1"/>
+
+            <ListView ItemsSource="{Binding AllUsers}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Photo}" Width="40" Height="40">
+                                <Image.Clip>
+                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                </Image.Clip>
+                            </Image>
+                            <TextBlock Text="{Binding Username}" VerticalAlignment="Center" Margin="5" Foreground="White"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Grid.Row="3" Width="100" Height="30" Content="Create" HorizontalAlignment="Right" Margin="10" Command="{Binding CreateChatCommand}"/>
+        </Grid>
+    </Border>
+    
+</Window>

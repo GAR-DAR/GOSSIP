@@ -24,7 +24,10 @@ namespace GOSSIP.Models
             IsRead = isRead;
             IsDeleted = isDeleted;
         }
-		
-        public MessageModel() { }
+
+        public MessageModel()
+        {
+            
+        }
     }
 }

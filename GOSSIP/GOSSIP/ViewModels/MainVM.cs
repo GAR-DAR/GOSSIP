@@ -4,8 +4,11 @@ using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -182,9 +185,69 @@ namespace GOSSIP.ViewModels
         {
             if (AuthorizedUserVM != null)
             {
+                //UserModel user2 = new(
+                //    8,
+                //    "email",
+                //    "123",
+                //    "123",
+                //    "Student",
+                //    "idgaf",
+                //    "idgaf",
+                //    "elenu",
+                //    4,
+                //    "PhD",
+                //    "User",
+                //    DateTime.Now,
+                //    false,
+                //    "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
+                //    []);
+
+                //UserModel user = new(
+                //    8,
+                //    "email",
+                //    "12",
+                //    "12",
+                //    "Student",
+                //    "idgaf",
+                //    "idgaf",
+                //    "elenu",
+                //    4,
+                //    "PhD",
+                //    "User",
+                //    DateTime.Now,
+                //    false,
+                //    "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
+                //    []);
+
+                //ChatModel chat = new(
+                //    7,
+                //    [user, user2],
+                //    "12, 123",
+                //    DateTime.Now,
+                //    false,
+                //    []);
+
+                //MessageModel messageModel = new(
+                //    4,
+                //    chat,
+                //    user2,
+                //    "Hello",
+                //    DateTime.Now,
+                //    false,
+                //    false
+                //    );
+
+                //chat.Messages.Add(messageModel);
+
+                //user.Chats.Add(chat);
+
+                //string json = JsonSerializer.Serialize(new List<UserModel>() { user }, new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve });
+                //File.WriteAllText("user_data.json", json);
+
+
                 if (_chatsVM == null)
                 {
-                    _chatsVM = new ChatsVM(AuthorizedUserVM.UserModel, this);
+                    _chatsVM = new ChatsVM(this);
                 }
                 StackOfVMs.Add(SelectedVM);
                 SelectedVM = _chatsVM;

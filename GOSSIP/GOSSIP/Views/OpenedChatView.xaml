@@ -36,14 +36,18 @@
                     <CornerRadius TopLeft="0" TopRight="20" BottomLeft="0" BottomRight="0"/>
                 </Border.CornerRadius>
                 <WrapPanel VerticalAlignment="Center">
-                    <Image Source="{Binding Photo}" Width="40" Height="40"  Margin="10 0"/>
+                    <Image Source="{Binding Photo}" Width="40" Height="40">
+                        <Image.Clip>
+                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                        </Image.Clip>
+                    </Image>
                     <TextBlock Text="{Binding ChatName}" Foreground="White"  FontSize="20"/>
                 </WrapPanel>
             </Border>
 
             <ListBox Grid.Row="1" Background="Transparent"
-         ItemsSource="{Binding Messages}"
-         BorderThickness="0">
+                     ItemsSource="{Binding Messages}"
+                     BorderThickness="0">
                 <ListBox.Resources>
                     <Style TargetType="ListBoxItem">
                         <Style.Triggers>
@@ -56,8 +60,19 @@
                                 </DataTrigger.Binding>
 
                                 <DataTrigger.Value>True</DataTrigger.Value>
-                                <Setter Property="HorizontalAlignment" Value="Right" />
-                                <Setter Property="Background" Value="{StaticResource Danube}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Border MinWidth="100" MinHeight="40" MaxWidth="300" CornerRadius="10" BorderThickness="2" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="{StaticResource Danube}">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="7 13 7 0" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" Foreground="Black"
+                                                                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 3 5 0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
 
                             <DataTrigger>
@@ -68,9 +83,26 @@
                                     </MultiBinding>
                                 </DataTrigger.Binding>
                                 <DataTrigger.Value>False</DataTrigger.Value>
-                                <Setter Property="HorizontalAlignment" Value="Left" />
-                                <Setter Property="Background" Value="{StaticResource RegalBlue}" />
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <WrapPanel>
+                                                <Image Source="{Binding User.Photo}" Width="40" Height="40" Margin="3 0">
+                                                    <Image.Clip>
+                                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                    </Image.Clip>
+                                                </Image>
+                                                <Border MinWidth="100" MinHeight="40" MaxWidth="300" CornerRadius="10" BorderThickness="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="{StaticResource RegalBlue}">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="7 13 7 0" TextWrapping="Wrap" Foreground="White"/>
+                                                        <TextBlock Text="{Binding TimeStamp, Converter={StaticResource dateTimeToTimeStringConverter}}" Foreground="white"
+                                                                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 3 5 0"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </WrapPanel>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -94,7 +126,7 @@
                     <TextBox Style="{StaticResource MessageInput}"
                      Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Width="750"
-                     MinHeight="50"
+                     MinHeight="40"
                      MaxHeight="200"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"

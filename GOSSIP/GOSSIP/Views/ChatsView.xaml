@@ -15,7 +15,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Background="{DynamicResource PrussianBlue}">
-                <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Top"/>
+                <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Top" Command="{Binding AddNewChatCommand}"/>
 
                 <ListBox ItemsSource="{Binding ChatList}"
                          SelectedItem="{Binding OpenedChatVM}"
@@ -25,7 +25,11 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding Photo}" Width="40" Height="40" Margin="5"/>
+                                <Image Source="{Binding Photo}" Width="40" Height="40">
+                                    <Image.Clip>
+                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                    </Image.Clip>
+                                </Image>
 
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding ChatName}" FontSize="30" Foreground="White" />
