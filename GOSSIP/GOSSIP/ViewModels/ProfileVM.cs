@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
@@ -24,6 +25,9 @@ namespace GOSSIP.ViewModels
 
         private MainVM _mainVM;
         public ObservableCollection<TopicVM> Topics { get; set; }
+
+
+        public bool IsAuthUserModerator => MainVM.AuthorizedUserVM != null && MainVM.AuthorizedUserVM.Role == "Moderator";
 
         private string _userInfo;
         public string UserInfo
@@ -49,6 +53,7 @@ namespace GOSSIP.ViewModels
 
         public ICommand BackCommand { get; }
         public ICommand DoubleClickCommand { get; }
+        public ICommand BanUserCommand { get; }
 
         public ProfileVM(MainVM mainVM, UserVM user)
         {
@@ -61,6 +66,12 @@ namespace GOSSIP.ViewModels
 
             BackCommand = new RelayCommand(BackMethod);
             DoubleClickCommand = new RelayCommand(obj => OnItemDoubleClickedMethod(SelectedTopic));
+            BanUserCommand = new RelayCommand(BanUserMethod);
+        }
+
+        private void BanUserMethod(object obj)
+        {
+            MessageBox.Show("Тут може бути ваша логіка.");
         }
 
         private void UpdateUserInfo()

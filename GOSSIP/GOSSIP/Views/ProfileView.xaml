@@ -34,6 +34,21 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
+                <Button Width="40" Height="40" Margin="900 0 0 0" VerticalAlignment="Top" Content="Ban" Command="{Binding BanUserCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsAuthUserModerator}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding IsAuthUserModerator}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
 
                 <WrapPanel Margin="0 5">
                     <Image Source="{Binding User.Photo}" Width="200" Height="200" HorizontalAlignment="Left">
@@ -45,6 +60,8 @@
                         <TextBlock Foreground="White" FontSize="35" Text="{Binding User.Username}"/>
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding User.CreatedAt, Converter={StaticResource userProfileCreatedAtConverter}}" Margin="0 5 0 0"/>
                     </StackPanel>
+
+                    
                 </WrapPanel>
 
                 <StackPanel Grid.Row="1" Margin="0 5" Width="800" HorizontalAlignment="Left">
