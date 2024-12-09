@@ -65,7 +65,7 @@ CREATE TABLE `chats_to_users` (
 
 LOCK TABLES `chats_to_users` WRITE;
 /*!40000 ALTER TABLE `chats_to_users` DISABLE KEYS */;
-INSERT INTO `chats_to_users` VALUES (1,1),(1,2),(1,3),(1,5),(1,6),(1,7),(1,8),(1,9),(2,5),(2,9),(3,7),(3,10);
+INSERT INTO `chats_to_users` VALUES (1,1),(1,2),(1,3),(1,5),(1,6),(1,7),(1,8),(1,9),(2,5),(2,8),(3,7),(3,10),(2,5);
 /*!40000 ALTER TABLE `chats_to_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +141,7 @@ CREATE TABLE `messages` (
   KEY `sender_id` (`sender_id`),
   CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`chat_id`) REFERENCES `chats` (`id`),
   CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +150,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (1,3,7,'Some message, isn\'t it?','2024-12-03 16:44:24',0,0);
+INSERT INTO `messages` VALUES (1,3,7,'Some message, isn\'t it?','2024-12-03 16:44:24',0,0),(2,1,3,'го на сидр','2024-12-09 16:46:12',1,0),(3,1,9,'го','2024-12-09 16:47:37',1,0),(4,1,7,'some message I\'ll delete','2024-12-09 16:51:38',1,1),(5,1,2,'еммммм..','2024-12-09 16:53:35',0,1),(6,1,6,'То треба їхати в Терник на сидри','2024-12-09 16:54:26',1,0),(7,1,8,'о, їдемо','2024-12-09 16:55:35',1,0),(8,1,1,'а далі в мене не вистачило уяви на тестові повідомлення','2024-12-09 16:57:03',1,0),(9,1,5,'тому','2024-12-09 16:57:37',1,0),(10,1,5,'вже як є','2024-12-09 16:57:53',1,0),(11,1,9,'Ну тоді біда)','2024-12-09 16:58:22',0,0),(12,2,7,'м, це не було моє питання','2024-12-09 17:14:00',0,0);
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,7 +190,7 @@ CREATE TABLE `replies` (
 
 LOCK TABLES `replies` WRITE;
 /*!40000 ALTER TABLE `replies` DISABLE KEYS */;
-INSERT INTO `replies` VALUES (1,3,3,NULL,NULL,'Ця Ірина...','2024-11-19 17:21:30',5,1),(2,1,1,NULL,NULL,'Windows','2024-11-19 17:24:31',100,0),(3,9,1,2,1,'Windows','2024-11-19 17:25:44',99,0),(4,8,10,NULL,NULL,'Накокетила','2024-12-07 18:13:28',0,0),(6,5,10,4,8,'Оууу єєє','2024-12-07 20:20:38',0,0),(7,9,10,4,5,'Хехе','2024-12-07 20:23:14',0,0),(8,9,10,4,5,'Хехе','2024-12-07 20:28:21',0,0);
+INSERT INTO `replies` VALUES (1,3,3,NULL,NULL,'Ця Ірина...','2024-11-19 17:21:30',5,1),(2,1,1,NULL,NULL,'Windows','2024-11-19 17:24:31',100,0),(3,9,1,2,1,'Windows','2024-11-19 17:25:44',99,0),(4,8,10,NULL,NULL,'Накокетила','2024-12-07 18:13:28',0,0),(6,5,10,4,8,'Оууу єєє','2024-12-07 20:20:38',1,0),(7,9,10,4,5,'Хехе','2024-12-07 20:23:14',0,0),(8,9,10,4,5,'Хехе','2024-12-07 20:28:21',0,0);
 /*!40000 ALTER TABLE `replies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -298,7 +298,7 @@ CREATE TABLE `topics` (
 
 LOCK TABLES `topics` WRITE;
 /*!40000 ALTER TABLE `topics` DISABLE KEYS */;
-INSERT INTO `topics` VALUES (1,6,'Windows vs Linux','цей лінукс, бляха','2024-11-19 16:35:20',0,71),(2,9,'Я був на практичній з АК і можу багато чого розповісти','ну, це була невимовно класна практична, де Олег Григорович розповів нам компетентно про ігри та український геймдев','2024-11-19 16:48:50',0,69),(3,2,'АААААА ДАВАЙТЕ ДОДАМО ІМЕДЖІ ДО ЧАТУ','АААААААААААААААААААААААААААА','2024-11-19 16:53:11',1,-7),(8,10,'Майнкрафт то святе','хто не погодиться, тому перевірю конспект','2024-11-23 16:45:01',1,69),(9,10,'Майнкрафт то святе','Люблю майн і книжку з кдм','2024-11-25 12:31:19',0,22),(10,5,'Coquette','Накокетила','2024-12-05 13:41:37',0,70),(11,5,'Coquette','Накокетила','2024-12-05 13:41:53',0,69),(12,5,'Coquette','Накокетила','2024-12-05 13:43:13',0,69);
+INSERT INTO `topics` VALUES (1,6,'Windows vs Linux','цей лінукс, бляха','2024-11-19 16:35:20',0,71),(2,9,'Я був на практичній з АК і можу багато чого розповісти','ну, це була невимовно класна практична, де Олег Григорович розповів нам компетентно про ігри та український геймдев','2024-11-19 16:48:50',0,69),(3,2,'АААААА ДАВАЙТЕ ДОДАМО ІМЕДЖІ ДО ЧАТУ','АААААААААААААААААААААААААААА','2024-11-19 16:53:11',0,-7),(8,10,'Майнкрафт то святе','хто не погодиться, тому перевірю конспект','2024-11-23 16:45:01',1,69),(9,10,'Майнкрафт то святе','Люблю майн і книжку з кдм','2024-11-25 12:31:19',0,21),(10,5,'Coquette','Накокетила','2024-12-05 13:41:37',0,69);
 /*!40000 ALTER TABLE `topics` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -392,7 +392,7 @@ CREATE TABLE `users` (
   CONSTRAINT `users_ibfk_4` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`),
   CONSTRAINT `users_ibfk_5` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
   CONSTRAINT `users_ibfk_6` FOREIGN KEY (`degree_id`) REFERENCES `degrees` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,8 +401,40 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'oleksalviv@lviv.ua','OleksaLviv','password','http://gossip.byethost7.com/Icons/oleksa.jpg',1,12,44,106,2,1,1,'2024-11-19 12:17:52',0),(2,'GARDAR@GARD.COM','GARDAR_GARD','PASSWORD','http://gossip.byethost7.com/Icons/gardar.jpg',1,12,44,106,2,1,2,'2024-11-19 12:22:31',0),(3,'moneyless@gmail.com','olliinyk','gagagaga','http://gossip.byethost7.com/Icons/ivan.jpg',1,12,44,106,2,1,1,'2024-11-19 12:27:57',1),(5,'socutesosweet@pookie.com','kartoplyana','coquette','http://gossip.byethost7.com/Icons/polina.jpg',2,12,44,106,NULL,6,2,'2024-11-19 12:32:33',0),(6,'o@zelinskyi.gov.ua','o_zelinskyi','potyzhnist','http://gossip.byethost7.com/Icons/sashko.jpg',3,12,NULL,NULL,NULL,NULL,2,'2024-11-19 12:36:03',0),(7,'yurii.stelmakh.pz.2023@lpnu.ua','stelmakh_yurii','password','http://gossip.byethost7.com/Icons/yarA.jpg',1,12,44,106,2,1,2,'2024-11-19 12:38:19',0),(8,'mariia_ltvn@gmail.com','mariia_kolos','password','http://gossip.byethost7.com/Icons/marichka.jpg',1,12,44,106,2,1,1,'2024-11-19 12:42:14',0),(9,'andrii.bachmetieva.pz.2023@lpnu.ua','apitlp','password','http://gossip.byethost7.com/Icons/andriy.jpg',1,12,44,106,1,1,1,'2024-11-19 12:43:58',0),(10,'kurapov@phd.ua','pavlo_kurapov','phdphdphd','phd',2,11,43,211,NULL,5,1,'2024-11-19 12:46:17',1),(11,'cat.frisky@acode.tk','frisky','tktktktk','frisky',1,15,122,106,2,2,1,'2024-11-19 12:51:18',0),(15,'email@email.com','test_testy','12345678',NULL,3,28,125,106,NULL,6,1,'2024-11-25 12:38:49',0),(16,'S@s.com','Sashko','123','http://gossip.byethost7.com/Icons/dushniykoder.jpg',1,NULL,NULL,NULL,NULL,NULL,1,'0001-01-01 00:00:00',0);
+INSERT INTO `users` VALUES (1,'oleksalviv@lviv.ua','OleksaLviv','password','http://gossip.byethost7.com/Icons/oleksa.jpg',1,12,44,106,2,1,1,'2024-11-19 12:17:52',0),(2,'GARDAR@GARD.COM','GARDAR_GARD','PASSWORD','http://gossip.byethost7.com/Icons/gardar.jpg',1,12,44,106,2,1,2,'2024-11-19 12:22:31',0),(3,'moneyless@gmail.com','olliinyk','gagagaga','http://gossip.byethost7.com/Icons/ivan.jpg',1,12,44,106,2,1,1,'2024-11-19 12:27:57',1),(5,'socutesosweet@pookie.com','kartoplyana','coquette','http://gossip.byethost7.com/Icons/polina.jpg',2,12,44,106,NULL,6,2,'2024-11-19 12:32:33',0),(6,'o@zelinskyi.gov.ua','o_zelinskyi','potyzhnist','http://gossip.byethost7.com/Icons/sashko.jpg',3,12,NULL,NULL,NULL,NULL,2,'2024-11-19 12:36:03',0),(7,'yurii.stelmakh.pz.2023@lpnu.ua','stelmakh_yurii','password','http://gossip.byethost7.com/Icons/yarA.jpg',1,12,44,106,2,1,2,'2024-11-19 12:38:19',0),(8,'mariia_ltvn@gmail.com','mariia_kolos','password','http://gossip.byethost7.com/Icons/marichka.jpg',1,12,44,106,2,1,1,'2024-11-19 12:42:14',0),(9,'andrii.potikha.pz.2023@lpnu.ua','apitlp','password','http://gossip.byethost7.com/Icons/andriy.jpg',1,12,44,106,1,1,1,'2024-11-19 12:43:58',0),(10,'kurapov@phd.ua','pavlo_kurapov','phdphdphd','phd',2,11,43,211,NULL,5,1,'2024-11-19 12:46:17',1),(11,'cat.frisky@acode.tk','frisky','tktktktk','frisky',1,15,122,106,2,2,1,'2024-11-19 12:51:18',0),(15,'email@email.com','test_testy','12345678',NULL,3,28,125,106,NULL,6,1,'2024-11-25 12:38:49',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_to_votes`
+--
+
+DROP TABLE IF EXISTS `users_to_votes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users_to_votes` (
+  `user_id` int NOT NULL,
+  `topic_id` int DEFAULT NULL,
+  `reply_id` int DEFAULT NULL,
+  `vote` int NOT NULL,
+  KEY `users_to_votes_replies_id_fk` (`reply_id`),
+  KEY `users_to_votes_topics_id_fk` (`topic_id`),
+  KEY `users_to_votes_users_id_fk` (`user_id`),
+  CONSTRAINT `users_to_votes_replies_id_fk` FOREIGN KEY (`reply_id`) REFERENCES `replies` (`id`),
+  CONSTRAINT `users_to_votes_topics_id_fk` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`),
+  CONSTRAINT `users_to_votes_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `check_vote` CHECK ((`vote` in (-(1),0,1)))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_to_votes`
+--
+
+LOCK TABLES `users_to_votes` WRITE;
+/*!40000 ALTER TABLE `users_to_votes` DISABLE KEYS */;
+INSERT INTO `users_to_votes` VALUES (7,NULL,6,1),(9,10,NULL,-1);
+/*!40000 ALTER TABLE `users_to_votes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -414,8 +446,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-<<<<<<<< HEAD:GOSSIP/Server/_localhost-2024_12_07_15_09_47-dump.sql
--- Dump completed on 2024-12-07 15:09:47
-========
--- Dump completed on 2024-12-07 20:33:13
->>>>>>>> origin/db-integration-branch:GOSSIP/Server/_localhost-2024_12_07_20_33_12-dump.sql
+-- Dump completed on 2024-12-09 17:14:29
