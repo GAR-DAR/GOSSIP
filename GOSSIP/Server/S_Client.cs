@@ -208,7 +208,18 @@ namespace Server
 
                                 break;
                             }
-                        
+
+                            case (byte)SignalsEnum.GetAllUsers:
+                            {
+                                mutex.WaitOne();
+                                    List<UserModel> allUsers = UsersService.SelectAll(Globals.db.Connection);
+                                mutex.ReleaseMutex();
+
+                                SendPacket(SignalsEnum.GetAllUsers, allUsers);
+                                Logging.LogSent(SignalsEnum.GetAllUsers, UID, User);
+                                break;
+                            }
+
                         case (byte)SignalsEnum.CreateTopic:
                             {
                                 mutex.WaitOne();
@@ -248,6 +259,23 @@ namespace Server
 
                                 //TODO: multicast
 
+
+
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.StartChat:
+                            {
+                                mutex.WaitOne();
+
+                                    var chat = _packetReader.ReadPacket<ChatModel>().Data;
+
+                                    ChatsService.Create(chat, Globals.db.Connection);
+
+                                mutex.ReleaseMutex();
+
+
+                                Logging.Log("Chat created", UID, User);
 
 
                                 break;

@@ -22,7 +22,7 @@ namespace GOSSIP.Net
     {
         TcpClient _client;
 
-        public PacketReader packetReader;
+        public PacketReader packetReader; 
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
@@ -50,6 +50,8 @@ namespace GOSSIP.Net
         public event Action<List<string>> getUniversitiesEvent;
         public event Action<List<string>> getDegreesEvent;
 
+        public event Action<List<UserModel>> getUsersEvent;
+
 
 
         //public event Action<TopicModel> sendMessageEvent;
@@ -64,7 +66,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("127.0.0.1", 7891);
+            _client.Connect("172.22.251.137", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -190,7 +192,12 @@ namespace GOSSIP.Net
 
         #region Chat
 
-            public void StartChat(ChatModel chat)
+            public void GetAllUsers()
+            {
+                 SendPacket(SignalsEnum.GetAllUsers);
+            }
+
+        public void StartChat(ChatModel chat)
             {
                 SendPacket(SignalsEnum.StartChat, chat);
             }
@@ -317,7 +324,12 @@ namespace GOSSIP.Net
                                 getDegreesEvent?.Invoke(degrees);
                                 break;
                             }
-
+                        case (byte)SignalsEnum.GetAllUsers:
+                            {
+                                var users = packetReader.ReadPacket<List<UserModel>>().Data;
+                                getUsersEvent?.Invoke(users);
+                                break;
+                            }
 
                     }
                     packetReader.Signal = 255;

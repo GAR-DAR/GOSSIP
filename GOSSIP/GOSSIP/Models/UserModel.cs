@@ -27,7 +27,7 @@ namespace GOSSIP.Models
         public bool IsBanned { get; set; }
         public string Photo { get; set; }
         //[System.Text.Json.Serialization.JsonIgnore]
-        public List<ChatModel> Chats { get; set; }
+        public List<ChatModel> Chats { get; set; } = [];
 
         public UserModel() { }
 

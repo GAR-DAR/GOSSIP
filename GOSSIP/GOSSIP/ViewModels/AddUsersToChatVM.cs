@@ -5,6 +5,7 @@ using GOSSIP;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows;
+using GOSSIP.Net;
 
 public class AddUsersToChatVM : ObservableObject
 {
@@ -20,13 +21,24 @@ public class AddUsersToChatVM : ObservableObject
     public AddUsersToChatVM()
     {
         JsonStorage jsonStorage = new("user_data.json");
-        AllUsers = new ObservableCollection<UserVM>(
-            jsonStorage.LoadUsers()
-                       .Select(x => new UserVM(x))
-                       .Where(x => x.UserModel.ID != MainVM.AuthorizedUserVM.UserModel.ID));
+
+        Globals.server.getUsersEvent += getUsers;
+
+        Globals.server.GetAllUsers();
 
         CreateChatCommand = new RelayCommand(CreateChatMethod);
         CloseCommand = new RelayCommand(obj => RequestClose?.Invoke(false));
+    }
+
+    private void getUsers(List<UserModel> users)
+    {
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            AllUsers = new ObservableCollection<UserVM>(
+                users.Where(x => x.ID != MainVM.AuthorizedUserVM.UserModel.ID)
+                     .Select(x => new UserVM(x)));
+            OnPropertyChanged(nameof(AllUsers));
+        });
     }
 
     private void CreateChatMethod(object obj)
@@ -54,6 +66,9 @@ public class AddUsersToChatVM : ObservableObject
             false,
             []
             );
+
+        Globals.server.SendPacket(SignalsEnum.StartChat, newChat);
+        Globals.server.SendPacket(SignalsEnum.RefreshUser, MainVM.AuthorizedUserVM.UserModel);
 
         MainVM.AuthorizedUserVM.UserModel.Chats.Add(newChat);
         RequestClose?.Invoke(true);

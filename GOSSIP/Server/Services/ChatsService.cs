@@ -70,7 +70,7 @@ public static class ChatsService
         return rowsAffected != 0;
     }
 
-    public static List<ChatModel>? SelectByUser(UserModel user, MySqlConnection conn)
+    public static List<ChatModel> SelectByUser(UserModel user, MySqlConnection conn)
     {
         List<ChatModel> chats = [];
 
@@ -101,7 +101,7 @@ public static class ChatsService
         }
 
         if (chats.Count == 0)
-            return null;
+            return [];
 
         reader.Close();
 

@@ -24,7 +24,7 @@
 
             <TextBox Style="{StaticResource InputField}" Grid.Row="1"/>
 
-            <ListView ItemsSource="{Binding AllUsers}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged">
+            <ListView ItemsSource="{Binding AllUsers, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

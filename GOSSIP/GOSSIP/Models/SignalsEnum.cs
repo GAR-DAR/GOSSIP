@@ -16,6 +16,7 @@ namespace GOSSIP.Models
         EditUser,
         RefreshUser,
         ChangeUserPhoto,
+        GetAllUsers, 
         #endregion
 
         #region SignUp

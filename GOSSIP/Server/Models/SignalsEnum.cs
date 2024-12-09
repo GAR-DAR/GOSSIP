@@ -16,6 +16,7 @@ namespace Server.Models
         EditUser,
         RefreshUser,
         ChangeUserPhoto,
+        GetAllUsers,
         #endregion
 
         #region SignUp
