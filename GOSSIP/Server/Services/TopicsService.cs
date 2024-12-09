@@ -546,7 +546,7 @@ public static class TopicsService
     //     return topics;
     // }
 
-    public static bool Upvote(TopicModel topic, MySqlConnection conn)
+    public static bool Upvote(TopicModel topic, UserModel user, MySqlConnection conn)
     {
         string upvoteQuery =
             """
@@ -559,22 +559,67 @@ public static class TopicsService
         updateCommand.Parameters.AddWithValue("@topic_id", topic.ID);
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
-        return rowsAffected != 0;
+        if (rowsAffected == 0)
+            return false;
+        
+        return AttachVote(topic, user, 1, conn);
     }
 
-    public static bool DownvoteTopic(TopicModel topic, MySqlConnection conn)
+    public static bool Downvote(TopicModel topic, UserModel user, MySqlConnection conn)
     {
-        string upvoteQuery =
+        string downvoteQuery =
             """
             UPDATE topics
             SET votes = votes - 1
             WHERE id = @topic_id
             """;
 
-        using var updateCommand = new MySqlCommand(upvoteQuery, conn);
+        using var updateCommand = new MySqlCommand(downvoteQuery, conn);
         updateCommand.Parameters.AddWithValue("@topic_id", topic.ID);
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
+        if (rowsAffected == 0)
+            return false;
+
+        return AttachVote(topic, user, -1, conn);
+    }
+
+    private static bool AttachVote(TopicModel topic, UserModel user, int vote, MySqlConnection conn)
+    {
+        string attachVoteQuery = VoteExists(topic, user, conn)
+            ? """
+              UPDATE users_to_votes
+              SET vote = @vote
+              WHERE user_id = @user_id AND topic_id = @topic_id
+              """
+            : """
+              INSERT INTO users_to_votes (user_id, topic_id, reply_id, vote)
+              VALUES (@user_id, @topic_id, null, @vote)
+              """;
+
+        using var command = new MySqlCommand(attachVoteQuery, conn);
+        command.Parameters.AddWithValue("@user_id", user.ID);
+        command.Parameters.AddWithValue("@topic_id", topic.ID);
+        command.Parameters.AddWithValue("@vote", vote);
+
+        int rowsAffected = command.ExecuteNonQuery();
         return rowsAffected != 0;
+    }
+
+    private static bool VoteExists(TopicModel topic, UserModel user, MySqlConnection conn)
+    {
+        string voteExistsQuery =
+            """
+            SELECT EXISTS 
+                (SELECT 1 
+                 FROM users_to_votes 
+                 WHERE user_id = @user_id AND topic_id = @topic_id)
+            """;
+
+        using var selectCommand = new MySqlCommand(voteExistsQuery, conn);
+        selectCommand.Parameters.AddWithValue("@user_id", user.ID);
+        selectCommand.Parameters.AddWithValue("@topic_id", topic.ID);
+
+        return Convert.ToBoolean(selectCommand.ExecuteScalar());
     }
 }
