@@ -15,7 +15,8 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Background="{DynamicResource PrussianBlue}">
-                <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Top"/>
+                
+
 
                 <ListBox ItemsSource="{Binding ChatList}"
                          SelectedItem="{Binding OpenedChatVM}"
@@ -35,9 +36,25 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                
+
             </StackPanel>
 
-
+            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{DynamicResource Danube}" >
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <!-- Іконка -->
+                                <Image Source="pack://application:,,,/Resources/Images/AddChat.png" Width="25" Margin="5"/>
+                                <!-- Текст -->
+                                <TextBlock Text="New Chat" FontSize="25" VerticalAlignment="Center" Margin="5" Foreground="White"  />
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
 
             <ContentControl Grid.Column="1" Content="{Binding OpenedChatVM}" Background="#80032247">
