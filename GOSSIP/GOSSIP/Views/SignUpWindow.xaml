@@ -38,7 +38,6 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="SIGN UP" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,20,0,0"/>
-                <!--<Button Grid.Row="0" Grid.Column="1" Content="X" Height="40" Width="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Click="Close_Click"/>-->
                 <Button Style="{StaticResource CloseButton}" Grid.Column="1" Grid.Row="0" Margin="0,20,15,0" Click="Close_Click">
                     <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
                 </Button>
