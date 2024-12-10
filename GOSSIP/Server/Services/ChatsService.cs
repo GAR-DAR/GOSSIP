@@ -1,11 +1,11 @@
 using System.Data;
 using MySql.Data.MySqlClient;
 
-namespace Server;
+namespace Server.Services;
 
 public static class ChatsService
 {
-    public static bool Create(string name, List<uint> userIds, MySqlConnection conn)
+    public static bool Create(ChatModelID chat, MySqlConnection conn)
     {
         string createQuery =
             """
@@ -14,13 +14,13 @@ public static class ChatsService
             """;
 
         using var insertCommand = new MySqlCommand(createQuery, conn);
-        insertCommand.Parameters.AddWithValue("@name", name);
+        insertCommand.Parameters.AddWithValue("@name", chat.Name);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         if (rowsAffected == 0)
             return false; // TODO: an exception, maybe?..
 
-        foreach (var userId in userIds)
+        foreach (var userId in chat.UserIDs)
         {
             string addUserQuery =
                 """
@@ -69,8 +69,9 @@ public static class ChatsService
         return rowsAffected != 0;
     }
 
-    public static List<uint> SelectChatIdsByUser(uint userId, MySqlConnection conn)
+    public static List<ChatModelID> SelectChatsByUser(uint userId, MySqlConnection conn)
     {
+        List<ChatModelID> chats = [];
         List<uint> chatIds = [];
 
         string selectByUserQuery =
@@ -92,7 +93,14 @@ public static class ChatsService
             chatIds.Add(reader.GetUInt32("id"));
         }
 
-        return chatIds;
+        reader.Close();
+
+        foreach (var chatId in chatIds)
+        {
+            chats.Add(ChatsService.SelectById(chatId, conn));
+        }
+
+        return chats;
     }
 
     public static bool Delete(uint id, MySqlConnection conn)
@@ -111,8 +119,9 @@ public static class ChatsService
         return affectedRows != 0;
     }
 
-    public static List<uint> SelectUserIdsByChat(uint id, MySqlConnection conn)
+    public static List<UserModelID> SelectUsersByChat(uint id, MySqlConnection conn)
     {
+        List<UserModelID> users = [];
         List<uint> userIds = [];
 
         string selectUsersByIdQuery =
@@ -132,7 +141,14 @@ public static class ChatsService
             userIds.Add(usersReader.GetUInt32("id"));
         }
 
-        return userIds;
+        usersReader.Close();
+
+        foreach (var userId in userIds)
+        {
+            users.Add(UsersService.SelectById(userId, conn));
+        }
+
+        return users;
     }
 
     public static ChatModelID SelectById(uint id, MySqlConnection conn)
@@ -165,6 +181,30 @@ public static class ChatsService
         return chat;
     }
 
+    public static List<uint> SelectUserIdsByChat(uint id, MySqlConnection conn)
+    {
+        List<uint> userIds = [];
+
+        string selectUsersByIdQuery =
+            """
+            SELECT users.id
+            FROM users
+            LEFT JOIN chats_to_users ON users.id = chats_to_users.user_id
+            WHERE chats_to_users.chat_id = @chat_id 
+            """;
+
+        using var selectUsersCommand = new MySqlCommand(selectUsersByIdQuery, conn);
+        selectUsersCommand.Parameters.AddWithValue("@chat_id", id);
+
+        using var usersReader = selectUsersCommand.ExecuteReader();
+        while (usersReader.Read())
+        {
+            userIds.Add(usersReader.GetUInt32("id"));
+        }
+
+        return userIds;
+    }
+
     public static List<uint> SelectMessageIdsByChat(uint id, MySqlConnection conn)
     {
         List<uint> messageIds = [];
@@ -186,5 +226,62 @@ public static class ChatsService
         }
 
         return messageIds;
+    }
+
+    public static List<MessageModelID> SelectMessagesByChat(uint id, MySqlConnection conn)
+    {
+        List<MessageModelID> messages = [];
+        List<uint> messageIds = [];
+        string selectMessageIdsQuery =
+            """
+            SELECT id
+            FROM messages
+            WHERE chat_id = @chat_id
+            AND is_deleted = FALSE
+            """;
+
+        using var selectCommand = new MySqlCommand(selectMessageIdsQuery, conn);
+        selectCommand.Parameters.AddWithValue("@chat_id", id);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            messageIds.Add(reader.GetUInt32("id"));
+        }
+
+        reader.Close();
+
+        foreach (var messageId in messageIds)
+        {
+            messages.Add(MessagesService.SelectById(messageId, conn));
+        }
+
+        return messages;
+    }
+
+    public static List<uint> SelectChatIdsByUser(uint userId, MySqlConnection conn)
+    {
+        List<uint> chatIds = [];
+
+        string selectByUserQuery =
+            """
+            SELECT chats.id
+            FROM chats
+            LEFT JOIN chats_to_users ON chats.id = chats_to_users.chat_id
+            LEFT JOIN users ON chats_to_users.user_id = users.id
+            WHERE chats.is_deleted = FALSE
+            AND users.id = @user_id
+            """;
+
+        using var selectCommand = new MySqlCommand(selectByUserQuery, conn);
+        selectCommand.Parameters.AddWithValue("@user_id", userId);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            chatIds.Add(reader.GetUInt32("id"));
+        }
+
+        return chatIds;
     }
 }

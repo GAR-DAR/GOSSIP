@@ -10,9 +10,9 @@ namespace Server
     {
         public List<uint> Replies { get; set; } = [];
 
-        public ParentReplyModelID(uint iD, uint userID,
+        public ParentReplyModelID(uint iD, uint userID, uint topicID,
             string content, DateTime createdAt, int rating, bool isDeleted, List<uint> replies) 
-            : base(iD, userID, content, createdAt, rating, isDeleted)
+            : base(iD, userID, topicID, content, createdAt, rating, isDeleted)
         {
             Replies = replies;
         }

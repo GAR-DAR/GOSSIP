@@ -1,5 +1,5 @@
 
-﻿using GOSSIP.JsonHandlers;
+
 using GOSSIP.Net;
 using GOSSIP.Net.IO;
 using GOSSIP.Views;
@@ -18,7 +18,7 @@ namespace GOSSIP.ViewModels
     public class TopicsListVM : ObservableObject
     {
         //Колекція постів. Треба підключити до БД
-        public ObservableCollection<TopicVM> _topics;
+        public ObservableCollection<TopicVM> _topics = [];
         public ObservableCollection<TopicVM> Topics
         {
             get => _topics;
@@ -30,8 +30,7 @@ namespace GOSSIP.ViewModels
         }
 
         private MainVM _mainVM;
-        private JsonStorage _storage = new("topic_data.json");
-
+       
         private TopicVM _selectedTopic;
         public TopicVM SelectedTopic
         {
@@ -83,16 +82,7 @@ namespace GOSSIP.ViewModels
 
         private void LoadMoreMethod(object obj)
         {
-            var loadedTopics = _storage.LoadTopics().Select(x => new TopicVM(x)).ToList();
-
-            foreach (var topic in loadedTopics)
-            {
-                if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))
-                {
-                    topic.ProfileSelectedEvent += ProfileClickHandler;
-                    Topics.Add(topic);
-                }
-            }
+           
         }
 
         private void ProfileClickHandler(UserVM user)
@@ -112,8 +102,6 @@ namespace GOSSIP.ViewModels
 
         public void UpdateInfo()
         {
-            JsonStorage jsonStorage = new("topic_data.json");
-            Topics = new(_storage.LoadTopics().Select(x => new TopicVM(x)));
             foreach (var topic in Topics)
             {
                 if (!Topics.Any(t => t.Topic.ID == topic.Topic.ID))

@@ -63,10 +63,6 @@ namespace GOSSIP.ViewModels
 
             UpdateUserInfo();
 
-
-            TopicService topicService = new("topic_data.json");
-            Topics = new(topicService.GetTopicsByID(User.UserModel.ID).Select(x => new TopicVM(x)));
-
             DoubleClickCommand = new RelayCommand(obj => OnItemDoubleClickedMethod(SelectedTopic));
             BanUserCommand = new RelayCommand(BanUserMethod);
         }

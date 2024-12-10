@@ -186,7 +186,7 @@ namespace Server
                                 var userModel = _packetReader.ReadPacket<UserModelID>().Data;
                                 mutex.ReleaseMutex();
 
-                                User = UsersService.Select(userModel.ID, Globals.db.Connection);
+                                User = UsersService.SelectById(userModel.ID, Globals.db.Connection);
 
                                 if (User != null) {
                                     Logging.Log("refreshing", UID, User);
@@ -230,8 +230,7 @@ namespace Server
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();
-                                TopicsService.Insert(newTopic.ID, newTopic.Title, 
-                                    newTopic.Content, newTopic.Tags, Globals.db.Connection);
+                                TopicsService.Insert(newTopic, Globals.db.Connection);
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();
@@ -290,7 +289,7 @@ namespace Server
 
                                 //TODO: multicast
 
-                                var chatUsers = ChatsService.SelectUsersById(message.Chat.ID, Globals.db.Connection);
+                                var chatUsers = ChatsService.SelectUsersByChat(message.ChatID, Globals.db.Connection);
 
                                 foreach (var chatUser in chatUsers)
                                 {
@@ -306,10 +305,10 @@ namespace Server
                         case (byte)SignalsEnum.GetAllUsersMessage:
                             {
                                 mutex.WaitOne();
-                                var id = _packetReader.ReadPacket<MessageModel>().Data;
+                                var id = _packetReader.ReadPacket<uint>().Data;
                                 mutex.ReleaseMutex();
 
-                                var message = MessagesService.GetAllUserMessage(id, Globals.db.Connection); //wait for Andriy's realization
+                                var message = MessagesService.SelectMessageModelsByUserId(id, Globals.db.Connection); //wait for Andriy's realization
 
                                 SendPacket(SignalsEnum.GetAllUsersMessage, message);
 
@@ -321,7 +320,7 @@ namespace Server
                             {
                                 mutex.WaitOne();
 
-                                    var chat = _packetReader.ReadPacket<ChatModel>().Data;
+                                    var chat = _packetReader.ReadPacket<ChatModelID>().Data;
 
                                     ChatsService.Create(chat, Globals.db.Connection);
 

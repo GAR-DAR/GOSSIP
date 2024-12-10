@@ -1,4 +1,4 @@
-﻿using GOSSIP.JsonHandlers;
+﻿
 using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
@@ -38,8 +38,7 @@ namespace GOSSIP.ViewModels
         }
 
         private MainVM _mainVM;
-        private JsonStorage _jsonStorage = new("topic_data.json");
-
+       
         public ICommand BackCommand { get; set; }
         public ICommand UpVoteTopicCommand { get; set; }
         public ICommand DownVoteTopicCommand { get; set; }
@@ -171,8 +170,7 @@ namespace GOSSIP.ViewModels
                 Rating--;
                 CanUpVote = true;
             }
-            
-            _jsonStorage.SaveTopic(TopicVM.Topic);
+           
         }
 
         private void DownVoteMethod(object obj)
@@ -199,7 +197,7 @@ namespace GOSSIP.ViewModels
                 CanDownVote = true;
             }
 
-            _jsonStorage.SaveTopic(TopicVM.Topic);
+           
         }
 
         private void AddReplyMethod(object obj)
@@ -228,7 +226,7 @@ namespace GOSSIP.ViewModels
                 EnteredReplyText = "";
             }
 
-            _jsonStorage.SaveTopic(TopicVM.Topic);
+            
         }
 
         private void UpVoteReplyMethod(object obj)
@@ -257,7 +255,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(TopicVM.Topic);
+            
         }
 
         private void UpVoteReplyOnReplyMethod(object obj)
@@ -286,7 +284,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(TopicVM.Topic);
+          
         }
 
         private void DownVoteReplyOnReplyMethod(object obj)
@@ -315,7 +313,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(TopicVM.Topic);
+           
         }
 
         private void DownVoteReplyMethod(object obj)
@@ -344,7 +342,6 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            _jsonStorage.SaveTopic(TopicVM.Topic);
         }
 
 

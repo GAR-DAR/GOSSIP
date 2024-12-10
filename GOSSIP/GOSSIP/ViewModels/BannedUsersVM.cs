@@ -1,4 +1,4 @@
-﻿using GOSSIP.JsonHandlers;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,8 +19,6 @@ namespace GOSSIP.ViewModels
 
         public BannedUsersVM()
         {
-            JsonStorage storage = new("user_data.json");
-            BannedUsers = new(storage.LoadUsers().Where(user => user.IsBanned).Select(user => new UserVM(user)));
             UnbanUserCommand = new RelayCommand(UnbanUserMethod);
         }
 

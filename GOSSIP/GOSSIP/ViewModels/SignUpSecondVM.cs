@@ -22,8 +22,7 @@ namespace GOSSIP.ViewModels
         public ICommand BackCommand { get; set; }
         public ICommand CompleteSignUpCommand { get; set; }
 
-        private readonly ChatService _chatService = new("user_data.json");
-
+       
         private int _specializationIndex = -1;
         public int SpecializationIndex
         {

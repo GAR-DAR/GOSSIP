@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-namespace Server;
+namespace Server.Services;
 
 public class DatabaseService : IDisposable
 {
@@ -9,7 +9,7 @@ public class DatabaseService : IDisposable
     private const string Server = "localhost";
     private const string Database = "gossip";
     private const string User = "root";
-    private const string Password = "root";
+    private const string Password = "mamamia123)";
 
     public DatabaseService()
     {

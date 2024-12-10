@@ -18,8 +18,8 @@ namespace GOSSIP.Net
         public static Server server = new Server();
 
         public static UserModel User_Cache { get; set; }
-        public static List<UserModel> AllUsers_Cache { get; set; }
-        public static List<TopicModel> Topics_Cache { get; set; }
+        public static List<UserModel> AllUsers_Cache { get; set; } = [];
+        public static List<TopicModel> Topics_Cache { get; set; } = [];
 
         public static void RefreshUser()
         {
@@ -283,13 +283,14 @@ namespace GOSSIP.Net
                             }
                         case (byte)SignalsEnum.GetTopics:
                             {
-                                var topicModelID = packetReader.ReadPacket<List<TopicModelID>>().Data;
 
                                 Globals.Topics_Cache.Clear();
 
-                                foreach (var topic in topicModelID)
+                                var topicModelID = packetReader.ReadPacket<List<TopicModelID>>().Data;
+
+                                foreach(var topic in topicModelID)
                                 {
-                                    TopicModel temp = new(topic);
+                                    TopicModel temp = new TopicModel(topic);
 
                                     temp.Author = Globals.AllUsers_Cache.Where(user => topic.AuthorID == user.ID).FirstOrDefault();
 

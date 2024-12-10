@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:GOSSIP.ViewModels"
-             xmlns:models="clr-namespace:GOSSIP.Models"
+             xmlns:models="clr-namespace:GOSSIP"
              xmlns:local="clr-namespace:GOSSIP.Views" 
              xmlns:convs="clr-namespace:GOSSIP.Converters"
              mc:Ignorable="d" 
