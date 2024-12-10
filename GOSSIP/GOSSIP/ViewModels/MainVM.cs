@@ -174,6 +174,7 @@ namespace GOSSIP.ViewModels
 
                 OnPropertyChanged(nameof(AuthorizedUserVM));
                 OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                
             }
         }
 
