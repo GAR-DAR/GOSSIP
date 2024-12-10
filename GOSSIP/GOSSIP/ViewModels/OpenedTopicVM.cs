@@ -1,5 +1,6 @@
 ﻿using GOSSIP.JsonHandlers;
 using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -216,10 +217,14 @@ namespace GOSSIP.ViewModels
                 newReply.ProfileClickEvent += _mainVM.OpenProfile;
                 newReply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
 
+                
+                
+                Globals.server.SendPacket(SignalsEnum.CreateReply, newReply);
+
                 Replies.Add(newReply);
                 RepliesCount++;
 				
-                TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
+                TopicVM.Topic.Replies.Add(newReply.ReplyModelPR);
 
                 EnteredReplyText = "";
             }

@@ -37,6 +37,8 @@ namespace GOSSIP.ViewModels
 
         static public UserVM AuthorizedUserVM { get; set; }
 
+        static public ChatsVM chatVM { get; set; }
+
         public List<ObservableObject> StackOfVMs { get; set; } = [];
         
         public bool IsTopicsPressed
@@ -48,6 +50,9 @@ namespace GOSSIP.ViewModels
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                     OnPropertyChanged(nameof(AuthorizedUserVM));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                    
+                    _chatsVM.UpdateChats();
                 }
 
                 _isTopicsPressed = value;
@@ -65,6 +70,9 @@ namespace GOSSIP.ViewModels
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                     OnPropertyChanged(nameof(AuthorizedUserVM));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+
+                    _chatsVM.UpdateChats();
                 }
 
                 _isTagsPressed = value;
@@ -81,9 +89,12 @@ namespace GOSSIP.ViewModels
                 if (AuthorizedUserVM != null)
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
                     OnPropertyChanged(nameof(AuthorizedUserVM));
+
+                    _chatsVM.UpdateChats();
                 }
-                
+
                 _isChatsPressed = value;
                 OnPropertyChanged(nameof(IsChatsPressed));
                 OnPropertyChanged(nameof(ChatIcon));

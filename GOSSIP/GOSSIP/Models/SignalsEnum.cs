@@ -44,6 +44,7 @@ namespace GOSSIP.Models
         UpvoteReply,
         DownvoteReply,
         ReplyToReply,
+        ReplyToReplyReply,
         #endregion
 
         #region Chat

@@ -1,5 +1,6 @@
 ﻿using GOSSIP.JsonHandlers;
 using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace GOSSIP.ViewModels
 {
     public class ParentReplyVM : ObservableObject
     {
-        private readonly ParentReplyModel _replyModel;
+        public ParentReplyModel ReplyModelPR { get; }
 
         private bool _canUpVote = true;
         public bool CanUpVote
@@ -35,12 +36,12 @@ namespace GOSSIP.ViewModels
 
         public uint ID
         {
-            get => _replyModel.ID;
+            get => ReplyModelPR.ID;
             set
             {
-                if (_replyModel.ID != value)
+                if (ReplyModelPR.ID != value)
                 {
-                    _replyModel.ID = value;
+                    ReplyModelPR.ID = value;
                     OnPropertyChanged(nameof(ID));
                 }
             }
@@ -48,12 +49,12 @@ namespace GOSSIP.ViewModels
 
         public UserModel User
         {
-            get => _replyModel.User;
+            get => ReplyModelPR.User;
             set
             {
-                if (_replyModel.User != value)
+                if (ReplyModelPR.User != value)
                 {
-                    _replyModel.User = value;
+                    ReplyModelPR.User = value;
                     OnPropertyChanged(nameof(User));
                 }
             }
@@ -61,12 +62,12 @@ namespace GOSSIP.ViewModels
 
         public string Content
         {
-            get => _replyModel.Content;
+            get => ReplyModelPR.Content;
             set
             {
-                if (_replyModel.Content != value)
+                if (ReplyModelPR.Content != value)
                 {
-                    _replyModel.Content = value;
+                    ReplyModelPR.Content = value;
                     OnPropertyChanged(nameof(Content));
                 }
             }
@@ -74,22 +75,22 @@ namespace GOSSIP.ViewModels
 
         public DateTime CreatedAt
         {
-            get => _replyModel.CreatedAt;
+            get => ReplyModelPR.CreatedAt;
             set
             {
-                _replyModel.CreatedAt = value;
+                ReplyModelPR.CreatedAt = value;
                 OnPropertyChanged(nameof(CreatedAt));
             }
         }
 
         public int Rating
         {
-            get => _replyModel.Rating;
+            get => ReplyModelPR.Rating;
             set
             {
-                if (_replyModel.Rating != value)
+                if (ReplyModelPR.Rating != value)
                 {
-                    _replyModel.Rating = value;
+                    ReplyModelPR.Rating = value;
                     OnPropertyChanged(nameof(Rating));
                 }
             }
@@ -160,8 +161,8 @@ namespace GOSSIP.ViewModels
 
         public ParentReplyVM(ParentReplyModel replyModel)
         {
-            _replyModel = replyModel;
-            Replies = new(replyModel.Replies.Select(x => new ChildReplyVM(x, _replyModel, this)));
+            ReplyModelPR = replyModel;
+            Replies = new(replyModel.Replies.Select(x => new ChildReplyVM(x, ReplyModelPR, this)));
             CountOfReplies = Replies.Count;
 
             ShowRepliesToReplyCommand = new RelayCommand(obj => IsShowRepliesPressed = !IsShowRepliesPressed);
@@ -208,22 +209,27 @@ namespace GOSSIP.ViewModels
                 ID = 0,
                 Rating = 0,
                 User = MainVM.AuthorizedUserVM.UserModel,
-                ReplyTo = _replyModel.User
+                ReplyTo = ReplyModelPR.User,
+                Topic = ReplyModelPR.Topic
             };
 
-            ChildReplyVM childReplyVM = new(childReply, _replyModel, this);
+            ChildReplyVM childReplyVM = new(childReply, ReplyModelPR, this);
             childReplyVM.ProfileClickEvent += ProfileClickHandler;
             childReplyVM.UserIsNotAuthorized += UserIsNotAuthorizedHandler;
 
+            Globals.server.SendPacket(SignalsEnum.ReplyToReply, childReply);
+
             Replies.Add(childReplyVM);
-            _replyModel.Replies.Add(childReply);
+            ReplyModelPR.Replies.Add(childReply);
             CountOfReplies++;
             IsReplyButtonPressed = true;
 
             IsRepliesListNotEmpty = Replies.Count > 0;
 
-            JsonStorage jsonStorage = new("topic_data.json");
-            jsonStorage.SaveTopic(_replyModel.Topic);
+            
+
+            //JsonStorage jsonStorage = new("topic_data.json");
+            //jsonStorage.SaveTopic(_replyModel.Topic);
 
             ReplyToReplyContent = string.Empty;
         }

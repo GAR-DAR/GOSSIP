@@ -21,8 +21,6 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Background="{DynamicResource PrussianBlue}">
-                <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Top" Command="{Binding AddNewChatCommand}"/>
-
                 <ListBox ItemsSource="{Binding ChatList, UpdateSourceTrigger=PropertyChanged}"
                          SelectedItem="{Binding OpenedChatVM}"
                          Background="Transparent"

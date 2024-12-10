@@ -37,6 +37,7 @@ namespace GOSSIP.ViewModels
             MainVM = mainVM;
             _chat = chat;
 
+
             ChatName = chat.Name; //Поки хардкод
             Messages = new(chat.Messages);
 

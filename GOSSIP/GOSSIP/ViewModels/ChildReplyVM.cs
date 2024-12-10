@@ -1,4 +1,5 @@
 ﻿using GOSSIP.Models;
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,12 +152,17 @@ namespace GOSSIP.ViewModels
             ChildReplyModel childReplyModel = new(
                 ID = 0,
                 MainVM.AuthorizedUserVM.UserModel,
-                null,
+                _parentReplyModel.Topic,
                 ReplyQuery,
                 DateTime.Now,
                 0,
                 false,
-                _replyModel.User);
+                _replyModel.User
+                );
+
+            
+
+            Globals.server.SendPacket(SignalsEnum.ReplyToReplyReply, childReplyModel);
 
             _parentReplyModel.Replies.Add(childReplyModel);
             _replyVM.Replies.Add(new(childReplyModel, _parentReplyModel, _replyVM));

@@ -19,6 +19,23 @@ namespace GOSSIP.ViewModels
                 OnPropertyChanged(nameof(UserModel));
                 OnPropertyChanged(nameof(Username));
                 OnPropertyChanged(nameof(Photo));
+                OnPropertyChanged(nameof(UserModel.Chats));
+                SubscribeToChatChanges();
+
+            }
+        }
+
+        private void SubscribeToChatChanges()
+        {
+            foreach (var chat in UserModel.Chats)
+            {
+                // Manually trigger OnPropertyChanged when you know a property has changed
+                OnPropertyChanged(nameof(UserModel.Chats));
+                foreach (var message in chat.Messages)
+                {
+                    // Manually trigger OnPropertyChanged for messages
+                    OnPropertyChanged(nameof(chat.Messages));
+                }
             }
         }
 
@@ -152,6 +169,7 @@ namespace GOSSIP.ViewModels
         public UserVM(UserModel userModel)
         {
             UserModel = userModel;    
+
         }
     }
 }

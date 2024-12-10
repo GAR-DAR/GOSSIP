@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GOSSIP.Net;
+using System.Timers;
 
 namespace GOSSIP.ViewModels
 {
@@ -63,6 +64,7 @@ namespace GOSSIP.ViewModels
         }
 
 
+
         public ChatsVM(MainVM mainVM)
         {
             _mainVM = mainVM;
@@ -71,9 +73,15 @@ namespace GOSSIP.ViewModels
 
             CurrentUserID = MainVM.AuthorizedUserVM.UserModel.ID;
             AddNewChatCommand = new RelayCommand(AddNewChatMethod);
+
         }
 
-        private void UpdateChats()
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            UpdateChats();
+        }
+
+        public void UpdateChats()
         {
             if(MainVM.AuthorizedUserVM.UserModel.Chats != null)
             {

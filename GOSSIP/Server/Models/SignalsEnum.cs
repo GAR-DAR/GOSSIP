@@ -44,6 +44,7 @@ namespace Server.Models
         UpvoteReply,
         DownvoteReply,
         ReplyToReply,
+        ReplyToReplyReply,
         #endregion
 
         #region Chat
