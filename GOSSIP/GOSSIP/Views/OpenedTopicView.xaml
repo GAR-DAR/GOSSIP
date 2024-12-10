@@ -19,7 +19,7 @@
             <ColumnDefinition Width="93*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,12,0,0" Focusable="False" Background="Transparent">
+        <Button Command="{Binding BackCommand}" Width="40" Height="40" Cursor="Hand" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,12,0,0" Focusable="False" Background="Transparent">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Grid Background="{TemplateBinding Background}">
@@ -56,11 +56,23 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Source="{Binding Author.Photo}" Grid.RowSpan="2" Grid.Column="0" Height="40">
-                        <Image.Clip>
-                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                        </Image.Clip>
-                    </Image>
+                    <Button Command="{Binding TopicAuthorProfileClickCommand}" Cursor="Hand" Width="40" Height="40" Grid.RowSpan="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Image Source="{Binding Author.Photo}" Width="40" Height="40">
+                                                <Image.Clip>
+                                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                </Image.Clip>
+                                            </Image>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
 
                     <TextBlock Text="{Binding Author.Username}" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Foreground="White" Margin="5 0"/>
                     <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White" Grid.Row="1" Grid.Column="1" Margin="5 0"/>
@@ -83,31 +95,39 @@
 
                 <WrapPanel Grid.Row="3">
                     <WrapPanel>
-                        <Button Command="{Binding UpVoteTopicCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                        <Button Command="{Binding UpVoteTopicCommand}" Width="40" Height="40" Cursor="Hand" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Focusable="False" Background="Transparent">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Grid Background="{TemplateBinding Background}">
                                         <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="30"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
+                                        <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
                                         </Trigger>
+
+                                        <DataTrigger Binding="{Binding CanUpVote}" Value="False">
+                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
+                                        </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                         <TextBlock Text="{Binding Rating}" Foreground="White" MinWidth="5"  VerticalAlignment="Center" FontSize="20" TextAlignment="Center" Margin="1,0,0,0"/>
-                        <Button Command="{Binding DownVoteTopicCommand}" Width="40" Height="40" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                        <Button Command="{Binding DownVoteTopicCommand}" Width="40" Height="40" Cursor="Hand" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Focusable="False" Background="Transparent">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Grid Background="{TemplateBinding Background}">
                                         <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Downvote.png" Width="30"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
+                                        <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
                                         </Trigger>
+
+                                        <DataTrigger Binding="{Binding CanDownVote}" Value="False">
+                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
+                                        </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Button.Template>
@@ -135,7 +155,7 @@
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
 
                     </ScrollViewer>
-                    <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding AddReplyCommand}"/>
+                    <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Cursor="Hand" Command="{Binding AddReplyCommand}"/>
                 </WrapPanel>
 
                 <ItemsControl Grid.Row="5" ItemsSource="{Binding Replies}" Width="1000" HorizontalAlignment="Left">
@@ -148,11 +168,23 @@
                                             <ColumnDefinition Width="40"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Source="{Binding User.Photo}" Height="40" Width="40">
-                                            <Image.Clip>
-                                                <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                                            </Image.Clip>
-                                        </Image>
+                                        <Button Command="{Binding CommentAuthorProfileClickCommand}" Width="40" Height="40" Cursor="Hand" Grid.RowSpan="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <Image Source="{Binding User.Photo}" Width="40" Height="40">
+                                                                    <Image.Clip>
+                                                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                                    </Image.Clip>
+                                                                </Image>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                         <StackPanel Grid.Column="1" Margin="5 0">
                                             <TextBlock Text="{Binding User.Username}" FontWeight="Bold" Foreground="White"/>
                                             <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White" FontSize="12"/>
@@ -165,7 +197,8 @@
                                                 Width="30"  
                                                 Height="30"
                                                 Focusable="False" 
-                                                Background="Transparent">
+                                                Background="Transparent"
+                                                Cursor="Hand">
 
                                             <Button.Template>
                                                 <ControlTemplate TargetType="Button">
@@ -173,25 +206,32 @@
                                                         <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Grid>
                                                     <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsFocused" Value="True">
+                                                        <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
                                                         </Trigger>
+
+                                                        <DataTrigger Binding="{Binding CanUpVote}" Value="False">
+                                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
+                                                        </DataTrigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
                                             </Button.Template>
                                         </Button>
+
                                         <TextBlock Text="{Binding Rating}" 
                                                    Foreground="White" 
                                                    FontSize="20"  
                                                    HorizontalAlignment="Center" 
                                                    VerticalAlignment="Center" 
                                                    TextAlignment="Center" />
+
                                         <Button Command="{Binding DataContext.DownVoteReplyCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                                                 CommandParameter="{Binding}"  
                                                 Width="30"  
                                                 Height="30"
                                                 Focusable="False" 
                                                 Background="Transparent"
+                                                Cursor="Hand"
                                                 >
                                             <Button.Template>
                                                 <ControlTemplate TargetType="Button">
@@ -199,9 +239,13 @@
                                                         <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Downvote.png" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </Grid>
                                                     <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsFocused" Value="True">
+                                                        <Trigger Property="IsMouseOver" Value="True">
                                                             <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
                                                         </Trigger>
+
+                                                        <DataTrigger Binding="{Binding CanDownVote}" Value="False">
+                                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
+                                                        </DataTrigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
                                             </Button.Template>
@@ -226,7 +270,7 @@
                                         <Button Style="{StaticResource SendReplyToReplyButton}" Margin="10 0" Command="{Binding SendReplyToReply}"/>
                                     </WrapPanel>
 
-                                    <Button Content="{Binding CountOfReplies, Converter={StaticResource intToReplyCountConverter}}" Command="{Binding ShowRepliesToReplyCommand}" Background="Transparent">
+                                    <Button Content="{Binding CountOfReplies, Converter={StaticResource intToReplyCountConverter}}" Command="{Binding ShowRepliesToReplyCommand}" Cursor="Hand" Background="Transparent">
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
                                                 <Grid>
@@ -253,11 +297,23 @@
                                                                 <ColumnDefinition Width="40"/>
                                                                 <ColumnDefinition Width="*"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <Image Source="{Binding User.Photo}" Height="40" Width="40">
-                                                                <Image.Clip>
-                                                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                                                                </Image.Clip>
-                                                            </Image>
+                                                            <Button Command="{Binding CommentAuthorProfileClickCommand}" Width="40" Height="40" Cursor="Hand" Grid.RowSpan="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <Button.Style>
+                                                                    <Style TargetType="Button">
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate>
+                                                                                    <Image Source="{Binding User.Photo}" Width="40" Height="40">
+                                                                                        <Image.Clip>
+                                                                                            <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                                                        </Image.Clip>
+                                                                                    </Image>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </Button.Style>
+                                                            </Button>
                                                             <StackPanel Grid.Column="1" Margin="5 0">
                                                                 <TextBlock Text="{Binding User.Username}" FontWeight="Bold" Foreground="White"/>
                                                                 <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White" FontSize="12"/>
@@ -265,16 +321,31 @@
                                                         </Grid>
                                                         <TextBlock Text="{Binding Content}" Foreground="White" TextWrapping="Wrap" Margin="0 5"/>
                                                         <WrapPanel>
-                                                            <Button Command="{Binding DataContext.UpVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Width="30" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Focusable="False" Background="Transparent">
+                                                            <Button Command="{Binding DataContext.UpVoteReplyOnReplyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                    CommandParameter="{Binding}" 
+                                                                    Width="30" 
+                                                                    Height="30"
+                                                                    VerticalAlignment="Center" 
+                                                                    HorizontalAlignment="Center" 
+                                                                    Margin="0" 
+                                                                    Focusable="False" 
+                                                                    Background="Transparent"
+                                                                    SnapsToDevicePixels="True">
                                                                 <Button.Template>
                                                                     <ControlTemplate TargetType="Button">
-                                                                        <Grid Background="{TemplateBinding Background}">
-                                                                            <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="20"/>
+                                                                        <Grid>
+                                                                            <!-- Основне зображення -->
+                                                                            <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Upvote.png" Width="20" Height="20"/>
                                                                         </Grid>
                                                                         <ControlTemplate.Triggers>
-                                                                            <Trigger Property="IsFocused" Value="True">
+                                                                            <!-- Зміна зображення при наведенні -->
+                                                                            <Trigger Property="IsMouseOver" Value="True">
                                                                                 <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
                                                                             </Trigger>
+
+                                                                            <DataTrigger Binding="{Binding CanUpVote}" Value="False">
+                                                                                <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/UpvoteDanube.png"/>
+                                                                            </DataTrigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
                                                                 </Button.Template>
@@ -287,9 +358,13 @@
                                                                             <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Downvote.png" Width="20"/>
                                                                         </Grid>
                                                                         <ControlTemplate.Triggers>
-                                                                            <Trigger Property="IsFocused" Value="True">
+                                                                            <Trigger Property="IsMouseOver" Value="True">
                                                                                 <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
                                                                             </Trigger>
+
+                                                                            <DataTrigger Binding="{Binding CanDownVote}" Value="False">
+                                                                                <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/DownvoteDanube.png"/>
+                                                                            </DataTrigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
                                                                 </Button.Template>

@@ -24,6 +24,8 @@
 
     <SolidColorBrush x:Key="BlueCharcoal" Color="#000d1f"/>
 
+    <SolidColorBrush x:Key="BlueCharcoalTrans" Color="#80000d1f"/>
+
     <SolidColorBrush x:Key="Downriver" Color="#0c2a5c"/>
 </ResourceDictionary>
 

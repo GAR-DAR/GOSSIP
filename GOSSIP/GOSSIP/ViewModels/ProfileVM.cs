@@ -5,8 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 
 namespace GOSSIP.ViewModels
 {
@@ -25,9 +25,9 @@ namespace GOSSIP.ViewModels
         }
 
         private MainVM _mainVM;
+        public ObservableCollection<TopicVM> Topics { get; set; }
 
-        public ICommand BackCommand { get; set; }
-        public ICommand DoubleClickCommand { get; }
+        public bool IsAuthUserModerator => MainVM.AuthorizedUserVM != null && MainVM.AuthorizedUserVM.Role == "Moderator";
 
         private string _userInfo;
         public string UserInfo
@@ -40,16 +40,6 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private void UpdateUserInfo()
-        {
-            UserInfo = $"Status: {User.Status}\nField of study: {User.FieldOfStudy}";
-            if(User.Status == "Student" || User.Status == "Faculty")
-            {
-                UserInfo += $"\nSpecialization: {User.Specialization}\nUniversity: {User.University}\nDegree: {User.Degree}\nTerm: {User.Term}";
-            }
-            UserInfo += $"\nRole: {User.Role}";
-        }
-
         private TopicVM _selectedTopic;
         public TopicVM SelectedTopic
         {
@@ -60,6 +50,10 @@ namespace GOSSIP.ViewModels
                 OnPropertyChanged(nameof(SelectedTopic));
             }
         }
+
+        public ICommand BackCommand { get; }
+        public ICommand DoubleClickCommand { get; }
+        public ICommand BanUserCommand { get; }
 
         public ProfileVM(MainVM mainVM, UserVM user)
         {
@@ -74,6 +68,29 @@ namespace GOSSIP.ViewModels
             Topics = new(topicService.GetTopicsByID(User.UserModel.ID).Select(x => new TopicVM(x)));
 
             DoubleClickCommand = new RelayCommand(obj => OnItemDoubleClickedMethod(SelectedTopic));
+            BanUserCommand = new RelayCommand(BanUserMethod);
+        }
+
+        private void BanUserMethod(object obj)
+        {
+            MessageBox.Show("Тут може бути ваша логіка.");
+        }
+
+        private void UpdateUserInfo()
+        {
+            UserInfo = $"Status: {User.Status}\nField of study: {User.FieldOfStudy}";
+
+            if (User.Status == "Student" || User.Status == "Faculty")
+            {
+                UserInfo += $"\nSpecialization: {User.Specialization}\nUniversity: {User.University}\nDegree: {User.Degree}\nTerm: {User.Term}";
+            }
+
+            UserInfo += $"\nRole: {User.Role}";
+        }
+
+        private void BackMethod(object obj)
+        {
+            _mainVM.SwitchToPreviousVM();
         }
 
         private void OnItemDoubleClickedMethod(TopicVM topicVM)
@@ -83,14 +100,6 @@ namespace GOSSIP.ViewModels
                 _mainVM.SelectedVM = new OpenedTopicVM(topicVM, _mainVM, this);
             }
         }
-
-        private void BackMethod(object obj)
-        {
-            _mainVM.SwitchToPreviousVM();
-        }
-
-        public ObservableCollection<TopicVM> Topics { get; set; }
-
 
     }
 }

@@ -27,7 +27,7 @@ namespace GOSSIP.ViewModels
                 { 
                     MainVM.AuthorizedUserVM = user;
                     signUpView.Close();
-                    _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
+                    
                 };
                 signUpView.ShowDialog();
             });
@@ -38,12 +38,15 @@ namespace GOSSIP.ViewModels
                 LogInWindow logInWindow = new() { DataContext = logInVM };
                 logInVM.RequestClose += (user) =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
+
+                    MainVM.AuthorizedUserVM = user;
+                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MainVM.AuthorizedUserVM = user;
                         logInWindow.Close();
-                        _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
                     });
+					
+                    _mainVM.ChooseTopBar(user);
+
                 };
                 logInWindow.ShowDialog();
             });

@@ -3,6 +3,7 @@ using GOSSIP.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,26 @@ namespace GOSSIP.ViewModels
         public TopicVM TopicVM { get; set; }
 
         private bool _canUpVote = true;
+        public bool CanUpVote
+        {
+            get => _canUpVote;
+            set
+            {
+                _canUpVote = value;
+                OnPropertyChanged(nameof(CanUpVote));
+            }
+        }
+
         private bool _canDownVote = true;
+        public bool CanDownVote
+        {
+            get => _canDownVote;
+            set
+            {
+                _canDownVote = value;
+                OnPropertyChanged(nameof(CanDownVote));
+            }
+        }
 
         private MainVM _mainVM;
         private JsonStorage _jsonStorage = new("topic_data.json");
@@ -29,6 +49,7 @@ namespace GOSSIP.ViewModels
         public ICommand ReplyToReplyCommand { get; set; }
         public ICommand UpVoteReplyOnReplyCommand { get; set; }
         public ICommand DownVoteReplyOnReplyCommand { get; set; }
+        public ICommand TopicAuthorProfileClickCommand { get; set; }
 
         public UserModel Author
         {
@@ -90,7 +111,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ObservableCollection<ReplyVM> Replies { get; set; }
+        public ObservableCollection<ParentReplyVM> Replies { get; set; }
 
         private string _enteredReplyText;
         public string EnteredReplyText
@@ -107,8 +128,8 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
             TopicVM = topic;
-            // TODO: uncomment this line, after DB will be ready
-            //Replies = new(TopicVM.Topic.Replies.Select(x => new ReplyVM(x)));
+
+            Replies = new(TopicVM.Topic.Replies.Select(x => new ParentReplyVM(x)));
 
             BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = previousVM);
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
@@ -118,6 +139,13 @@ namespace GOSSIP.ViewModels
             DownVoteReplyCommand = new RelayCommand(DownVoteReplyMethod);
             UpVoteReplyOnReplyCommand = new RelayCommand(UpVoteReplyOnReplyMethod);
             DownVoteReplyOnReplyCommand = new RelayCommand(DownVoteReplyOnReplyMethod);
+            TopicAuthorProfileClickCommand = new RelayCommand(obj => _mainVM.OpenProfile(new(topic.Topic.Author)));
+            
+            foreach(ParentReplyVM reply in Replies)
+            {
+                reply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
+                reply.ProfileClickEvent += _mainVM.OpenProfile;
+            }
         }
 
         private void UpVoteMethod(object obj)
@@ -128,20 +156,20 @@ namespace GOSSIP.ViewModels
                 return;
             }
 
-            if (_canUpVote)
+            if (CanUpVote)
             {
                 Rating++;
-                _canUpVote = false;
-                if (_canDownVote == false)
+                CanUpVote = false;
+                if (CanDownVote == false)
                 {
                     Rating++;
-                    _canDownVote = true;
+                    CanDownVote = true;
                 }
             }
             else
             {
                 Rating--;
-                _canUpVote = true;
+                CanUpVote = true;
             }
             
             _jsonStorage.SaveTopic(TopicVM.Topic);
@@ -155,20 +183,20 @@ namespace GOSSIP.ViewModels
                 return;
             }
 
-            if (_canDownVote)
+            if (CanDownVote)
             {
                 Rating--;
-                _canDownVote = false;
-                if (_canUpVote == false)
+                CanDownVote = false;
+                if (CanUpVote == false)
                 {
                     Rating--;
-                    _canUpVote = true;
+                    CanUpVote = true;
                 }
             }
             else
             {
                 Rating++;
-                _canDownVote = true;
+                CanDownVote = true;
             }
 
             _jsonStorage.SaveTopic(TopicVM.Topic);
@@ -182,9 +210,13 @@ namespace GOSSIP.ViewModels
                 return;
             }
 
-
             if (!string.IsNullOrEmpty(EnteredReplyText))
             {
+				ParentReplyVM newReply = new ParentReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
+                newReply.ProfileClickEvent += _mainVM.OpenProfile;
+                newReply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
+
+                Replies.Add(newReply);
                 RepliesCount++;
 				
                 TopicVM.Topic.Replies.Add(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
@@ -202,7 +234,7 @@ namespace GOSSIP.ViewModels
                 _mainVM.ShowLogInMethod(null);
                 return;
             }
-            if (obj is ReplyVM reply)
+            if (obj is ParentReplyVM reply)
             {
                 if (reply.CanUpVote)
                 {
@@ -289,7 +321,7 @@ namespace GOSSIP.ViewModels
                 _mainVM.ShowLogInMethod(null);
                 return;
             }
-            if (obj is ReplyVM reply)
+            if (obj is ParentReplyVM reply)
             {
                 if (reply.CanDownVote)
                 {
@@ -310,5 +342,7 @@ namespace GOSSIP.ViewModels
 
             _jsonStorage.SaveTopic(TopicVM.Topic);
         }
+
+
     }
 }

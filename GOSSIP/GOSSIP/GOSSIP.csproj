@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+    <None Remove="Resources\Images\AddChat.png" />
     <None Remove="Resources\Images\AddPost.png" />
     <None Remove="Resources\Images\Back.png" />
     <None Remove="Resources\Images\BackDanube.png" />
@@ -19,6 +20,7 @@
     <None Remove="Resources\Images\DownvoteDanube.png" />
     <None Remove="Resources\Images\LoadMore.png" />
     <None Remove="Resources\Images\LoadMoreDanube.png" />
+    <None Remove="Resources\Images\Logout.png" />
     <None Remove="Resources\Images\Message.png" />
     <None Remove="Resources\Images\MessageDanube.png" />
     <None Remove="Resources\Images\search.png" />
@@ -40,10 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Resource Include="Resources\Images\AddChat.png" />
     <Resource Include="Resources\Images\AddPost.png" />
     <Resource Include="Resources\Images\Back.png" />
     <Resource Include="Resources\Images\BackDanube.png" />
@@ -53,6 +52,7 @@
     <Resource Include="Resources\Images\DownvoteDanube.png" />
     <Resource Include="Resources\Images\LoadMore.png" />
     <Resource Include="Resources\Images\LoadMoreDanube.png" />
+    <Resource Include="Resources\Images\Logout.png" />
     <Resource Include="Resources\Images\Message.png" />
     <Resource Include="Resources\Images\MessageDanube.png" />
     <Resource Include="Resources\Images\search.png" />
@@ -81,6 +81,12 @@
     <Resource Include="Resources\Images\TopicsDanube.png" />
     <Resource Include="Resources\Images\Upvote.png" />
     <Resource Include="Resources\Images\UpvoteDanube.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\TopBarLoggedInModerator.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>
