@@ -6,16 +6,28 @@ using System.Threading.Tasks;
 
 using System.Net.Sockets;
 using GOSSIP.Net.IO;
-using GOSSIP.Models;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using GOSSIP;
 
 namespace GOSSIP.Net
 {
     public static class Globals
     {
         public static Server server = new Server();
+
+        public static UserModel User_Cache { get; set; }
+        public static List<UserModel> AllUsers_Cache { get; set; }
+        public static List<TopicModel> Topics_Cache { get; set; }
+
+        public static void RefreshUser()
+        {
+            server.SendPacket(SignalsEnum.GetAllUsers);
+            server.SendPacket(SignalsEnum.GetTopics);
+            server.SendPacket(SignalsEnum.RefreshUser);
+        }
+
     }
 
     public class Server
@@ -29,7 +41,9 @@ namespace GOSSIP.Net
         public Server()
         {
             _client = new TcpClient();
-           // _networkStream = new NetworkStream(_client.Client);
+
+            SendPacket(SignalsEnum.GetAllUsers);
+            SendPacket(SignalsEnum.GetTopics);
         }
 
         //evens gets from server
@@ -91,17 +105,17 @@ namespace GOSSIP.Net
 
         #region User
 
-        public void SignUp(UserModel user)
+        public void SignUp(UserModelID user)
         {
             SendPacket(SignalsEnum.SignUp, user);
         }
 
-        public void Login(AuthUserModel user)
+        public void Login(AuthUserModelID user)
         {
             SendPacket(SignalsEnum.Login, user);
         }
 
-        public void EditUser(UserModel user)
+        public void EditUser(UserModelID user)
         {
             SendPacket(SignalsEnum.EditUser, user);
         }
@@ -161,12 +175,12 @@ namespace GOSSIP.Net
 
         #region Reply
 
-        public void CreateReply(ReplyModel reply)
+        public void CreateReply(ReplyModelID reply)
             {
                 SendPacket(SignalsEnum.CreateReply, reply);
             }
 
-            public void EditReply(ReplyModel reply)
+            public void EditReply(ReplyModelID reply)
             {
                 SendPacket(SignalsEnum.EditReply, reply);
             }
@@ -186,7 +200,7 @@ namespace GOSSIP.Net
                 SendPacket(SignalsEnum.DownvoteReply, new { replyId = replyID });
             }
 
-            public void ReplyToReply(ReplyModel reply)
+            public void ReplyToReply(ReplyModelID reply)
             {
                 SendPacket(SignalsEnum.ReplyToReply, reply);
             }
@@ -199,7 +213,7 @@ namespace GOSSIP.Net
                  SendPacket(SignalsEnum.GetAllUsers);
             }
 
-        public void StartChat(ChatModel chat)
+        public void StartChat(ChatModelID chat)
             {
                 SendPacket(SignalsEnum.StartChat, chat);
             }
@@ -249,98 +263,168 @@ namespace GOSSIP.Net
                     var signal = packetReader.ReadSignal();
                     switch (signal)
                     {
-                        case (byte)SignalsEnum.GetTopics:
+                        case (byte)SignalsEnum.GetAllUsers:
                             {
-                                try
+                                var userModelID = packetReader.ReadPacket<List<UserModelID>>().Data;
+
+                                Globals.AllUsers_Cache.Clear();
+
+                                foreach (var user in userModelID)
                                 {
-                                    var rawPacket = packetReader.ReadRawPacket();
-                                    var packet = packetReader.DeserializePacket<Packet<List<TopicModel>>>(rawPacket);
-                                    List<TopicModel> topics = packet.Data;
-                                    getTopicsEvent?.Invoke(topics);
-                                    packetReader.ClearStream();
-                                    Counter = 5;
+                                    UserModel temp = new UserModel(user);
+
+                                    Globals.AllUsers_Cache.Add(temp);
                                 }
-                                catch (Exception)
-                                {
-                                    if (Counter != 0)
-                                    {
-                                        packetReader.ClearStream();
-                                        SendPacket(SignalsEnum.GetTopics);
-                                        Counter--;
-                                        Debug.WriteLine($"{DateTime.Now} Retrying to get topics... Counter {Counter}");
-                                    }
-                                }
+
+                                packetReader.ClearStream();
+
+                                Debug.WriteLine($"{DateTime.Now} All users loaded. ");
                                 break;
                             }
+                        case (byte)SignalsEnum.GetTopics:
+                            {
+                                var topicModelID = packetReader.ReadPacket<List<TopicModelID>>().Data;
+
+                                Globals.Topics_Cache.Clear();
+
+                                foreach (var topic in topicModelID)
+                                {
+                                    TopicModel temp = new(topic);
+
+                                    temp.Author = Globals.AllUsers_Cache.Where(user => topic.AuthorID == user.ID).FirstOrDefault();
+
+                                    Globals.Topics_Cache.Add(temp);
+                                }
+
+                                getTopicsEvent?.Invoke(Globals.Topics_Cache);
+
+                                packetReader.ClearStream();
+
+                                Debug.WriteLine($"{DateTime.Now} All topics loaded. ");
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetUserChats:
+                            {
+                                var userChats = packetReader.ReadPacket<List<ChatModelID>>().Data;
+                                
+                                Globals.User_Cache.Chats.Clear();
+                                foreach (var chat in userChats)
+                                {
+                                    ChatModel temp = new ChatModel(chat);
+                                    temp.Users = chat.UserIDs
+                                                    .Select(userId => Globals.AllUsers_Cache.FirstOrDefault(user => user.ID == userId))
+                                                    .Where(user => user != null) 
+                                                    .ToList();
+
+                                    Globals.User_Cache.Chats.Add(temp);
+                                }
+
+                                packetReader.ClearStream();
+                                Globals.server.SendPacket(SignalsEnum.GetAllUsersMessage, Globals.User_Cache.ID);
+
+                                Debug.WriteLine($"Recived {userChats.Count} chats");
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.GetAllUsersMessage:
+                            {
+                                var allUsersMessageID = packetReader.ReadPacket<List<MessageModelID>>().Data;
+
+                                foreach (var messageID in allUsersMessageID)
+                                {
+                                    var message = new MessageModel(messageID);
+
+                                    message.User = Globals.AllUsers_Cache.Where(user => messageID.UserID == user.ID).FirstOrDefault();
+
+                                    message.Chat = Globals.User_Cache.Chats.Where(chat => chat.ID == messageID.ChatID).FirstOrDefault();
+
+                                    foreach (var chat in Globals.User_Cache.Chats)
+                                    {
+                                        if(messageID.ChatID == chat.ID)
+                                        {
+                                            chat.Messages.Add(message);
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+
                         case (byte)SignalsEnum.Login:
                             {
-                                var user = packetReader.ReadPacket<UserModel>().Data;
-                                loginEvent?.Invoke(user);
+                                var user = packetReader.ReadPacket<UserModelID>().Data;
+                                Globals.User_Cache = new UserModel(packetReader.ReadPacket<UserModelID>().Data);
+                                loginEvent?.Invoke(Globals.User_Cache);
 
                                 Debug.WriteLine($"User {user.Username} logged in");
                                 break;
                             }
                         case (byte)SignalsEnum.SignUp:
                             {
-                                var userModel = packetReader.ReadPacket<UserModel>().Data;
-                                signUpEvent?.Invoke(userModel);
+                                var userModelID = packetReader.ReadPacket<UserModelID>().Data;
+                                UserModel user = new UserModel(userModelID);
 
-                                Debug.WriteLine($"{DateTime.Now} User {userModel.Username} registered");
+                                Globals.User_Cache = user;
+
+                                signUpEvent?.Invoke(Globals.User_Cache);
+
+                                Debug.WriteLine($"{DateTime.Now} User {user.Username} registered");
                                 break;
                             }
                         case (byte)SignalsEnum.RefreshUser:
                             {
-                                var user = packetReader.ReadPacket<UserModel>().Data;
-                                refreshUserEvent?.Invoke(user);
-                                Debug.WriteLine($"Refrash user {_client}");
+                                var user = packetReader.ReadPacket<UserModelID>().Data;
+
+                                Globals.User_Cache = new UserModel(user);
+
+                                refreshUserEvent?.Invoke(Globals.User_Cache);
+
+                                Debug.WriteLine($"Refrash user {user.Username}");
                                 break;
                             }
-
                         case (byte)SignalsEnum.MessageMulticast:
                             {
-                                var message = packetReader.ReadPacket<MessageModel>().Data;
+/*                                var message = packetReader.ReadPacket<MessageModelID>().Data;
                                 multicastMessageEvent?.Invoke(message);
-                                Debug.WriteLine($"Multicast message to {_client}");
-
+                                Debug.WriteLine($"Multicast message to {_client}");*/
                                 break;
                             }
                         case (byte)SignalsEnum.GetStatuses:
                             {
                                 var statuses = packetReader.ReadPacket<List<string>>().Data;
                                 getStatusesEvent?.Invoke(statuses);
-                                Debug.WriteLine(statuses);
+                                Debug.WriteLine($"Recived list of statuses");
                                 break;
                             }
                         case (byte)SignalsEnum.GetFieldsOfStudy:
                             {
                                 var fields = packetReader.ReadPacket<List<string>>().Data;
                                 getFieldOfStudyEvent?.Invoke(fields);
+                                Debug.WriteLine($"Recived list of field of study");
                                 break;
                             }
                         case (byte)SignalsEnum.GetSpecializations:
                             {
                                 var specializations = packetReader.ReadPacket<List<string>>().Data;
                                 getSpecializationsEvent?.Invoke(specializations);
+                                Debug.WriteLine($"Recived slist of pesializations");
                                 break;
                             }
                         case (byte)SignalsEnum.GetUniversities:
                             {
                                 var uni = packetReader.ReadPacket<List<string>>().Data;
-                                getUniversitiesEvent?.Invoke(uni);
+                                getUniversitiesEvent?.Invoke(uni);
+                                Debug.WriteLine($"Recived list of universities");
                                 break;
                             }
                         case (byte)SignalsEnum.GetDegrees:
                             {
                                 var degrees = packetReader.ReadPacket<List<string>>().Data;
-                                getDegreesEvent?.Invoke(degrees);
-                                break;
+                                getDegreesEvent?.Invoke(degrees);
+                                Debug.WriteLine($"Recived list of degrees");
+                               break;
                             }
-                        case (byte)SignalsEnum.GetAllUsers:
-                            {
-                                var users = packetReader.ReadPacket<List<UserModel>>().Data;
-                                getUsersEvent?.Invoke(users);
-                                break;
-                            }
+                        
 
                     }
                     packetReader.Signal = 255;
@@ -352,6 +436,16 @@ namespace GOSSIP.Net
         #endregion
 
         #region Helpers
+
+        public void SendPacket(SignalsEnum signal, uint ID)
+        {
+            if (_client.Connected)
+            {
+                var authPacket = new PacketBuilder<uint>();
+                var packet = authPacket.GetPacketBytes(signal, ID);
+                _client.Client.Send(packet);
+            }
+        }
 
         public void SendPacket<T>(SignalsEnum signal, T user) where T : class
             {

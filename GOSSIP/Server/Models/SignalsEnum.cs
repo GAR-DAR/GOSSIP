@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Models
+namespace Server
 {
     public enum SignalsEnum : byte
     {
+
+        GetAllUsersMessage,
+
         #region User
         Disconnect,
         SignUp,
@@ -47,7 +50,9 @@ namespace Server.Models
         ReplyToReplyReply,
         #endregion
 
-        #region Chat
+        #region Chat,
+        GetUserChats,
+        GetUserMessages,
         StartChat,
         SendMessage,
         DeleteMessage,

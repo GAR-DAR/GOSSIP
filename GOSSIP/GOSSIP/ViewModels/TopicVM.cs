@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿using GOSSIP.Models.IDModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +86,7 @@ namespace GOSSIP.ViewModels
 
         private void PhotoClickMethod(object obj)
         {
-            ProfileSelectedEvent?.Invoke(new(Topic.Author));
+            ProfileSelectedEvent?.Invoke(new(Topic.AuthorID));
         }
 
     }

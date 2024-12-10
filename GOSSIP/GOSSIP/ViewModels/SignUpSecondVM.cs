@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿using GOSSIP.Models.IDModels;
 using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
@@ -296,7 +296,7 @@ namespace GOSSIP.ViewModels
             {
                 ValidateInput();
 
-                UserModel newUser = new UserModel(
+                UserModelID newUser = new UserModelID(
                     id: 0,
                     email: _mainVM.Email,
                     username: _mainVM.Username,
@@ -311,7 +311,7 @@ namespace GOSSIP.ViewModels
                     createdAt: DateTime.Now,
                     isBanned: false,
                     photo: "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
-                    chats: []
+                    chatsID: []
                 );
 
                 Globals.server.SignUp(newUser);

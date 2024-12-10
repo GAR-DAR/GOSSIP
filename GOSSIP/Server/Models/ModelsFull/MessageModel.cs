@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Server.Models
+namespace Server
 {
     [Serializable]
     public class MessageModel

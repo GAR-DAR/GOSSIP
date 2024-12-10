@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿using GOSSIP.Models.IDModels;
 using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
@@ -21,18 +21,16 @@ namespace GOSSIP.ViewModels
         private string _enteredText = "";
 
         //Містить копію моделі чатів
-        private ChatModel _chat;
-
-        private ChatService _chatService = new("user_data.json");
+        private ChatModelID _chat;
 
         public string ChatName { get; set; }
         public string Photo { get; set; }
 
         //Список повідомлень, прив'язаних до UI. Також, прив'язаний до списку чатів моделі ChatModel
-        public ObservableCollection<MessageModel> Messages { get; set; }
+        public ObservableCollection<MessageModelID> Messages { get; set; }
 
         
-        public OpenedChatVM(ChatModel chat, MainVM mainVM)
+        public OpenedChatVM(ChatModelID chat, MainVM mainVM)
         {
             MainVM = mainVM;
             _chat = chat;
@@ -76,7 +74,7 @@ namespace GOSSIP.ViewModels
         private void SendMessageMethod(object obj)
         {
           //  _chat = new ChatModel { ID = 1 };
-            MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUserVM.UserModel, this.EnteredText, DateTime.Now, false, false);
+            MessageModelID message = new MessageModel(1, _chat, MainVM.AuthorizedUserVM.UserModel, this.EnteredText, DateTime.Now, false, false);
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";

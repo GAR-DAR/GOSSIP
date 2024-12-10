@@ -1,5 +1,4 @@
-﻿using GOSSIP.Models;
-using GOSSIP.Net;
+﻿using GOSSIP.Net;
 using GOSSIP.Views;
 using System;
 using System.Collections.Generic;
@@ -50,7 +49,7 @@ namespace GOSSIP.ViewModels
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                     OnPropertyChanged(nameof(AuthorizedUserVM));
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
                     
                     _chatsVM.UpdateChats();
                 }
@@ -70,7 +69,7 @@ namespace GOSSIP.ViewModels
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                     OnPropertyChanged(nameof(AuthorizedUserVM));
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
 
                     _chatsVM.UpdateChats();
                 }
@@ -88,8 +87,10 @@ namespace GOSSIP.ViewModels
             {
                 if (AuthorizedUserVM != null)
                 {
-                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                    Globals.server.SendPacket(SignalsEnum.GetUserChats, AuthorizedUserVM.UserModel.ID);
+
+                    //Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
                     OnPropertyChanged(nameof(AuthorizedUserVM));
 
                     _chatsVM.UpdateChats();
@@ -166,7 +167,7 @@ namespace GOSSIP.ViewModels
             Globals.server.multicastMessageEvent += OnMulticastMessage;
         }
 
-        private void OnRefreshUser(UserModel user)
+        private void OnRefreshUser(UserModelID user)
         {
             if (AuthorizedUserVM != null)
             {
@@ -177,14 +178,14 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private void OnMulticastMessage(MessageModel message)
+        private void OnMulticastMessage(MessageModelID message)
         {
             if (AuthorizedUserVM != null)
             {
-                AuthorizedUserVM.UserModel.Chats.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
+                AuthorizedUserVM.UserModel.ChatsID.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
 
                 OnPropertyChanged(nameof(AuthorizedUserVM));
-                OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
                 
             }
         }

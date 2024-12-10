@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
-using Server.Models;
 using Server.Net.IO;
 using Server.Services;
 using System;
@@ -13,7 +12,6 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-
 namespace Server
 {
     public static class Globals
@@ -22,15 +20,15 @@ namespace Server
     }
     public static class Logging
     {
-        public static void Log(string message, Guid guid, UserModel user)
+        public static void Log(string message, Guid guid, UserModelID user)
         {
             Console.WriteLine($"{DateTime.Now} - Client {guid} {user.Username} {message} :)");
         }
-        public static void LogRecived(SignalsEnum signal, Guid guid, UserModel user)
+        public static void LogRecived(SignalsEnum signal, Guid guid, UserModelID user)
         {
             Console.WriteLine($"{DateTime.Now} [Recived] signal {(byte)signal} ({signal}) from user {guid} with name {user.Username}");
         }
-        public static void LogSent(SignalsEnum signal, Guid guid, UserModel user)
+        public static void LogSent(SignalsEnum signal, Guid guid, UserModelID user)
         {
             Console.WriteLine($"{DateTime.Now} [Sent] signal {(byte)signal} ({signal}) for user {guid} with name {user.Username}");
         }
@@ -39,7 +37,7 @@ namespace Server
     {
         public Guid UID { get; set; }
         public TcpClient ClientSocket { get; set; }
-        public UserModel User { get; set; } = new UserModel { Username = "guest" };
+        public UserModelID User { get; set; } = new UserModelID { Username = "guest" };
         public Mutex mutex = new Mutex();
 
         NetworkStream _networkStream;
@@ -85,6 +83,28 @@ namespace Server
                     Logging.LogRecived((SignalsEnum)signal, UID, User);
                     switch (signal)
                     {
+                        case (byte)SignalsEnum.GetAllUsers:
+                            {
+                                mutex.WaitOne();
+                                List<UserModelID> allUsers = UsersService.SelectAll(Globals.db.Connection);
+                                mutex.ReleaseMutex();
+
+                                SendPacket(SignalsEnum.GetAllUsers, allUsers);
+                                Logging.LogSent(SignalsEnum.GetAllUsers, UID, User);
+
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.GetTopics:
+                            {
+                                List<TopicModelID> allTopics = TopicsService.SelectAll(Globals.db.Connection);
+
+                                SendPacket(SignalsEnum.GetTopics, allTopics);
+
+                                Logging.LogSent(SignalsEnum.GetTopics, UID, User);
+                                break;
+                            }
+
                         case (byte)SignalsEnum.Disconnect:
                             {
                                 Logging.Log("disconnected", UID, User);
@@ -92,20 +112,14 @@ namespace Server
                                 _cancellationTokenSource.Cancel();
                                 break;
                             }
-                        case (byte)SignalsEnum.GetTopics:
-                            {
-                                List<TopicModel> allTopics = TopicsService.SelectAll(Globals.db.Connection);
-                                SendPacket(SignalsEnum.GetTopics, allTopics);
-                                Logging.LogSent(SignalsEnum.GetTopics, UID, User);
-                                break;
-                            }
+                        
                         case (byte)SignalsEnum.Login:
                             {
                                 mutex.WaitOne();
-                                var authUserModel = _packetReader.ReadPacket<AuthUserModel>().Data;
+                                var authUserModel = _packetReader.ReadPacket<AuthUserModelID>().Data;
                                 mutex.ReleaseMutex();
 
-                                UserModel userModel;
+                                UserModelID userModel;
                                 if (authUserModel.Username == null && authUserModel.Email != null)
                                 {
                                     userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
@@ -140,6 +154,7 @@ namespace Server
                                 {
                                     Logging.Log("invalid login packet", UID, User);
                                 }
+
                                 break;
 
                             }
@@ -147,11 +162,11 @@ namespace Server
                         case (byte)SignalsEnum.SignUp:
                             {
                                 mutex.WaitOne();
-                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                var userModel = _packetReader.ReadPacket<UserModelID>().Data;
                                 mutex.ReleaseMutex();
                                 User = userModel;
 
-                                if (UsersService.SignUp(userModel, Globals.db.Connection))
+                                if (UsersService.SignUp(userModel, Globals.db.Connection))  //no error if Andriy
                                 {
                                     Logging.Log("registered", UID, User);
                                     SendPacket(SignalsEnum.SignUp, userModel);
@@ -168,14 +183,10 @@ namespace Server
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 mutex.WaitOne();
-                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                var userModel = _packetReader.ReadPacket<UserModelID>().Data;
                                 mutex.ReleaseMutex();
 
-
-
                                 User = UsersService.Select(userModel.ID, Globals.db.Connection);
-
-                                // User.Status = "Student";
 
                                 if (User != null) {
                                     Logging.Log("refreshing", UID, User);
@@ -192,13 +203,13 @@ namespace Server
                             }
 
 
-                        case (byte)SignalsEnum.ChangeUserPhoto:
+                        case (byte)SignalsEnum.ChangeUserPhoto: //will fix when Andriy will fix db
                             {
                                 mutex.WaitOne();
-                                var userModel = _packetReader.ReadPacket<UserModel>().Data;
+                                var userModelID = _packetReader.ReadPacket<UserModelID>().Data;
                                 mutex.ReleaseMutex();
 
-                                bool res = UsersService.ChangePhoto(userModel.ID, userModel.Photo, Globals.db.Connection);
+                                bool res = UsersService.ChangePhoto(userModelID.ID, userModelID.Photo, Globals.db.Connection);
                                 if (res)
                                 {
                                     Logging.Log("Change user photo", UID, User);
@@ -211,24 +222,12 @@ namespace Server
                                 break;
                             }
 
-                        case (byte)SignalsEnum.GetAllUsers:
-                            {
-                                mutex.WaitOne();
-                                List<UserModel> allUsers = UsersService.SelectAll(Globals.db.Connection);
-                                mutex.ReleaseMutex();
-
-                                SendPacket(SignalsEnum.GetAllUsers, allUsers);
-                                Logging.LogSent(SignalsEnum.GetAllUsers, UID, User);
-                                break;
-                            }
-
+                       
                         case (byte)SignalsEnum.CreateTopic:
                             {
                                 mutex.WaitOne();
-                                var rawPacket = _packetReader.ReadRawPacket();
+                                var newTopic = _packetReader.ReadPacket<TopicModelID>().Data;
                                 mutex.ReleaseMutex();
-
-                                var newTopic = _packetReader.DeserializePacket<TopicModel>(rawPacket);
 
                                 mutex.WaitOne();
                                 TopicsService.Insert(newTopic, Globals.db.Connection);
@@ -236,11 +235,9 @@ namespace Server
 
                                 mutex.WaitOne();
                                 var topics = TopicsService.SelectAll(Globals.db.Connection);
-                                //List<TopicModel> topics = [];
                                 mutex.ReleaseMutex();
 
                                 Logging.Log("created topic", UID, User);
-                                //TODO: [COMPLETED] надсилати список топіків, а не лише новий топік
                                 SendPacket(SignalsEnum.GetTopics, topics);
                                 Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
                                 break;
@@ -249,7 +246,7 @@ namespace Server
                         case (byte)SignalsEnum.CreateReply:
                             {
                                 mutex.WaitOne();
-                                var reply = _packetReader.ReadPacket<ParentReplyModel>().Data;
+                                var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                 mutex.ReleaseMutex();
 
                                 RepliesService.Add(reply, Globals.db.Connection);
@@ -259,7 +256,7 @@ namespace Server
                         case (byte)SignalsEnum.ReplyToReply:
                             {
                                 mutex.WaitOne();
-                                var reply = _packetReader.ReadPacket<ChildReplyModel>().Data;
+                                var reply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
                                 mutex.ReleaseMutex();
 
                                 RepliesService.Add(reply, Globals.db.Connection);
@@ -269,7 +266,7 @@ namespace Server
                         case (byte)SignalsEnum.ReplyToReplyReply:
                             {
                                 mutex.WaitOne();
-                                var reply = _packetReader.ReadPacket<ChildReplyModel>().Data;
+                                var reply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
                                 mutex.ReleaseMutex();
 
                                 RepliesService.Add(reply, Globals.db.Connection);
@@ -281,7 +278,7 @@ namespace Server
                         case (byte)SignalsEnum.SendMessage:
                             {
                                 mutex.WaitOne();
-                                var message = _packetReader.ReadPacket<MessageModel>().Data;
+                                var message = _packetReader.ReadPacket<MessageModelID>().Data;
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();
@@ -305,6 +302,18 @@ namespace Server
                                 break;
                             }
 
+                        case (byte)SignalsEnum.GetAllUsersMessage:
+                            {
+                                mutex.WaitOne();
+                                var id = _packetReader.ReadPacket<MessageModel>().Data;
+                                mutex.ReleaseMutex();
+
+                                var message = MessagesService.GetAllUserMessage(id, Globals.db.Connection); //wait for Andriy's realization
+
+                                SendPacket(SignalsEnum.GetAllUsersMessage, message);
+
+                                break;
+                            }
                        
 
                         case (byte)SignalsEnum.StartChat:

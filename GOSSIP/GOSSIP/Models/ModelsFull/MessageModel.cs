@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace GOSSIP.Models
+namespace GOSSIP
 {
     [Serializable]
     public class MessageModel
@@ -25,9 +25,17 @@ namespace GOSSIP.Models
             IsDeleted = isDeleted;
         }
 
-        public MessageModel()
+        public MessageModel() { }
+
+        public MessageModel(MessageModelID messageModelID)
         {
-            
+            ID = messageModelID.ID;
+            Chat = null;
+            User = null;
+            MessageText = messageModelID.MessageText;
+            TimeStamp = messageModelID.TimeStamp;
+            IsRead = messageModelID.IsRead;
+            IsDeleted = messageModelID.IsDeleted;
         }
     }
 }

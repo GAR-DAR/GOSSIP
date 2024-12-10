@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿using GOSSIP;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http.Json;
@@ -18,13 +18,13 @@ namespace GOSSIP.JsonHandlers
             _filePath = filePath;
         }
 
-        public List<UserModel> LoadUsers()
+        public List<UserModelID> LoadUsers()
         {
             if (!File.Exists(_filePath))
-                return new List<UserModel>();
+                return new List<UserModelID>();
 
             string jsonData = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<List<UserModel>>(jsonData, options) ?? new List<UserModel>();
+            return JsonSerializer.Deserialize<List<UserModelID>>(jsonData, options) ?? new List<UserModelID>();
         }
 
         public List<TopicModel> LoadTopics()
@@ -40,7 +40,7 @@ namespace GOSSIP.JsonHandlers
             return JsonSerializer.Deserialize<List<TopicModel>>(jsonData, options) ?? new List<TopicModel>();
         }
 
-        public void SaveUsers(List<UserModel> users)
+        public void SaveUsers(List<UserModelID> users)
         {
             string jsonData = JsonSerializer.Serialize(users, options);
             File.WriteAllText(_filePath, jsonData);

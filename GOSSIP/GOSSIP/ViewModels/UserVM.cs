@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿using GOSSIP.Models.IDModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,8 @@ namespace GOSSIP.ViewModels
 {
     public class UserVM : ObservableObject
     {
-        private UserModel _userModel;
-        public UserModel UserModel
+        private UserModelID _userModel;
+        public UserModelID UserModel
         {
             get => _userModel;
             set
@@ -19,7 +19,7 @@ namespace GOSSIP.ViewModels
                 OnPropertyChanged(nameof(UserModel));
                 OnPropertyChanged(nameof(Username));
                 OnPropertyChanged(nameof(Photo));
-                OnPropertyChanged(nameof(UserModel.Chats));
+                OnPropertyChanged(nameof(UserModel.ChatsID));
                 SubscribeToChatChanges();
 
             }
@@ -27,10 +27,10 @@ namespace GOSSIP.ViewModels
 
         private void SubscribeToChatChanges()
         {
-            foreach (var chat in UserModel.Chats)
+            foreach (var chat in UserModel.ChatsID)
             {
                 // Manually trigger OnPropertyChanged when you know a property has changed
-                OnPropertyChanged(nameof(UserModel.Chats));
+                OnPropertyChanged(nameof(UserModel.ChatsID));
                 foreach (var message in chat.Messages)
                 {
                     // Manually trigger OnPropertyChanged for messages
@@ -166,7 +166,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public UserVM(UserModel userModel)
+        public UserVM(UserModelID userModel)
         {
             UserModel = userModel;    
 

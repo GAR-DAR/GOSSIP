@@ -1,4 +1,4 @@
-﻿namespace Server.Models
+﻿namespace Server
 {
     public class TopicModel
     {
@@ -30,5 +30,18 @@
         }
 
         public TopicModel() { }
+
+        public TopicModel(TopicModelID topic)
+        {
+            ID = topic.ID;
+            Title = topic.Title;
+            Content = topic.Content;
+            CreatedAt = topic.CreatedAt;
+            Rating = topic.Rating;
+            RepliesCount = topic.RepliesCount;
+            IsDeleted = topic.IsDeleted;
+            Author = null;
+            Replies = null;
+        }
     }
 }

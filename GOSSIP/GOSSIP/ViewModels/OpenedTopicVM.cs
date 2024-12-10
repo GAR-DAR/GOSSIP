@@ -1,5 +1,5 @@
 ﻿using GOSSIP.JsonHandlers;
-using GOSSIP.Models;
+using GOSSIP.Models.IDModels;
 using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
@@ -52,12 +52,12 @@ namespace GOSSIP.ViewModels
         public ICommand DownVoteReplyOnReplyCommand { get; set; }
         public ICommand TopicAuthorProfileClickCommand { get; set; }
 
-        public UserModel Author
+        public UserModelID Author
         {
-            get => TopicVM.Topic.Author;
+            get => TopicVM.Topic.AuthorID;
             set
             {
-                TopicVM.Topic.Author = value;
+                TopicVM.Topic.AuthorID = value;
                 OnPropertyChanged(nameof(Author));
             }
         }
@@ -140,7 +140,7 @@ namespace GOSSIP.ViewModels
             DownVoteReplyCommand = new RelayCommand(DownVoteReplyMethod);
             UpVoteReplyOnReplyCommand = new RelayCommand(UpVoteReplyOnReplyMethod);
             DownVoteReplyOnReplyCommand = new RelayCommand(DownVoteReplyOnReplyMethod);
-            TopicAuthorProfileClickCommand = new RelayCommand(obj => _mainVM.OpenProfile(new(topic.Topic.Author)));
+            TopicAuthorProfileClickCommand = new RelayCommand(obj => _mainVM.OpenProfile(new(topic.Topic.AuthorID)));
             
             foreach(ParentReplyVM reply in Replies)
             {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Server.Models
+namespace Server
 {
     [Serializable]
     public class ChatModel
@@ -17,7 +17,7 @@ namespace Server.Models
             Messages.Add(message);
         }
 
-        public ChatModel(uint iD, List<UserModel> users, string name, 
+        public ChatModel(uint iD, List<UserModel> users, string name,
             DateTime createdAt, bool isDeleted, List<MessageModel> messages)
         {
             ID = iD;

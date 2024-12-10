@@ -1,5 +1,4 @@
-﻿using GOSSIP.Models;
-using GOSSIP.Net;
+﻿using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -63,7 +62,7 @@ namespace GOSSIP.ViewModels
 
         private void LogInMethod(object obj)
         {
-            var authUser = new AuthUserModel
+            var authUser = new AuthUserModelID
             {
                 
                 Password = Password
@@ -91,7 +90,7 @@ namespace GOSSIP.ViewModels
             _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
         }
 
-        private void OnLoginSuccess(UserModel user)
+        private void OnLoginSuccess(UserModelID user)
         {
             Globals.server.loginEvent -= OnLoginSuccess;
 

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-namespace Server.Models
-{
+using Newtonsoft.Json;
 
+namespace Server
+{
     [Serializable]
-    public class UserModel
+    public class UserModelID
     {
         public uint ID { get; set; }
         public string Email { get; set; }
@@ -22,18 +24,18 @@ namespace Server.Models
         public string Role { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsBanned { get; set; }
-        public string? Photo { get; set; }
-		
-        public List<ChatModel> Chats { get; set; } = [];
+        public string Photo { get; set; }
+        public List<uint> ChatsID { get; set; } = [];
+
         public Dictionary<uint, int> TopicVotes { get; set; } = [];
         public Dictionary<uint, int> ReplyVotes { get; set; } = [];
 
-        public UserModel() {}
+        public UserModelID() { }
 
-        public UserModel(uint id, string email, string username, string password,
+        public UserModelID(uint id, string email, string username, string password,
             string status, string fieldOfStudy, string specialization,
-            string university, uint term, string degree, string role,
-            DateTime createdAt, bool isBanned, string photo, List<ChatModel> chats)
+            string university, uint? term, string degree, string role,
+            DateTime createdAt, bool isBanned, string photo, List<uint> chatsID)
         {
             ID = id;
             Email = email;
@@ -49,7 +51,7 @@ namespace Server.Models
             CreatedAt = createdAt;
             IsBanned = isBanned;
             Photo = photo;
-            Chats = chats;
+            ChatsID = chatsID;
         }
     }
 }

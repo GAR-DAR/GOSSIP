@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GOSSIP.Models
+namespace GOSSIP
 {
     public enum SignalsEnum : byte
     {
+
+        GetAllUsersMessage,
+
         #region User
         Disconnect,
         SignUp,
@@ -16,7 +19,7 @@ namespace GOSSIP.Models
         EditUser,
         RefreshUser,
         ChangeUserPhoto,
-        GetAllUsers, 
+        GetAllUsers,
         #endregion
 
         #region SignUp
@@ -47,7 +50,9 @@ namespace GOSSIP.Models
         ReplyToReplyReply,
         #endregion
 
-        #region Chat
+        #region Chat,
+        GetUserChats,
+        GetUserMessages,
         StartChat,
         SendMessage,
         DeleteMessage,

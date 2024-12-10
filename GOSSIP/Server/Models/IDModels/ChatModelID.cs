@@ -1,36 +1,36 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
-namespace GOSSIP.Models
+namespace Server
 {
     //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
     [Serializable]
-    public class ChatModel
+    public class ChatModelID
     {
         public uint ID { get; set; }
-        public List<UserModel> Users { get; set; }
+        public List<uint> UserIDs { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
-        public List<MessageModel> Messages { get; set; }
+        public List<uint> MessageIDs { get; set; }
 
-        public void AddMessage(MessageModel message)
+        public void AddMessage(uint message)
         {
-            Messages.Add(message);
+            MessageIDs.Add(message);
         }
 
-        public ChatModel(uint iD, List<UserModel> users, string name, 
-            DateTime createdAt, bool isDeleted, List<MessageModel> messages)
+        public ChatModelID(uint iD, List<uint> userIDs, string name, 
+            DateTime createdAt, bool isDeleted, List<uint> messageIDs)
         {
             ID = iD;
-            Users = users;
+            UserIDs = userIDs;
             Name = name;
             CreatedAt = createdAt;
             IsDeleted = isDeleted;
-            Messages = messages;
+            MessageIDs = messageIDs;
         }
 
-        public ChatModel() { }
+        public ChatModelID() { }
     }
 
 }

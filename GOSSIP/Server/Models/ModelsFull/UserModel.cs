@@ -1,14 +1,11 @@
-﻿using GOSSIP.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-
-namespace GOSSIP.Models
+namespace Server
 {
+
     [Serializable]
     public class UserModel
     {
@@ -26,14 +23,16 @@ namespace GOSSIP.Models
         public DateTime CreatedAt { get; set; }
         public bool IsBanned { get; set; }
         public string Photo { get; set; }
-        //[System.Text.Json.Serialization.JsonIgnore]
+
         public List<ChatModel> Chats { get; set; } = [];
+        public Dictionary<uint, int> TopicVotes { get; set; } = [];
+        public Dictionary<uint, int> ReplyVotes { get; set; } = [];
 
         public UserModel() { }
 
         public UserModel(uint id, string email, string username, string password,
             string status, string fieldOfStudy, string specialization,
-            string university, uint? term, string degree, string role,
+            string university, uint term, string degree, string role,
             DateTime createdAt, bool isBanned, string photo, List<ChatModel> chats)
         {
             ID = id;
@@ -51,6 +50,25 @@ namespace GOSSIP.Models
             IsBanned = isBanned;
             Photo = photo;
             Chats = chats;
+        }
+
+        public UserModel(UserModelID user)
+        {
+            ID = user.ID;
+            Email = user.Email;
+            Username = user.Username;
+            Password = user.Password;
+            Status = user.Status;
+            FieldOfStudy = user.FieldOfStudy;
+            Specialization = user.Specialization;
+            University = user.University;
+            Term = user.Term;
+            Degree = user.Degree;
+            Role = user.Role;
+            CreatedAt = user.CreatedAt;
+            IsBanned = user.IsBanned;
+            Photo = user.Photo;
+            Chats = null;
         }
     }
 }
