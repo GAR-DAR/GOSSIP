@@ -30,12 +30,6 @@
             </Button.Template>
         </Button>
 
-
-
-
-
-
-
         <ScrollViewer Grid.Column="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -76,17 +70,11 @@
                     <Button Content="Post" Command="{Binding CreateTopicCommand}" Width="100" Height="40" HorizontalAlignment="Right" Margin="0,15,0,0" FontSize="15">
                         <Button.Style>
                             <Style TargetType="Button">
-                                <!-- Встановлюємо кольори для кнопки -->
                                 <Setter Property="Background" Value="{DynamicResource Danube}"/>
-                                <!-- Основний колір фону -->
                                 <Setter Property="Foreground" Value="White"/>
-                                <!-- Колір тексту -->
                                 <Setter Property="BorderBrush" Value="{DynamicResource PrussianBlue}"/>
-                                <!-- Колір рамки -->
                                 <Setter Property="BorderThickness" Value="1"/>
-                                <!-- Товщина рамки -->
 
-                                <!-- Додаємо заокруглені кути через Border -->
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -100,7 +88,6 @@
                                     </Setter.Value>
                                 </Setter>
 
-                                <!-- Тригер для зміни фону при наведенні -->
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource PrussianBlue}"/>
@@ -134,9 +121,9 @@
                            StaysOpen="False">       
                         <Border Background="White">
                             <ListBox HorizontalAlignment="Left" 
-                                                         ItemsSource="{Binding FilteredTags}" 
-                                                         Width="300"
-                                                         SelectedItem="{Binding SelectedTag}">      
+                                     ItemsSource="{Binding FilteredTags}" 
+                                     Width="300"
+                                     SelectedItem="{Binding SelectedTag}">      
 
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>

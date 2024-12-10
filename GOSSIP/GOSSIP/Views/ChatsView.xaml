@@ -13,7 +13,7 @@
         <convs:LastMessageConverter x:Key="lastMessageConverter"/>
     </UserControl.Resources>
 
-    <Border Background="{DynamicResource PrussianBlue}" CornerRadius="20" Margin="20">
+    <Border Background="{DynamicResource PrussianBlue}" Margin="20">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30*"/>
@@ -45,7 +45,14 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                
+
             </StackPanel>
+
+            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}" Style="{StaticResource CustomButtonStyle}" />
+
+
 
             <ContentControl Grid.Column="1" Content="{Binding OpenedChatVM}" Background="#80032247">
                 <ContentControl.Style>

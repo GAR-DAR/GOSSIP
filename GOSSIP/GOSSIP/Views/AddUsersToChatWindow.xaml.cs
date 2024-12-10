@@ -35,5 +35,23 @@ namespace GOSSIP.Views
                 viewModel.SelectedUsers = listView.SelectedItems.Cast<UserVM>().ToList();
             }
         }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = DataContext as AddUsersToChatVM;
+            if (viewModel != null)
+            {
+                foreach (UserVM user in e.AddedItems)
+                {
+                    if (!viewModel.SelectedUsers.Contains(user))
+                        viewModel.SelectedUsers.Add(user);
+                }
+
+                foreach (UserVM user in e.RemovedItems)
+                {
+                    viewModel.SelectedUsers.Remove(user);
+                }
+            }
+        }
     }
 }
