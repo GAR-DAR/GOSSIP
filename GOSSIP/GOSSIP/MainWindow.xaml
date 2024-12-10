@@ -35,6 +35,10 @@
             <views:TopBarLoggedIn/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModels:TopBarLoggedInModeratorVM}">
+            <views:TopBarLoggedInModerator/>
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type viewModels:OpenedTopicVM}">
             <views:OpenedTopicView/>
         </DataTemplate>

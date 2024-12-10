@@ -19,6 +19,9 @@
     <Compile Update="Views\AuthUserProfileView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\BannedUsersWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ChatsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -87,6 +90,9 @@
     <Page Update="Views\AuthUserProfileView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\BannedUsersWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ChatsView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -115,6 +121,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SignUpViewFirst.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\TopBarLoggedInModerator.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TopBarLoggedIn.xaml">

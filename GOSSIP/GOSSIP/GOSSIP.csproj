@@ -83,4 +83,10 @@
     <Resource Include="Resources\Images\UpvoteDanube.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\TopBarLoggedInModerator.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

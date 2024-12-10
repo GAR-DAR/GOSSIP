@@ -254,7 +254,8 @@ namespace GOSSIP.ViewModels
         {
             ObservableObject profileVM = AuthorizedUserVM != null && AuthorizedUserVM.UserModel.ID == user.UserModel.ID ? new AuthUserProfileVM(this) : new ProfileVM(this, user);
             SelectedVM = profileVM;
-            StackOfVMs.Add(profileVM);
+            if(profileVM is AuthUserProfileInfoVM && StackOfVMs.Last() != profileVM)
+                StackOfVMs.Add(profileVM);
         }
 
         public void ShowSignUpMethod(object obj)
@@ -277,11 +278,23 @@ namespace GOSSIP.ViewModels
             logInVM.RequestClose += (user) =>
             {
                 AuthorizedUserVM = user;
+                ChooseTopBar(user);
                 logInWindow.Close();
-                TopBarLoggedInVM topBarLoggedInVM = new(this);
-                SelectedTopBarVM = topBarLoggedInVM;
             };
             logInWindow.ShowDialog();
+        }
+
+        public void ChooseTopBar(UserVM user)
+        {
+            _ = AuthorizedUserVM.Role == "Moderator" ? SelectedTopBarVM = new TopBarLoggedInModeratorVM(this) : SelectedTopBarVM = new TopBarLoggedInVM(this);
+        }
+
+        public void ShowBannedUsersWindow(object obj)
+        {
+            BannedUsersVM bannedUsersVM = new();
+            BannedUsersWindow bannedUsersWindow = new() { DataContext = bannedUsersVM };
+            bannedUsersVM.CloseCommand = new RelayCommand(obj => bannedUsersWindow.Close());
+            bannedUsersWindow.ShowDialog();
         }
     }
 }
