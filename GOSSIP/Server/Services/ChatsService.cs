@@ -6,7 +6,7 @@ namespace Server.Services;
 
 public static class ChatsService
 {
-    public static bool Create(string name, List<uint> userIds, MySqlConnection conn)
+    public static bool Create(ChatModelID chat, MySqlConnection conn)
     {
         string createQuery =
             """
@@ -15,13 +15,13 @@ public static class ChatsService
             """;
 
         using var insertCommand = new MySqlCommand(createQuery, conn);
-        insertCommand.Parameters.AddWithValue("@name", name);
+        insertCommand.Parameters.AddWithValue("@name", chat.Name);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         if (rowsAffected == 0)
             return false; // TODO: an exception, maybe?..
 
-        foreach (var userId in userIds)
+        foreach (var userId in chat.UserIDs)
         {
             string addUserQuery =
                 """

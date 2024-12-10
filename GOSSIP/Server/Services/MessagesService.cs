@@ -5,7 +5,7 @@ namespace Server.Services;
 
 public static class MessagesService
 {
-    public static bool Add(uint chatId, uint userId, string content, MySqlConnection conn)
+    public static bool Add(MessageModelID message, MySqlConnection conn)
     {
         string addQuery =
             """
@@ -14,9 +14,9 @@ public static class MessagesService
             """;
 
         using var insertCommand = new MySqlCommand(addQuery, conn);
-        insertCommand.Parameters.AddWithValue("@chat_id", chatId);
-        insertCommand.Parameters.AddWithValue("@sender_id", userId);
-        insertCommand.Parameters.AddWithValue("@content", content);
+        insertCommand.Parameters.AddWithValue("@chat_id", message.ChatID);
+        insertCommand.Parameters.AddWithValue("@sender_id", message.UserID);
+        insertCommand.Parameters.AddWithValue("@content", message.MessageText);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         return rowsAffected != 0;

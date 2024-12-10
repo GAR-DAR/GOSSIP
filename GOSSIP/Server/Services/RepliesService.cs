@@ -6,8 +6,7 @@ namespace Server.Services;
 
 public static class RepliesService
 {
-    public static bool Add(uint userId, uint topicId, uint? rootReplyId, uint? replyToId, string content, 
-        MySqlConnection conn)
+    public static bool Add(ReplyModelID reply, MySqlConnection conn)
     {
         string addQuery =
             """
@@ -16,11 +15,13 @@ public static class RepliesService
             """;
 
         using var insertCommand = new MySqlCommand(addQuery, conn);
-        insertCommand.Parameters.AddWithValue("@user_id", userId);
-        insertCommand.Parameters.AddWithValue("@topic_id", topicId);
-        insertCommand.Parameters.AddWithValue("@parent_reply_id", rootReplyId);
-        insertCommand.Parameters.AddWithValue("@reply_to", replyToId);
-        insertCommand.Parameters.AddWithValue("@content", content);
+        insertCommand.Parameters.AddWithValue("@user_id", reply.UserID);
+        insertCommand.Parameters.AddWithValue("@topic_id", reply.TopicID);
+        insertCommand.Parameters.AddWithValue("@parent_reply_id",
+            (reply is ChildReplyModelID childReplyRoot) ? childReplyRoot.RootReplyID : null);
+        insertCommand.Parameters.AddWithValue("@reply_to",
+            (reply is ChildReplyModelID childReplyReplyTo) ? childReplyReplyTo.ReplyToUserID : null);
+        insertCommand.Parameters.AddWithValue("@content", reply.Content);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         return rowsAffected != 0;

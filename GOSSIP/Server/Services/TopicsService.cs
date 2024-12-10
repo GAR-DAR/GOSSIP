@@ -42,7 +42,7 @@ public static class TopicsService
         return topics;
     }
     
-    public static bool Insert(uint userId, string title, string content, List<string> tags, MySqlConnection conn)
+    public static bool Insert(TopicModelID topic, MySqlConnection conn)
     {
         string insertQuery =
             """
@@ -51,15 +51,15 @@ public static class TopicsService
             """;
 
         using var insertCommand = new MySqlCommand(insertQuery, conn);
-        insertCommand.Parameters.AddWithValue("@user_id", userId);
-        insertCommand.Parameters.AddWithValue("@title", title);
-        insertCommand.Parameters.AddWithValue("@content", content);
+        insertCommand.Parameters.AddWithValue("@user_id", topic.AuthorID);
+        insertCommand.Parameters.AddWithValue("@title", topic.Title);
+        insertCommand.Parameters.AddWithValue("@content", topic.Content);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         if (rowsAffected == 0)
             return false;
 
-        if (tags.Count == 0)
+        if (topic.Tags.Count == 0)
             return true;
         
         int topicId = (int)insertCommand.LastInsertedId;
@@ -73,7 +73,7 @@ public static class TopicsService
         insertTagCommand.Parameters.AddWithValue("@topic_id", topicId);
         insertTagCommand.Parameters.Add("@tag", MySqlDbType.VarChar, 255);
 
-        foreach (var tag in tags)
+        foreach (var tag in topic.Tags)
         {
             insertTagCommand.Parameters["@tag"].Value = tag;
             insertTagCommand.ExecuteNonQuery();
