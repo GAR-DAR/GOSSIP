@@ -14,9 +14,14 @@ namespace GOSSIP.ViewModels
     public class AddUsersToChatVM : ObservableObject
     {
 
-        Globals.server.getUsersEvent += getUsers;
+        public AddUsersToChatVM()
+        {
+            Globals.server.getUsersEvent += getUsers;
+            Globals.server.GetAllUsers();
 
-        Globals.server.GetAllUsers();
+            CreateChatCommand = new RelayCommand(CreateChatMethod);
+            CloseCommand = new RelayCommand(obj => RequestClose?.Invoke(false));
+        }
 
         public ICommand CloseCommand { get; set; }
         public ICommand CreateChatCommand { get; }
@@ -36,15 +41,43 @@ namespace GOSSIP.ViewModels
         });
     }
 
-    private void CreateChatMethod(object obj)
-    {
-        if (SelectedUsers.Count == 0)
+        private void CreateChatMethod(object obj)
+        {
+            if (SelectedUsers.Count == 0)
+            {
+                MessageBox.Show("Select at least one user to create a chat");
+                return;
+            }
+
+            string nameOfChat = MainVM.AuthorizedUserVM.Username + ", " + string.Join(", ", SelectedUsers.Select(user => user.Username));
+            if (nameOfChat.Length > 40)
+            {
+                nameOfChat = nameOfChat.Substring(0, 40);
+            }
+
+            List<UserModel> users = [MainVM.AuthorizedUserVM.UserModel];
+            users.AddRange(SelectedUsers.Select(x => x.UserModel));
+
+            ChatModel newChat = new(
+                0,
+                users,
+                nameOfChat,
+                DateTime.Now,
+                false,
+                []
+                );
+
+            Globals.server.SendPacket(SignalsEnum.StartChat, newChat);
+            Globals.server.SendPacket(SignalsEnum.RefreshUser, MainVM.AuthorizedUserVM.UserModel);
+            MainVM.AuthorizedUserVM.UserModel.Chats.Add(newChat);
+            RequestClose?.Invoke(true);
+        }
+
 
         public ObservableCollection<UserVM> AllUsers { get; set; }
         public ObservableCollection<UserVM> FilteredUsers { get; set; } = new();
         public List<UserVM> SelectedUsers { get; set; } = new();
 		
-	}
 	
         private string _searchText;
         public string SearchText
@@ -75,18 +108,6 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public AddUsersToChatVM()
-        {
-            JsonStorage jsonStorage = new("user_data.json");
-            AllUsers = new ObservableCollection<UserVM>(
-                jsonStorage.LoadUsers()
-                           .Select(x => new UserVM(x))
-                           .Where(x => x.UserModel.ID != MainVM.AuthorizedUserVM.UserModel.ID));
-
-            CreateChatCommand = new RelayCommand(CreateChatMethod);
-            CloseCommand = new RelayCommand(obj => RequestClose?.Invoke(false));
-        }
-
         private void FilterUsers()
         {
             if (string.IsNullOrWhiteSpace(SearchText))
@@ -103,39 +124,6 @@ namespace GOSSIP.ViewModels
                 IsPopupOpen = FilteredUsers.Any();
             }
             OnPropertyChanged(nameof(FilteredUsers));
-        }
-
-        private void CreateChatMethod(object obj)
-        {
-            if (SelectedUsers.Count == 0)
-            {
-                MessageBox.Show("Select at least one user to create a chat");
-                return;
-            }
-
-            string nameOfChat = MainVM.AuthorizedUserVM.Username + ", " + string.Join(", ", SelectedUsers.Select(user => user.Username));
-            if (nameOfChat.Length > 40)
-            {
-                nameOfChat = nameOfChat.Substring(0, 40);
-            }
-
-            List<UserModel> users = [MainVM.AuthorizedUserVM.UserModel, .. SelectedUsers.Select(x => x.UserModel)];
-
-            ChatModel newChat = new(
-                0,
-                users,
-                nameOfChat,
-                DateTime.Now,
-                false,
-                new List<MessageModel>()
-            );
-
-        Globals.server.SendPacket(SignalsEnum.StartChat, newChat);
-        Globals.server.SendPacket(SignalsEnum.RefreshUser, MainVM.AuthorizedUserVM.UserModel);
-
-        MainVM.AuthorizedUserVM.UserModel.Chats.Add(newChat);
-        RequestClose?.Invoke(true);
-
         }
     }
 }
