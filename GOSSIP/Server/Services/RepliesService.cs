@@ -145,6 +145,36 @@ public static class RepliesService
         return childReplyIds;
     }
     
+    public static List<ChildReplyModelID> SelectChildRepliesByParent(uint id, MySqlConnection conn)
+    {
+        List<ChildReplyModelID> childReplies = [];
+        List<uint> childReplyIds = [];
+        string selectChildRepliesQuery =
+            """
+            SELECT id
+            FROM replies
+            WHERE parent_reply_id = @parent_reply_id
+            """;
+
+        using var selectCommand = new MySqlCommand(selectChildRepliesQuery, conn);
+        selectCommand.Parameters.AddWithValue("@parent_reply_id", id);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            childReplyIds.Add(reader.GetUInt32("id"));
+        }
+        
+        reader.Close();
+
+        foreach (var childReplyId in childReplyIds)
+        {
+            childReplies.Add((ChildReplyModelID)SelectById(childReplyId, conn));
+        }
+
+        return childReplies;
+    }
+    
     // private static bool AttachVote(ReplyModelID reply, UserModelID user, int vote, MySqlConnection conn)
     // {
     //     string attachVoteQuery = VoteExists(reply, user, conn)

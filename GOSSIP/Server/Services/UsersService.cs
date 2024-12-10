@@ -190,6 +190,33 @@ public static class UsersService
         return userIds;
     }
     
+    public static List<UserModelID> SelectAll(MySqlConnection conn)
+    {
+        List<UserModelID> users = [];
+        List<uint> userIds = [];
+        string selectQuery =
+            """
+            SELECT id FROM users
+            """;
+
+        using var selectCommand = new MySqlCommand(selectQuery, conn);
+        using var reader = selectCommand.ExecuteReader();
+
+        while (reader.Read())
+        {
+            userIds.Add(reader.GetUInt32("id"));
+        }
+
+        reader.Close();
+        
+        foreach (var userId in userIds)
+        {
+            users.Add(UsersService.SelectById(userId, conn));
+        }
+        
+        return users;
+    }
+    
     // public static List<UserModelID> SelectAll(MySqlConnection conn)
     // {
     //     List<UserModelID> allUsers = [];
