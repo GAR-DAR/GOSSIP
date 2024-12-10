@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Server.Models
 {
-    public abstract class ReplyModel
+    public abstract class ReplyModelID
     {
         public uint ID { get; set; }
-        public UserModel User { get; set; }
-        public TopicModel Topic { get; set; }
+        public uint UserID { get; set; }
+        public uint TopicID { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Rating { get; set; } = 0;

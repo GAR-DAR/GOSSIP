@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server.Models
 {
-    public class UserModel
+    public class UserModelID
     {
         public uint ID { get; set; }
         public string Email { get; set; }
@@ -22,7 +22,7 @@ namespace Server.Models
         public DateTime CreatedAt { get; set; }
         public bool IsBanned { get; set; }
         public string? Photo { get; set; }
-        public List<ChatModel> Chats { get; set; } = [];
+        public List<uint> ChatsID { get; set; } = [];
         public Dictionary<uint, int> TopicVotes { get; set; } = [];
         public Dictionary<uint, int> ReplyVotes { get; set; } = [];
     }
