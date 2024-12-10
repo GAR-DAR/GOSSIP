@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿
 using GOSSIP.ViewModels;
 using System;
 using System.Collections.Generic;

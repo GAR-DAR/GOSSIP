@@ -1,12 +1,15 @@
 using System.Data;
 using MySql.Data.MySqlClient;
-using Server.Models;
+using Server;
 
-namespace Server.Services;
-
+// TODO: update SignIn for banned users
+// TODO: delete topics and replies of banned users
+// TODO: unban user
+// TODO: select banned users
+// TODO: replace with NOW()
 public static class UsersService
 {
-    public static bool SignUp(UserModel user, MySqlConnection conn)
+    public static bool SignUp(UserModelID user, MySqlConnection conn)
     {
         if (Exists("email", user.Email, conn)
             || Exists("username", user.Username, conn))
@@ -25,7 +28,7 @@ public static class UsersService
                      @term,
                      (SELECT id FROM degrees WHERE degree = @degree LIMIT 1),
                      (SELECT id FROM roles WHERE role = @role LIMIT 1),
-                     @created_at, @is_banned
+                     NOW(), false
                      )
              """;
 
@@ -41,15 +44,13 @@ public static class UsersService
         insertCommand.Parameters.AddWithValue("@term", user.Term);
         insertCommand.Parameters.AddWithValue("@degree", user.Degree);
         insertCommand.Parameters.AddWithValue("@role", user.Role);
-        insertCommand.Parameters.AddWithValue("@created_at", user.CreatedAt);
-        insertCommand.Parameters.AddWithValue("@is_banned", user.IsBanned);
 
         int affectedRows = insertCommand.ExecuteNonQuery();
 
         return affectedRows != 0;
     }
 
-    public static UserModel? SignIn(string? email, string? username, string password, MySqlConnection conn)
+    public static UserModelID? SignIn(string? email, string? username, string password, MySqlConnection conn)
     {
         string typeOfLogin = (email == null) ? "username" : "email";
         string login = (email == null) ? username : email;
@@ -83,7 +84,7 @@ public static class UsersService
         if (password != storedPassword)
             return null; // TODO: exception is begging to be thrown here
 
-        var user = new UserModel
+        var user = new UserModelID
         {
             ID = reader.GetUInt32("id"),
             Username = reader.GetString("username"),
@@ -102,7 +103,7 @@ public static class UsersService
 
         reader.Close();
 
-        user.Chats = ChatsService.SelectByUser(user, conn);
+        user.ChatsID = ChatsService.SelectChatIdsByUser(user.ID, conn);
 
         return user;
     }
@@ -119,7 +120,7 @@ public static class UsersService
         return Convert.ToBoolean(selectCommand.ExecuteScalar());
     }
 
-    public static UserModel Select(uint userId, MySqlConnection conn)
+    public static UserModelID SelectById(uint userId, MySqlConnection conn)
     {
         string selectQuery =
             """
@@ -142,7 +143,7 @@ public static class UsersService
         using var reader = selectCommand.ExecuteReader();
         reader.Read();
 
-        var user = new UserModel
+        var user = new UserModelID
         {
             ID = userId,
             Username = reader.GetString("username"),
@@ -161,28 +162,19 @@ public static class UsersService
 
         reader.Close();
 
-        user.Chats = ChatsService.SelectByUser(user, conn);
-        user.TopicVotes = GetTopicVotes(user, conn);
-        user.ReplyVotes = GetReplyVotes(user, conn);
+        user.ChatsID = ChatsService.SelectChatIdsByUser(user.ID, conn);
+        // user.TopicVotes = GetTopicVotes(user, conn);
+        // user.ReplyVotes = GetReplyVotes(user, conn);
 
         return user;
     }
 
-    public static List<UserModel> SelectAll(MySqlConnection conn)
+    public static List<uint> SelectAllIds(MySqlConnection conn)
     {
-        List<UserModel> allUsers = [];
+        List<uint> userIds = [];
         string selectQuery =
             """
-            SELECT users.id, users.username, users.email, users.password, users.photo, statuses.status, 
-            fields_of_study.field, specializations.specialization, universities.university, users.term, 
-            degrees.degree, roles.role, users.created_at, users.is_banned
-            FROM users 
-            LEFT JOIN statuses ON users.status_id = statuses.id
-            LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
-            LEFT JOIN specializations ON users.specialization_id = specializations.id
-            LEFT JOIN universities ON users.university_id = universities.id
-            LEFT JOIN degrees ON users.degree_id = degrees.id
-            LEFT JOIN roles ON users.role_id = roles.id
+            SELECT id FROM users
             """;
 
         using var selectCommand = new MySqlCommand(selectQuery, conn);
@@ -190,39 +182,102 @@ public static class UsersService
 
         while (reader.Read())
         {
-            allUsers.Add(new UserModel
-            {
-                ID = reader.GetUInt32("id"),
-                Username = reader.GetString("username"),
-                Email = reader.GetString("email"),
-                Photo = reader.IsDBNull("photo") ? null : reader.GetString("photo"),
-                Status = reader.GetString("status"),
-                FieldOfStudy = reader.IsDBNull("field") ? null : reader.GetString("field"),
-                Specialization = reader.IsDBNull("specialization") 
-                    ? null : reader.GetString("specialization"),
-                Degree = reader.IsDBNull("degree") ? null : reader.GetString("degree"),
-                Term = reader.IsDBNull("term") ? null : reader.GetUInt32("term"),
-                University = reader.IsDBNull("university") ? null : reader.GetString("university"),
-                Role = reader.GetString("role"),
-                CreatedAt = reader.GetDateTime("created_at"),
-                IsBanned = reader.GetBoolean("is_banned")
-            });
+            userIds.Add(reader.GetUInt32("id"));
         }
 
-        return allUsers;
+        return userIds;
     }
 
-    public static bool ChangePassword(UserModel user, string newPassword, MySqlConnection conn)
+    // public static List<UserModelID> SelectAll(MySqlConnection conn)
+    // {
+    //     List<UserModelID> allUsers = [];
+    //     string selectQuery =
+    //         """
+    //         SELECT users.id, users.username, users.email, users.password, users.photo, statuses.status, 
+    //         fields_of_study.field, specializations.specialization, universities.university, users.term, 
+    //         degrees.degree, roles.role, users.created_at, users.is_banned
+    //         FROM users 
+    //         LEFT JOIN statuses ON users.status_id = statuses.id
+    //         LEFT JOIN fields_of_study ON users.field_of_study_id = fields_of_study.id
+    //         LEFT JOIN specializations ON users.specialization_id = specializations.id
+    //         LEFT JOIN universities ON users.university_id = universities.id
+    //         LEFT JOIN degrees ON users.degree_id = degrees.id
+    //         LEFT JOIN roles ON users.role_id = roles.id
+    //         """;
+    //
+    //     using var selectCommand = new MySqlCommand(selectQuery, conn);
+    //     using var reader = selectCommand.ExecuteReader();
+    //
+    //     while (reader.Read())
+    //     {
+    //         allUsers.Add(new UserModelID
+    //         {
+    //             ID = reader.GetUInt32("id"),
+    //             Username = reader.GetString("username"),
+    //             Email = reader.GetString("email"),
+    //             Photo = reader.IsDBNull("photo") ? null : reader.GetString("photo"),
+    //             Status = reader.GetString("status"),
+    //             FieldOfStudy = reader.IsDBNull("field") ? null : reader.GetString("field"),
+    //             Specialization = reader.IsDBNull("specialization") 
+    //                 ? null : reader.GetString("specialization"),
+    //             Degree = reader.IsDBNull("degree") ? null : reader.GetString("degree"),
+    //             Term = reader.IsDBNull("term") ? null : reader.GetUInt32("term"),
+    //             University = reader.IsDBNull("university") ? null : reader.GetString("university"),
+    //             Role = reader.GetString("role"),
+    //             CreatedAt = reader.GetDateTime("created_at"),
+    //             IsBanned = reader.GetBoolean("is_banned")
+    //         });
+    //     }
+    //
+    //     return allUsers;
+    // }
+
+    public static bool ChangeInfo(UserModelID user, MySqlConnection conn)
+    {
+        string changeInfoQuery =
+            """
+            UPDATE users
+            SET username = @username,
+                status_id = (SELECT id FROM statuses WHERE status = @status),
+                field_of_study_id = (SELECT id FROM fields_of_study WHERE field = @field),
+                specialization_id = (SELECT id FROM specializations WHERE specialization = @specialization),
+                university_id = (SELECT id FROM universities WHERE university = @university),
+                degree_id = (SELECT id FROM degrees WHERE degree = @degree),
+                term = @term,
+                email = @email,
+                password = @password,
+                photo = @photo
+            WHERE id = @id 
+            """;
+
+        using var updateCommand = new MySqlCommand(changeInfoQuery, conn);
+        updateCommand.Parameters.AddWithValue("@id", user.ID);
+        updateCommand.Parameters.AddWithValue("@username", user.Username);
+        updateCommand.Parameters.AddWithValue("@status", user.Status);
+        updateCommand.Parameters.AddWithValue("@field", user.FieldOfStudy);
+        updateCommand.Parameters.AddWithValue("@specialization", user.Specialization);
+        updateCommand.Parameters.AddWithValue("@university", user.University);
+        updateCommand.Parameters.AddWithValue("@degree", user.Degree);
+        updateCommand.Parameters.AddWithValue("@term", user.Term);
+        updateCommand.Parameters.AddWithValue("@email", user.Email);
+        updateCommand.Parameters.AddWithValue("@password", user.Password);
+        updateCommand.Parameters.AddWithValue("@photo", user.Photo);
+
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
+    }
+
+    public static bool ChangePassword(uint id, string newPassword, MySqlConnection conn)
     {
         string changePasswordQuery =
             $"""
-             UPDATE users
-             SET password = {newPassword}
-             WHERE id = @user_id
-             """;
+              UPDATE users
+              SET password = {newPassword}
+              WHERE id = @user_id
+              """;
 
         using var updateCommand = new MySqlCommand(changePasswordQuery, conn);
-        updateCommand.Parameters.AddWithValue("@user_id", user.ID);
+        updateCommand.Parameters.AddWithValue("@user_id", id);
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
@@ -263,49 +318,49 @@ public static class UsersService
         return rowsAffected != 0;
     }
 
-    private static Dictionary<uint, int> GetTopicVotes(UserModel user, MySqlConnection conn)
-    {
-        Dictionary<uint, int> topicVotes = [];
-        string getTopicVotesQuery =
-            """
-            SELECT user_id, topic_id, vote
-            FROM users_to_votes
-            WHERE user_id = @user_id AND topic_id IS NOT null
-            """;
+    // private static Dictionary<uint, int> GetTopicVotes(UserModelID user, MySqlConnection conn)
+    // {
+    //     Dictionary<uint, int> topicVotes = [];
+    //     string getTopicVotesQuery =
+    //         """
+    //         SELECT user_id, topic_id, vote
+    //         FROM users_to_votes
+    //         WHERE user_id = @user_id AND topic_id IS NOT null
+    //         """;
+    //
+    //     using var selectCommand = new MySqlCommand(getTopicVotesQuery, conn);
+    //     selectCommand.Parameters.AddWithValue("@user_id", user.ID);
+    //
+    //     using var reader = selectCommand.ExecuteReader();
+    //     while (reader.Read())
+    //     {
+    //         topicVotes.Add(reader.GetUInt32("topic_id"), reader.GetInt32("vote"));
+    //     }
+    //
+    //     return topicVotes;
+    // }
 
-        using var selectCommand = new MySqlCommand(getTopicVotesQuery, conn);
-        selectCommand.Parameters.AddWithValue("@user_id", user.ID);
-
-        using var reader = selectCommand.ExecuteReader();
-        while (reader.Read())
-        {
-            topicVotes.Add(reader.GetUInt32("topic_id"), reader.GetInt32("vote"));
-        }
-
-        return topicVotes;
-    }
-
-    private static Dictionary<uint, int> GetReplyVotes(UserModel user, MySqlConnection conn)
-    {
-        Dictionary<uint, int> replyVotes = [];
-        string getTopicVotesQuery =
-            """
-            SELECT user_id, reply_id, vote
-            FROM users_to_votes
-            WHERE user_id = @user_id AND reply_id IS NOT null
-            """;
-
-        using var selectCommand = new MySqlCommand(getTopicVotesQuery, conn);
-        selectCommand.Parameters.AddWithValue("@user_id", user.ID);
-
-        using var reader = selectCommand.ExecuteReader();
-        while (reader.Read())
-        {
-            replyVotes.Add(reader.GetUInt32("reply_id"), reader.GetInt32("vote"));
-        }
-
-        return replyVotes;
-    }
+    // private static Dictionary<uint, int> GetReplyVotes(UserModelID user, MySqlConnection conn)
+    // {
+    //     Dictionary<uint, int> replyVotes = [];
+    //     string getTopicVotesQuery =
+    //         """
+    //         SELECT user_id, reply_id, vote
+    //         FROM users_to_votes
+    //         WHERE user_id = @user_id AND reply_id IS NOT null
+    //         """;
+    //
+    //     using var selectCommand = new MySqlCommand(getTopicVotesQuery, conn);
+    //     selectCommand.Parameters.AddWithValue("@user_id", user.ID);
+    //
+    //     using var reader = selectCommand.ExecuteReader();
+    //     while (reader.Read())
+    //     {
+    //         replyVotes.Add(reader.GetUInt32("reply_id"), reader.GetInt32("vote"));
+    //     }
+    //
+    //     return replyVotes;
+    // }
 
     public static List<string> GetStatuses(MySqlConnection conn)
     {

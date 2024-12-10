@@ -62,7 +62,7 @@ namespace GOSSIP.ViewModels
 
         private void LogInMethod(object obj)
         {
-            var authUser = new AuthUserModelID
+            var authUser = new AuthUserModel
             {
                 
                 Password = Password
@@ -90,7 +90,7 @@ namespace GOSSIP.ViewModels
             _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
         }
 
-        private void OnLoginSuccess(UserModelID user)
+        private void OnLoginSuccess(UserModel user)
         {
             Globals.server.loginEvent -= OnLoginSuccess;
 

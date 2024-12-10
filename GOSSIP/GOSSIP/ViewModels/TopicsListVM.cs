@@ -1,6 +1,5 @@
 
 ﻿using GOSSIP.JsonHandlers;
-using GOSSIP.Models;
 using GOSSIP.Net;
 using GOSSIP.Net.IO;
 using GOSSIP.Views;

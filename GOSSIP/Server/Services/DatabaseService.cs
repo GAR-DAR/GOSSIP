@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-namespace Server.Services;
+namespace Server;
 
 public class DatabaseService : IDisposable
 {
@@ -9,7 +9,7 @@ public class DatabaseService : IDisposable
     private const string Server = "localhost";
     private const string Database = "gossip";
     private const string User = "root";
-    private const string Password = "mamamia123)";
+    private const string Password = "root";
 
     public DatabaseService()
     {
@@ -29,9 +29,9 @@ public class DatabaseService : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposing) 
+        if (!disposing)
             return;
-        
+
         _connection?.Close();
         _connection?.Dispose();
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    public class ParentReplyModelID : ReplyModel
+    public class ParentReplyModelID : ReplyModelID
     {
         public List<uint> Replies { get; set; } = [];
 

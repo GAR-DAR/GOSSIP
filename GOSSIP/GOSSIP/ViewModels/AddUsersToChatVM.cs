@@ -6,8 +6,6 @@ using System.Linq;
 using System.Windows;
 using GOSSIP.Net;
 using System.Windows.Input;
-using GOSSIP.Models.IDModels;
-
 
 namespace GOSSIP.ViewModels
 {
@@ -30,7 +28,7 @@ namespace GOSSIP.ViewModels
         public event Action<bool?> RequestClose;
 
 
-    private void getUsers(List<UserModelID> users)
+    private void getUsers(List<UserModel> users)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -55,21 +53,21 @@ namespace GOSSIP.ViewModels
                 nameOfChat = nameOfChat.Substring(0, 40);
             }
 
-            List<UserModelID> users = [MainVM.AuthorizedUserVM.UserModel];
+            List<UserModel> users = [MainVM.AuthorizedUserVM.UserModel];
             users.AddRange(SelectedUsers.Select(x => x.UserModel));
 
-            ChatModelID newChat = new(
+            ChatModel newChat = new(
                 0,
                 users,
                 nameOfChat,
                 DateTime.Now,
                 false,
                 []
-                );
+            );
 
-            Globals.server.SendPacket(SignalsEnum.StartChat, newChat);
-            Globals.server.SendPacket(SignalsEnum.RefreshUser, MainVM.AuthorizedUserVM.UserModel);
-            MainVM.AuthorizedUserVM.UserModel.ChatsID.Add(newChat);
+            Globals.server.SendPacket(SignalsEnum.StartChat, new ChatModelID(newChat));
+            Globals.server.SendPacket(SignalsEnum.RefreshUser, Globals.User_Cache);
+            MainVM.AuthorizedUserVM.UserModel.Chats.Add(newChat);
             RequestClose?.Invoke(true);
         }
 

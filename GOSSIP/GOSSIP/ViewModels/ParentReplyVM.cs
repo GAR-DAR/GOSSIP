@@ -1,5 +1,4 @@
 ﻿using GOSSIP.JsonHandlers;
-using GOSSIP.Models.IDModels;
 using GOSSIP.Net;
 using System;
 using System.Collections.ObjectModel;
@@ -10,7 +9,7 @@ namespace GOSSIP.ViewModels
 {
     public class ParentReplyVM : ObservableObject
     {
-        public ParentReplyModelID ReplyModelPR { get; }
+        public ParentReplyModel ReplyModelPR { get; }
 
         private bool _canUpVote = true;
         public bool CanUpVote
@@ -47,7 +46,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public UserModelID User
+        public UserModel User
         {
             get => ReplyModelPR.User;
             set
@@ -159,7 +158,7 @@ namespace GOSSIP.ViewModels
         public event Action<UserVM> ProfileClickEvent;
         public event Action<object> UserIsNotAuthorized;
 
-        public ParentReplyVM(ParentReplyModelID replyModel)
+        public ParentReplyVM(ParentReplyModel replyModel)
         {
             ReplyModelPR = replyModel;
             Replies = new(replyModel.Replies.Select(x => new ChildReplyVM(x, ReplyModelPR, this)));
@@ -202,14 +201,14 @@ namespace GOSSIP.ViewModels
                 return;
             }
 
-            ChildReplyModelID childReply = new()
+            ChildReplyModel childReply = new()
             {
                 Content = ReplyToReplyContent,
                 CreatedAt = DateTime.Now,
                 ID = 0,
                 Rating = 0,
                 User = MainVM.AuthorizedUserVM.UserModel,
-                ReplyToID = ReplyModelPR.User,
+                ReplyTo = ReplyModelPR.User,
                 Topic = ReplyModelPR.Topic
             };
 

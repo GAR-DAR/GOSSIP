@@ -230,7 +230,8 @@ namespace Server
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();
-                                TopicsService.Insert(newTopic, Globals.db.Connection);
+                                TopicsService.Insert(newTopic.ID, newTopic.Title, 
+                                    newTopic.Content, newTopic.Tags, Globals.db.Connection);
                                 mutex.ReleaseMutex();
 
                                 mutex.WaitOne();

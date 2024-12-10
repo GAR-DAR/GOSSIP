@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    public class ChildReplyModelID : ReplyModel
+    public class ChildReplyModelID : ReplyModelID
     {
         public uint RootReplyID { get; set; }
         public uint ReplyToUserID { get; set; }
@@ -15,8 +15,7 @@ namespace Server
             string content, DateTime createdAt, int rating, bool isDeleted, uint replyToUserID) 
             : base(iD, userID, topicID, content, createdAt, rating, isDeleted)
         {
-            ReplyToUserID = replyToUser;
-            Content = "@" + ReplyToUserID.Username + ", " + content;
+            ReplyToUserID = replyToUserID;
         }
 
         public ChildReplyModelID() { }

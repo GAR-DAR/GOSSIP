@@ -49,7 +49,7 @@ namespace GOSSIP.ViewModels
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                     OnPropertyChanged(nameof(AuthorizedUserVM));
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
                     
                     _chatsVM.UpdateChats();
                 }
@@ -69,7 +69,7 @@ namespace GOSSIP.ViewModels
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                     OnPropertyChanged(nameof(AuthorizedUserVM));
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
 
                     _chatsVM.UpdateChats();
                 }
@@ -90,7 +90,7 @@ namespace GOSSIP.ViewModels
                     Globals.server.SendPacket(SignalsEnum.GetUserChats, AuthorizedUserVM.UserModel.ID);
 
                     //Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
+                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
                     OnPropertyChanged(nameof(AuthorizedUserVM));
 
                     _chatsVM.UpdateChats();
@@ -167,7 +167,7 @@ namespace GOSSIP.ViewModels
             Globals.server.multicastMessageEvent += OnMulticastMessage;
         }
 
-        private void OnRefreshUser(UserModelID user)
+        private void OnRefreshUser(UserModel user)
         {
             if (AuthorizedUserVM != null)
             {
@@ -178,14 +178,14 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private void OnMulticastMessage(MessageModelID message)
+        private void OnMulticastMessage(MessageModel message)
         {
             if (AuthorizedUserVM != null)
             {
-                AuthorizedUserVM.UserModel.ChatsID.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
+                AuthorizedUserVM.UserModel.Chats.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
 
                 OnPropertyChanged(nameof(AuthorizedUserVM));
-                OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.ChatsID));
+                OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
                 
             }
         }

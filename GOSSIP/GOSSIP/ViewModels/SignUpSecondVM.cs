@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models.IDModels;
+﻿
 using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
@@ -188,7 +188,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public uint? Term
+        public uint Term
         {
             get => _mainVM.Term;
             set
@@ -296,7 +296,7 @@ namespace GOSSIP.ViewModels
             {
                 ValidateInput();
 
-                UserModelID newUser = new UserModelID(
+                UserModel newUser = new UserModel(
                     id: 0,
                     email: _mainVM.Email,
                     username: _mainVM.Username,
@@ -311,13 +311,12 @@ namespace GOSSIP.ViewModels
                     createdAt: DateTime.Now,
                     isBanned: false,
                     photo: "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
-                    chatsID: []
+                    chats: []
                 );
 
-                Globals.server.SignUp(newUser);
+                Globals.server.SignUp(new UserModelID(newUser));
                 Globals.server.signUpEvent += (user) => OnSignUpSuccess(new UserVM(user));
 
-                _chatService.AddUser(newUser);
                 CloseDialog.Invoke(new(newUser));
             }
             catch (Exception ex)

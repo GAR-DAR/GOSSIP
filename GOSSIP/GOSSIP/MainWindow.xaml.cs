@@ -1,4 +1,3 @@
-﻿using GOSSIP.Models;
 ﻿using GOSSIP.Net;
 using GOSSIP.ViewModels;
 using System;

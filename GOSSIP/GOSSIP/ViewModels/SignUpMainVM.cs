@@ -1,4 +1,4 @@
-﻿using GOSSIP.Models;
+﻿
 using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace GOSSIP.ViewModels
         public string Specialization { get; set; }
         public string University { get; set; }
         public string Degree { get; set; }
-        public uint? Term { get; set; }
+        public uint Term { get; set; }
 
         public event Action<UserVM> RequestClose;
 

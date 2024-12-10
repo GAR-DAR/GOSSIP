@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Input;
 using GOSSIP.Net;
 using System.Timers;
-using GOSSIP.Models.IDModels;
 
 namespace GOSSIP.ViewModels
 {
@@ -83,10 +82,10 @@ namespace GOSSIP.ViewModels
 
         public void UpdateChats()
         {
-            if(MainVM.AuthorizedUserVM.UserModel.ChatsID != null)
+            if(MainVM.AuthorizedUserVM.UserModel.Chats != null)
             {
                 ChatList.Clear();
-                foreach (ChatModelID chatModel in MainVM.AuthorizedUserVM.UserModel.ChatsID)
+                foreach (ChatModel chatModel in MainVM.AuthorizedUserVM.UserModel.Chats)
                     ChatList.Add(new(chatModel, _mainVM));
             }
         }

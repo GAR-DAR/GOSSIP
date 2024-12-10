@@ -12,9 +12,9 @@ namespace GOSSIP
 
         public ParentReplyModelID() { }
 
-        public ParentReplyModelID(uint iD, uint userID, uint someID,
+        public ParentReplyModelID(uint iD, uint userID, uint topicID,
         string content, DateTime createdAt, int rating, bool isDeleted, List<uint> replies)
-        : base(iD, userID, someID, content, createdAt, rating, isDeleted)
+        : base(iD, userID, topicID, content, createdAt, rating, isDeleted)
         {
             Replies = replies;
         }

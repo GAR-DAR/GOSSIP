@@ -5,8 +5,7 @@ namespace GOSSIP
 {
     //Тимчасова модель чатів. Пізніше буде замінена на робочу модель
     [Serializable]
-    public ChatModelID() { }
-
+    
     public class ChatModelID
     {
         public uint ID { get; set; }
@@ -47,6 +46,8 @@ namespace GOSSIP
                 MessageIDs.Add(message.ID);
             }
         }
+
+        public ChatModelID() { }
     }
 
 }

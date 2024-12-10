@@ -1,5 +1,4 @@
-﻿using GOSSIP.Models.IDModels;
-using GOSSIP.Net;
+﻿using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +10,8 @@ namespace GOSSIP.ViewModels
 {
     public class ChildReplyVM : ObservableObject
     {
-        private readonly ChildReplyModelID _replyModel;
-        private readonly ParentReplyModelID _parentReplyModel;
+        private readonly ChildReplyModel _replyModel;
+        private readonly ParentReplyModel _parentReplyModel;
         private readonly ParentReplyVM _replyVM;
 
 
@@ -68,7 +67,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public UserModelID User
+        public UserModel User
         {
             get => _replyModel.User;
             set
@@ -128,7 +127,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        public ChildReplyVM(ChildReplyModelID replyModel, ParentReplyModelID parentReplyModel, ParentReplyVM replyVM)
+        public ChildReplyVM(ChildReplyModel replyModel, ParentReplyModel parentReplyModel, ParentReplyVM replyVM)
         {
             _replyModel = replyModel;
             _parentReplyModel = parentReplyModel;
@@ -149,7 +148,7 @@ namespace GOSSIP.ViewModels
             if (string.IsNullOrEmpty(ReplyQuery))
                 return;
 
-            ChildReplyModelID childReplyModel = new(
+            ChildReplyModel childReplyModel = new(
                 ID = 0,
                 MainVM.AuthorizedUserVM.UserModel,
                 _parentReplyModel.Topic,
@@ -157,6 +156,7 @@ namespace GOSSIP.ViewModels
                 DateTime.Now,
                 0,
                 false,
+                _parentReplyModel,
                 _replyModel.User
                 );
 

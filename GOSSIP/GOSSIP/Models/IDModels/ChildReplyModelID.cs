@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace GOSSIP
 {
-    public ChildReplyModelID() { }
 
     public class ChildReplyModelID : ReplyModelID
     {

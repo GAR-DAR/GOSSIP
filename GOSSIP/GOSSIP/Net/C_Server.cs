@@ -110,7 +110,7 @@ namespace GOSSIP.Net
             SendPacket(SignalsEnum.SignUp, user);
         }
 
-        public void Login(AuthUserModelID user)
+        public void Login(AuthUserModel user)
         {
             SendPacket(SignalsEnum.Login, user);
         }
