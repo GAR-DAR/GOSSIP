@@ -49,7 +49,7 @@
 
             </StackPanel>
 
-            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}" Style="{StaticResource CustomButtonStyle}" />
+            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}" Style="{StaticResource CreateChat}" />
 
 
 

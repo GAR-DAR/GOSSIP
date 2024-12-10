@@ -393,4 +393,27 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="CreateChat" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="buttonBorder" Background="{DynamicResource PrussianBlueWithoutOpacity}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <!-- Іконка -->
+                            <Image Source="pack://application:,,,/Resources/Images/AddChat.png" Width="25" Margin="5"/>
+                            <!-- Текст -->
+                            <TextBlock Text="New Chat" FontSize="25" VerticalAlignment="Center" Margin="5" Foreground="White" />
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Тригер на наведення -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="buttonBorder" Property="Background" Value="{DynamicResource Danube}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
