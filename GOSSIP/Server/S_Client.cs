@@ -164,12 +164,15 @@ namespace Server
                                 mutex.WaitOne();
                                 var userModel = _packetReader.ReadPacket<UserModelID>().Data;
                                 mutex.ReleaseMutex();
-                                User = userModel;
+                                var temp = UsersService.SignUp(userModel, Globals.db.Connection);
+                                
+                                
 
-                                if (UsersService.SignUp(userModel, Globals.db.Connection))  //no error if Andriy
+                                if (temp != null)  //no error if Andriy
                                 {
+                                    User = temp;
                                     Logging.Log("registered", UID, User);
-                                    SendPacket(SignalsEnum.SignUp, userModel);
+                                    SendPacket(SignalsEnum.SignUp, temp);
                                     Logging.LogSent(SignalsEnum.SignUp, UID, User);
                                 }
                                 else
