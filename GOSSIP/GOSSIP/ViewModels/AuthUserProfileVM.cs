@@ -13,7 +13,30 @@ namespace GOSSIP.ViewModels
     {
         public UserVM UserVM { get; set; }
 
-        public ObservableCollection<ObservableObject> AvailableVMs { get; set; }
+        public AuthUserProfileInfoVM AuthUserProfileInfoVM { get; set; }
+        public AuthUserProfileSettingsVM AuthUserProfileSettingsVM { get; set; }
+
+        private bool _isProfileSelected = true;
+        public bool IsProfileSelected
+        {
+            get => _isProfileSelected;
+            set
+            {
+                _isProfileSelected = value;
+                OnPropertyChanged(nameof(IsProfileSelected));
+            }
+        }
+
+        private bool _isSettingsSelected;
+        public bool IsSettingsSelected
+        {
+            get => _isSettingsSelected;
+            set
+            {
+                _isSettingsSelected = value;
+                OnPropertyChanged(nameof(IsSettingsSelected));
+            }
+        }
 
         private ObservableObject _selectedVM;
         public ObservableObject SelectedVM
@@ -27,18 +50,28 @@ namespace GOSSIP.ViewModels
         }
 
         public ICommand BackCommand { get; }
+        public ICommand ShowProfileInfoCommand { get; }
+        public ICommand ShowSettingsCommand { get; }
 
         public AuthUserProfileVM(MainVM mainVM)
         {
             UserVM = MainVM.AuthorizedUserVM;
+            AuthUserProfileInfoVM = new(UserVM, mainVM);
+            AuthUserProfileSettingsVM = new(UserVM, mainVM);
 
-            AuthUserProfileInfoVM authUserProfileInfoVM = new(UserVM, mainVM);
-            AuthUserProfileSettingsVM authUserProfileSettingsVM = new(UserVM, mainVM);
-            AvailableVMs = [authUserProfileInfoVM, authUserProfileSettingsVM];
-
-            SelectedVM = authUserProfileInfoVM;
+            SelectedVM = AuthUserProfileInfoVM;
 
             BackCommand = new RelayCommand(obj => mainVM.SwitchToPreviousVM());
+            ShowProfileInfoCommand = new RelayCommand(obj => { 
+                                                                SelectedVM = AuthUserProfileInfoVM; 
+                                                                IsProfileSelected = true;
+                                                                IsSettingsSelected = false; 
+                                                             });
+            ShowSettingsCommand = new RelayCommand(obj => {
+                                                            SelectedVM = AuthUserProfileSettingsVM; 
+                                                            IsProfileSelected = false;
+                                                            IsSettingsSelected = true;
+                                                          });
         }
     }
 }

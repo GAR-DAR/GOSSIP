@@ -50,12 +50,12 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Hidden"
+                  PanningMode="Both"
+                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
 
-    <Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
-            <ScrollViewer.Resources>
-                <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}" />
-            </ScrollViewer.Resources>
+        <Grid>
             <StackPanel>
                 <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
                     <ListBox.ItemTemplate>
@@ -157,6 +157,8 @@
                         </Style>
                     </ListBox.Style>
 
+
+
                     <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
@@ -205,33 +207,29 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-
-
-
             </StackPanel>
-        </ScrollViewer>
-        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Margin="0,0,45,20" Cursor="Hand"
+
+            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Margin="0,0,45,20" Cursor="Hand"
         Command="{Binding DataContext.CreateTopicCommand, RelativeSource={RelativeSource AncestorType=Window}}"
         Background="{DynamicResource PrussianBlueWithoutOpacity}" BorderBrush="{DynamicResource Danube}" BorderThickness="3">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Grid>
-                        <!-- Кругла форма кнопки -->
-                        <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
-                        <!-- Іконка в центрі -->
-                        <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/AddPost.png" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <!-- Зміна кольору при наведенні -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource PrussianBlue}"/>
-                            <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/AddPost.png"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
-
-    </Grid>
-
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <!-- Кругла форма кнопки -->
+                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
+                            <!-- Іконка в центрі -->
+                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/AddPost.png" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- Зміна кольору при наведенні -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource PrussianBlue}"/>
+                                <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/AddPost.png"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
