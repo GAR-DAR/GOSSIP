@@ -21,7 +21,20 @@
             <ColumnDefinition Width="93*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Command="{Binding BackCommand}" Width="40" Height="40" VerticalAlignment="Top" Margin="10" Content="&lt;-"/>
+        <Button Command="{Binding BackCommand}" Width="40" Height="40" Cursor="Hand" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Margin="0,12,0,0" Focusable="False" Background="Transparent">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Back.png" Width="24" Height="24"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/BackDanube.png"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
 
         <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <Grid>
@@ -61,13 +74,25 @@
                         <TextBlock Foreground="White" FontSize="18" Text="{Binding User.CreatedAt, Converter={StaticResource userProfileCreatedAtConverter}}" Margin="0 5 0 0"/>
                     </StackPanel>
 
-                    
+
                 </WrapPanel>
 
                 <StackPanel Grid.Row="1" Margin="0 5" Width="800" HorizontalAlignment="Left">
                     <TextBlock Foreground="White" FontSize="20" Text="About" FontWeight="Bold"/>
-                    <Border Background="White">
-                        <TextBlock Text="{Binding UserInfo}"/>
+                    <Border Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+BorderBrush="{DynamicResource Danube}" 
+BorderThickness="2" 
+CornerRadius="20" 
+Height="150">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="{Binding UserInfo}" 
+           Foreground="White" 
+           Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+           TextWrapping="Wrap" 
+           TextAlignment="Left" 
+           VerticalAlignment="Center" 
+           Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
                 </StackPanel>
 

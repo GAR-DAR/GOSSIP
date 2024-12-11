@@ -11,13 +11,13 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <!-- Up Button -->
-                        <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand" Height="15"
-                                  Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-                                  Content="▲" 
-                                  Foreground="{DynamicResource Danube}" />
+                        <!-- Down Button -->
+                        <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand" Height="15" 
+                        Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+                        Content="▲" 
+                        Foreground="{DynamicResource Danube}" />
                         <!-- Track -->
-                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="False">
+                        <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="True">
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent"/>
                             </Track.DecreaseRepeatButton>
@@ -28,11 +28,11 @@
                                 <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent"/>
                             </Track.IncreaseRepeatButton>
                         </Track>
-                        <!-- Down Button -->
-                        <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand" Height="15" 
-                                  Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-                                  Content="▼" 
-                                  Foreground="{DynamicResource Danube}" />
+                        <!-- Up Button -->
+                        <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand" Height="15"
+                        Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+                        Content="▼" 
+                        Foreground="{DynamicResource Danube}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

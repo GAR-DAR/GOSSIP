@@ -20,35 +20,60 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Add members" FontSize="30" Foreground="White" Margin="10"/>
-            <Button Content="x" Height="40" Width="40" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CloseCommand}" Margin="10"/>
+            <Button Style="{DynamicResource CloseButton}" Height="40" Width="40" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CloseCommand}" Margin="0,10,20,0">
+                <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
+            </Button>
 
             <StackPanel Orientation="Vertical" Grid.Row="1">
                 <!-- Поле для пошуку -->
                 <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                Style="{StaticResource InputField}" />
+                Style="{StaticResource InputField}" Width="340" Height="45"/>
 
                 <!-- Popup для списку результатів -->
                 <Popup IsOpen="{Binding IsPopupOpen}"
-           PlacementTarget="{Binding ElementName=SearchBox}" 
-           Placement="Bottom"
-           StaysOpen="False">
-                    <Border Background="White" BorderBrush="Gray" BorderThickness="1">
-                        <ListBox ItemsSource="{Binding FilteredUsers}" 
+       PlacementTarget="{Binding ElementName=SearchBox}" 
+       Placement="Bottom"
+       StaysOpen="False">
+                    <Border Background="{DynamicResource PrussianBlueWithoutOpacity}" BorderBrush="{DynamicResource Danube}" BorderThickness="2">
+                        <StackPanel>
+                            <ListBox ItemsSource="{Binding FilteredUsers}" 
                      SelectionMode="Multiple"
                      MinWidth="200"
                      SelectionChanged="ListBox_SelectionChanged">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Username}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Username}" />
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <!-- Звичайний стан -->
+                                        <Setter Property="Background" Value="{DynamicResource PrussianBlueWithoutOpacity}"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <!-- Виділений стан -->
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource Danube}"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource Danube}"/>
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </StackPanel>
                     </Border>
                 </Popup>
+
+
             </StackPanel>
 
 
-            <ListView ItemsSource="{Binding AllUsers, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged">
+            <ListView ItemsSource="{Binding AllUsers}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged" BorderBrush="{DynamicResource Danube}">
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -63,7 +88,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Button Grid.Row="3" Width="100" Height="30" Content="Create" HorizontalAlignment="Right" Margin="10" Command="{Binding CreateChatCommand}"/>
+            <Button Style="{StaticResource Reply}" Grid.Row="3" Width="100" Height="30" Content="Create" HorizontalAlignment="Right" Margin="10" Command="{Binding CreateChatCommand}"/>
         </Grid>
     </Border>
     
