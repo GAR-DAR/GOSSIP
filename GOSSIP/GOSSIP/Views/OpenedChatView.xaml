@@ -124,6 +124,7 @@
             <Border Grid.Row="2" Background="Transparent">
                 <WrapPanel>
                     <TextBox Style="{StaticResource MessageInput}"
+                     Margin="20,0,0,10"
                      Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Width="750"
                      MinHeight="40"
@@ -135,7 +136,7 @@
                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
                      >
                     </TextBox>
-                    <Button Style="{StaticResource SendMessageButton}" Margin="10 0" Command="{Binding SendMessageCommand}"/>
+                    <Button Style="{StaticResource SendMessageButton}" Margin="10,0,0,10" Command="{Binding SendMessageCommand}"/>
                 </WrapPanel>
             </Border>
 

@@ -6,7 +6,46 @@
              xmlns:local="clr-namespace:GOSSIP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="350">
-
+    <UserControl.Resources>
+        <Style TargetType="ScrollBar" x:Key="CustomScrollBar">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <!-- Vertical ScrollBar -->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- Down Button -->
+                            <RepeatButton Grid.Row="2" Command="ScrollBar.LineDownCommand" Height="15" 
+                    Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+                    Content="▲" 
+                    Foreground="{DynamicResource Danube}" />
+                            <!-- Track -->
+                            <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Background="{DynamicResource Danube}"  />
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                            <!-- Up Button -->
+                            <RepeatButton Grid.Row="0" Command="ScrollBar.LineUpCommand" Height="15"
+                    Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+                    Content="▼" 
+                    Foreground="{DynamicResource Danube}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"/>

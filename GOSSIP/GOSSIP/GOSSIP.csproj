@@ -14,6 +14,7 @@
     <None Remove="Resources\Images\AddPost.png" />
     <None Remove="Resources\Images\Back.png" />
     <None Remove="Resources\Images\BackDanube.png" />
+    <None Remove="Resources\Images\Ban.png" />
     <None Remove="Resources\Images\Close.png" />
     <None Remove="Resources\Images\Comment.png" />
     <None Remove="Resources\Images\Downvote.png" />
@@ -46,6 +47,7 @@
     <Resource Include="Resources\Images\AddPost.png" />
     <Resource Include="Resources\Images\Back.png" />
     <Resource Include="Resources\Images\BackDanube.png" />
+    <Resource Include="Resources\Images\Ban.png" />
     <Resource Include="Resources\Images\Close.png" />
     <Resource Include="Resources\Images\Comment.png" />
     <Resource Include="Resources\Images\Downvote.png" />
