@@ -5,41 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GOSSIP.Views"
         mc:Ignorable="d"
-        Title="BannedUsersWindow" Height="600" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Grid Background="{StaticResource PrussianBlueWithoutOpacity}" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="90*"/>
-        </Grid.RowDefinitions>
+        Title="BannedUsersWindow" Height="600" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None"  AllowsTransparency="True"
+ Background="Transparent" BorderBrush="Transparent">
 
-        <TextBlock Grid.Row="0" Text="Banned Users" Foreground="White" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
+    <Border Background="{StaticResource Downriver}" CornerRadius="20" BorderBrush="{StaticResource Danube}" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="90*"/>
+            </Grid.RowDefinitions>
 
-        <Button Style="{StaticResource CloseButton}" Grid.Row="0" Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Command="{Binding CloseCommand}">
-            <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
-        </Button>
-        <ListBox BorderBrush="{DynamicResource Danube}" Grid.Row="1" Background="Transparent" ItemsSource="{Binding BannedUsers}">
-            <ListBox.ItemsPanel>
+            <TextBlock Grid.Row="0" Text="Banned Users" Foreground="White" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
 
-                <ItemsPanelTemplate>
-                    <StackPanel/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
+            <Button Style="{StaticResource CloseButton}" Grid.Row="0" Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="10" Command="{Binding CloseCommand}">
+                <Image Source="pack://application:,,,/Resources/Images/Close.png"/>
+            </Button>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel>
-                        <Image Source="{Binding Photo}" Width="40" Height="40">
-                            <Image.Clip>
-                                <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                            </Image.Clip>
-                        </Image>
+            <ListBox BorderBrush="Transparent" Grid.Row="1" Background="Transparent" ItemsSource="{Binding BannedUsers}" Margin="0,0,0,0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                        <TextBlock Text="{Binding Username}" Foreground="White" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        <Button Style="{StaticResource Reply}" Command="{Binding DataContext.UnbanUserCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Height="30" Width="60" Margin="300 0 0 0" Content="Unban"/>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <Image Source="{Binding Photo}" Width="40" Height="40">
+                                <Image.Clip>
+                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                </Image.Clip>
+                            </Image>
 
-                    </WrapPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+                            <TextBlock Text="{Binding Username}" Foreground="White" FontSize="20" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                            <Button Style="{StaticResource Reply}" Command="{Binding DataContext.UnbanUserCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Height="30" Width="60" Margin="300 0 0 0" Content="Unban"/>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Border>
 </Window>
