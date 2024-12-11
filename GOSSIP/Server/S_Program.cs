@@ -23,7 +23,7 @@ namespace Server
 
         static void Main(string[] args)
         {
-            _listener = new TcpListener(IPAddress.Parse("172.24.237.81"), 7891);
+            _listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 7891);
             _listener.Start();
             Console.WriteLine("Server started... Waiting for connections.");
 

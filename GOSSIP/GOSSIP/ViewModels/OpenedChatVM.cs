@@ -34,6 +34,7 @@ namespace GOSSIP.ViewModels
             MainVM = mainVM;
             _chat = chat;
 
+            MainVM.AuthorizedUserVM.UserModel.Chats.
 
             ChatName = chat.Name; //Поки хардкод
             Messages = new(chat.Messages);
@@ -43,9 +44,32 @@ namespace GOSSIP.ViewModels
 
             Photo = chat.Users[0].Photo;
 
-            //Підписка на зміну колекції з моделі. Модель міняється — міняється UI
+            MainVM.AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
+
             Messages.CollectionChanged += LastMessageUpdate;
             SendMessageCommand = new RelayCommand(SendMessageMethod);
+        }
+
+        private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(MainVM.AuthorizedUserVM.UserModel.Chats))
+            {
+                UpdateMessages();
+            }
+        }
+
+        private void UpdateMessages()
+        {
+            var updatedChat = MainVM.AuthorizedUserVM.UserModel.Chats.FirstOrDefault(c => c.ID == _chat.ID);
+
+            if (updatedChat != null)
+            {
+                Messages.Clear();
+                foreach (var message in updatedChat.Messages)
+                {
+                    Messages.Add(message);
+                }
+            }
         }
 
         public string LastMessage
@@ -72,11 +96,11 @@ namespace GOSSIP.ViewModels
 
         private void SendMessageMethod(object obj)
         {
-          //  _chat = new ChatModel { ID = 1 };
             MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUserVM.UserModel, this.EnteredText, DateTime.Now, false, false);
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";
+
 
             Globals.server.SendPacket(SignalsEnum.SendMessage, new MessageModelID(message));
         }

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using GOSSIP.Net;
 using System.Timers;
+using System.ComponentModel;
 
 namespace GOSSIP.ViewModels
 {
