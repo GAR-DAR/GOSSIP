@@ -49,7 +49,7 @@
             <StackPanel>
 
                 <WrapPanel Margin="0 5">
-                    <Image Source="{Binding UserVM.Photo}" Width="200" Height="200" HorizontalAlignment="Left">
+                    <Image Source="{Binding UserVM.Photo}" Width="200" Height="200" HorizontalAlignment="Left" Stretch="UniformToFill">
                         <Image.Clip>
                             <EllipseGeometry RadiusX="100" RadiusY="100" Center="100,100"/>
                         </Image.Clip>
