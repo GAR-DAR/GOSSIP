@@ -4,7 +4,6 @@ using Server.Models;
 
 namespace Server.Services;
 
-// TODO: update SignIn for banned users
 // TODO: delete topics and replies of banned users
 // TODO: unban user
 // TODO: select banned users
@@ -276,16 +275,15 @@ public static class UsersService
     {
         string banUserQuery =
             """
-            UPDATE users
-            SET is_banned = 1
-            WHERE id = @userId
+            UPDATE users SET is_banned = 1 WHERE id = @userId;
+            UPDATE topics SET is_deleted = TRUE WHERE user_id = @userId;
+            UPDATE replies SET is_deleted = TRUE WHERE creator_id = @userId
             """;
 
         using var updateCommand = new MySqlCommand(banUserQuery, conn);
         updateCommand.Parameters.AddWithValue("@userId", userId);
 
         int affectedRows = updateCommand.ExecuteNonQuery();
-
         return affectedRows != 0;
     }
 
