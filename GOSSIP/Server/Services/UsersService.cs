@@ -4,8 +4,6 @@ using Server.Models;
 
 namespace Server.Services;
 
-// TODO: select banned users
-// TODO: replace with NOW()
 public static class UsersService
 {
     public static bool SignUp(UserModelID user, MySqlConnection conn)

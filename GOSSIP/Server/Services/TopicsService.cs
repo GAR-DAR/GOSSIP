@@ -208,6 +208,33 @@ public static class TopicsService
 
         return tags;
     }
+
+    public static List<TopicModelID> SelectTopicsByUser(uint userId, MySqlConnection conn)
+    {
+        List<TopicModelID> topics = [];
+        List<uint> topicIds = [];
+        string selectTopicsByUserQuery =
+            """
+            SELECT id FROM topics WHERE user_id = @user_id
+            """;
+
+        using var selectCommand = new MySqlCommand(selectTopicsByUserQuery, conn);
+        selectCommand.Parameters.AddWithValue("@user_id", userId);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            topicIds.Add(reader.GetUInt32("id"));
+        }
+        reader.Close();
+
+        foreach (var topicId in topicIds)
+        {
+            topics.Add(SelectById(topicId, conn));
+        }
+
+        return topics;
+    }
     
     public static bool Upvote(uint id, MySqlConnection conn)
     {
