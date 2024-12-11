@@ -90,7 +90,7 @@ CREATE TABLE `degrees` (
 
 LOCK TABLES `degrees` WRITE;
 /*!40000 ALTER TABLE `degrees` DISABLE KEYS */;
-INSERT INTO `degrees` VALUES (1,'Undergraduate'),(2,'Bachelor'),(3,'Master'),(4,'Postgraduate'),(5,'Doctor of Philosophy'),(6,'Doctor of Arts'),(7,'Doctor of Sciences');
+INSERT INTO `degrees` VALUES (1,'Bachelor'),(2,'Master'),(3,'Postgraduate'),(4,'Doctor of Philosophy'),(5,'Doctor of Arts'),(6,'Doctor of Sciences');
 /*!40000 ALTER TABLE `degrees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,4 +446,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-10 19:55:56
+-- Dump completed on 2024-12-11 14:13:15

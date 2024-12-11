@@ -6,11 +6,11 @@ namespace Server.Services;
 
 public static class UsersService
 {
-    public static bool SignUp(UserModelID user, MySqlConnection conn)
+    public static UserModelID? SignUp(UserModelID user, MySqlConnection conn)
     {
         if (Exists("email", user.Email, conn)
             || Exists("username", user.Username, conn))
-            return false; // TODO: an exception, for sure
+            return null; // TODO: an exception, for sure
 
         string signUpQuery =
             $"""
@@ -43,8 +43,11 @@ public static class UsersService
         insertCommand.Parameters.AddWithValue("@role", user.Role);
 
         int affectedRows = insertCommand.ExecuteNonQuery();
+        if (affectedRows == 0)
+            return null;
 
-        return affectedRows != 0;
+        user.ID = (uint)insertCommand.LastInsertedId;
+        return user;
     }
 
     public static UserModelID? SignIn(string? email, string? username, string password, MySqlConnection conn)

@@ -4,6 +4,7 @@ using Server.Models;
 
 namespace Server.Services;
 
+// TODO: search by title
 public static class TopicsService
 {
     public static List<uint> SelectAllIds(MySqlConnection conn)
