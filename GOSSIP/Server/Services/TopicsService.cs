@@ -235,6 +235,33 @@ public static class TopicsService
 
         return topics;
     }
+
+    public static List<TopicModelID> SelectTopicsByTag(string tag, MySqlConnection conn)
+    {
+        List<TopicModelID> topics = [];
+        List<uint> topicIds = [];
+        string selectTopicsByTagQuery =
+            """
+            SELECT topic_id FROM topics_to_tags WHERE tag = @tag
+            """;
+
+        using var selectCommand = new MySqlCommand(selectTopicsByTagQuery, conn);
+        selectCommand.Parameters.AddWithValue("@tag", tag);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            topicIds.Add(reader.GetUInt32("topic_id"));
+        }
+        reader.Close();
+
+        foreach (var topicId in topicIds)
+        {
+            topics.Add(SelectById(topicId, conn));
+        }
+
+        return topics;
+    }
     
     public static bool Upvote(uint id, MySqlConnection conn)
     {
