@@ -61,7 +61,6 @@ namespace Server
 
             Logging.Log("connected", UID, User);
 
-            Task.Run(() => Process(_cancellationTokenSource.Token));
         }
 
 
@@ -87,64 +86,61 @@ namespace Server
                     }
 
                     Logging.LogRecived((SignalsEnum)signal, UID, User);
+
                     switch (signal)
                     {
                         case (byte)SignalsEnum.GetAllUsers:
                             {
-                                List<UserModelID> allUsers = [];
-                                lock (Globals.db)
-                                {
-                                     allUsers = UsersService.SelectAll(Globals.db.Connection);
-                                }
-
-
+                                
+                                mutex.WaitOne();
+                                List<UserModelID> allUsers = UsersService.SelectAll(Globals.db.Connection);
+                                
                                 SendPacket(SignalsEnum.GetAllUsers, allUsers);
                                 Logging.LogSent(SignalsEnum.GetAllUsers, UID, User);
+
+                                mutex.ReleaseMutex();
 
                                 break;
                             }
 
                         case (byte)SignalsEnum.GetTopics:
                             {
-                                List<TopicModelID> allTopics = [];
-
-                                lock (Globals.db)
-                                {
-                                    allTopics = TopicsService.SelectAll(Globals.db.Connection);
-                                }
-
+                                mutex.WaitOne();
+                                List<TopicModelID> allTopics = TopicsService.SelectAll(Globals.db.Connection);
                                 
                                 SendPacket(SignalsEnum.GetTopics, allTopics);
 
                                 Logging.LogSent(SignalsEnum.GetTopics, UID, User);
+
+                                mutex.ReleaseMutex();
                                 break;
                             }
 
                         case (byte)SignalsEnum.Disconnect:
                             {
+                                mutex.WaitOne();
                                 Logging.Log("disconnected", UID, User);
                                 ClientSocket.Close();
                                 _cancellationTokenSource.Cancel();
 
                                 // Remove the client from the list of connected clients
                                 ClientManager.ConnectedClients.Remove(this);
-
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         
                         case (byte)SignalsEnum.Login:
                             {
+
                                 mutex.WaitOne();
                                 var authUserModel = _packetReader.ReadPacket<AuthUserModelID>().Data;
-                                mutex.ReleaseMutex();
-
+                                
                                 UserModelID userModel;
                                 if (authUserModel.Username == null && authUserModel.Email != null)
                                 {
-                                    lock (Globals.db)
-                                    {
-                                        userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
-                                    }
+                                    
+                                    userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
+                                    
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
@@ -159,11 +155,9 @@ namespace Server
                                 }
                                 if (authUserModel.Username != null && authUserModel.Email == null)
                                 {
-                                    lock (Globals.db)
-                                    {
-
-                                        userModel = UsersService.SignIn(null, authUserModel.Username, authUserModel.Password, Globals.db.Connection);
-                                    }
+                                    
+                                    userModel = UsersService.SignIn(null, authUserModel.Username, authUserModel.Password, Globals.db.Connection);
+                                    
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
@@ -180,7 +174,6 @@ namespace Server
                                 {
                                     Logging.Log("invalid login packet", UID, User);
                                 }
-
                                 mutex.ReleaseMutex();
                                 break;
 
@@ -190,11 +183,9 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var userModel = _packetReader.ReadPacket<UserModelID>().Data;
-                                mutex.ReleaseMutex();
+                                
                                 var temp = UsersService.SignUp(userModel, Globals.db.Connection);
                                 
-                                
-
                                 if (temp != null)  //no error if Andriy
                                 {
                                     User = temp;
@@ -208,20 +199,23 @@ namespace Server
                                     SendPacket(SignalsEnum.SignUpError);
                                     Logging.LogSent(SignalsEnum.SignUpError, UID, User);
                                 }
+                                mutex.ReleaseMutex();
                                 break;
                             }
 
                         case (byte)SignalsEnum.Logout:
                             {
+                                mutex.WaitOne();
                                 Logging.Log("logged out", UID, User);
                                 SendPacket(SignalsEnum.Logout);
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 mutex.WaitOne();
                                 var userModel = _packetReader.ReadPacket<UserModelID>().Data;
-                                mutex.ReleaseMutex();
+                                
 
                                 User = UsersService.SelectById(userModel.ID, Globals.db.Connection);
 
@@ -234,7 +228,7 @@ namespace Server
                                 {
                                     Logging.Log("User id is not found in db", UID, User);
                                 }
-
+                                mutex.ReleaseMutex();
 
                                 break;
                             }
@@ -244,7 +238,7 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var userModelID = _packetReader.ReadPacket<UserModelID>().Data;
-                                mutex.ReleaseMutex();
+                                
 
                                 bool res = UsersService.ChangePhoto(userModelID.ID, userModelID.Photo, Globals.db.Connection);
                                 if (res)
@@ -255,7 +249,7 @@ namespace Server
                                 {
                                     Logging.Log("User id is not found in db", UID, User);
                                 }
-
+                                mutex.ReleaseMutex();
                                 break;
                             }
 
@@ -264,19 +258,16 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var newTopic = _packetReader.ReadPacket<TopicModelID>().Data;
-                                mutex.ReleaseMutex();
-
-                                mutex.WaitOne();
+                                
                                 TopicsService.Insert(newTopic, Globals.db.Connection);
-                                mutex.ReleaseMutex();
-
-                                mutex.WaitOne();
+                                
                                 var topics = TopicsService.SelectAll(Globals.db.Connection);
-                                mutex.ReleaseMutex();
-
+                                
                                 Logging.Log("created topic", UID, User);
                                 SendPacket(SignalsEnum.GetTopics, topics);
                                 Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
+
+                                mutex.ReleaseMutex();
                                 break;
                             }
 
@@ -284,20 +275,19 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
-                                mutex.ReleaseMutex();
+                               
 
                                 RepliesService.Add(reply, Globals.db.Connection);
-
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.ReplyToReply:
                             {
                                 mutex.WaitOne();
                                 var reply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
-                                mutex.ReleaseMutex();
-
+                                
                                 RepliesService.Add(reply, Globals.db.Connection);
-
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.ReplyToReplyReply:
@@ -315,15 +305,14 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var id = _packetReader.ReadPacket<uint>().Data;
-                                mutex.ReleaseMutex();
-
-                                mutex.WaitOne();
+                                
                                 var chats = ChatsService.SelectChatsByUser(id, Globals.db.Connection);
-                                mutex.ReleaseMutex();
                                
                                 SendPacket(SignalsEnum.GetUserChats, chats);
 
                                 Logging.LogSent(SignalsEnum.GetUserChats, UID, User);
+
+                                mutex.ReleaseMutex();
 
                                 break;
                             }
@@ -332,18 +321,16 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var message = _packetReader.ReadPacket<MessageModelID>().Data;
-                                mutex.ReleaseMutex();
-
-                                mutex.WaitOne();
+                                
                                 MessagesService.Add(message, Globals.db.Connection);
-                                mutex.ReleaseMutex();
-
+                                
                                 Logging.Log("Message sent", UID, User);
 
                                 //TODO: multicast
 
+                                
                                 var chatUsers = ChatsService.SelectUsersByChat(message.ChatID, Globals.db.Connection);
-
+                               
                                 // Multicast the message to all connected clients
                                 foreach (var client in ClientManager.ConnectedClients)
                                 {
@@ -352,7 +339,7 @@ namespace Server
                                         client.SendPacket(SignalsEnum.MessageMulticast, message);
                                     }
                                 }
-
+                                mutex.ReleaseMutex();
                                 break;
                             }
 
@@ -360,8 +347,7 @@ namespace Server
                             {
                                 mutex.WaitOne(); 
                                 var ids = _packetReader.ReadPacket<List<uint>>().Data; //should be list<chatid>
-                                mutex.ReleaseMutex();
-
+                                
                                 List<MessageModelID> messages = [];
  
                                 foreach(var id in ids)
@@ -370,7 +356,8 @@ namespace Server
                                 }
 
                                 SendPacket(SignalsEnum.GetAllUsersMessage, messages);
-
+                                Logging.LogSent(SignalsEnum.GetAllUsersMessage, UID, User);
+                                mutex.ReleaseMutex();
                                 break;
                             }
                        
@@ -379,14 +366,14 @@ namespace Server
                             {
                                 mutex.WaitOne();
 
-                                    var chat = _packetReader.ReadPacket<ChatModelID>().Data;
+                                var chat = _packetReader.ReadPacket<ChatModelID>().Data;
 
-                                    ChatsService.Create(chat, Globals.db.Connection);
+                                ChatsService.Create(chat, Globals.db.Connection);
 
-                                mutex.ReleaseMutex();
-
+                               
 
                                 Logging.Log("Chat created", UID, User);
+                                mutex.ReleaseMutex();
 
 
                                 break;
@@ -394,32 +381,42 @@ namespace Server
                         
                         case (byte)SignalsEnum.GetStatuses:
                             {
+                                mutex.WaitOne();
                                 List<string> statuses = UsersService.GetStatuses(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetStatuses, statuses);
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.GetFieldsOfStudy:
                             {
+                                mutex.WaitOne();
                                 List<string> fields = UsersService.GetFieldsOfStudy(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetFieldsOfStudy, fields);
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.GetSpecializations:
                             {
+                                mutex.WaitOne();
                                 List<string> specializations = UsersService.GetSpecializations(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetSpecializations, specializations);
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.GetUniversities:
                             {
+                                mutex.WaitOne();
                                 List<string> universities = UsersService.GetUniversities(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetUniversities, universities);
+                                mutex.ReleaseMutex();
                                 break;
                             }
                         case (byte)SignalsEnum.GetDegrees:
                             {
+                                mutex.WaitOne();
                                 List<string> degrees = UsersService.GetDegrees(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetDegrees, degrees);
+                                mutex.ReleaseMutex();
                                 break;
                             }
 
