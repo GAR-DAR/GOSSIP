@@ -93,6 +93,8 @@ namespace GOSSIP.ViewModels
                     });
                 }
             }
+
+            ScrollToBottom();
         }
 
         public string LastMessage
@@ -123,9 +125,9 @@ namespace GOSSIP.ViewModels
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";
-
-
             Globals.server.SendPacket(SignalsEnum.SendMessage, new MessageModelID(message));
+
+            UpdateMessages();
         }
 
         private void LastMessageUpdate(object sender, EventArgs args)
