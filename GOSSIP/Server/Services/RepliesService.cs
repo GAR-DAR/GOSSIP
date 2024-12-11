@@ -27,43 +27,37 @@ public static class RepliesService
         return rowsAffected != 0;
     }
 
-    // public static bool Upvote(ReplyModelID reply, UserModelID user, MySqlConnection conn)
-    // {
-    //     string upvoteQuery =
-    //         """
-    //         UPDATE replies
-    //         SET votes = votes + 1
-    //         WHERE id = @reply_id
-    //         """;
-    //
-    //     using var updateCommand = new MySqlCommand(upvoteQuery, conn);
-    //     updateCommand.Parameters.AddWithValue("@reply_id", reply.ID);
-    //
-    //     int rowsAffected = updateCommand.ExecuteNonQuery();
-    //     if (rowsAffected == 0)
-    //         return false;
-    //
-    //     return AttachVote(reply, user, 1, conn);
-    // }
-    //
-    // public static bool Downvote(ReplyModelID reply, UserModelID user, MySqlConnection conn)
-    // {
-    //     string downvoteQuery =
-    //         """
-    //         UPDATE replies
-    //         SET votes = votes - 1
-    //         WHERE id = @reply_id
-    //         """;
-    //
-    //     using var updateCommand = new MySqlCommand(downvoteQuery, conn);
-    //     updateCommand.Parameters.AddWithValue("@reply_id", reply.ID);
-    //
-    //     int rowsAffected = updateCommand.ExecuteNonQuery();
-    //     if (rowsAffected == 0)
-    //         return false;
-    //
-    //     return AttachVote(reply, user, -1, conn);
-    // }
+    public static bool Upvote(uint id, MySqlConnection conn)
+    {
+        string upvoteQuery =
+            """
+            UPDATE replies
+            SET votes = votes + 1
+            WHERE id = @reply_id
+            """;
+    
+        using var updateCommand = new MySqlCommand(upvoteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@reply_id", id);
+    
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
+    }
+    
+    public static bool Downvote(uint id, MySqlConnection conn)
+    {
+        string downvoteQuery =
+            """
+            UPDATE replies
+            SET votes = votes - 1
+            WHERE id = @reply_id
+            """;
+    
+        using var updateCommand = new MySqlCommand(downvoteQuery, conn);
+        updateCommand.Parameters.AddWithValue("@reply_id", id);
+    
+        int rowsAffected = updateCommand.ExecuteNonQuery();
+        return rowsAffected != 0;
+    }
     
     public static bool Delete(uint id, MySqlConnection conn)
     {
@@ -175,43 +169,4 @@ public static class RepliesService
 
         return childReplies;
     }
-    
-    // private static bool AttachVote(ReplyModelID reply, UserModelID user, int vote, MySqlConnection conn)
-    // {
-    //     string attachVoteQuery = VoteExists(reply, user, conn)
-    //         ? """
-    //           UPDATE users_to_votes
-    //           SET vote = @vote
-    //           WHERE user_id = @user_id AND reply_id = @reply_id
-    //           """
-    //         : """
-    //           INSERT INTO users_to_votes (user_id, topic_id, reply_id, vote)
-    //           VALUES (@user_id, null, @reply_id, @vote)
-    //           """;
-    //
-    //     using var command = new MySqlCommand(attachVoteQuery, conn);
-    //     command.Parameters.AddWithValue("@user_id", user.ID);
-    //     command.Parameters.AddWithValue("@reply_id", reply.ID);
-    //     command.Parameters.AddWithValue("@vote", vote);
-    //
-    //     int rowsAffected = command.ExecuteNonQuery();
-    //     return rowsAffected != 0;
-    // }
-    //
-    // private static bool VoteExists(ReplyModelID reply, UserModelID user, MySqlConnection conn)
-    // {
-    //     string voteExistsQuery =
-    //         """
-    //         SELECT EXISTS 
-    //             (SELECT 1 
-    //              FROM users_to_votes 
-    //              WHERE user_id = @user_id AND reply_id = @reply_id)
-    //         """;
-    //
-    //     using var selectCommand = new MySqlCommand(voteExistsQuery, conn);
-    //     selectCommand.Parameters.AddWithValue("@user_id", user.ID);
-    //     selectCommand.Parameters.AddWithValue("@reply_id", reply.ID);
-    //
-    //     return Convert.ToBoolean(selectCommand.ExecuteScalar());
-    // }
 }
