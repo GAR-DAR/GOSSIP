@@ -384,7 +384,6 @@ namespace GOSSIP.Net
                                 Globals.AllUsers_Cache = [];
                                 Globals.Topics_Cache = [];
 
-
                                 SendPacket(SignalsEnum.GetAllUsers);
                                 SendPacket(SignalsEnum.GetTopics);
 
