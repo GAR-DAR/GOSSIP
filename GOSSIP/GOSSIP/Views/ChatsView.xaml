@@ -20,12 +20,13 @@
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Background="{DynamicResource PrussianBlue}">
-                <ListBox ItemsSource="{Binding ChatList, UpdateSourceTrigger=PropertyChanged}"
+            <StackPanel Background="{DynamicResource BlueCharcoalTrans}">
+
+                <ListBox ItemsSource="{Binding ChatList}"
                          SelectedItem="{Binding OpenedChatVM}"
                          Background="Transparent"
                          BorderThickness="0"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">      
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="5">
@@ -44,7 +45,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                
+
 
             </StackPanel>
 
@@ -72,5 +73,5 @@
             </ContentControl>
         </Grid>
     </Border>
-    
+
 </UserControl>

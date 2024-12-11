@@ -1,4 +1,5 @@
 ﻿
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+
 
 namespace GOSSIP.ViewModels
 {
@@ -17,6 +19,11 @@ namespace GOSSIP.ViewModels
         public ICommand ProfilePictureClickCommand { get; }
         public ICommand ViewProfileCommand { get; }
         public ICommand ShowBannedUsersCommand { get; }
+
+        public ICommand LogoutCommand { get; set; }
+
+        private MainVM _mainVM;
+
 
         public event Action ProfileOpeningEvent;
 
@@ -53,6 +60,8 @@ namespace GOSSIP.ViewModels
 
         public TopBarLoggedInModeratorVM(MainVM mainVM)
         {
+            _mainVM = mainVM;
+
             AuthorizedUserVM = MainVM.AuthorizedUserVM;
             Photo = AuthorizedUserVM.Photo;
 
@@ -61,6 +70,18 @@ namespace GOSSIP.ViewModels
             ShowBannedUsersCommand = new RelayCommand(mainVM.ShowBannedUsersWindow);
 
             AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
+
+            LogoutCommand = new RelayCommand(LogoutMethod);
+
+        }
+
+        private void LogoutMethod(object obj)
+        {
+
+            Globals.server.LogOut();
+            _mainVM.Logout();
+
+            IsMenuOpen = false;
         }
 
         private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

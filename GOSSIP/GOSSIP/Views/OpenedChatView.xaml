@@ -46,7 +46,7 @@
             </Border>
 
             <ListBox Grid.Row="1" Background="Transparent"
-                     ItemsSource="{Binding Messages, UpdateSourceTrigger=PropertyChanged}"
+                     ItemsSource="{Binding Messages}"
                      BorderThickness="0">
                 <ListBox.Resources>
                     <Style TargetType="ListBoxItem">
