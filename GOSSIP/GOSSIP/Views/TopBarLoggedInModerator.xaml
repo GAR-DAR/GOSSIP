@@ -64,7 +64,7 @@
                                                         <RowDefinition/>
                                                     </Grid.RowDefinitions>
 
-                                                    <Image Source="{Binding Photo}" Width="40" Height="40" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Left">
+                                                    <Image Source="{Binding Photo}" Width="40" Height="40" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Left" Stretch="UniformToFill">
                                                         <Image.Clip>
                                                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                                         </Image.Clip>
