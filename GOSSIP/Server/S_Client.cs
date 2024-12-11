@@ -91,9 +91,12 @@ namespace Server
                     {
                         case (byte)SignalsEnum.GetAllUsers:
                             {
-                                mutex.WaitOne();
-                                List<UserModelID> allUsers = UsersService.SelectAll(Globals.db.Connection);
-                                mutex.ReleaseMutex();
+                                List<UserModelID> allUsers = [];
+                                lock (Globals.db)
+                                {
+                                     allUsers = UsersService.SelectAll(Globals.db.Connection);
+                                }
+
 
                                 SendPacket(SignalsEnum.GetAllUsers, allUsers);
                                 Logging.LogSent(SignalsEnum.GetAllUsers, UID, User);
@@ -103,8 +106,14 @@ namespace Server
 
                         case (byte)SignalsEnum.GetTopics:
                             {
-                                List<TopicModelID> allTopics = TopicsService.SelectAll(Globals.db.Connection);
+                                List<TopicModelID> allTopics = [];
 
+                                lock (Globals.db)
+                                {
+                                    allTopics = TopicsService.SelectAll(Globals.db.Connection);
+                                }
+
+                                
                                 SendPacket(SignalsEnum.GetTopics, allTopics);
 
                                 Logging.LogSent(SignalsEnum.GetTopics, UID, User);
@@ -132,7 +141,10 @@ namespace Server
                                 UserModelID userModel;
                                 if (authUserModel.Username == null && authUserModel.Email != null)
                                 {
-                                    userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
+                                    lock (Globals.db)
+                                    {
+                                        userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
+                                    }
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
@@ -147,7 +159,11 @@ namespace Server
                                 }
                                 if (authUserModel.Username != null && authUserModel.Email == null)
                                 {
-                                    userModel = UsersService.SignIn(null, authUserModel.Username, authUserModel.Password, Globals.db.Connection);
+                                    lock (Globals.db)
+                                    {
+
+                                        userModel = UsersService.SignIn(null, authUserModel.Username, authUserModel.Password, Globals.db.Connection);
+                                    }
                                     if (userModel == null)
                                     {
                                         Logging.Log("incorrect login or password", UID, User);
@@ -165,6 +181,7 @@ namespace Server
                                     Logging.Log("invalid login packet", UID, User);
                                 }
 
+                                mutex.ReleaseMutex();
                                 break;
 
                             }
