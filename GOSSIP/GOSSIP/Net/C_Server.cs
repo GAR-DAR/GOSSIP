@@ -213,7 +213,7 @@ namespace GOSSIP.Net
                  SendPacket(SignalsEnum.GetAllUsers);
             }
 
-        public void StartChat(ChatModelID chat)
+            public void StartChat(ChatModelID chat)
             {
                 SendPacket(SignalsEnum.StartChat, chat);
             }

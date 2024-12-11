@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
+using GOSSIP.Net;
 
 namespace GOSSIP.Converters
 {
@@ -13,9 +14,9 @@ namespace GOSSIP.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] is UserModelID author && values[1] is UserModelID currentUser)
+            if (values[0] is UserModel author && values[1] is UserModel currentUser)
             {
-                return author == currentUser ?
+                return author.ID == Globals.User_Cache.ID ?
                     true :
                     false;
             }
