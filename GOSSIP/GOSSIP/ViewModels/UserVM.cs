@@ -20,24 +20,24 @@ namespace GOSSIP.ViewModels
                 OnPropertyChanged(nameof(Username));
                 OnPropertyChanged(nameof(Photo));
                 OnPropertyChanged(nameof(UserModel.Chats));
-                SubscribeToChatChanges();
+                //SubscribeToChatChanges();
 
             }
         }
 
-        private void SubscribeToChatChanges()
-        {
-            foreach (var chat in UserModel.Chats)
-            {
-                // Manually trigger OnPropertyChanged when you know a property has changed
-                OnPropertyChanged(nameof(UserModel.Chats));
-                foreach (var message in chat.Messages)
-                {
-                    // Manually trigger OnPropertyChanged for messages
-                    OnPropertyChanged(nameof(chat.Messages));
-                }
-            }
-        }
+        //private void SubscribeToChatChanges()
+        //{
+        //    foreach (var chat in UserModel.Chats)
+        //    {
+        //        // Manually trigger OnPropertyChanged when you know a property has changed
+        //        OnPropertyChanged(nameof(UserModel.Chats));
+        //        foreach (var message in chat.Messages)
+        //        {
+        //            // Manually trigger OnPropertyChanged for messages
+        //            OnPropertyChanged(nameof(chat.Messages));
+        //        }
+        //    }
+        //}
 
         public string Username
         {

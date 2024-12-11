@@ -48,10 +48,6 @@ namespace GOSSIP.ViewModels
                 if(AuthorizedUserVM != null)
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                    OnPropertyChanged(nameof(AuthorizedUserVM));
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
-                    
-                    _chatsVM.UpdateChats();
                 }
 
                 _isTopicsPressed = value;
@@ -68,11 +64,8 @@ namespace GOSSIP.ViewModels
                 if (AuthorizedUserVM != null)
                 {
                     Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                    OnPropertyChanged(nameof(AuthorizedUserVM));
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
-
-                    _chatsVM.UpdateChats();
                 }
+
 
                 _isTagsPressed = value;
                 OnPropertyChanged(nameof(IsTagsPressed));
@@ -87,14 +80,9 @@ namespace GOSSIP.ViewModels
             {
                 if (AuthorizedUserVM != null)
                 {
-                    Globals.server.SendPacket(SignalsEnum.GetUserChats, AuthorizedUserVM.UserModel.ID);
-
-                    //Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                    OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
-                    OnPropertyChanged(nameof(AuthorizedUserVM));
-
-                    _chatsVM.UpdateChats();
+                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
                 }
+
 
                 _isChatsPressed = value;
                 OnPropertyChanged(nameof(IsChatsPressed));
@@ -216,66 +204,7 @@ namespace GOSSIP.ViewModels
         {
             if (AuthorizedUserVM != null)
             {
-                //UserModel user2 = new(
-                //    8,
-                //    "email",
-                //    "123",
-                //    "123",
-                //    "Student",
-                //    "idgaf",
-                //    "idgaf",
-                //    "elenu",
-                //    4,
-                //    "PhD",
-                //    "User",
-                //    DateTime.Now,
-                //    false,
-                //    "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
-                //    []);
-
-                //UserModel user = new(
-                //    8,
-                //    "email",
-                //    "12",
-                //    "12",
-                //    "Student",
-                //    "idgaf",
-                //    "idgaf",
-                //    "elenu",
-                //    4,
-                //    "PhD",
-                //    "User",
-                //    DateTime.Now,
-                //    false,
-                //    "pack://application:,,,/Resources/Images/TempUserIcons/nophotoicon.png",
-                //    []);
-
-                //ChatModel chat = new(
-                //    7,
-                //    [user, user2],
-                //    "12, 123",
-                //    DateTime.Now,
-                //    false,
-                //    []);
-
-                //MessageModel messageModel = new(
-                //    4,
-                //    chat,
-                //    user2,
-                //    "Hello",
-                //    DateTime.Now,
-                //    false,
-                //    false
-                //    );
-
-                //chat.Messages.Add(messageModel);
-
-                //user.Chats.Add(chat);
-
-                //string json = JsonSerializer.Serialize(new List<UserModel>() { user }, new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve });
-                //File.WriteAllText("user_data.json", json);
-
-
+               
                 if (_chatsVM == null)
                 {
                     _chatsVM = new ChatsVM(this);

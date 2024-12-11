@@ -41,9 +41,6 @@ namespace GOSSIP.Net
         public Server()
         {
             _client = new TcpClient();
-
-            SendPacket(SignalsEnum.GetAllUsers);
-            SendPacket(SignalsEnum.GetTopics);
         }
 
         //evens gets from server
@@ -86,8 +83,11 @@ namespace GOSSIP.Net
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
-                SendPacket(SignalsEnum.GetTopics);
                 ReadPackets();
+                SendPacket(SignalsEnum.GetAllUsers);
+                SendPacket(SignalsEnum.GetTopics);
+
+               
             }
         }
 
@@ -281,6 +281,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} All users loaded. ");
                                 break;
                             }
+                            //add replies when clicked on topic 
                         case (byte)SignalsEnum.GetTopics:
                             {
 
@@ -354,7 +355,8 @@ namespace GOSSIP.Net
                         case (byte)SignalsEnum.Login:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;
-                                Globals.User_Cache = new UserModel(packetReader.ReadPacket<UserModelID>().Data);
+                                Globals.User_Cache = new UserModel(user);
+
                                 loginEvent?.Invoke(Globals.User_Cache);
 
                                 Debug.WriteLine($"User {user.Username} logged in");
