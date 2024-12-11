@@ -269,7 +269,6 @@ namespace GOSSIP.ViewModels
                 };
                 signUpView.ShowDialog();
         }
-
         public void ShowLogInMethod(object obj)
         {
             LogInVM logInVM = new(this);

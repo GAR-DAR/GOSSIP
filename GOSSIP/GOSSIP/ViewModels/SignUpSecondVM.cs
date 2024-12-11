@@ -42,7 +42,8 @@ namespace GOSSIP.ViewModels
             set
             {
                 _universityIndex = value;
-                University = UniversityOptions[_universityIndex];
+                if (UniversityIndex != -1) 
+                    University = UniversityOptions[_universityIndex];
                 OnPropertyChanged(nameof(UniversityIndex));
                 
             }
@@ -303,8 +304,6 @@ namespace GOSSIP.ViewModels
 
                 Globals.server.SignUp(new UserModelID(newUser));
                 Globals.server.signUpEvent += (user) => OnSignUpSuccess(new UserVM(user));
-
-                CloseDialog.Invoke(new(newUser));
             }
             catch (Exception ex)
             {
