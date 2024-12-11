@@ -397,6 +397,7 @@ namespace GOSSIP.Net
                                 var Replies = packetReader.ReadPacket<List<ReplyModelID>>().Data;
                                 TopicModel topic = new TopicModel();
 
+
                                 //Code to connect replies to topic
 
                                 openTopicEvent?.Invoke(topic);

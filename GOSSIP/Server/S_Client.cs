@@ -211,6 +211,7 @@ namespace Server
                                 mutex.ReleaseMutex();
                                 break;
                             }
+
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 mutex.WaitOne();
@@ -267,6 +268,19 @@ namespace Server
                                 SendPacket(SignalsEnum.GetTopics, topics);
                                 Logging.LogSent(SignalsEnum.CreateTopic, UID, User);
 
+                                mutex.ReleaseMutex();
+                                break;
+                            }
+
+                            case (byte)SignalsEnum.GetReplies:
+                            {
+                                mutex.WaitOne();
+                                var topicId = _packetReader.ReadPacket<uint>().Data;
+
+                                var replies = RepliesService.SelectById(topicId, Globals.db.Connection);
+
+                                SendPacket(SignalsEnum.GetReplies, replies);
+                                Logging.LogSent(SignalsEnum.GetReplies, UID, User);
                                 mutex.ReleaseMutex();
                                 break;
                             }
