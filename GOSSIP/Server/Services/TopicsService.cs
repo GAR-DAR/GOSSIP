@@ -332,4 +332,31 @@ public static class TopicsService
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
     }
+
+    public static List<ReplyModelID> SelectAllRepliesByTopic(uint id, MySqlConnection conn)
+    {
+        List<ReplyModelID> replies = [];
+        List<uint> replyIds = [];
+        string selectAllRepliesQuery =
+            """
+            SELECT id FROM replies WHERE topic_id = @topic_id
+            """;
+
+        using var selectCommand = new MySqlCommand(selectAllRepliesQuery, conn);
+        selectCommand.Parameters.AddWithValue("@topic_id", id);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            replyIds.Add(reader.GetUInt32("id"));
+        }
+        reader.Close();
+
+        foreach (var replyId in replyIds)
+        {
+            replies.Add(RepliesService.SelectById(replyId, conn));
+        }
+
+        return replies;
+    }
 }
