@@ -80,7 +80,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.24.101.91", 7891);
+            _client.Connect("172.24.251.137", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -421,6 +421,7 @@ namespace GOSSIP.Net
                                 var messageID = packetReader.ReadPacket<MessageModelID>().Data;
                                 MessageModel message = new MessageModel(messageID);
                                 message.Chat = Globals.User_Cache.Chats.Where(chat => chat.ID == messageID.ChatID).FirstOrDefault();
+                                message.User = Globals.AllUsers_Cache.Where(user => user.ID == messageID.UserID).FirstOrDefault();
 
                                 multicastMessageEvent?.Invoke(message);
 

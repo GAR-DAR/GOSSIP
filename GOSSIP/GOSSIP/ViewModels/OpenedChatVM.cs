@@ -62,10 +62,17 @@ namespace GOSSIP.ViewModels
 
             if (updatedChat != null)
             {
-                Messages.Clear();
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Messages.Clear();
+                });
+
                 foreach (var message in updatedChat.Messages)
                 {
-                    Messages.Add(message);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Messages.Add(message);
+                    });
                 }
             }
         }
@@ -105,7 +112,10 @@ namespace GOSSIP.ViewModels
 
         private void LastMessageUpdate(object sender, EventArgs args)
         {
-            LastMessage = Messages.Last().MessageText;
+            if(Messages.Count > 0)
+            {
+                LastMessage = Messages.Last().MessageText;
+            }
         }
     }
 }
