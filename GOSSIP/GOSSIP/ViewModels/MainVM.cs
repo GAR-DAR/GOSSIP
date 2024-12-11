@@ -158,13 +158,13 @@ namespace GOSSIP.ViewModels
             if (AuthorizedUserVM != null)
             {
                 Globals.User_Cache.Chats.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
-                AuthorizedUserVM.UserModel.Chats.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
+                AuthorizedUserVM.UserModel.Chats = Globals.User_Cache.Chats;
+                AuthorizedUserVM.OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
 
                 OnPropertyChanged(nameof(AuthorizedUserVM));
                 OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
             }
         }
-
 
         private void CreateTopicMethod(object obj)
         {

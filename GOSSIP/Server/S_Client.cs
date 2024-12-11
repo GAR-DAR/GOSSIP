@@ -433,7 +433,6 @@ namespace Server
                                 mutex.ReleaseMutex();
                                 break;
                             }
-
                         default:
                             //Console.WriteLine($"[SWITCH]Signal {signal} received");
                             break;
