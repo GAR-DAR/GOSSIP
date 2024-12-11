@@ -4,7 +4,6 @@ using Server.Models;
 
 namespace Server.Services;
 
-// TODO: unban user
 // TODO: select banned users
 // TODO: replace with NOW()
 public static class UsersService
@@ -298,6 +297,32 @@ public static class UsersService
 
         int affectedRows = updateCommand.ExecuteNonQuery();
         return affectedRows != 0;
+    }
+
+    public static List<UserModelID> SelectBannedUsers(MySqlConnection conn)
+    {
+        List<UserModelID> bannedUsers = [];
+        List<uint> bannedUserIds = [];
+        string selectBannedQuery =
+            """
+            SELECT id FROM users WHERE is_banned = TRUE
+            """;
+
+        using var selectCommand = new MySqlCommand(selectBannedQuery);
+        using var reader = selectCommand.ExecuteReader();
+
+        while (reader.Read())
+        {
+            bannedUserIds.Add(reader.GetUInt32("id"));
+        }
+        reader.Close();
+
+        foreach (var bannedUserId in bannedUserIds)
+        {
+            bannedUsers.Add(SelectById(bannedUserId, conn));
+        }
+
+        return bannedUsers;
     }
 
     public static bool ChangePhoto(uint userId, string newPhoto, MySqlConnection conn)
