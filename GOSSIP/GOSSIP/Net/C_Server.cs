@@ -80,7 +80,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.24.226.173", 7891);
+            _client.Connect("172.24.237.81", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -378,8 +378,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} User {user.Username} registered");
                                 break;
                             }
-
-                            case(byte)SignalsEnum.Logout:
+                        case(byte)SignalsEnum.Logout:
                             {
                                 Globals.User_Cache = null;
                                 Globals.AllUsers_Cache = [];

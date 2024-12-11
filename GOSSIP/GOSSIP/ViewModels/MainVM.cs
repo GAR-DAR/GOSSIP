@@ -137,7 +137,6 @@ namespace GOSSIP.ViewModels
             Globals.server.refreshUserEvent += OnRefreshUser;
             Globals.server.multicastMessageEvent += OnMulticastMessage;
             Globals.server.openTopicEvent += OpenTopic;
-            Globals.server.openChatsEvent += ShowChatsMethod;
 
             Globals.server.logoutEvent += Logout;
 

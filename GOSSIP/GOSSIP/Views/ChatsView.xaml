@@ -20,13 +20,20 @@
                 <ColumnDefinition Width="69*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Background="{DynamicResource BlueCharcoalTrans}">
+            <Grid Background="{DynamicResource BlueCharcoalTrans}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="93*"/>
+                    <RowDefinition Height="7*"/>
+                </Grid.RowDefinitions>
 
-                <ListBox ItemsSource="{Binding ChatList}"
+                <ListBox ItemsSource="{Binding ChatList}" Grid.Row="0"
                          SelectedItem="{Binding OpenedChatVM}"
                          Background="Transparent"
                          BorderThickness="0"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Visible"
+                         VirtualizingPanel.ScrollUnit="Pixel">
+
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="5">
@@ -44,15 +51,8 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-
-
-
-            </StackPanel>
-
-            <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}" Style="{StaticResource CreateChat}" />
-
-
-
+                <Button Width="auto" Height="60" Content="New Chat" VerticalAlignment="Bottom" Command="{Binding AddNewChatCommand}" Style="{StaticResource CreateChat}" Grid.Row="1"/>
+            </Grid>
             <ContentControl Grid.Column="1" Content="{Binding OpenedChatVM}" Background="#80032247">
                 <ContentControl.Style>
                     <Style TargetType="ContentControl">

@@ -1,4 +1,4 @@
-﻿
+﻿using GOSSIP;
 using GOSSIP.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -38,6 +38,18 @@ namespace GOSSIP.Views
                     if (topicsListVM.DoubleClickCommand.CanExecute(selectedPost))
                         topicsListVM.DoubleClickCommand.Execute(selectedPost);
                 }
+
+            }
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            var scrollViewer = sender as ScrollViewer;
+            if (scrollViewer != null)
+            {
+                // Прокручуємо вміст вручну
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta / 3);
+                e.Handled = true; // Запобігаємо обробці події в елементах, таких як ListBox
             }
         }
     }
