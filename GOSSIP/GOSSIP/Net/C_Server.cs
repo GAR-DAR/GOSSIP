@@ -87,7 +87,6 @@ namespace GOSSIP.Net
                 SendPacket(SignalsEnum.GetAllUsers);
                 SendPacket(SignalsEnum.GetTopics);
 
-               
             }
         }
 
@@ -372,6 +371,21 @@ namespace GOSSIP.Net
                                 signUpEvent?.Invoke(Globals.User_Cache);
 
                                 Debug.WriteLine($"{DateTime.Now} User {user.Username} registered");
+                                break;
+                            }
+
+                            case(byte)SignalsEnum.Logout:
+                            {
+
+                                Globals.User_Cache = null;
+                                Globals.AllUsers_Cache = [];
+                                Globals.Topics_Cache = [];
+
+
+                                SendPacket(SignalsEnum.GetAllUsers);
+                                SendPacket(SignalsEnum.GetTopics);
+
+                                logoutEvent?.Invoke();
                                 break;
                             }
                         case (byte)SignalsEnum.RefreshUser:

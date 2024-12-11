@@ -239,6 +239,7 @@ namespace GOSSIP.ViewModels
             Globals.server.getUniversitiesEvent += getUniversityOptions;
             Globals.server.getSpecializationsEvent += getSpecializationOptions;
             Globals.server.getDegreesEvent += getDegreeOptions;
+            
         }
 
         private void getDegreeOptions(List<string> degreeOptions)

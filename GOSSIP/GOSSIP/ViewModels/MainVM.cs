@@ -153,6 +153,9 @@ namespace GOSSIP.ViewModels
 
             Globals.server.refreshUserEvent += OnRefreshUser;
             Globals.server.multicastMessageEvent += OnMulticastMessage;
+
+            Globals.server.logoutEvent += Logout;
+
         }
 
         private void OnRefreshUser(UserModel user)
