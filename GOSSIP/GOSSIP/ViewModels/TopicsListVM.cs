@@ -96,8 +96,8 @@ namespace GOSSIP.ViewModels
         {
             if (topic != null)
             {
-                _mainVM.OpenTopic(topic);
-                Globals.server.SendPacket(SignalsEnum.GetReplies, topic.Topic.ID);
+                //_mainVM.OpenTopic(topic);
+                //Globals.server.SendPacket(SignalsEnum.GetReplies, topic.Topic.ID);
             }
         }
 

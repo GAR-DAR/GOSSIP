@@ -416,4 +416,69 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Button" x:Key="TabControlProfileButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" 
+                        CornerRadius="15" 
+                        BorderThickness="2" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        Cursor="Hand">
+                        <TextBlock Foreground="White" 
+                               Text="{TemplateBinding Content}" 
+                               HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" 
+                               FontSize="16"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Background" Value="{StaticResource PrussianBlue}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Danube}"/>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsProfileSelected}" Value="True">
+                <Setter Property="Background" Value="{StaticResource Danube}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PrussianBlue}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="TabControlSettingsButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" 
+                    CornerRadius="15" 
+                    BorderThickness="2" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    Cursor="Hand">
+                        <TextBlock Foreground="White" 
+                           Text="{TemplateBinding Content}" 
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center" 
+                           FontSize="16"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Background" Value="{StaticResource PrussianBlue}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Danube}"/>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsSettingsSelected}" Value="True">
+                <Setter Property="Background" Value="{StaticResource Danube}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource PrussianBlue}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+
 </ResourceDictionary>

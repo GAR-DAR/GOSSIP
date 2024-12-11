@@ -22,8 +22,7 @@
         <DataTemplate DataType="{x:Type viewModels:AuthUserProfileSettingsVM}">
             <local:AuthUserProfileSettingsView/>
         </DataTemplate>
-        
-        
+
     </UserControl.Resources>
 
     <Grid>
@@ -62,13 +61,12 @@
                     </StackPanel>
                 </WrapPanel>
 
-                <TabControl ItemsSource="{Binding AvailableVMs}" SelectedItem="{Binding SelectedVM}" Background="Transparent" BorderThickness="0">
-                    <TabControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Header}"/>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                </TabControl>
+                <WrapPanel>
+                    <Button Content="Profile" Margin="0 0 5 0" Command="{Binding ShowProfileInfoCommand}" Style="{StaticResource TabControlProfileButton}"/>
+                        <Button Content="Settings" Command="{Binding ShowSettingsCommand}" Style="{StaticResource TabControlSettingsButton}"/>
+                </WrapPanel>
+
+                <ContentControl Content="{Binding SelectedVM}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

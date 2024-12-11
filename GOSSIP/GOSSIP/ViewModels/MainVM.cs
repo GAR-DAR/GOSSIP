@@ -45,11 +45,6 @@ namespace GOSSIP.ViewModels
             get => _isTopicsPressed;
             set
             {
-                if(AuthorizedUserVM != null)
-                {
-                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                }
-
                 _isTopicsPressed = value;
                 OnPropertyChanged(nameof(IsTopicsPressed));
                 OnPropertyChanged(nameof(TopicsIcon));
@@ -61,12 +56,6 @@ namespace GOSSIP.ViewModels
             get => _isTagsPressed;
             set
             {
-                if (AuthorizedUserVM != null)
-                {
-                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                }
-
-
                 _isTagsPressed = value;
                 OnPropertyChanged(nameof(IsTagsPressed));
                 OnPropertyChanged(nameof(TagsIcon));
@@ -78,12 +67,6 @@ namespace GOSSIP.ViewModels
             get => _isChatsPressed;
             set
             {
-                if (AuthorizedUserVM != null)
-                {
-                    Globals.server.SendPacket(SignalsEnum.RefreshUser, AuthorizedUserVM.UserModel);
-                }
-
-
                 _isChatsPressed = value;
                 OnPropertyChanged(nameof(IsChatsPressed));
                 OnPropertyChanged(nameof(ChatIcon));
@@ -153,6 +136,7 @@ namespace GOSSIP.ViewModels
 
             Globals.server.refreshUserEvent += OnRefreshUser;
             Globals.server.multicastMessageEvent += OnMulticastMessage;
+            Globals.server.openTopicEvent += OpenTopic;
 
             Globals.server.logoutEvent += Logout;
 
@@ -207,11 +191,13 @@ namespace GOSSIP.ViewModels
         {
             if (AuthorizedUserVM != null)
             {
-               
                 if (_chatsVM == null)
                 {
                     _chatsVM = new ChatsVM(this);
                 }
+
+                Globals.server.SendPacket(SignalsEnum.GetUserChats, AuthorizedUserVM.UserModel.ID);
+
                 StackOfVMs.Add(SelectedVM);
                 SelectedVM = _chatsVM;
                 TurnOffButtonsExcept("Chats");
@@ -222,9 +208,9 @@ namespace GOSSIP.ViewModels
             }   
         }
 
-        public void OpenTopic(TopicVM topiVM)
+        public void OpenTopic(TopicModel topic)
         {
-            OpenedTopicVM openedTopicVM = new(topiVM, this, _topicListVM);
+            OpenedTopicVM openedTopicVM = new(new (topic), this, _topicListVM);
             StackOfVMs.Add(SelectedVM);
             SelectedVM = openedTopicVM;
         }

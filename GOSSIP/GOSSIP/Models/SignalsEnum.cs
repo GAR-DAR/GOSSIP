@@ -41,7 +41,6 @@ namespace GOSSIP
         #endregion
 
         #region Reply
-
         GetReplies,
         CreateReply,
         EditReply,

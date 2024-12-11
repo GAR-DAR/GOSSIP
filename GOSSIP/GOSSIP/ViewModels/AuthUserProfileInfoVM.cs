@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GOSSIP.Net;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -127,11 +128,11 @@ namespace GOSSIP.ViewModels
             );
         }
 
-        private void OnItemDoubleClickedMethod(TopicVM topicVM)
+        private void OnItemDoubleClickedMethod(TopicVM topic)
         {
-            if (topicVM != null)
+            if (topic != null)
             {
-                _mainVM.OpenTopic(topicVM);
+                Globals.server.SendPacket(SignalsEnum.GetReplies, topic.Topic.ID);
             }
         }
     }

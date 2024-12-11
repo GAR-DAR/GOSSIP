@@ -11,7 +11,7 @@ namespace GOSSIP
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
-        public List<MessageModel> Messages { get; set; }
+        public List<MessageModel> Messages { get; set; } = [];
 
         public void AddMessage(MessageModel message)
         {

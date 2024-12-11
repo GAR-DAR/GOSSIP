@@ -10,6 +10,7 @@
         <ResourceDictionary Source="../../../ResourceDictionaries/Fonts/Fonts.xaml"/>
         <ResourceDictionary Source="../ListView.xaml"/>
         <ResourceDictionary Source="../ComboBox.xaml"/>
+        <ResourceDictionary Source="../ScrollBar.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
