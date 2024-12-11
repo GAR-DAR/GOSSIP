@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server
 {
@@ -18,6 +19,7 @@ namespace Server
     {
         public static DatabaseService db = new DatabaseService();
     }
+
     public static class Logging
     {
         public static void Log(string message, Guid guid, UserModelID user)
@@ -33,6 +35,7 @@ namespace Server
             Console.WriteLine($"{DateTime.Now} [Sent] signal {(byte)signal} ({signal}) for user {guid} with name {user.Username}");
         }
     }
+    
     public class S_Client
     {
         public Guid UID { get; set; }
@@ -53,13 +56,16 @@ namespace Server
             _packetReader = new PacketReader(_networkStream);
             _cancellationTokenSource = new CancellationTokenSource();
 
+            // Add the client to the list of connected clients
+            ClientManager.ConnectedClients.Add(this);
+
             Logging.Log("connected", UID, User);
 
             Task.Run(() => Process(_cancellationTokenSource.Token));
         }
 
 
-        void Process(CancellationToken cancellationToken)
+        public void Process(CancellationToken cancellationToken)
         {
             while (true)
             {
@@ -110,6 +116,10 @@ namespace Server
                                 Logging.Log("disconnected", UID, User);
                                 ClientSocket.Close();
                                 _cancellationTokenSource.Cancel();
+
+                                // Remove the client from the list of connected clients
+                                ClientManager.ConnectedClients.Remove(this);
+
                                 break;
                             }
                         
@@ -181,6 +191,13 @@ namespace Server
                                     SendPacket(SignalsEnum.SignUpError);
                                     Logging.LogSent(SignalsEnum.SignUpError, UID, User);
                                 }
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.Logout:
+                            {
+                                Logging.Log("logged out", UID, User);
+                                SendPacket(SignalsEnum.Logout);
                                 break;
                             }
                         case (byte)SignalsEnum.RefreshUser:
@@ -277,6 +294,22 @@ namespace Server
                                 break;
                             }
 
+                        case (byte)SignalsEnum.GetUserChats:
+                            {
+                                mutex.WaitOne();
+                                var id = _packetReader.ReadPacket<uint>().Data;
+                                mutex.ReleaseMutex();
+
+                                mutex.WaitOne();
+                                var chats = ChatsService.SelectChatsByUser(id, Globals.db.Connection);
+                                mutex.ReleaseMutex();
+                               
+                                SendPacket(SignalsEnum.GetUserChats, chats);
+
+                                Logging.LogSent(SignalsEnum.GetUserChats, UID, User);
+
+                                break;
+                            }
 
                         case (byte)SignalsEnum.SendMessage:
                             {
@@ -294,26 +327,32 @@ namespace Server
 
                                 var chatUsers = ChatsService.SelectUsersByChat(message.ChatID, Globals.db.Connection);
 
-                                foreach (var chatUser in chatUsers)
+                                // Multicast the message to all connected clients
+                                foreach (var client in ClientManager.ConnectedClients)
                                 {
-                                    if (chatUser.ID != User.ID)
+                                    if (client.UID != this.UID) // Avoid sending the message to the sender
                                     {
-                                        SendPacket(SignalsEnum.MessageMulticast, message);
+                                        client.SendPacket(SignalsEnum.MessageMulticast, message);
                                     }
                                 }
-                                
+
                                 break;
                             }
 
                         case (byte)SignalsEnum.GetAllUsersMessage:
                             {
-                                mutex.WaitOne();
-                                var id = _packetReader.ReadPacket<uint>().Data;
+                                mutex.WaitOne(); 
+                                var ids = _packetReader.ReadPacket<List<uint>>().Data; //should be list<chatid>
                                 mutex.ReleaseMutex();
 
-                                var message = MessagesService.SelectMessageModelsByUserId(id, Globals.db.Connection); //wait for Andriy's realization
+                                List<MessageModelID> messages = [];
+ 
+                                foreach(var id in ids)
+                                {
+                                    messages.AddRange(ChatsService.SelectMessagesByChat(id, Globals.db.Connection));
+                                }
 
-                                SendPacket(SignalsEnum.GetAllUsersMessage, message);
+                                SendPacket(SignalsEnum.GetAllUsersMessage, messages);
 
                                 break;
                             }
@@ -335,11 +374,7 @@ namespace Server
 
                                 break;
                             }
-                        case (byte)SignalsEnum.Logout:
-                            {
-                                Logging.Log("logged out", UID, User);
-                                break;
-                            }
+                        
                         case (byte)SignalsEnum.GetStatuses:
                             {
                                 List<string> statuses = UsersService.GetStatuses(Globals.db.Connection);
