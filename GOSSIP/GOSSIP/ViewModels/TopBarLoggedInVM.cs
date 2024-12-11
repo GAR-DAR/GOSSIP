@@ -57,7 +57,6 @@ namespace GOSSIP.ViewModels
         private void LogoutMethod(object obj)
         {
             Globals.server.LogOut();
-            _mainVM.Logout();
 
             IsMenuOpen = false;
         }

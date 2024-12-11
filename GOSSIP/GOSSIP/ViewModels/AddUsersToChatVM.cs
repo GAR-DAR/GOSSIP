@@ -66,7 +66,6 @@ namespace GOSSIP.ViewModels
             );
 
             Globals.server.SendPacket(SignalsEnum.StartChat, new ChatModelID(newChat));
-            Globals.server.SendPacket(SignalsEnum.RefreshUser, Globals.User_Cache);
             MainVM.AuthorizedUserVM.UserModel.Chats.Add(newChat);
             RequestClose?.Invoke(true);
         }

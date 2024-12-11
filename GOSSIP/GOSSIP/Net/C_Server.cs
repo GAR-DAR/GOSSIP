@@ -60,8 +60,9 @@ namespace GOSSIP.Net
         public event Action<List<string>> getSpecializationsEvent;
         public event Action<List<string>> getUniversitiesEvent;
         public event Action<List<string>> getDegreesEvent;
-
+        public event Action<TopicModel> openTopicEvent;
         public event Action<List<UserModel>> getUsersEvent;
+        public event Action<object> openChatsEvent;
 
 
 
@@ -283,7 +284,6 @@ namespace GOSSIP.Net
                             //add replies when clicked on topic 
                         case (byte)SignalsEnum.GetTopics:
                             {
-
                                 Globals.Topics_Cache.Clear();
 
                                 var topicModelID = packetReader.ReadPacket<List<TopicModelID>>().Data;
@@ -308,7 +308,9 @@ namespace GOSSIP.Net
                             {
                                 var userChats = packetReader.ReadPacket<List<ChatModelID>>().Data;
                                 
-                                Globals.User_Cache.Chats.Clear();
+                                Globals.User_Cache.Chats = [];
+                                List<uint> chatIDs = [];
+
                                 foreach (var chat in userChats)
                                 {
                                     ChatModel temp = new ChatModel(chat);
@@ -317,11 +319,13 @@ namespace GOSSIP.Net
                                                     .Where(user => user != null) 
                                                     .ToList();
 
+                                    temp.Messages = [];
                                     Globals.User_Cache.Chats.Add(temp);
+                                    chatIDs.Add(chat.ID); //to get messages to all those chats by their ids
                                 }
 
                                 packetReader.ClearStream();
-                                Globals.server.SendPacket(SignalsEnum.GetAllUsersMessage, Globals.User_Cache.ID);
+                                Globals.server.SendPacket(SignalsEnum.GetAllUsersMessage, chatIDs);
 
                                 Debug.WriteLine($"Recived {userChats.Count} chats");
                                 break;
@@ -348,9 +352,10 @@ namespace GOSSIP.Net
                                     }
                                 }
 
+                                openChatsEvent?.Invoke(null);
+
                                 break;
                             }
-
                         case (byte)SignalsEnum.Login:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;
@@ -376,7 +381,6 @@ namespace GOSSIP.Net
 
                             case(byte)SignalsEnum.Logout:
                             {
-
                                 Globals.User_Cache = null;
                                 Globals.AllUsers_Cache = [];
                                 Globals.Topics_Cache = [];
@@ -386,6 +390,20 @@ namespace GOSSIP.Net
                                 SendPacket(SignalsEnum.GetTopics);
 
                                 logoutEvent?.Invoke();
+
+                                Debug.WriteLine($"{DateTime.Now} User loged out");
+                                break;
+                            }
+                        case (byte)SignalsEnum.GetReplies:
+                            {
+                                var Replies = packetReader.ReadPacket<List<ReplyModelID>>().Data;
+                                TopicModel topic = new TopicModel();
+
+                                //Code to connect replies to topic
+
+                                openTopicEvent?.Invoke(topic);
+
+                                Debug.WriteLine($"{DateTime.Now} Recived replies");
                                 break;
                             }
                         case (byte)SignalsEnum.RefreshUser:

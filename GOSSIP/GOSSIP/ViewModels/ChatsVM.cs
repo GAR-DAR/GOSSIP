@@ -16,7 +16,16 @@ namespace GOSSIP.ViewModels
     public class ChatsVM : ObservableObject
     {
         //Прив'язана до UI.
-        public ObservableCollection<OpenedChatVM> ChatList { get; set; } = [];
+        private ObservableCollection<OpenedChatVM> _chatList = [];
+        public ObservableCollection<OpenedChatVM> ChatList
+        { 
+            get => _chatList;
+            set
+            {
+                _chatList = value;
+                OnPropertyChanged(nameof(ChatList));
+            }
+        }
         public uint CurrentUserID { get; set; }
 
         private readonly MainVM _mainVM;
@@ -33,7 +42,6 @@ namespace GOSSIP.ViewModels
             {
                 _openedChatVM = value;
 
-                Globals.server.SendPacket(SignalsEnum.RefreshUser, MainVM.AuthorizedUserVM.UserModel);
                 OnPropertyChanged(nameof(MainVM.AuthorizedUserVM.UserModel));
 
                 OnPropertyChanged(nameof(OpenedChatVM));
@@ -72,6 +80,7 @@ namespace GOSSIP.ViewModels
 
             CurrentUserID = MainVM.AuthorizedUserVM.UserModel.ID;
             AddNewChatCommand = new RelayCommand(AddNewChatMethod);
+            Globals.server.openChatsEvent += (obj) => { ChatList = new(Globals.User_Cache.Chats.Select(chat => new OpenedChatVM(chat, _mainVM))); };
 
         }
 

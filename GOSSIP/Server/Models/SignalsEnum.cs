@@ -41,9 +41,7 @@ namespace Server
         #endregion
 
         #region Reply
-
         GetReplies,
-
         CreateReply,
         EditReply,
         DeleteReply,
