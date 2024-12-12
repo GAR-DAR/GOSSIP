@@ -277,9 +277,12 @@ namespace Server
                                 mutex.WaitOne();
                                 var topicId = _packetReader.ReadPacket<uint>().Data;
 
-                                var replies = RepliesService.SelectById(topicId, Globals.db.Connection);
+                                var childReplies = TopicsService.SelectChildRepliesByTopic(topicId, Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetChildReplies, childReplies);
 
-                                SendPacket(SignalsEnum.GetReplies, replies);
+                                var parentReplies = TopicsService.SelectParentRepliesByTopic(topicId, Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetParentReplies, parentReplies);
+
                                 Logging.LogSent(SignalsEnum.GetReplies, UID, User);
                                 mutex.ReleaseMutex();
                                 break;
@@ -453,6 +456,18 @@ namespace Server
             }
         }
         #region Helpers
+
+        private void SendReplyPacket<T>(SignalsEnum signal, T data) where T : class
+        {
+            if (ClientSocket.Connected)
+            {
+                var authPacket = new PacketBuilder<T>();
+                var packet = authPacket.GetReplyPacketBytes(signal, data);
+                mutex.WaitOne();
+                ClientSocket.Client.Send(packet);
+                mutex.ReleaseMutex();
+            }
+        }
 
         private void SendPacket<T>(SignalsEnum signal, T data) where T : class
         {

@@ -12,5 +12,14 @@ namespace GOSSIP
         }
 
         public ParentReplyModel() { }
+
+        public ParentReplyModel(ParentReplyModelID parentReply)
+        {
+            ID = parentReply.ID;
+            Content = parentReply.Content;
+            CreatedAt = parentReply.CreatedAt;
+            Rating = parentReply.Rating;
+            IsDeleted = parentReply.IsDeleted;
+        }
     }
 }

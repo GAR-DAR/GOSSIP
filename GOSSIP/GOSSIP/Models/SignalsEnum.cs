@@ -67,6 +67,8 @@ namespace GOSSIP
         PacketError,
         LoginError,
         SignUpError,
+        GetChildReplies,
+        GetParentReplies,
         #endregion
     }
 }

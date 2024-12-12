@@ -67,6 +67,8 @@ namespace Server
         PacketError,
         LoginError,
         SignUpError,
+        GetChildReplies,
+        GetParentReplies,
         #endregion
     }
 }

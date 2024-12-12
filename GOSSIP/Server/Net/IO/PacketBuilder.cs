@@ -27,6 +27,31 @@ namespace Server.Net.IO
             return packetBytes;
         }
 
+        public byte[] GetReplyPacketBytes(SignalsEnum signal, T data)
+        {
+            _signal = (byte)signal;
+            _packet.Data = data;
+
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
+                ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+            };
+
+            var json = System.Text.Json.JsonSerializer.Serialize(_packet, options);
+            var dataBuffer = Encoding.UTF8.GetBytes(json);
+
+            var lengthBuffer = BitConverter.GetBytes(dataBuffer.Length);
+
+            var packetBytes = new byte[1 + lengthBuffer.Length + dataBuffer.Length];
+
+            packetBytes[0] = _signal;
+
+            Buffer.BlockCopy(lengthBuffer, 0, packetBytes, 1, lengthBuffer.Length);
+            Buffer.BlockCopy(dataBuffer, 0, packetBytes, 1 + lengthBuffer.Length, dataBuffer.Length);
+
+            return packetBytes;
+        }
+
         public byte[] GetPacketBytes(SignalsEnum signal, T data)
         {
             _signal = (byte)signal;
