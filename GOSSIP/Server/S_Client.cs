@@ -366,6 +366,7 @@ namespace Server
                         case (byte)SignalsEnum.GetAllUsersMessage:
                             {
                                 mutex.WaitOne(); 
+                                
                                 var ids = _packetReader.ReadPacket<List<uint>>().Data; //should be list<chatid>
                                 
                                 List<MessageModelID> messages = [];
@@ -392,6 +393,7 @@ namespace Server
                                 var chats = ChatsService.SelectChatsByUser(chat.UserIDs[0], Globals.db.Connection);
 
                                 SendPacket(SignalsEnum.GetUserChats, chats);
+                                Logging.LogSent(SignalsEnum.GetUserChats, UID, User);
 
                                 foreach (var client in ClientManager.ConnectedClients)
                                 {
