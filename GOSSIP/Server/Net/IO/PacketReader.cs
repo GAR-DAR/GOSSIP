@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Server.Net.IO
@@ -32,6 +33,7 @@ namespace Server.Net.IO
             return JsonConvert.DeserializeObject<Packet<T>>(json);
         }
 
+
         public byte ReadSignal()
         {
             if (_networkStream.CanRead && _networkStream.DataAvailable)
@@ -41,7 +43,7 @@ namespace Server.Net.IO
             return Signal;
         }
 
-        public byte[] ReadRawPacket()
+        public Packet<T> ReadReplyPacket<T>()
         {
             if (!_networkStream.CanRead)
             {
@@ -61,14 +63,9 @@ namespace Server.Net.IO
 
             var dataBuffer = new byte[length];
             _networkStream.Read(dataBuffer, 0, length);
-
-            return dataBuffer;
-        }
-
-        public T DeserializePacket<T>(byte[] dataBuffer)
-        {
+            
             var json = Encoding.UTF8.GetString(dataBuffer);
-            return JsonConvert.DeserializeObject<T>(json);
+            return System.Text.Json.JsonSerializer.Deserialize<Packet<T>>(json);
         }
 
         public void ClearStream()

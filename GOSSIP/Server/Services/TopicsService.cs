@@ -243,7 +243,7 @@ public static class TopicsService
         List<uint> topicIds = [];
         string selectTopicsByTagQuery =
             """
-            SELECT topic_id FROM topics_to_tags WHERE tag = @tag
+            SELECT topic_id FROM topics_to_tags WHERE tag = @tag ORDER BY votes DESC
             """;
 
         using var selectCommand = new MySqlCommand(selectTopicsByTagQuery, conn);
@@ -255,6 +255,43 @@ public static class TopicsService
             topicIds.Add(reader.GetUInt32("topic_id"));
         }
         reader.Close();
+
+        foreach (var topicId in topicIds)
+        {
+            topics.Add(SelectById(topicId, conn));
+        }
+
+        return topics;
+    }
+
+    public static List<TopicModelID> SelectTopicsByTitle(string searchQuery, MySqlConnection conn)
+    {
+        List<TopicModelID> topics = [];
+        List<uint> topicIds = [];
+        string[] searchWords = searchQuery.Split([',', ' '], StringSplitOptions.RemoveEmptyEntries);
+        string searchTopicsByTitleQuery =
+            """
+            SELECT id 
+            FROM topics
+            WHERE title LIKE @word
+            ORDER BY votes DESC
+            """;
+
+        using var selectCommand = new MySqlCommand(searchTopicsByTitleQuery, conn);
+        selectCommand.Parameters.Add("@word", MySqlDbType.VarChar, 255);
+
+        foreach (var word in searchWords)
+        {
+            selectCommand.Parameters["@word"].Value = "%" + word + "%";
+            using var reader = selectCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var topicId = reader.GetUInt32("id");
+                if (!topicIds.Contains(topicId))
+                    topicIds.Add(topicId);
+            }
+        }
 
         foreach (var topicId in topicIds)
         {
@@ -294,5 +331,32 @@ public static class TopicsService
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;
+    }
+
+    public static List<ReplyModelID> SelectAllRepliesByTopic(uint id, MySqlConnection conn)
+    {
+        List<ReplyModelID> replies = [];
+        List<uint> replyIds = [];
+        string selectAllRepliesQuery =
+            """
+            SELECT id FROM replies WHERE topic_id = @topic_id
+            """;
+
+        using var selectCommand = new MySqlCommand(selectAllRepliesQuery, conn);
+        selectCommand.Parameters.AddWithValue("@topic_id", id);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            replyIds.Add(reader.GetUInt32("id"));
+        }
+        reader.Close();
+
+        foreach (var replyId in replyIds)
+        {
+            replies.Add(RepliesService.SelectById(replyId, conn));
+        }
+
+        return replies;
     }
 }

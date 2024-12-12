@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Server
 {
-    public abstract class ReplyModelID
+    [JsonDerivedType(typeof(ReplyModelID), typeDiscriminator: "ReplyModelID")]
+    [JsonDerivedType(typeof(ParentReplyModelID), typeDiscriminator: "ParentReplyModelID")]
+    [JsonDerivedType(typeof(ChildReplyModelID), typeDiscriminator: "ChildReplyModelID")]
+
+    public class ReplyModelID
     {
         public uint ID { get; set; }
         public uint UserID { get; set; }
