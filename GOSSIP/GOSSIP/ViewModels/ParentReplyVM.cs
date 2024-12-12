@@ -169,7 +169,9 @@ namespace GOSSIP.ViewModels
             SendReplyToReply = new RelayCommand(SendReplyToReplyMethod);
             CommentAuthorProfileClickCommand = new RelayCommand(obj => ProfileClickEvent?.Invoke(new(replyModel.User)));
 
-            foreach(ChildReplyVM childReplyVM in Replies)
+            Globals.server.getReplyOnReply += SendReplyToReplyMethod;
+
+            foreach (ChildReplyVM childReplyVM in Replies)
             {
                 childReplyVM.UserIsNotAuthorized += UserIsNotAuthorizedHandler;
                 childReplyVM.ProfileClickEvent += ProfileClickHandler;
@@ -190,16 +192,21 @@ namespace GOSSIP.ViewModels
 
         private void SendReplyToReplyMethod(object obj)
         {
-            if(MainVM.AuthorizedUserVM == null)
+           
+
+            if (MainVM.AuthorizedUserVM == null)
             {
                 UserIsNotAuthorizedHandler();
                 return;
             }
 
+
             if (string.IsNullOrEmpty(ReplyToReplyContent))
             {
                 return;
             }
+
+            obj = obj as ChildReplyModel;
 
             ChildReplyModel childReply = new()
             {
@@ -216,7 +223,7 @@ namespace GOSSIP.ViewModels
             childReplyVM.ProfileClickEvent += ProfileClickHandler;
             childReplyVM.UserIsNotAuthorized += UserIsNotAuthorizedHandler;
 
-            Globals.server.SendPacket(SignalsEnum.ReplyToReply, childReply);
+            Globals.server.SendPacket(SignalsEnum.CreateReplyToReply, new ChildReplyModelID(childReply));
 
             Replies.Add(childReplyVM);
             ReplyModelPR.Replies.Add(childReply);
@@ -224,11 +231,6 @@ namespace GOSSIP.ViewModels
             IsReplyButtonPressed = true;
 
             IsRepliesListNotEmpty = Replies.Count > 0;
-
-            
-
-            //JsonStorage jsonStorage = new("topic_data.json");
-            //jsonStorage.SaveTopic(_replyModel.Topic);
 
             ReplyToReplyContent = string.Empty;
         }

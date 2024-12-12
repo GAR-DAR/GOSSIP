@@ -24,6 +24,14 @@ namespace GOSSIP
 
         public ChildReplyModelID(ChildReplyModel childReplyModel)
         {
+            ID = childReplyModel.ID;
+            UserID = childReplyModel.User.ID;
+            TopicID = childReplyModel.Topic.ID;
+            Content = childReplyModel.Content;
+            CreatedAt = childReplyModel.CreatedAt;
+            Rating = childReplyModel.Rating;
+            IsDeleted = childReplyModel.IsDeleted;
+
             RootReplyID = childReplyModel.RootReply.ID;
             ReplyToUserID = childReplyModel.ReplyTo.ID;
         }

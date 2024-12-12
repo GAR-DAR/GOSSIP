@@ -65,6 +65,9 @@ namespace GOSSIP.Net
         public event Action<List<UserModel>> getUsersEvent;
         public event Action<object> openChatsEvent;
 
+        public event Action<ParentReplyModel> getReplyOnTopic;
+        public event Action<ChildReplyModel> getReplyOnReply;
+
 
 
         //public event Action<TopicModel> sendMessageEvent;
@@ -394,6 +397,50 @@ namespace GOSSIP.Net
                                 break;
                             }
 
+                        case (byte)SignalsEnum.CreateReply:
+                            {
+                                var reply = packetReader.ReadPacket<ParentReplyModelID>().Data;
+
+                                var temp = new ParentReplyModel(reply);
+
+                                temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
+                                temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+
+                                Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault().Replies.Add(temp);
+
+                                getReplyOnTopic.Invoke(temp);
+
+                                Debug.WriteLine($"{DateTime.Now} Recived reply");
+
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.CreateReplyToReply:
+                            {
+                                var reply = packetReader.ReadPacket<ChildReplyModelID>().Data;
+
+                                var temp = new ChildReplyModel(reply);
+
+                                temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
+                                temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+
+                                temp.ReplyTo = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID)
+                                .FirstOrDefault().Replies
+                                .Where(r => r.ID == reply.RootReplyID).Select(r => r.User).FirstOrDefault();
+
+                                temp.RootReply = temp.Topic.Replies
+                                .Where(parentReply => parentReply.ID == reply.RootReplyID)
+                                .FirstOrDefault();
+
+                                Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault().Replies
+                                .Where(parentReply => parentReply.ID == reply.RootReplyID).FirstOrDefault().Replies.Add(temp);
+
+                                getReplyOnReply.Invoke(temp);
+
+                                Debug.WriteLine($"{DateTime.Now} Recived reply to reply");
+
+                                break;
+                            }
                         case (byte)SignalsEnum.GetParentReplies:
                             {
                                 var replies = packetReader.ReadPacket<List<ParentReplyModelID>>().Data;

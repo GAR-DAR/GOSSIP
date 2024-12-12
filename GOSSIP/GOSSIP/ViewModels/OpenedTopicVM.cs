@@ -7,7 +7,9 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+
 
 namespace GOSSIP.ViewModels
 {
@@ -140,7 +142,21 @@ namespace GOSSIP.ViewModels
             DownVoteReplyOnReplyCommand = new RelayCommand(DownVoteReplyOnReplyMethod);
             TopicAuthorProfileClickCommand = new RelayCommand(obj => _mainVM.OpenProfile(new(topic.Topic.Author)));
             
-            foreach(ParentReplyVM reply in Replies)
+            Globals.server.getReplyOnTopic += (reply) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Replies.Add(new ParentReplyVM(reply));
+
+                    foreach (ParentReplyVM reply in Replies)
+                    {
+                        reply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
+                        reply.ProfileClickEvent += _mainVM.OpenProfile;
+                    }
+                });
+            };
+
+            foreach (ParentReplyVM reply in Replies)
             {
                 reply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
                 reply.ProfileClickEvent += _mainVM.OpenProfile;
@@ -214,9 +230,9 @@ namespace GOSSIP.ViewModels
                 newReply.ProfileClickEvent += _mainVM.OpenProfile;
                 newReply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
 
-                
-                
-                Globals.server.SendPacket(SignalsEnum.CreateReply, newReply);
+                var t = new ParentReplyModelID(newReply.ReplyModelPR);
+
+                Globals.server.SendPacket(SignalsEnum.CreateReply, t);
 
                 Replies.Add(newReply);
                 RepliesCount++;

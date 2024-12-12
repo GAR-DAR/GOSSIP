@@ -21,7 +21,15 @@ namespace GOSSIP
 
         public ParentReplyModelID(ParentReplyModel replyModel)
         {
-            foreach(var reply in replyModel.Replies)
+            ID = replyModel.ID;
+            UserID = replyModel.ID;
+            TopicID = replyModel.Topic.ID;
+            Content = replyModel.Content;
+            CreatedAt = replyModel.CreatedAt;
+            Rating = replyModel.Rating;
+            IsDeleted = replyModel.IsDeleted;
+
+            foreach (var reply in replyModel.Replies)
             {
                 Replies.Add(reply.ID);
             }

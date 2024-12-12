@@ -300,26 +300,18 @@ namespace Server
                                 mutex.ReleaseMutex();
                                 break;
                             }
-                        case (byte)SignalsEnum.ReplyToReply:
+
+                        case (byte)SignalsEnum.CreateReplyToReply:
                             {
                                 mutex.WaitOne();
-                                var reply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
+                                var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                 
                                 RepliesService.Add(reply, Globals.db.Connection);
                                 mutex.ReleaseMutex();
                                 break;
                             }
-                        case (byte)SignalsEnum.ReplyToReplyReply:
-                            {
-                                mutex.WaitOne();
-                                var reply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
-                                mutex.ReleaseMutex();
 
-                                RepliesService.Add(reply, Globals.db.Connection);
-
-                                break;
-                            }
-
+                       
                         case (byte)SignalsEnum.GetUserChats:
                             {
                                 mutex.WaitOne();

@@ -68,7 +68,8 @@ namespace Server
         LoginError,
         SignUpError,
         GetChildReplies,
-        GetParentReplies
+        GetParentReplies,
+        CreateReplyToReply
         #endregion
     }
 }
