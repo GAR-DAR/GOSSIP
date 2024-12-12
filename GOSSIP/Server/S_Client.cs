@@ -28,7 +28,7 @@ namespace Server
         }
         public static void LogRecived(SignalsEnum signal, Guid guid, UserModelID user)
         {
-            Console.WriteLine($"{DateTime.Now} [Recived] signal {(byte)signal} ({signal}) from user {guid} with name {user.Username}");
+            Console.WriteLine($"{DateTime.Now} [RecieWed] signal {(byte)signal} ({signal}) from user {guid} with name {user.Username}");
         }
         public static void LogSent(SignalsEnum signal, Guid guid, UserModelID user)
         {
@@ -270,19 +270,19 @@ namespace Server
                                 mutex.ReleaseMutex();
                                 break;
                             }
-
                             case (byte)SignalsEnum.GetReplies:
                             {
                                 mutex.WaitOne();
                                 var topicId = _packetReader.ReadPacket<uint>().Data;
+
+                                var topic = TopicsService.SelectById(topicId, Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetReplies, topic);
 
                                 var parentReplies = TopicsService.SelectParentRepliesByTopic(topicId, Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetParentReplies, parentReplies);
 
                                 var childReplies = TopicsService.SelectChildRepliesByTopic(topicId, Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetChildReplies, childReplies);
-
-                                
 
                                 Logging.LogSent(SignalsEnum.GetReplies, UID, User);
                                 mutex.ReleaseMutex();

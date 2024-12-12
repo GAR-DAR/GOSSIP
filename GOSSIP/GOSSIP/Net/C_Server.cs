@@ -21,6 +21,7 @@ namespace GOSSIP.Net
         public static UserModel User_Cache { get; set; }
         public static List<UserModel> AllUsers_Cache { get; set; } = [];
         public static List<TopicModel> Topics_Cache { get; set; } = [];
+        public static TopicModel OpenedTopic_Cache { get; set; }
 
         public static void RefreshUser()
         {
@@ -85,7 +86,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.24.226.173", 7891);
+            _client.Connect("172.24.237.81", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -441,6 +442,16 @@ namespace GOSSIP.Net
 
                                 break;
                             }
+                        case (byte)SignalsEnum.GetReplies:
+                            {
+                                var topicID = packetReader.ReadPacket<TopicModelID>().Data;
+
+                                Globals.OpenedTopic_Cache = new TopicModel(topicID);
+                                Globals.OpenedTopic_Cache.Author = Globals.AllUsers_Cache.Where(user => user.ID == topicID.AuthorID).FirstOrDefault();
+
+                                Debug.WriteLine($"{DateTime.Now} Recived topic");
+                                break;
+                            }
                         case (byte)SignalsEnum.GetParentReplies:
                             {
                                 var replies = packetReader.ReadPacket<List<ParentReplyModelID>>().Data;
@@ -451,16 +462,14 @@ namespace GOSSIP.Net
                                 {
                                     var temp = new ParentReplyModel(reply);
                                     temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
-                                    temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
-                                    repliesModel.Add(temp);
-                                }
+                                    temp.Topic = Globals.OpenedTopic_Cache;
 
-                                Globals.Topics_Cache.Where(topic => topic.ID == replies[0].TopicID).FirstOrDefault().Replies = repliesModel;
+                                    Globals.OpenedTopic_Cache.Replies.Add(temp);
+                                }
 
                                 Debug.WriteLine($"{DateTime.Now} Recived parent replies");
                                 break;
                             }
-
                         case (byte)SignalsEnum.GetChildReplies:
                             {
                                 var replies = packetReader.ReadPacket<List<ChildReplyModelID>>().Data;
@@ -471,10 +480,9 @@ namespace GOSSIP.Net
                                 {
                                     var temp = new ChildReplyModel(reply);
                                     temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
-                                    temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+                                    temp.Topic = Globals.OpenedTopic_Cache;
 
-                                    temp.ReplyTo = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID)
-                                    .FirstOrDefault().Replies
+                                    temp.ReplyTo = temp.Topic.Replies
                                     .Where(r => r.ID == replies[0].RootReplyID).Select(r => r.User).FirstOrDefault();
 
                                     temp.RootReply = temp.Topic.Replies
@@ -485,21 +493,16 @@ namespace GOSSIP.Net
                                     
                                 }
 
-                                TopicModel topicModel = Globals.Topics_Cache.Where(topic => topic.ID == replies[0].TopicID).FirstOrDefault();
-
-
-                                foreach (ParentReplyModel parentReply in topicModel.Replies)
+                                foreach (ParentReplyModel parentReply in Globals.OpenedTopic_Cache.Replies)
                                 {
                                     parentReply.Replies = repliesModel.Where(r => r.RootReply.ID == parentReply.ID).ToList();
-                                   
                                 }
 
-                                openTopicEvent?.Invoke(topicModel);
+                                openTopicEvent?.Invoke(Globals.OpenedTopic_Cache);
 
                                 Debug.WriteLine($"{DateTime.Now} Recived child replies");
                                 break;
                             }
-
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;

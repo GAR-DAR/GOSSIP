@@ -40,7 +40,7 @@ namespace GOSSIP.ViewModels
         }
 
         private MainVM _mainVM;
-       
+
         public ICommand BackCommand { get; set; }
         public ICommand UpVoteTopicCommand { get; set; }
         public ICommand DownVoteTopicCommand { get; set; }
@@ -141,13 +141,13 @@ namespace GOSSIP.ViewModels
             UpVoteReplyOnReplyCommand = new RelayCommand(UpVoteReplyOnReplyMethod);
             DownVoteReplyOnReplyCommand = new RelayCommand(DownVoteReplyOnReplyMethod);
             TopicAuthorProfileClickCommand = new RelayCommand(obj => _mainVM.OpenProfile(new(topic.Topic.Author)));
-            
+
             Globals.server.getReplyOnTopic += (reply) =>
             {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     Replies.Add(new ParentReplyVM(reply));
-
+                    RepliesCount++;
                     foreach (ParentReplyVM reply in Replies)
                     {
                         reply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
@@ -186,7 +186,7 @@ namespace GOSSIP.ViewModels
                 Rating--;
                 CanUpVote = true;
             }
-           
+
         }
 
         private void DownVoteMethod(object obj)
@@ -213,7 +213,7 @@ namespace GOSSIP.ViewModels
                 CanDownVote = true;
             }
 
-           
+
         }
 
         private void AddReplyMethod(object obj)
@@ -226,7 +226,7 @@ namespace GOSSIP.ViewModels
 
             if (!string.IsNullOrEmpty(EnteredReplyText))
             {
-				ParentReplyVM newReply = new ParentReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
+                ParentReplyVM newReply = new ParentReplyVM(new ParentReplyModel(1, MainVM.AuthorizedUserVM.UserModel, TopicVM.Topic, EnteredReplyText, DateTime.Now, 0, false, []));
                 newReply.ProfileClickEvent += _mainVM.OpenProfile;
                 newReply.UserIsNotAuthorized += _mainVM.ShowLogInMethod;
 
@@ -234,15 +234,13 @@ namespace GOSSIP.ViewModels
 
                 Globals.server.SendPacket(SignalsEnum.CreateReply, t);
 
-                Replies.Add(newReply);
-                RepliesCount++;
-				
+
                 TopicVM.Topic.Replies.Add(newReply.ReplyModelPR);
 
                 EnteredReplyText = "";
             }
 
-            
+
         }
 
         private void UpVoteReplyMethod(object obj)
@@ -271,7 +269,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            
+
         }
 
         private void UpVoteReplyOnReplyMethod(object obj)
@@ -300,7 +298,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-          
+
         }
 
         private void DownVoteReplyOnReplyMethod(object obj)
@@ -329,7 +327,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-           
+
         }
 
         private void DownVoteReplyMethod(object obj)
