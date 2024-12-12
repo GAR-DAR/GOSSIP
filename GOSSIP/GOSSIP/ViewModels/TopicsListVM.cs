@@ -82,7 +82,7 @@ namespace GOSSIP.ViewModels
 
         private void LoadMoreMethod(object obj)
         {
-           
+           Globals.server.SendPacket(SignalsEnum.Refresh);
         }
 
         private void ProfileClickHandler(UserVM user)

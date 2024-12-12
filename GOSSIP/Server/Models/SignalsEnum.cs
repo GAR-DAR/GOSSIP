@@ -17,7 +17,7 @@ namespace Server
         Login,
         Logout,
         EditUser,
-        RefreshUser,
+        Refresh,
         ChangeUserPhoto,
         GetAllUsers,
         #endregion

@@ -228,23 +228,27 @@ namespace Server
                                 break;
                             }
 
-                        case (byte)SignalsEnum.RefreshUser:
+                        case (byte)SignalsEnum.Refresh:
                             {
                                 mutex.WaitOne();
-                                var userModel = _packetReader.ReadPacket<UserModelID>().Data;
+                                
+                                var topics = TopicsService.SelectAll(Globals.db.Connection);
+                                var users = UsersService.SelectAll(Globals.db.Connection);
 
-                                User = UsersService.SelectById(userModel.ID, Globals.db.Connection);
-
-                                if (User != null)
+                                if (topics != null && users != null)
                                 {
-                                    Logging.Log("refreshing", UID, User, ConsoleColor.Green);
-                                    SendPacket(SignalsEnum.RefreshUser, User);
-                                    Logging.LogSent(SignalsEnum.RefreshUser, UID, User, ConsoleColor.Blue);
+                                    SendPacket(SignalsEnum.GetTopics, topics);
+                                    Logging.LogSent(SignalsEnum.GetTopics, UID, User, ConsoleColor.Blue);
+
+                                    SendPacket(SignalsEnum.GetAllUsers, users);
+                                    Logging.LogSent(SignalsEnum.GetAllUsers, UID, User, ConsoleColor.Blue);
                                 }
                                 else
                                 {
-                                    Logging.Log("User id is not found in db", UID, User, ConsoleColor.Red);
+                                    Logging.LogSent(SignalsEnum.GetTopics, UID, User, ConsoleColor.Red);
+                                    Logging.LogSent(SignalsEnum.GetAllUsers, UID, User, ConsoleColor.Red);
                                 }
+                                
                                 mutex.ReleaseMutex();
 
                                 break;

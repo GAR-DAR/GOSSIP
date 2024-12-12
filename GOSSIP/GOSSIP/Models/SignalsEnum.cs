@@ -17,7 +17,7 @@ namespace GOSSIP
         Login,
         Logout,
         EditUser,
-        RefreshUser,
+        Refresh,
         ChangeUserPhoto,
         GetAllUsers,
 
