@@ -28,6 +28,15 @@ namespace GOSSIP
             ReplyTo = replyTo;
         }
 
+        public ChildReplyModel(ChildReplyModelID childReply)
+        {
+            ID = childReply.ID;
+            Content = childReply.Content;
+            CreatedAt = childReply.CreatedAt;
+            Rating = childReply.Rating;
+            IsDeleted = childReply.IsDeleted;
+        }
+
 
     }
 

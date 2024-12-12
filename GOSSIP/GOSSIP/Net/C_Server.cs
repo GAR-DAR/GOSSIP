@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using GOSSIP;
+using GOSSIP.ViewModels;
 
 namespace GOSSIP.Net
 {
@@ -392,19 +393,58 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} User loged out");
                                 break;
                             }
-                        case (byte)SignalsEnum.GetReplies:
+
+                        case (byte)SignalsEnum.GetParentReplies:
                             {
-                                var Replies = packetReader.ReadReplyPacket<List<ReplyModelID>>().Data;
-                                TopicModel topic = new TopicModel();
+                                var replies = packetReader.ReadPacket<List<ParentReplyModelID>>().Data;
 
+                                var repliesModel = new List<ParentReplyModel>();
 
-                                //Code to connect replies to topic
+                                foreach (var reply in replies)
+                                {
+                                    var temp = new ParentReplyModel(reply);
+                                    temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
+                                    temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+                                    repliesModel.Add(temp);
+                                }
 
-                                openTopicEvent?.Invoke(topic);
+                                Globals.Topics_Cache.Where(topic => topic.ID == replies[0].TopicID).FirstOrDefault().Replies = repliesModel;
 
-                                Debug.WriteLine($"{DateTime.Now} Recived replies");
+                                Debug.WriteLine($"{DateTime.Now} Recived parent replies");
                                 break;
                             }
+
+                        case (byte)SignalsEnum.GetChildReplies:
+                            {
+                                var replies = packetReader.ReadPacket<List<ChildReplyModelID>>().Data;
+
+                                var repliesModel = new List<ChildReplyModel>();
+
+                                foreach (var reply in replies)
+                                {
+                                    var temp = new ChildReplyModel(reply);
+                                    temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
+                                    temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+                                    temp.RootReply = Globals.Topics_Cache.Where(topic => topic.ID == reply.RootReplyID)
+                                    .FirstOrDefault().Replies
+                                    .Where(parentReply => parentReply.ID == reply.RootReplyID)
+                                    .FirstOrDefault();
+                                    repliesModel.Add(temp);
+                                }
+
+                                TopicModel topicModel = Globals.Topics_Cache.Where(topic => topic.ID == replies[0].TopicID).FirstOrDefault();
+                                
+                                foreach (ParentReplyModel parentReply in topicModel.Replies)
+                                {
+                                    parentReply.Replies = repliesModel.Where(r => r.RootReply.ID == parentReply.ID).ToList();
+                                }
+
+                                openTopicEvent?.Invoke(topicModel);
+
+                                Debug.WriteLine($"{DateTime.Now} Recived child replies");
+                                break;
+                            }
+                       
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;
@@ -463,10 +503,10 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"Recived list of degrees");
                                break;
                             }
-                        
 
-                    }
-                    packetReader.Signal = 255;
+
+                        
+                                packetReader.Signal = 255;
                     packetReader.ClearStream();
                 }
             }, _cancellationTokenSource.Token);
