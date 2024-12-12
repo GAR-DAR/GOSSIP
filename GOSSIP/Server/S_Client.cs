@@ -294,8 +294,14 @@ namespace Server
                                 mutex.WaitOne();
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                
+                                if (RepliesService.Add(reply, Globals.db.Connection))
+                                {
+                                    SendPacket(SignalsEnum.CreateReply, reply);
+                                    Logging.LogSent(SignalsEnum.CreateReply, UID, User);
+                                }
+                                else
+                                    Logging.Log("Error creating reply", UID, User);
 
-                                RepliesService.Add(reply, Globals.db.Connection);
                                 mutex.ReleaseMutex();
                                 break;
                             }

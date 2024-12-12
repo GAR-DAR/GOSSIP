@@ -109,8 +109,6 @@ namespace GOSSIP.ViewModels
             Messages.Add(message);
             EnteredText = "";
             Globals.server.SendPacket(SignalsEnum.SendMessage, new MessageModelID(message));
-
-            UpdateMessages();
         }
 
         private void LastMessageUpdate(object sender, EventArgs args)
