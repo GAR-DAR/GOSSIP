@@ -271,10 +271,13 @@ namespace Server
                                 break;
                             }
 
-                            case (byte)SignalsEnum.GetReplies:
+                        case (byte)SignalsEnum.GetReplies:
                             {
                                 mutex.WaitOne();
                                 var topicId = _packetReader.ReadPacket<uint>().Data;
+
+                                var topic = TopicsService.SelectById(topicId, Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetReplies, topic);
 
                                 var parentReplies = TopicsService.SelectParentRepliesByTopic(topicId, Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetParentReplies, parentReplies);
@@ -282,12 +285,11 @@ namespace Server
                                 var childReplies = TopicsService.SelectChildRepliesByTopic(topicId, Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetChildReplies, childReplies);
 
-                                
-
                                 Logging.LogSent(SignalsEnum.GetReplies, UID, User);
                                 mutex.ReleaseMutex();
                                 break;
                             }
+
 
                         case (byte)SignalsEnum.CreateReply:
                             {
@@ -312,10 +314,9 @@ namespace Server
                                 mutex.WaitOne();
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                 
-                                RepliesService.Add(reply, Globals.db.Connection);
+                                var replyModelID = RepliesService.Add(reply, Globals.db.Connection);
 
-
-                                SendPacket(SignalsEnum.CreateReplyToReply, reply);
+                                SendPacket(SignalsEnum.CreateReplyToReply, replyModelID);
                                 mutex.ReleaseMutex();
                                 break;
                             }
