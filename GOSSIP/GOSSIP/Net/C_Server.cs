@@ -67,6 +67,7 @@ namespace GOSSIP.Net
 
         public event Action<ParentReplyModel> getReplyOnTopic;
         public event Action<ChildReplyModel> getReplyOnReply;
+        public event Action<UserModel> refreshUser;
 
 
 
@@ -84,7 +85,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.24.251.137", 7891);
+            _client.Connect("172.24.101.91", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -509,6 +510,19 @@ namespace GOSSIP.Net
                                 refreshUserEvent?.Invoke(Globals.User_Cache);
 
                                 Debug.WriteLine($"Refrash user {user.Username}");
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.ChangeUserPhoto: 
+                            {
+                                var userModelID = packetReader.ReadPacket<UserModelID>().Data;
+
+                                Globals.User_Cache.Photo = userModelID.Photo;
+
+                                Globals.server.refreshUser.Invoke(Globals.User_Cache);
+
+                                Debug.WriteLine($"User {userModelID.Username} changed photo");
+
                                 break;
                             }
                         case (byte)SignalsEnum.MessageMulticast:

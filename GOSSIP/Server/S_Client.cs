@@ -234,13 +234,12 @@ namespace Server
                                 break;
                             }
 
-
+                        
                         case (byte)SignalsEnum.ChangeUserPhoto: //will fix when Andriy will fix db
                             {
                                 mutex.WaitOne();
                                 var userModelID = _packetReader.ReadPacket<UserModelID>().Data;
                                 
-
                                 bool res = UsersService.ChangePhoto(userModelID.ID, userModelID.Photo, Globals.db.Connection);
                                 if (res)
                                 {
@@ -307,6 +306,7 @@ namespace Server
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                 
                                 RepliesService.Add(reply, Globals.db.Connection);
+
 
                                 SendPacket(SignalsEnum.CreateReplyToReply, reply);
                                 mutex.ReleaseMutex();

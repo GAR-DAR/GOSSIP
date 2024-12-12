@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
@@ -321,6 +322,14 @@ namespace GOSSIP.ViewModels
             TermIndex = TermsOptions.IndexOf(Term.ToString());
 
             SaveChangesCommand = new RelayCommand(SaveChangesMethod);
+
+            Globals.server.refreshUser += (user) =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Photo = user.Photo;
+                });
+            };
 
             ChangePhotoCommand = new RelayCommand(obj => {
                 /*TODO: Додати зміну фото*/
