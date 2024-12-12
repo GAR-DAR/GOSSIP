@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GOSSIP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,21 @@ namespace GOSSIP.Views
         public OpenedChatView()
         {
             InitializeComponent();
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            OpenedChatVM vm = DataContext as OpenedChatVM;
+
+            vm.Messages.CollectionChanged += (s, ev) => ScrollToBottom();
+
+
+            void ScrollToBottom()
+            {
+                MessagesListBox.SelectedIndex = MessagesListBox.Items.Count -1;
+                MessagesListBox.ScrollIntoView(MessagesListBox.SelectedItem) ;
+            }
         }
     }
 }

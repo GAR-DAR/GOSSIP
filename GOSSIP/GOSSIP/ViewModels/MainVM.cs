@@ -161,8 +161,8 @@ namespace GOSSIP.ViewModels
                 AuthorizedUserVM.UserModel.Chats = Globals.User_Cache.Chats;
                 AuthorizedUserVM.OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
 
-                OnPropertyChanged(nameof(AuthorizedUserVM));
-                OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
+                //OnPropertyChanged(nameof(AuthorizedUserVM));
+                //OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
             }
         }
 
