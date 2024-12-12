@@ -32,8 +32,8 @@ namespace GOSSIP.ViewModels
         {
             if(obj is UserVM user)
             {
-                user.UserModel.IsBanned = false;
-                // realise unban user
+                Globals.server.UnbanUser(user.UserModel.ID);
+                BannedUsers.Remove(user);
             }
         }
 

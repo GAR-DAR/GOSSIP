@@ -142,6 +142,11 @@ namespace GOSSIP.Net
             SendPacket(SignalsEnum.GetBannedUsers);
         }
 
+        public void UnbanUser(uint ID)
+        {
+            SendPacket(SignalsEnum.UnbanUser, ID);
+        }
+
         #endregion
 
         #region SignUp

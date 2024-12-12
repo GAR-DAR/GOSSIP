@@ -128,6 +128,7 @@ public static class TopicsService
 
         topic.Replies = SelectParentReplyIdsByTopic(id, conn);
         topic.Tags = SelectTagsByTopic(id, conn);
+        topic.RepliesCount = CountRepliesByTopic(id, conn);
 
         return topic;
     }
@@ -360,35 +361,18 @@ public static class TopicsService
         return replies;
     }
 
-    public static List<ChildReplyModelID> SelectChildRepliesByTopic(uint topicId, MySqlConnection conn)
+    public static uint CountRepliesByTopic(uint topicId, MySqlConnection conn)
     {
-        List<ChildReplyModelID> childReplies = [];
-        List<uint> replyIds = [];
-        string selectReplyIdsQuery =
+        string countRepliesQuery =
             """
-        SELECT id
-        FROM replies
-        WHERE topic_id = @topic_id
-        AND is_deleted = FALSE
-        AND parent_reply_id IS NOT NULL
-        """;
+            SELECT COUNT(*) AS replies_count
+            FROM replies
+            WHERE topic_id = @topic_id AND is_deleted = FALSE
+            """;
 
-        using var selectCommand = new MySqlCommand(selectReplyIdsQuery, conn);
+        using var selectCommand = new MySqlCommand(countRepliesQuery, conn);
         selectCommand.Parameters.AddWithValue("@topic_id", topicId);
 
-        using var reader = selectCommand.ExecuteReader();
-        while (reader.Read())
-        {
-            replyIds.Add(reader.GetUInt32("id"));
-        }
-
-        reader.Close();
-
-        foreach (var replyId in replyIds)
-        {
-            childReplies.Add((ChildReplyModelID)RepliesService.SelectById(replyId, conn));
-        }
-
-        return childReplies;
+        return Convert.ToUInt32(selectCommand.ExecuteScalar());
     }
 }

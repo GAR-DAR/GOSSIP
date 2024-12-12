@@ -74,7 +74,8 @@ namespace Server
 
         #region Modearator
         GetBannedUsers,
-        BanUser
+        BanUser,
+        UnbanUser
         #endregion
     }
 }

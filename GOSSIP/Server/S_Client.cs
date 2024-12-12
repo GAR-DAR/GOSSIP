@@ -553,6 +553,24 @@ namespace Server
                                 break;
                             }
 
+                        case (byte)SignalsEnum.UnbanUser:
+                            {
+                                mutex.WaitOne();
+                                var id = _packetReader.ReadPacket<uint>().Data;
+                                if (id != null)
+                                {
+                                    if (UsersService.Unban(id, Globals.db.Connection))
+                                    {
+                                        var users = UsersService.SelectAll(Globals.db.Connection);
+                                        SendPacket(SignalsEnum.GetAllUsers, users);
+                                    }
+                                }
+                                else
+                                {
+                                    Logging.Log("Error during unbanning user", UID, User, ConsoleColor.Red);
+                                }
+                                break;
+                            }
                         case (byte)SignalsEnum.GetFieldsOfStudy:
                             {
                                 mutex.WaitOne();

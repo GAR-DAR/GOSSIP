@@ -75,7 +75,8 @@ namespace GOSSIP
 
         #region Modearator
         GetBannedUsers,
-        BanUser
+        BanUser,
+        UnbanUser
         #endregion
     }
 }
