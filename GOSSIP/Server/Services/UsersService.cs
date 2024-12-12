@@ -309,7 +309,7 @@ public static class UsersService
             SELECT id FROM users WHERE is_banned = TRUE
             """;
 
-        using var selectCommand = new MySqlCommand(selectBannedQuery);
+        using var selectCommand = new MySqlCommand(selectBannedQuery, conn);
         using var reader = selectCommand.ExecuteReader();
 
         while (reader.Read())
