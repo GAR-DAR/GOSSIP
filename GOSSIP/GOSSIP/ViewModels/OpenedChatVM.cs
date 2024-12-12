@@ -45,25 +45,8 @@ namespace GOSSIP.ViewModels
 
             MainVM.AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
 
-            Messages.CollectionChanged += (s, e) =>
-            {
-                ScrollToBottom();
-            };
-
             Messages.CollectionChanged += LastMessageUpdate;
             SendMessageCommand = new RelayCommand(SendMessageMethod);
-        }
-
-        private void ScrollToBottom()
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var listBox = Application.Current.MainWindow?.FindName("MessagesListBox") as ListBox;
-                if (listBox != null && listBox.Items.Count > 0)
-                {
-                    listBox.ScrollIntoView(listBox.Items[^1]);
-                }
-            });
         }
 
         private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -94,7 +77,7 @@ namespace GOSSIP.ViewModels
                 }
             }
 
-            ScrollToBottom();
+
         }
 
         public string LastMessage
