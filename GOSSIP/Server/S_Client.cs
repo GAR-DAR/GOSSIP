@@ -28,7 +28,7 @@ namespace Server
         }
         public static void LogRecived(SignalsEnum signal, Guid guid, UserModelID user)
         {
-            Console.WriteLine($"{DateTime.Now} [Recived] signal {(byte)signal} ({signal}) from user {guid} with name {user.Username}");
+            Console.WriteLine($"{DateTime.Now} [RecieWed] signal {(byte)signal} ({signal}) from user {guid} with name {user.Username}");
         }
         public static void LogSent(SignalsEnum signal, Guid guid, UserModelID user)
         {
