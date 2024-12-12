@@ -395,7 +395,10 @@ namespace GOSSIP.Net
                         case (byte)SignalsEnum.GetReplies:
                             {
                                 var Replies = packetReader.ReadPacket<List<ReplyModelID>>().Data;
+
                                 TopicModel topic = new TopicModel();
+
+                                
 
 
                                 //Code to connect replies to topic

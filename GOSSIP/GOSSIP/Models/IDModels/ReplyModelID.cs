@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace GOSSIP
 {
-    public abstract class ReplyModelID
+    [JsonDerivedType(typeof(ReplyModelID), typeDiscriminator: "ReplyModelID")]
+    [JsonDerivedType(typeof(ChildReplyModelID), typeDiscriminator: "ChildReplyModelID")]
+    [JsonDerivedType(typeof(ParentReplyModelID), typeDiscriminator: "ParentReplyModelID")]
+    public class ReplyModelID
     {
+       
         public uint ID { get; set; }
         public uint UserID { get; set; }
         public uint TopicID { get; set; }
