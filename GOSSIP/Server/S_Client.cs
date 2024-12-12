@@ -608,7 +608,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{DateTime.Now} - Error: {ex.Message}");
+                    Logging.Log($"Error: {ex.Message}", UID, User, ConsoleColor.Red);
                     ClientSocket.Close();
                     break;
                 }
