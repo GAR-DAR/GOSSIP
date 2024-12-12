@@ -16,10 +16,7 @@ namespace GOSSIP.ViewModels
         {
 
             AllUsers = new (Globals.AllUsers_Cache.Select(x => new UserVM(x)).ToList());
-
-            Globals.server.getUsersEvent += getUsers;
-            Globals.server.GetAllUsers();
-
+            
             CreateChatCommand = new RelayCommand(CreateChatMethod);
             CloseCommand = new RelayCommand(obj => RequestClose?.Invoke(false));
         }

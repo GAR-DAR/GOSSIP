@@ -395,6 +395,14 @@ namespace Server
 
                                 SendPacket(SignalsEnum.GetUserChats, chats);
 
+                                foreach (var client in ClientManager.ConnectedClients)
+                                {
+                                    if (chat.UserIDs.Contains(client.User.ID))
+                                    {
+                                        client.SendPacket(SignalsEnum.GetUserChats, chats);
+                                    }
+                                }
+
                                 Logging.Log("Chat created", UID, User);
                                 mutex.ReleaseMutex();
 
