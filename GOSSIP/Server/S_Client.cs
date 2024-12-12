@@ -535,6 +535,24 @@ namespace Server
                                 mutex.ReleaseMutex();
                                 break;
                             }
+
+                        case (byte)SignalsEnum.GetBannedUsers:
+                            {
+                                mutex.WaitOne();
+                                List<UserModelID> bannedUsers = UsersService.SelectBannedUsers(Globals.db.Connection);
+                                if (bannedUsers != null)
+                                {
+                                    SendPacket(SignalsEnum.GetBannedUsers, bannedUsers);
+                                    Logging.LogSent(SignalsEnum.GetBannedUsers, UID, User, ConsoleColor.Blue);
+                                }
+                                else
+                                {
+                                    Logging.Log("Error during getting banned users from db", UID, User, ConsoleColor.Red);
+                                }
+                                mutex.ReleaseMutex();
+                                break;
+                            }
+
                         case (byte)SignalsEnum.GetFieldsOfStudy:
                             {
                                 mutex.WaitOne();

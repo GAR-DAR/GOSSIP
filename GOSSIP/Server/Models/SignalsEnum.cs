@@ -72,7 +72,8 @@ namespace Server
         CreateReplyToReply,
         #endregion
 
-        #region  Moderator
+        #region Modearator
+        GetBannedUsers,
         BanUser
         #endregion
     }

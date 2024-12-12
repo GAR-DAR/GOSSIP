@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using GOSSIP;
 using GOSSIP.ViewModels;
+using System.Windows.Controls.Primitives;
 
 namespace GOSSIP.Net
 {
@@ -56,6 +57,7 @@ namespace GOSSIP.Net
         public event Action logoutEvent;
         public event Action<UserModel> loginEvent;
         public event Action<List<TopicModel>> getTopicsEvent;
+        public event Action<List<UserModel>> getBannedUsersEvent;
 
         public event Action<List<string>> getStatusesEvent;
         public event Action<List<string>> getFieldOfStudyEvent;
@@ -133,6 +135,11 @@ namespace GOSSIP.Net
         public void LogOut()
         {
             SendPacket(SignalsEnum.Logout);
+        }
+
+        public void GetBannedUsers()
+        {
+            SendPacket(SignalsEnum.GetBannedUsers);
         }
 
         #endregion
@@ -537,6 +544,7 @@ namespace GOSSIP.Net
 
                                 break;
                             }
+
                         case (byte)SignalsEnum.MessageMulticast:
                             {
                                 var messageID = packetReader.ReadPacket<MessageModelID>().Data;
@@ -549,6 +557,18 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"Multicast message to {_client}");
                                 break;
                             }
+
+                        case (byte)SignalsEnum.GetBannedUsers:
+                            {
+                                var bannedUsersID = packetReader.ReadPacket<List<UserModelID>>().Data;
+                                List<UserModel> users = bannedUsersID.Select(user => new UserModel(user)).ToList();
+
+                                getBannedUsersEvent?.Invoke(users);
+
+                                Debug.WriteLine($"Recived {users.Count} banned users");
+                                break;
+                            }
+
                         case (byte)SignalsEnum.GetStatuses:
                             {
                                 var statuses = packetReader.ReadPacket<List<string>>().Data;
