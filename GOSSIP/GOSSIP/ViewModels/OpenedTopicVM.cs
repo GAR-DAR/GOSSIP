@@ -132,7 +132,7 @@ namespace GOSSIP.ViewModels
 
             Replies = new(TopicVM.Topic.Replies.Select(x => new ParentReplyVM(x)));
 
-            BackCommand = new RelayCommand((obj) => _mainVM.SelectedVM = previousVM);
+            BackCommand = new RelayCommand((obj) => _mainVM.SwitchToPreviousVM());
             UpVoteTopicCommand = new RelayCommand(UpVoteMethod);
             DownVoteTopicCommand = new RelayCommand(DownVoteMethod);
             AddReplyCommand = new RelayCommand(AddReplyMethod);

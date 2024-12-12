@@ -3,6 +3,7 @@ using GOSSIP.Net;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
@@ -231,7 +232,11 @@ namespace GOSSIP.ViewModels
 
         private void GetReplyOnReply(ChildReplyModel childReply)
         {
-            Replies.Add(new(childReply, ReplyModelPR, this));
+            Application.Current.Dispatcher.Invoke(() =>
+                 {
+                     Replies.Add(new(childReply, ReplyModelPR, this));
+                 });
+            
             ReplyModelPR.Replies.Add(childReply);
             CountOfReplies++;
             IsReplyButtonPressed = true;

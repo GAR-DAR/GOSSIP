@@ -6,6 +6,11 @@
              xmlns:local="clr-namespace:GOSSIP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="1920">
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding SubmitCommand}"/>
+    </UserControl.InputBindings>
+
     <Grid Background="{DynamicResource PrussianBlue}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*"/>
@@ -22,7 +27,7 @@
             <Run Text=" for moderators" FontSize="15"/>
         </TextBlock>
 
-        <TextBox Grid.Column="3" Style="{DynamicResource InputField}" />
+        <TextBox Grid.Column="3" Style="{DynamicResource InputField}" Text="{Binding SearchQuery}"/>
 
         <WrapPanel Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,30,0">
             <TextBlock Text="{Binding Username}" Foreground="White" FontSize="15" VerticalAlignment="Center"/>

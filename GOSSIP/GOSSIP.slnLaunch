@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Server\\Server.csproj",
+        "Action": "Start",
+        "DebugTarget": "Server"
+      },
+      {
+        "Path": "GOSSIP\\GOSSIP.csproj",
+        "Action": "Start",
+        "DebugTarget": "GOSSIP"
+      }
+    ]
+  }
+]

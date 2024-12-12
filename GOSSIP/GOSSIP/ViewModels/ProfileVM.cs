@@ -60,7 +60,7 @@ namespace GOSSIP.ViewModels
         {
             _mainVM = mainVM;
             User = user;
-            //BackCommand = new RelayCommand(BackMethod);
+            BackCommand = new RelayCommand(BackMethod);
 
             UpdateUserInfo();
 

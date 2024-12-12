@@ -160,9 +160,6 @@ namespace GOSSIP.ViewModels
                 Globals.User_Cache.Chats.Find(chat => chat.ID == message.Chat.ID).Messages.Add(message);
                 AuthorizedUserVM.UserModel.Chats = Globals.User_Cache.Chats;
                 AuthorizedUserVM.OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
-
-                //OnPropertyChanged(nameof(AuthorizedUserVM));
-                //OnPropertyChanged(nameof(AuthorizedUserVM.UserModel.Chats));
             }
         }
 
@@ -181,7 +178,6 @@ namespace GOSSIP.ViewModels
         public void ShowPostsListMethod(object obj)
         {
             StackOfVMs.Add(SelectedVM);
-            //_topicListVM.UpdateInfo();
             SelectedVM = _topicListVM;
             StackOfVMs.RemoveAt(StackOfVMs.Count - 1);
             TurnOffButtonsExcept("Topics");
@@ -211,8 +207,8 @@ namespace GOSSIP.ViewModels
         public void OpenTopic(TopicModel topic)
         {
             OpenedTopicVM openedTopicVM = new(new (topic), this, _topicListVM);
-            StackOfVMs.Add(SelectedVM);
             SelectedVM = openedTopicVM;
+            StackOfVMs.Add(SelectedVM);
         }
 
         private void TurnOffButtonsExcept(string button)
@@ -239,8 +235,13 @@ namespace GOSSIP.ViewModels
         {
             ObservableObject profileVM = AuthorizedUserVM != null && AuthorizedUserVM.UserModel.ID == user.UserModel.ID ? new AuthUserProfileVM(this) : new ProfileVM(this, user);
             SelectedVM = profileVM;
-            if(profileVM is AuthUserProfileInfoVM && StackOfVMs.Last() != profileVM)
-                StackOfVMs.Add(profileVM);
+
+            if (profileVM is AuthUserProfileInfoVM && StackOfVMs.Last() is AuthUserProfileInfoVM)
+            {
+                return;
+            }
+            
+            StackOfVMs.Add(profileVM);
         }
 
         public void ShowSignUpMethod(object obj)

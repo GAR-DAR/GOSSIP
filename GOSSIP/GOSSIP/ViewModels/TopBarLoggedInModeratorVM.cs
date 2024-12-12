@@ -1,5 +1,4 @@
-﻿
-using GOSSIP.Net;
+﻿using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +15,7 @@ namespace GOSSIP.ViewModels
     {
         public UserVM AuthorizedUserVM { get; set; }
 
+        public ICommand SubmitCommand { get; }
         public ICommand ProfilePictureClickCommand { get; }
         public ICommand ViewProfileCommand { get; }
         public ICommand ShowBannedUsersCommand { get; }
@@ -23,7 +23,6 @@ namespace GOSSIP.ViewModels
         public ICommand LogoutCommand { get; set; }
 
         private MainVM _mainVM;
-
 
         public event Action ProfileOpeningEvent;
 
@@ -58,6 +57,17 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged(nameof(SearchQuery));
+            }
+        }
+
         public TopBarLoggedInModeratorVM(MainVM mainVM)
         {
             _mainVM = mainVM;
@@ -72,12 +82,16 @@ namespace GOSSIP.ViewModels
             AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
 
             LogoutCommand = new RelayCommand(LogoutMethod);
+            SubmitCommand = new RelayCommand(SubmitMethod);
+        }
 
+        private void SubmitMethod(object obj)
+        {
+            MessageBox.Show("Тут може бути ваша логіка");
         }
 
         private void LogoutMethod(object obj)
         {
-
             Globals.server.LogOut();
             _mainVM.Logout();
 

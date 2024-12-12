@@ -24,6 +24,12 @@ namespace GOSSIP.Net
         public static List<TopicModel> Topics_Cache { get; set; } = [];
         public static TopicModel OpenedTopic_Cache { get; set; }
 
+        public static void RefreshUser()
+        {
+            server.SendPacket(SignalsEnum.GetAllUsers);
+            server.SendPacket(SignalsEnum.GetTopics);
+            server.SendPacket(SignalsEnum.RefreshUser);
+        }
 
         public class Server
         {

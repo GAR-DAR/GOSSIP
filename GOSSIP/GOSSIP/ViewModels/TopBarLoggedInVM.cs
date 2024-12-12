@@ -17,9 +17,10 @@ namespace GOSSIP.ViewModels
 
         private MainVM _mainVM;
 
-        public ICommand ProfilePictureClickCommand { get; set; }
-        public ICommand ViewProfileCommand { get; set; }
-        public ICommand LogoutCommand { get; set; }
+        public ICommand ProfilePictureClickCommand { get; }
+        public ICommand ViewProfileCommand { get; }
+        public ICommand LogoutCommand { get; }
+        public ICommand SubmitCommand { get; }
 
         public event Action ProfileOpeningEvent;
 
@@ -61,6 +62,17 @@ namespace GOSSIP.ViewModels
             IsMenuOpen = false;
         }
 
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged(nameof(SearchQuery));
+            }
+        }
+
         public TopBarLoggedInVM(MainVM mainVM)
         {
             _mainVM = mainVM;
@@ -70,8 +82,14 @@ namespace GOSSIP.ViewModels
             ProfilePictureClickCommand = new RelayCommand((obj) => IsMenuOpen = !IsMenuOpen);
             ViewProfileCommand = new RelayCommand((obj) => { mainVM.OpenProfile(MainVM.AuthorizedUserVM); IsMenuOpen = false; });
             LogoutCommand = new RelayCommand(LogoutMethod);
+            SubmitCommand = new RelayCommand(SubmitMethod);
 
             AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
+        }
+
+        private void SubmitMethod(object obj)
+        {
+            MessageBox.Show("Тут може бути ваша логіка");
         }
 
         private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

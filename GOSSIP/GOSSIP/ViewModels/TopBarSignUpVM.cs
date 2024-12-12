@@ -13,12 +13,16 @@ namespace GOSSIP.ViewModels
     {
         private MainVM _mainVM;
 
-        public ICommand ShowSignUpCommand { get; set; }
-        public ICommand ShowLogInCommand { get; set; }
+        public ICommand ShowSignUpCommand { get; }
+        public ICommand ShowLogInCommand { get; }
+        public ICommand SubmitCommand { get; }
 
         public TopBarSignUpVM(MainVM mainVM)
         {
             _mainVM = mainVM;
+
+            SubmitCommand = new RelayCommand(SubmitMethod);
+
             ShowSignUpCommand = new RelayCommand((obj) =>
             {
                 SignUpMainVM signUpMainVM = new();
@@ -50,6 +54,11 @@ namespace GOSSIP.ViewModels
                 };
                 logInWindow.ShowDialog();
             });
+        }
+
+        private void SubmitMethod(object obj)
+        {
+            MessageBox.Show("Тут може бути ваша логіка");
         }
     }
 }
