@@ -164,7 +164,7 @@ namespace GOSSIP.ViewModels
                     false
                 );
 
-            Globals.server.CreateTopic(topic);
+            Globals.server.CreateTopic(new TopicModelID(topic));
 
             _mainVM.ShowPostsListMethod(null);
             

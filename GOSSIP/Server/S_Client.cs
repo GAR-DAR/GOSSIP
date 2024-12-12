@@ -314,7 +314,7 @@ namespace Server
                                 mutex.WaitOne();
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                 
-                                var replyModelID = RepliesService.Add(reply, Globals.db.Connection);
+                                ChildReplyModelID replyModelID = (ChildReplyModelID)RepliesService.Add(reply, Globals.db.Connection);
 
                                 SendPacket(SignalsEnum.CreateReplyToReply, replyModelID);
                                 mutex.ReleaseMutex();
@@ -391,11 +391,12 @@ namespace Server
 
                                 ChatsService.Create(chat, Globals.db.Connection);
 
-                               
+                                var chats = ChatsService.SelectChatsByUser(chat.UserIDs[0], Globals.db.Connection);
+
+                                SendPacket(SignalsEnum.GetUserChats, chats);
 
                                 Logging.Log("Chat created", UID, User);
                                 mutex.ReleaseMutex();
-
 
                                 break;
                             }

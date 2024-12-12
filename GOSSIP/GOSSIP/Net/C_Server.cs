@@ -86,7 +86,7 @@ namespace GOSSIP.Net
 
         public void Connect()
         {
-            _client.Connect("172.24.101.91", 7891);
+            _client.Connect("172.24.226.173", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {
@@ -150,7 +150,7 @@ namespace GOSSIP.Net
             SendPacket(SignalsEnum.GetTopics);
         }
 
-        public void CreateTopic(TopicModel topic)
+        public void CreateTopic(TopicModelID topic)
         {
             SendPacket(SignalsEnum.CreateTopic, topic);
         }
@@ -309,6 +309,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} All topics loaded. ");
                                 break;
                             }
+
                         case (byte)SignalsEnum.GetUserChats:
                             {
                                 var userChats = packetReader.ReadPacket<List<ChatModelID>>().Data;
@@ -361,6 +362,7 @@ namespace GOSSIP.Net
 
                                 break;
                             }
+
                         case (byte)SignalsEnum.Login:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;
@@ -371,6 +373,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"User {user.Username} logged in");
                                 break;
                             }
+
                         case (byte)SignalsEnum.SignUp:
                             {
                                 var userModelID = packetReader.ReadPacket<UserModelID>().Data;
@@ -383,6 +386,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} User {user.Username} registered");
                                 break;
                             }
+
                         case (byte)SignalsEnum.Logout:
                             {
                                 Globals.User_Cache = null;
@@ -442,6 +446,7 @@ namespace GOSSIP.Net
 
                                 break;
                             }
+
                         case (byte)SignalsEnum.GetReplies:
                             {
                                 var topicID = packetReader.ReadPacket<TopicModelID>().Data;
@@ -503,6 +508,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} Recived child replies");
                                 break;
                             }
+
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;
@@ -514,7 +520,6 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"Refrash user {user.Username}");
                                 break;
                             }
-
                         case (byte)SignalsEnum.ChangeUserPhoto: 
                             {
                                 var userModelID = packetReader.ReadPacket<UserModelID>().Data;
