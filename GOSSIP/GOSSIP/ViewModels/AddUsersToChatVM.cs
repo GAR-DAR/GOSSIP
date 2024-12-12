@@ -14,6 +14,9 @@ namespace GOSSIP.ViewModels
 
         public AddUsersToChatVM()
         {
+
+            AllUsers = new (Globals.AllUsers_Cache.Select(x => new UserVM(x)).ToList());
+
             Globals.server.getUsersEvent += getUsers;
             Globals.server.GetAllUsers();
 
@@ -72,7 +75,16 @@ namespace GOSSIP.ViewModels
         }
 
 
-        public ObservableCollection<UserVM> AllUsers { get; set; }
+        private ObservableCollection<UserVM> _allUsers;
+        public ObservableCollection<UserVM> AllUsers 
+        { 
+            get => _allUsers;
+            set
+            {
+                _allUsers = value;
+                OnPropertyChanged(nameof(AllUsers));
+            }
+        }
         public ObservableCollection<UserVM> FilteredUsers { get; set; } = new();
         public List<UserVM> SelectedUsers { get; set; } = new();
 		
