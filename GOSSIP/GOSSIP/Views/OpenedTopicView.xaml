@@ -151,7 +151,7 @@
                                   TextWrapping="Wrap"
                                   AcceptsReturn="True"
                                   VerticalAlignment="Top"
-                                  VerticalContentAlignment="Center"
+                                  VerticalContentAlignment="Top"
                                   ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
 
                     </ScrollViewer>
@@ -258,13 +258,13 @@
                                     <WrapPanel>
                                         <TextBox Style="{StaticResource ReplyToReplyInput}"
                                             Text="{Binding ReplyToReplyContent}"
-                                            Width="910"
+                                            Width="900"
                                             MinHeight="50"
                                             MaxHeight="200"
                                             TextWrapping="Wrap"
                                             AcceptsReturn="True"
                                             VerticalAlignment="Top"
-                                            VerticalContentAlignment="Center"
+                                            VerticalContentAlignment="Top"
                                             ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                         </TextBox>
                                         <Button Style="{StaticResource SendReplyToReplyButton}" Margin="10 0" Command="{Binding SendReplyToReply}"/>
@@ -373,13 +373,13 @@
                                                             <WrapPanel>
                                                                 <TextBox Style="{StaticResource ReplyToReplyInput}"
                                                                     Text="{Binding ReplyQuery}"
-                                                                       Width="890"
+                                                                       Width="800"
                                                                        MinHeight="50"
                                                                        MaxHeight="200"
                                                                        TextWrapping="Wrap"
                                                                        AcceptsReturn="True"
                                                                        VerticalAlignment="Top"
-                                                                       VerticalContentAlignment="Center"
+                                                                       VerticalContentAlignment="Top"
                                                                        ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                                                 </TextBox>
                                                                 <Button Style="{StaticResource SendReplyToReplyButton}" Margin="10 0" Command="{Binding SendReplyCommand}"/>

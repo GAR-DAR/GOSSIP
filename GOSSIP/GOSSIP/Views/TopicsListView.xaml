@@ -183,61 +183,53 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
 
-                
-
-
-
+                <Button Width="350" Height="50" Margin="20" Command="{Binding LoadMoreCommand}" Background="{DynamicResource Danube}" BorderThickness="2" BorderBrush="{DynamicResource PrussianBlue}" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/LoadMore.png" Width="30" Height="30" Margin="0,0,10,0"/>
+                                    <TextBlock x:Name="text" Text="Load More" VerticalAlignment="Center" Foreground="White" FontSize="20"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <!-- Зміна кольору фону -->
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource PrussianBlueWithoutOpacity}"/>
+                                    <!-- Зміна обведення -->
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Danube}"/>
+                                    <!-- Зміна кольору тексту -->
+                                    <Setter TargetName="text" Property="Foreground" Value="{DynamicResource Danube}"/>
+                                    <!-- Зміна іконки -->
+                                    <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/LoadMoreDanube.png"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
-        </ScrollViewer>
-        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Button Canvas.Right="135" Canvas.Bottom="20" Width="40" Height="40" Cursor="Hand"
-                    Command="{Binding LoadMoreCommand}"
-                    Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-                    BorderBrush="{DynamicResource Danube}" 
-                    BorderThickness="3">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" 
-                                     Stroke="{TemplateBinding BorderBrush}" 
-                                     StrokeThickness="{TemplateBinding BorderThickness}"/>
-                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/LoadMoreDanube.png" 
-                                   Width="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource RegalBlue}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
 
-            <!-- Кнопка Add Post -->
-            <Button Canvas.Right="50" Canvas.Bottom="20" Width="80" Height="80" Cursor="Hand"
-                    Command="{Binding DataContext.CreateTopicCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                    Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-                    BorderBrush="{DynamicResource Danube}" 
-                    BorderThickness="3">
+            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Margin="0,0,45,20" Cursor="Hand"
+        Command="{Binding DataContext.CreateTopicCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+        Background="{DynamicResource PrussianBlueWithoutOpacity}" BorderBrush="{DynamicResource Danube}" BorderThickness="3">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" 
-                                     Stroke="{TemplateBinding BorderBrush}" 
-                                     StrokeThickness="{TemplateBinding BorderThickness}"/>
-                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/AddPost.png" 
-                                   Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <!-- Кругла форма кнопки -->
+                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
+                            <!-- Іконка в центрі -->
+                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/AddPost.png" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                         <ControlTemplate.Triggers>
+                            <!-- Зміна кольору при наведенні -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource RegalBlue}"/>
+                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource PrussianBlue}"/>
                                 <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/AddPost.png"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-        </Canvas>
-    </Grid>
-
+        </Grid>
+    </ScrollViewer>
 </UserControl>
