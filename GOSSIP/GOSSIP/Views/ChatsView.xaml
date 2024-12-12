@@ -22,8 +22,8 @@
 
             <Grid Background="{DynamicResource BlueCharcoalTrans}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="93*"/>
-                    <RowDefinition Height="7*"/>
+                    <RowDefinition Height="92*"/>
+                    <RowDefinition Height="8*"/>
                 </Grid.RowDefinitions>
 
                 <ListBox ItemsSource="{Binding ChatList}" Grid.Row="0"
