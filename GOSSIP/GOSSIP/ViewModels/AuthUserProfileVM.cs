@@ -62,6 +62,7 @@ namespace GOSSIP.ViewModels
             SelectedVM = AuthUserProfileInfoVM;
 
             BackCommand = new RelayCommand(obj => mainVM.SwitchToPreviousVM());
+
             ShowProfileInfoCommand = new RelayCommand(obj =>
             {
                 SelectedVM = AuthUserProfileInfoVM;
@@ -74,6 +75,7 @@ namespace GOSSIP.ViewModels
                 IsProfileSelected = false;
                 IsSettingsSelected = true;
             });
+
         }
     }
 }
