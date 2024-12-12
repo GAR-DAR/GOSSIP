@@ -6,7 +6,7 @@ namespace Server.Services;
 
 public static class RepliesService
 {
-    public static bool Add(ReplyModelID reply, MySqlConnection conn)
+    public static ReplyModelID? Add(ReplyModelID reply, MySqlConnection conn)
     {
         string addQuery =
             """
@@ -24,7 +24,11 @@ public static class RepliesService
         insertCommand.Parameters.AddWithValue("@content", reply.Content);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
-        return rowsAffected != 0;
+        if (rowsAffected == 0)
+            return null;
+
+        reply.ID = (uint)insertCommand.LastInsertedId;
+        return reply;
     }
 
     public static bool Upvote(uint id, MySqlConnection conn)

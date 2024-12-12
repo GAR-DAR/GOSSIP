@@ -43,7 +43,7 @@ public static class TopicsService
         return topics;
     }
     
-    public static bool Insert(TopicModelID topic, MySqlConnection conn)
+    public static TopicModelID? Insert(TopicModelID topic, MySqlConnection conn)
     {
         string insertQuery =
             """
@@ -58,12 +58,13 @@ public static class TopicsService
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         if (rowsAffected == 0)
-            return false;
+            return null;
 
-        if (topic.Tags.Count == 0)
-            return true;
+        topic.ID = (uint)insertCommand.LastInsertedId;
         
-        int topicId = (int)insertCommand.LastInsertedId;
+        if (topic.Tags.Count == 0)
+            return topic;
+        
         string insertTagQuery =
             $"""
              INSERT INTO topics_to_tags (topic_id, tag)
@@ -71,7 +72,7 @@ public static class TopicsService
              """;
 
         using var insertTagCommand = new MySqlCommand(insertTagQuery, conn);
-        insertTagCommand.Parameters.AddWithValue("@topic_id", topicId);
+        insertTagCommand.Parameters.AddWithValue("@topic_id", topic.ID);
         insertTagCommand.Parameters.Add("@tag", MySqlDbType.VarChar, 255);
 
         foreach (var tag in topic.Tags)
@@ -80,7 +81,7 @@ public static class TopicsService
             insertTagCommand.ExecuteNonQuery();
         }
 
-        return true;
+        return topic;
     }
 
     public static bool Delete(uint id, MySqlConnection conn)
