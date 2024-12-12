@@ -22,7 +22,7 @@ namespace GOSSIP
         public ParentReplyModelID(ParentReplyModel replyModel)
         {
             ID = replyModel.ID;
-            UserID = replyModel.ID;
+            UserID = replyModel.User.ID;
             TopicID = replyModel.Topic.ID;
             Content = replyModel.Content;
             CreatedAt = replyModel.CreatedAt;
