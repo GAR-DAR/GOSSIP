@@ -231,10 +231,15 @@ public static class UsersService
                 degree_id = (SELECT id FROM degrees WHERE degree = @degree),
                 term = @term,
                 email = @email,
-                password = @password,
                 photo = @photo
-            WHERE id = @id 
             """;
+
+        if (user.Password != null)
+        {
+            changeInfoQuery += ", password = @password";
+        }
+
+        changeInfoQuery += " WHERE id = @id";
 
         using var updateCommand = new MySqlCommand(changeInfoQuery, conn);
         updateCommand.Parameters.AddWithValue("@id", user.ID);
@@ -246,8 +251,12 @@ public static class UsersService
         updateCommand.Parameters.AddWithValue("@degree", user.Degree);
         updateCommand.Parameters.AddWithValue("@term", user.Term);
         updateCommand.Parameters.AddWithValue("@email", user.Email);
-        updateCommand.Parameters.AddWithValue("@password", user.Password);
         updateCommand.Parameters.AddWithValue("@photo", user.Photo);
+
+        if (user.Password != null)
+        {
+            updateCommand.Parameters.AddWithValue("@password", user.Password);
+        }
 
         int rowsAffected = updateCommand.ExecuteNonQuery();
         return rowsAffected != 0;

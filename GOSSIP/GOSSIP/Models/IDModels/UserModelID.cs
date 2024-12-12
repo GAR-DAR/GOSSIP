@@ -71,10 +71,14 @@ namespace GOSSIP
             CreatedAt = userModel.CreatedAt;
             IsBanned = userModel.IsBanned;
             Photo = userModel.Photo;
-            foreach(var chat in userModel.Chats)
+            if(userModel.Chats != null)
             {
-                ChatsID.Add(chat.ID);
+                foreach (var chat in userModel.Chats)
+                {
+                    ChatsID.Add(chat.ID);
+                }
             }
+            
         }
     }
 }

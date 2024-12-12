@@ -312,8 +312,8 @@ namespace Server
                             {
                                 mutex.WaitOne();
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
-                                
-                                ChildReplyModelID replyModelID = (ChildReplyModelID)RepliesService.Add(reply, Globals.db.Connection);
+
+                                var replyModelID = RepliesService.Add(reply, Globals.db.Connection);
 
                                 SendPacket(SignalsEnum.CreateReplyToReply, replyModelID);
                                 mutex.ReleaseMutex();
@@ -444,6 +444,16 @@ namespace Server
                                 mutex.WaitOne();
                                 List<string> degrees = UsersService.GetDegrees(Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetDegrees, degrees);
+                                mutex.ReleaseMutex();
+                                break;
+                            }
+                        case (byte)SignalsEnum.EditUser:
+                            {
+                                mutex.WaitOne();
+                                var userModelID = _packetReader.ReadPacket<UserModelID>().Data;
+                                UsersService.ChangeInfo(userModelID, Globals.db.Connection);
+                                var newUserModelID = UsersService.SelectById(userModelID.ID, Globals.db.Connection);
+                                SendPacket(SignalsEnum.EditUser, newUserModelID);
                                 mutex.ReleaseMutex();
                                 break;
                             }

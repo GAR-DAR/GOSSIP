@@ -125,7 +125,7 @@ namespace GOSSIP.ViewModels
             get => UserModel.Term.ToString();
             set
             {
-                if (value != null)
+                if (!string.IsNullOrEmpty(value))
                 {
                     UserModel.Term = uint.Parse(value);
                 }

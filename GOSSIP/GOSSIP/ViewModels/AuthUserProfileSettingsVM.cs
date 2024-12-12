@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace GOSSIP.ViewModels
     {
         public string Header => "Settings";
 
-        private readonly UserVM _user;
+        private UserVM _user;
         private readonly MainVM _mainVM;
 
         private int _specializationIndex = -1;
@@ -236,43 +237,12 @@ namespace GOSSIP.ViewModels
         public ICommand SaveChangesCommand { get; }
         public ICommand ChangePhotoCommand { get; }
 
-        //Статуси, галузі знань, спеціальності та університети. Потім (я так розумію) буде приєднано до БД.
-        public List<string> StatusOptions { get; set; } = ["Student", "Faculty", "Learner", "None"];
-        public List<string> FieldOfStudyOptions { get; set; } =
-        [
-            "1. Education",
-            "2. Arts & Culture",
-            "3. Human Sciences",
-            "4. Religion & Theology",
-            "5. Social Sciences",
-            "6. Journalism",
-            "7. Management & Administration",
-            "8. Law",
-            "9. Biology",
-            "10. Natural Sciences",
-            "11. Mathematics & Statistics",
-            "12. Information Technology",
-            "13. Mechanical Engineering",
-            "14. Electrical Engineering",
-            "15. Cat Sciences",
-            "16. Chemical Engineering & Bioengineering",
-            "17. Electronics & Automation",
-            "18. Production & Technology",
-            "19. Architecture & Building",
-            "20. Agricultural Sciences",
-            "21. Veterinary",
-            "22. Healthcare",
-            "23. Social Work",
-            "24. Service Sector",
-            "25. Military & Defence",
-            "26. Civil Security",
-            "27. Transport",
-            "28. Prompt Engineering",
-            "29. International Relations"
-        ];
-        public List<string> SpecializationOptions { get; set; } = ["Software Engineering", "Computer Science", "System Analisys"];
-        public List<string> UniversityOptions { get; set; } = ["Lviv Polytechnic", "elenu", "Lviv National Forestry University", "Kyiv Polytechnic Institute", "Taras Shevchenko National University of Kyiv"];
-        public List<string> DegreeOptions { get; set; } = ["Bachelor", "Master", "Postgraduate", "PhD"];
+        public List<string> StatusOptions { get; set; } = [];
+        public List<string> FieldOfStudyOptions { get; set; } = [];
+        public List<string> SpecializationOptions { get; set; } = [];
+        public List<string> UniversityOptions { get; set; } = [];
+        public List<string> DegreeOptions { get; set; } = [];
+
         public ObservableCollection<string> TermsOptions { get; set; } = [];
 
 
@@ -298,8 +268,28 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        private ObservableCollection<string> _universityShortenOptions;
+
+        public ObservableCollection<string> UniversityShortenOptions
+        {
+            get => _universityShortenOptions;
+            set
+            {
+                _universityShortenOptions = value;
+                OnPropertyChanged(nameof(UniversityShortenOptions));
+            }
+        }
+
         public AuthUserProfileSettingsVM(UserVM user, MainVM mainVM)
         {
+            Globals.server.GetInformationForSignUp();
+
+            Globals.server.getStatusesEvent += getStatuses;
+            Globals.server.getFieldOfStudyEvent += getFieldOfStudy;
+            Globals.server.getUniversitiesEvent += getUniversityOptions;
+            Globals.server.getSpecializationsEvent += getSpecializationOptions;
+            Globals.server.getDegreesEvent += getDegreeOptions;
+
             _mainVM = mainVM;
             _user = user;
             Username = user.Username;
@@ -374,10 +364,46 @@ namespace GOSSIP.ViewModels
             });
         }
 
+        private void getDegreeOptions(List<string> degreeOptions)
+        {
+            DegreeOptions = degreeOptions;
+            OnPropertyChanged(nameof(DegreeOptions));
+        }
+
+        private void getUniversityOptions(List<string> universityOptions)
+        {
+            UniversityOptions = universityOptions;
+
+            UniversityShortenOptions = new ObservableCollection<string>(
+                                         universityOptions.Select(x => x.Length > 30 ? x.Substring(0, 30) + "..." : x).ToList()
+    );
+
+
+            OnPropertyChanged(nameof(UniversityOptions));
+
+        }
+
+        private void getSpecializationOptions(List<string> specializationOptions)
+        {
+            SpecializationOptions = specializationOptions;
+            OnPropertyChanged(nameof(SpecializationOptions));
+        }
+
+        private void getFieldOfStudy(List<string> fieldsOfStudy)
+        {
+            FieldOfStudyOptions = fieldsOfStudy;
+            OnPropertyChanged(nameof(FieldOfStudyOptions));
+        }
+
+        private void getStatuses(List<string> statuses)
+        {
+            StatusOptions = statuses;
+            OnPropertyChanged(nameof(StatusOptions));
+        }
+
+
         private void SaveChangesMethod(object obj)
         {
-            //Вставте логіку збереження змін в БД
-
             _user.Username = Username;
             _user.Status = Status;
             _user.FieldOfStudy = FieldOfStudy;
@@ -398,8 +424,21 @@ namespace GOSSIP.ViewModels
             }
 
             _user.Email = Email;
-            _user.Password = Password;
 
+            if(!string.IsNullOrEmpty(Password))
+            {
+                _user.Password = Password;
+            }
+
+
+            Globals.server.EditUser(new UserModelID(_user.UserModel));
+            Globals.server.editUserEvent += (user) => OnEditUserSuccess(new UserVM(user));
+
+        }
+
+        private void OnEditUserSuccess(UserVM user)
+        {
+            _user = user;
             IsSaved = true;
         }
     }
