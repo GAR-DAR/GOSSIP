@@ -277,11 +277,13 @@ namespace Server
                                 mutex.WaitOne();
                                 var topicId = _packetReader.ReadPacket<uint>().Data;
 
+                                var parentReplies = TopicsService.SelectParentRepliesByTopic(topicId, Globals.db.Connection);
+                                SendPacket(SignalsEnum.GetParentReplies, parentReplies);
+
                                 var childReplies = TopicsService.SelectChildRepliesByTopic(topicId, Globals.db.Connection);
                                 SendPacket(SignalsEnum.GetChildReplies, childReplies);
 
-                                var parentReplies = TopicsService.SelectParentRepliesByTopic(topicId, Globals.db.Connection);
-                                SendPacket(SignalsEnum.GetParentReplies, parentReplies);
+                                
 
                                 Logging.LogSent(SignalsEnum.GetReplies, UID, User);
                                 mutex.ReleaseMutex();

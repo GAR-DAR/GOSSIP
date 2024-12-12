@@ -425,18 +425,26 @@ namespace GOSSIP.Net
                                     var temp = new ChildReplyModel(reply);
                                     temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
                                     temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
-                                    temp.RootReply = Globals.Topics_Cache.Where(topic => topic.ID == reply.RootReplyID)
+
+                                    temp.ReplyTo = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID)
                                     .FirstOrDefault().Replies
+                                    .Where(r => r.ID == replies[0].RootReplyID).Select(r => r.User).FirstOrDefault();
+
+                                    temp.RootReply = temp.Topic.Replies
                                     .Where(parentReply => parentReply.ID == reply.RootReplyID)
                                     .FirstOrDefault();
+
                                     repliesModel.Add(temp);
+                                    
                                 }
 
                                 TopicModel topicModel = Globals.Topics_Cache.Where(topic => topic.ID == replies[0].TopicID).FirstOrDefault();
 
+
                                 foreach (ParentReplyModel parentReply in topicModel.Replies)
                                 {
                                     parentReply.Replies = repliesModel.Where(r => r.RootReply.ID == parentReply.ID).ToList();
+                                   
                                 }
 
                                 openTopicEvent?.Invoke(topicModel);
