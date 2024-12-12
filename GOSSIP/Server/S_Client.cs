@@ -292,11 +292,12 @@ namespace Server
                         case (byte)SignalsEnum.CreateReply:
                             {
                                 mutex.WaitOne();
-                                var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
-                               
-                                if (RepliesService.Add(reply, Globals.db.Connection))
+                                var replyID = _packetReader.ReadPacket<ParentReplyModelID>().Data;
+
+                                var reply = RepliesService.Add(replyID, Globals.db.Connection);
+                                if (reply != null)
                                 {
-                                    SendPacket(SignalsEnum.CreateReply, reply);
+                                    SendPacket(SignalsEnum.CreateReply, replyID);
                                     Logging.LogSent(SignalsEnum.CreateReply, UID, User);
                                 }
                                 else

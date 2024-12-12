@@ -92,7 +92,6 @@ namespace GOSSIP.Net
                 ReadPackets();
                 SendPacket(SignalsEnum.GetAllUsers);
                 SendPacket(SignalsEnum.GetTopics);
-
             }
         }
 

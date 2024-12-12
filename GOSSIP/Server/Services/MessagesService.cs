@@ -1,11 +1,10 @@
 using MySql.Data.MySqlClient;
-using Server;
 
 namespace Server.Services;
 
 public static class MessagesService
 {
-    public static bool Add(MessageModelID message, MySqlConnection conn)
+    public static MessageModelID? Add(MessageModelID message, MySqlConnection conn)
     {
         string addQuery =
             """
@@ -19,7 +18,11 @@ public static class MessagesService
         insertCommand.Parameters.AddWithValue("@content", message.MessageText);
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
-        return rowsAffected != 0;
+        if (rowsAffected == 0)
+            return null;
+
+        message.ID = (uint)insertCommand.LastInsertedId;
+        return message;
     }
 
     public static bool Delete(uint id, MySqlConnection conn)
@@ -96,7 +99,7 @@ public static class MessagesService
         selectCommand.Parameters.AddWithValue("@user_id", userId);
 
         List<uint> messageIds = [];
-
+        
         using var reader = selectCommand.ExecuteReader();
         while (reader.Read())
         {

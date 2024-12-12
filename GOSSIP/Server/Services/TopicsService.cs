@@ -1,6 +1,5 @@
 using System.Data;
 using MySql.Data.MySqlClient;
-using Server;
 
 namespace Server.Services;
 
@@ -43,7 +42,7 @@ public static class TopicsService
         return topics;
     }
 
-    public static bool Insert(TopicModelID topic, MySqlConnection conn)
+    public static TopicModelID? Insert(TopicModelID topic, MySqlConnection conn)
     {
         string insertQuery =
             """
@@ -58,12 +57,13 @@ public static class TopicsService
 
         int rowsAffected = insertCommand.ExecuteNonQuery();
         if (rowsAffected == 0)
-            return false;
+            return null;
+
+        topic.ID = (uint)insertCommand.LastInsertedId;
 
         if (topic.Tags.Count == 0)
-            return true;
+            return topic;
 
-        int topicId = (int)insertCommand.LastInsertedId;
         string insertTagQuery =
             $"""
              INSERT INTO topics_to_tags (topic_id, tag)
@@ -71,7 +71,7 @@ public static class TopicsService
              """;
 
         using var insertTagCommand = new MySqlCommand(insertTagQuery, conn);
-        insertTagCommand.Parameters.AddWithValue("@topic_id", topicId);
+        insertTagCommand.Parameters.AddWithValue("@topic_id", topic.ID);
         insertTagCommand.Parameters.Add("@tag", MySqlDbType.VarChar, 255);
 
         foreach (var tag in topic.Tags)
@@ -80,7 +80,7 @@ public static class TopicsService
             insertTagCommand.ExecuteNonQuery();
         }
 
-        return true;
+        return topic;
     }
 
     public static bool Delete(uint id, MySqlConnection conn)
@@ -186,38 +186,6 @@ public static class TopicsService
         }
 
         return parentReplies;
-    }
-
-    public static List<ChildReplyModelID> SelectChildRepliesByTopic(uint topicId, MySqlConnection conn)
-    {
-        List<ChildReplyModelID> childReplies = [];
-        List<uint> replyIds = [];
-        string selectReplyIdsQuery =
-            """
-            SELECT id
-            FROM replies
-            WHERE topic_id = @topic_id
-            AND is_deleted = FALSE
-            AND parent_reply_id IS NOT NULL
-            """;
-
-        using var selectCommand = new MySqlCommand(selectReplyIdsQuery, conn);
-        selectCommand.Parameters.AddWithValue("@topic_id", topicId);
-
-        using var reader = selectCommand.ExecuteReader();
-        while (reader.Read())
-        {
-            replyIds.Add(reader.GetUInt32("id"));
-        }
-
-        reader.Close();
-
-        foreach (var replyId in replyIds)
-        {
-            childReplies.Add((ChildReplyModelID)RepliesService.SelectById(replyId, conn));
-        }
-
-        return childReplies;
     }
 
     public static List<string> SelectTagsByTopic(uint topicId, MySqlConnection conn)
@@ -390,5 +358,37 @@ public static class TopicsService
         }
 
         return replies;
+    }
+
+    public static List<ChildReplyModelID> SelectChildRepliesByTopic(uint topicId, MySqlConnection conn)
+    {
+        List<ChildReplyModelID> childReplies = [];
+        List<uint> replyIds = [];
+        string selectReplyIdsQuery =
+            """
+        SELECT id
+        FROM replies
+        WHERE topic_id = @topic_id
+        AND is_deleted = FALSE
+        AND parent_reply_id IS NOT NULL
+        """;
+
+        using var selectCommand = new MySqlCommand(selectReplyIdsQuery, conn);
+        selectCommand.Parameters.AddWithValue("@topic_id", topicId);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            replyIds.Add(reader.GetUInt32("id"));
+        }
+
+        reader.Close();
+
+        foreach (var replyId in replyIds)
+        {
+            childReplies.Add((ChildReplyModelID)RepliesService.SelectById(replyId, conn));
+        }
+
+        return childReplies;
     }
 }
