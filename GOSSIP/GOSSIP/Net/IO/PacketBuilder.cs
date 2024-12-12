@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GOSSIP.Net.IO
 {
-    public class PacketBuilder<T> where T : class
+    public class PacketBuilder<T> //where T : class
     {
         private Packet<T> _packet;
         private byte _signal;

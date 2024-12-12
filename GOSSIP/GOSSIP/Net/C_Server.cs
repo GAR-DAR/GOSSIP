@@ -282,14 +282,14 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} All users loaded. ");
                                 break;
                             }
-                            //add replies when clicked on topic 
+                        //add replies when clicked on topic 
                         case (byte)SignalsEnum.GetTopics:
                             {
                                 Globals.Topics_Cache.Clear();
 
                                 var topicModelID = packetReader.ReadPacket<List<TopicModelID>>().Data;
 
-                                foreach(var topic in topicModelID)
+                                foreach (var topic in topicModelID)
                                 {
                                     TopicModel temp = new TopicModel(topic);
 
@@ -308,7 +308,7 @@ namespace GOSSIP.Net
                         case (byte)SignalsEnum.GetUserChats:
                             {
                                 var userChats = packetReader.ReadPacket<List<ChatModelID>>().Data;
-                                
+
                                 Globals.User_Cache.Chats = [];
                                 List<uint> chatIDs = [];
 
@@ -317,7 +317,7 @@ namespace GOSSIP.Net
                                     ChatModel temp = new ChatModel(chat);
                                     temp.Users = chat.UserIDs
                                                     .Select(userId => Globals.AllUsers_Cache.FirstOrDefault(user => user.ID == userId))
-                                                    .Where(user => user != null) 
+                                                    .Where(user => user != null)
                                                     .ToList();
 
                                     temp.Messages = [];
@@ -346,7 +346,7 @@ namespace GOSSIP.Net
 
                                     foreach (var chat in Globals.User_Cache.Chats)
                                     {
-                                        if(messageID.ChatID == chat.ID)
+                                        if (messageID.ChatID == chat.ID)
                                         {
                                             chat.Messages.Add(message);
                                         }
@@ -379,7 +379,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} User {user.Username} registered");
                                 break;
                             }
-                        case(byte)SignalsEnum.Logout:
+                        case (byte)SignalsEnum.Logout:
                             {
                                 Globals.User_Cache = null;
                                 Globals.AllUsers_Cache = [];
@@ -433,7 +433,7 @@ namespace GOSSIP.Net
                                 }
 
                                 TopicModel topicModel = Globals.Topics_Cache.Where(topic => topic.ID == replies[0].TopicID).FirstOrDefault();
-                                
+
                                 foreach (ParentReplyModel parentReply in topicModel.Replies)
                                 {
                                     parentReply.Replies = repliesModel.Where(r => r.RootReply.ID == parentReply.ID).ToList();
@@ -444,7 +444,7 @@ namespace GOSSIP.Net
                                 Debug.WriteLine($"{DateTime.Now} Recived child replies");
                                 break;
                             }
-                       
+
                         case (byte)SignalsEnum.RefreshUser:
                             {
                                 var user = packetReader.ReadPacket<UserModelID>().Data;
@@ -492,17 +492,20 @@ namespace GOSSIP.Net
                         case (byte)SignalsEnum.GetUniversities:
                             {
                                 var uni = packetReader.ReadPacket<List<string>>().Data;
-                                getUniversitiesEvent?.Invoke(uni);
+                                getUniversitiesEvent?.Invoke(uni);
+
                                 Debug.WriteLine($"Recived list of universities");
                                 break;
                             }
                         case (byte)SignalsEnum.GetDegrees:
                             {
                                 var degrees = packetReader.ReadPacket<List<string>>().Data;
-                                getDegreesEvent?.Invoke(degrees);
+                                getDegreesEvent?.Invoke(degrees);
+
                                 Debug.WriteLine($"Recived list of degrees");
-                               break;
+                                break;
                             }
+                    }
 
 
                         
