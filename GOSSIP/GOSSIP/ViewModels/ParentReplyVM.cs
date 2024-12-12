@@ -169,7 +169,7 @@ namespace GOSSIP.ViewModels
             SendReplyToReply = new RelayCommand(SendReplyToReplyMethod);
             CommentAuthorProfileClickCommand = new RelayCommand(obj => ProfileClickEvent?.Invoke(new(replyModel.User)));
 
-            Globals.server.getReplyOnReply += SendReplyToReplyMethod;
+            Globals.server.getReplyOnReply += GetReplyOnReply;
 
             foreach (ChildReplyVM childReplyVM in Replies)
             {
@@ -216,7 +216,8 @@ namespace GOSSIP.ViewModels
                 Rating = 0,
                 User = MainVM.AuthorizedUserVM.UserModel,
                 ReplyTo = ReplyModelPR.User,
-                Topic = ReplyModelPR.Topic
+                Topic = ReplyModelPR.Topic,
+                RootReply = ReplyModelPR
             };
 
             ChildReplyVM childReplyVM = new(childReply, ReplyModelPR, this);
@@ -225,7 +226,12 @@ namespace GOSSIP.ViewModels
 
             Globals.server.SendPacket(SignalsEnum.CreateReplyToReply, new ChildReplyModelID(childReply));
 
-            Replies.Add(childReplyVM);
+          
+        }
+
+        private void GetReplyOnReply(ChildReplyModel childReply)
+        {
+            Replies.Add(new(childReply, ReplyModelPR, this));
             ReplyModelPR.Replies.Add(childReply);
             CountOfReplies++;
             IsReplyButtonPressed = true;
@@ -235,4 +241,8 @@ namespace GOSSIP.ViewModels
             ReplyToReplyContent = string.Empty;
         }
     }
+
+
 }
+
+

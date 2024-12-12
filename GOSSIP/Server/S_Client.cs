@@ -307,6 +307,8 @@ namespace Server
                                 var reply = _packetReader.ReadPacket<ParentReplyModelID>().Data;
                                 
                                 RepliesService.Add(reply, Globals.db.Connection);
+
+                                SendPacket(SignalsEnum.CreateReplyToReply, reply);
                                 mutex.ReleaseMutex();
                                 break;
                             }
