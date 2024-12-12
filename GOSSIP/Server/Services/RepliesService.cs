@@ -31,6 +31,52 @@ public static class RepliesService
         return reply;
     }
 
+    public static ParentReplyModelID? AddParent(ParentReplyModelID parentReply, MySqlConnection conn)
+    {
+        string addParentQuery =
+            """
+            INSERT INTO replies (creator_id, topic_id, parent_reply_id, reply_to, content, created_at, votes, is_deleted)
+            VALUES (@user_id, @topic_id, @parent_reply_id, @reply_to, @content, NOW(), 0, FALSE)
+            """;
+
+        using var insertCommand = new MySqlCommand(addParentQuery, conn);
+        insertCommand.Parameters.AddWithValue("@user_id", parentReply.UserID);
+        insertCommand.Parameters.AddWithValue("@topic_id", parentReply.TopicID);
+        insertCommand.Parameters.AddWithValue("@parent_reply_id", null);
+        insertCommand.Parameters.AddWithValue("@reply_to", null);
+        insertCommand.Parameters.AddWithValue("@content", parentReply.Content);
+
+        int rowsAffected = insertCommand.ExecuteNonQuery();
+        if (rowsAffected == 0)
+            return null;
+
+        parentReply.ID = (uint)insertCommand.LastInsertedId;
+        return parentReply;
+    }
+    
+    public static ChildReplyModelID? AddChild(ChildReplyModelID childReply, MySqlConnection conn)
+    {
+        string addQuery =
+            """
+            INSERT INTO replies (creator_id, topic_id, parent_reply_id, reply_to, content, created_at, votes, is_deleted)
+            VALUES (@user_id, @topic_id, @parent_reply_id, @reply_to, @content, NOW(), 0, FALSE)
+            """;
+
+        using var insertCommand = new MySqlCommand(addQuery, conn);
+        insertCommand.Parameters.AddWithValue("@user_id", childReply.UserID);
+        insertCommand.Parameters.AddWithValue("@topic_id", childReply.TopicID);
+        insertCommand.Parameters.AddWithValue("@parent_reply_id", childReply.RootReplyID);
+        insertCommand.Parameters.AddWithValue("@reply_to", childReply.ReplyToUserID);
+        insertCommand.Parameters.AddWithValue("@content", childReply.Content);
+
+        int rowsAffected = insertCommand.ExecuteNonQuery();
+        if (rowsAffected == 0)
+            return null;
+
+        childReply.ID = (uint)insertCommand.LastInsertedId;
+        return childReply;
+    }
+
     public static bool Upvote(uint id, MySqlConnection conn)
     {
         string upvoteQuery =
