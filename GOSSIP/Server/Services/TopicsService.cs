@@ -157,6 +157,38 @@ public static class TopicsService
         return replyIds;
     }
 
+    public static List<ChildReplyModelID> SelectChildRepliesByTopic(uint topicId, MySqlConnection conn)
+    {
+        List<ChildReplyModelID> childReplies = [];
+        List<uint> replyIds = [];
+        string selectReplyIdsQuery =
+            """
+        SELECT id
+        FROM replies
+        WHERE topic_id = @topic_id
+        AND is_deleted = FALSE
+        AND parent_reply_id IS NOT NULL
+        """;
+
+        using var selectCommand = new MySqlCommand(selectReplyIdsQuery, conn);
+        selectCommand.Parameters.AddWithValue("@topic_id", topicId);
+
+        using var reader = selectCommand.ExecuteReader();
+        while (reader.Read())
+        {
+            replyIds.Add(reader.GetUInt32("id"));
+        }
+
+        reader.Close();
+
+        foreach (var replyId in replyIds)
+        {
+            childReplies.Add((ChildReplyModelID)RepliesService.SelectById(replyId, conn));
+        }
+
+        return childReplies;
+    }
+
     public static List<ParentReplyModelID> SelectParentRepliesByTopic(uint topicId, MySqlConnection conn)
     {
         List<ParentReplyModelID> parentReplies = [];
