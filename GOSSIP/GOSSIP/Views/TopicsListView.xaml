@@ -12,224 +12,198 @@
         <conv:DateTimeToStringConverter x:Key="dateTimeToStringConverter"/>
         <conv:StringToShortenedStringConverter x:Key="stringToShortenedStringConverter"/>
         <Style TargetType="ScrollBar" x:Key="CustomScrollBar">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollBar">
-                        <Grid Background="Transparent" Margin="-7,0,7,7">
-                            <!-- Vertical ScrollBar -->
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <!-- Down Button -->
-                            <RepeatButton Grid.Row="0" Command="ScrollBar.LineDownCommand" Height="15" 
-                                Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-                                Content="▲" 
-                                Foreground="{DynamicResource Danube}" />
-                            <!-- Track -->
-                            <Track Grid.Row="1" Name="PART_Track" IsDirectionReversed="True">
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent"/>
-                                </Track.DecreaseRepeatButton>
-                                <Track.Thumb>
-                                    <Thumb Background="{DynamicResource Danube}"  />
-                                </Track.Thumb>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent"/>
-                                </Track.IncreaseRepeatButton>
-                            </Track>
-                            <!-- Up Button -->
-                            <RepeatButton Grid.Row="2" Command="ScrollBar.LineUpCommand" Height="15"
-                                Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-                                Content="▼" 
-                                Foreground="{DynamicResource Danube}" />
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <!-- Вміст стилю тут -->
         </Style>
     </UserControl.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Hidden"
-                  PanningMode="Both"
-                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
 
-        <Grid>
-            <StackPanel>
-                <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" Height="200" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
-                                <Grid>
-                                    <!-- Використовуємо основну сітку -->
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <!-- Для іконки та інформації про автора -->
-                                        <RowDefinition Height="0.5*"/>
-                                        <!-- Для заголовка -->
-                                        <RowDefinition Height="*"/>
-                                        <!-- Для контенту -->
-                                        <RowDefinition Height="*"/>
-                                        <!-- Для тегів і рейтингу -->
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70"/>
-                                        <!-- Для іконки -->
-                                        <ColumnDefinition Width="900"/>
-                                        <!-- Для тексту -->
-                                        <ColumnDefinition Width="100"/>
-                                        <!-- Для відповідей -->
-                                        <ColumnDefinition Width="50"/>
-                                        <!-- Для рейтингу -->
-                                    </Grid.ColumnDefinitions>
+    <!-- Обгортка для кількох дочірніх елементів -->
+    <Grid>
+        <!-- ScrollViewer -->
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden"
+                      PanningMode="Both"
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
 
-                                    <!-- Іконка -->
-                                    <Button Command="{Binding PhotoClickCommand}" Cursor="Hand" Margin="10,10,0,0" Width="50" Height="50" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate>
-                                                            <Image Source="{Binding Topic.Author.Photo}" Width="40" Height="40" Stretch="UniformToFill">
-                                                                <Image.Clip>
-                                                                    <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                                                                </Image.Clip>
-                                                            </Image>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
+            <Grid>
+                <StackPanel>
+                    <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" Height="200" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
+                                    <Grid>
+                                        <!-- Використовуємо основну сітку -->
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <!-- Для іконки та інформації про автора -->
+                                            <RowDefinition Height="0.5*"/>
+                                            <!-- Для заголовка -->
+                                            <RowDefinition Height="*"/>
+                                            <!-- Для контенту -->
+                                            <RowDefinition Height="*"/>
+                                            <!-- Для тегів і рейтингу -->
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="70"/>
+                                            <!-- Для іконки -->
+                                            <ColumnDefinition Width="900"/>
+                                            <!-- Для тексту -->
+                                            <ColumnDefinition Width="100"/>
+                                            <!-- Для відповідей -->
+                                            <ColumnDefinition Width="50"/>
+                                            <!-- Для рейтингу -->
+                                        </Grid.ColumnDefinitions>
 
-                                    <!-- Інформація про автора -->
-                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,8,0,0" Orientation="Vertical" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Topic.Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
-                                        <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White"/>
-                                    </StackPanel>
+                                        <!-- Іконка -->
+                                        <Button Command="{Binding PhotoClickCommand}" Cursor="Hand" Margin="10,10,0,0" Width="50" Height="50" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate>
+                                                                <Image Source="{Binding Topic.Author.Photo}" Width="40" Height="40" Stretch="UniformToFill">
+                                                                    <Image.Clip>
+                                                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                                    </Image.Clip>
+                                                                </Image>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
 
-                                    <!-- Заголовок -->
-                                    <TextBlock Text="{Binding Title}" Margin="20,10,0,0" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                        <!-- Інформація про автора -->
+                                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,8,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Topic.Author.Username}" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                                            <TextBlock Text="{Binding CreatedAt, Converter={StaticResource dateTimeToStringConverter}}" Foreground="White"/>
+                                        </StackPanel>
 
-                                    <!-- Контент -->
-                                    <TextBlock Text="{Binding Content, Converter={StaticResource stringToShortenedStringConverter}}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
+                                        <!-- Заголовок -->
+                                        <TextBlock Text="{Binding Title}" Margin="20,10,0,0" FontFamily="{StaticResource RobotoBold}" Foreground="White" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16" VerticalAlignment="Center" TextWrapping="Wrap"/>
 
-                                    <!-- Теги -->
-                                    <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="10,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                        <ItemsControl ItemsSource="{Binding Tags}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0">
-                                                        <TextBlock Text="{Binding}" FontSize="12" Margin="5,0,5,0"/>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
+                                        <!-- Контент -->
+                                        <TextBlock Text="{Binding Content, Converter={StaticResource stringToShortenedStringConverter}}" Margin="20,0,0,0" Foreground="White" Grid.Row="2" Grid.ColumnSpan="4" TextWrapping="Wrap" FontSize="14"  VerticalAlignment="Center"/>
 
-                                    <!-- Кількість відповідей -->
-                                    <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
-                                        <Image Source="pack://application:,,,/Resources/Images/Comment.png" Width="16" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{Binding RepliesCount}" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
-                                    </StackPanel>
+                                        <!-- Теги -->
+                                        <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="10,5,0,5" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <ItemsControl ItemsSource="{Binding Tags}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0">
+                                                            <TextBlock Text="{Binding}" FontSize="12" Margin="5,0,5,0"/>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
 
-                                    <!-- Рейтинг -->
-                                    <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
-                                        <Image Source="pack://application:,,,/Resources/Images/Upvote.png" Width="16" Margin="0,0,5,0"/>
-                                        <TextBlock Text="{Binding Rating}" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                                        <!-- Кількість відповідей -->
+                                        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                                            <Image Source="pack://application:,,,/Resources/Images/Comment.png" Width="16" Margin="0,0,5,0"/>
+                                            <TextBlock Text="{Binding RepliesCount}" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
+                                        </StackPanel>
 
-                    <!-- Стиль для ListBox, щоб прибрати фокус і виділення -->
-                    <ListBox.Style>
-                        <Style TargetType="ListBox">
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                            <Setter Property="IsTabStop" Value="False" />
-                        </Style>
-                    </ListBox.Style>
+                                        <!-- Рейтинг -->
+                                        <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5">
+                                            <Image Source="pack://application:,,,/Resources/Images/Upvote.png" Width="16" Margin="0,0,5,0"/>
+                                            <TextBlock Text="{Binding Rating}" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                        <!-- Стиль для ListBox, щоб прибрати фокус і виділення -->
+                        <ListBox.Style>
+                            <Style TargetType="ListBox">
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="IsTabStop" Value="False" />
+                            </Style>
+                        </ListBox.Style>
 
 
 
-                    <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <EventSetter Event="MouseDoubleClick" Handler="OnItemMouseDoubleClick" />
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                            <Setter Property="IsTabStop" Value="False" />
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Style.Triggers>
-                                <!-- При наведенні миші -->
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                </Trigger>
-                                <!-- При виборі елемента -->
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Setter Property="BorderBrush" Value="Transparent" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                        <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <EventSetter Event="MouseDoubleClick" Handler="OnItemMouseDoubleClick" />
+                                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                <Setter Property="IsTabStop" Value="False" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Style.Triggers>
+                                    <!-- При наведенні миші -->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Trigger>
+                                    <!-- При виборі елемента -->
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Setter Property="BorderBrush" Value="Transparent" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
 
-                <Button Width="350" Height="50" Margin="20" Command="{Binding LoadMoreCommand}" Background="{DynamicResource Danube}" BorderThickness="2" BorderBrush="{DynamicResource PrussianBlue}" Cursor="Hand">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/LoadMore.png" Width="30" Height="30" Margin="0,0,10,0"/>
-                                    <TextBlock x:Name="text" Text="Load More" VerticalAlignment="Center" Foreground="White" FontSize="20"/>
-                                </StackPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <!-- Зміна кольору фону -->
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource PrussianBlueWithoutOpacity}"/>
-                                    <!-- Зміна обведення -->
-                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Danube}"/>
-                                    <!-- Зміна кольору тексту -->
-                                    <Setter TargetName="text" Property="Foreground" Value="{DynamicResource Danube}"/>
-                                    <!-- Зміна іконки -->
-                                    <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/LoadMoreDanube.png"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-            </StackPanel>
-
-            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="80" Height="80" Margin="0,0,45,20" Cursor="Hand"
-        Command="{Binding DataContext.CreateTopicCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-        Background="{DynamicResource PrussianBlueWithoutOpacity}" BorderBrush="{DynamicResource Danube}" BorderThickness="3">
+        <!-- Canvas -->
+        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Button Canvas.Right="135" Canvas.Bottom="20" Width="40" Height="40" Cursor="Hand"
+                    Command="{Binding LoadMoreCommand}"
+                    Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+                    BorderBrush="{DynamicResource Danube}" 
+                    BorderThickness="3">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid>
-                            <!-- Кругла форма кнопки -->
-                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
-                            <!-- Іконка в центрі -->
-                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/AddPost.png" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" 
+                                     Stroke="{TemplateBinding BorderBrush}" 
+                                     StrokeThickness="{TemplateBinding BorderThickness}"/>
+                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/LoadMoreDanube.png" 
+                                   Width="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Grid>
                         <ControlTemplate.Triggers>
-                            <!-- Зміна кольору при наведенні -->
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource PrussianBlue}"/>
+                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource RegalBlue}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <!-- Кнопка Add Post -->
+            <Button Canvas.Right="50" Canvas.Bottom="20" Width="80" Height="80" Cursor="Hand"
+                    Command="{Binding DataContext.CreateTopicCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    Background="{DynamicResource PrussianBlueWithoutOpacity}" 
+                    BorderBrush="{DynamicResource Danube}" 
+                    BorderThickness="3">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse x:Name="ellipse" Fill="{TemplateBinding Background}" 
+                                     Stroke="{TemplateBinding BorderBrush}" 
+                                     StrokeThickness="{TemplateBinding BorderThickness}"/>
+                            <Image x:Name="icon" Source="pack://application:,,,/Resources/Images/AddPost.png" 
+                                   Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ellipse" Property="Fill" Value="{DynamicResource RegalBlue}"/>
                                 <Setter TargetName="icon" Property="Source" Value="pack://application:,,,/Resources/Images/AddPost.png"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-        </Grid>
-    </ScrollViewer>
+        </Canvas>
+    </Grid>
 </UserControl>
