@@ -129,6 +129,7 @@ public static class TopicsService
 
         topic.Replies = SelectParentReplyIdsByTopic(id, conn);
         topic.Tags = SelectTagsByTopic(id, conn);
+        topic.RepliesCount = CountRepliesByTopic(id, conn);
 
         return topic;
     }
@@ -359,5 +360,20 @@ public static class TopicsService
         }
 
         return replies;
+    }
+
+    public static uint CountRepliesByTopic(uint topicId, MySqlConnection conn)
+    {
+        string countRepliesQuery =
+            """
+            SELECT COUNT(*) AS replies_count
+            FROM replies
+            WHERE topic_id = @topic_id AND is_deleted = FALSE
+            """;
+
+        using var selectCommand = new MySqlCommand(countRepliesQuery, conn);
+        selectCommand.Parameters.AddWithValue("@topic_id", topicId);
+
+        return Convert.ToUInt32(selectCommand.ExecuteScalar());
     }
 }
