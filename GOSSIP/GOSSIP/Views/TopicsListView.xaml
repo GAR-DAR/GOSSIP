@@ -50,12 +50,12 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Hidden"
+                  PanningMode="Both"
+                  PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
 
-    <Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" >
-            <ScrollViewer.Resources>
-                <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}" />
-            </ScrollViewer.Resources>
+        <Grid>
             <StackPanel>
                 <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
                     <ListBox.ItemTemplate>
@@ -156,6 +156,8 @@
                             <Setter Property="IsTabStop" Value="False" />
                         </Style>
                     </ListBox.Style>
+
+
 
                     <!-- Стиль для кожного елемента ListBoxItem, щоб прибрати виділення при наведенні та натисканні -->
                     <ListBox.ItemContainerStyle>

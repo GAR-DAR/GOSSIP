@@ -5,6 +5,5 @@
         <ResourceDictionary Source="../Colors/Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Border x:Key ="CoolBorder" BorderBrush="{StaticResource WindowBorder}"/>
 
 </ResourceDictionary>
