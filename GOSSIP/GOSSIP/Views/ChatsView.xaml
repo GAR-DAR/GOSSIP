@@ -37,7 +37,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="5">
-                                <Image Source="{Binding Photo}" Width="40" Height="40">
+                                <Image Source="{Binding Photo}" Width="40" Height="40" Stretch="UniformToFill">
                                     <Image.Clip>
                                         <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                     </Image.Clip>

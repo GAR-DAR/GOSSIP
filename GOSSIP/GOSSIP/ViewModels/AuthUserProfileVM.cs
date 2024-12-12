@@ -16,6 +16,8 @@ namespace GOSSIP.ViewModels
         public AuthUserProfileInfoVM AuthUserProfileInfoVM { get; set; }
         public AuthUserProfileSettingsVM AuthUserProfileSettingsVM { get; set; }
 
+
+
         private bool _isProfileSelected = true;
         public bool IsProfileSelected
         {

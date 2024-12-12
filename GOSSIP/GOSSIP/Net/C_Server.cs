@@ -91,7 +91,7 @@ namespace GOSSIP.Net
                 Ira 172.24.237.81 
                 YurAAAAAAAAAAAAAAA 172.24.101.91
                 SACHJKO 172.24.251.137  */
-            _client.Connect("127.0.0.1", 7891);
+            _client.Connect("172.24.226.173", 7891);
             packetReader = new PacketReader(_client.GetStream());
             if (packetReader != null)
             {

@@ -45,7 +45,7 @@
 
 
                     <StackPanel Grid.Column="1" Margin="50 40">
-                        <Image Source="{Binding Photo}" Width="200" Height="200" HorizontalAlignment="Left">
+                        <Image Source="{Binding Photo}" Width="200" Height="200" HorizontalAlignment="Left" Stretch="UniformToFill" >
                             <Image.Clip>
                                 <EllipseGeometry RadiusX="100" RadiusY="100" Center="100,100"/>
                             </Image.Clip>

@@ -62,7 +62,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <Image Source="{Binding Author.Photo}" Width="40" Height="40">
+                                            <Image Source="{Binding Author.Photo}" Width="40" Height="40" Stretch="UniformToFill">
                                                 <Image.Clip>
                                                     <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                                 </Image.Clip>
@@ -174,7 +174,7 @@
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate>
-                                                                <Image Source="{Binding User.Photo}" Width="40" Height="40">
+                                                                <Image Source="{Binding User.Photo}" Width="40" Height="40" Stretch="UniformToFill">
                                                                     <Image.Clip>
                                                                         <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                                                     </Image.Clip>
@@ -303,7 +303,7 @@
                                                                         <Setter Property="Template">
                                                                             <Setter.Value>
                                                                                 <ControlTemplate>
-                                                                                    <Image Source="{Binding User.Photo}" Width="40" Height="40">
+                                                                                    <Image Source="{Binding User.Photo}" Width="40" Height="40" Stretch="UniformToFill">
                                                                                         <Image.Clip>
                                                                                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                                                                                         </Image.Clip>

@@ -359,6 +359,7 @@ namespace GOSSIP.ViewModels
                 }
 
                 _user.UserModel.Photo = "http://gossip.byethost7.com/Icons/" + Path.GetFileName(Photo);
+                MainVM.AuthorizedUserVM.Photo = "http://gossip.byethost7.com/Icons/" + Path.GetFileName(Photo);
                 Globals.server.SendPacket(SignalsEnum.ChangeUserPhoto, _user.UserModel);
 
             });

@@ -64,11 +64,11 @@ namespace GOSSIP.ViewModels
             // Відкриваємо діалогове вікно
             bool? dialogResult = addUsersToChatWindow.ShowDialog();
 
-            // Обробляємо результат
-            if (dialogResult == true)
-            {
-                UpdateChats();
-            }
+            //// Обробляємо результат
+            //if (dialogResult == true)
+            //{
+            //    UpdateChats();
+            //}
         }
 
 
@@ -81,7 +81,9 @@ namespace GOSSIP.ViewModels
 
             CurrentUserID = MainVM.AuthorizedUserVM.UserModel.ID;
             AddNewChatCommand = new RelayCommand(AddNewChatMethod);
-            Globals.server.openChatsEvent += (obj) => { ChatList = new(Globals.User_Cache.Chats.Select(chat => new OpenedChatVM(chat, _mainVM))); };
+            Globals.server.openChatsEvent += (obj) => { 
+                ChatList = new(Globals.User_Cache.Chats.Select(chat => new OpenedChatVM(chat, _mainVM))); 
+            };
 
         }
 
