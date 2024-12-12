@@ -278,7 +278,6 @@ public static class UsersService
         return rowsAffected != 0;
     }
 
-
     public static bool Ban(uint userId, MySqlConnection conn)
     {
         string banUserQuery =

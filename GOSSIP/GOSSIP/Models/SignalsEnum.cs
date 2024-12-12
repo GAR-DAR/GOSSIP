@@ -20,6 +20,7 @@ namespace GOSSIP
         RefreshUser,
         ChangeUserPhoto,
         GetAllUsers,
+
         #endregion
 
         #region SignUp
@@ -69,7 +70,12 @@ namespace GOSSIP
         SignUpError,
         GetChildReplies,
         GetParentReplies,
-        CreateReplyToReply
+        CreateReplyToReply,
+
+        #endregion
+
+        #region  Moderator
+        BanUser
         #endregion
     }
 }

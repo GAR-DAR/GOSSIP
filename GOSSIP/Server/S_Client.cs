@@ -356,26 +356,26 @@ namespace Server
                                 break;
                             }
 
-                        case (byte)SignalsEnum.CreateReplyToReply:
-                            {
-                                mutex.WaitOne();
-                                var childReply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
+                        //case (byte)SignalsEnum.CreateReplyToReply:
+                        //    {
+                        //        mutex.WaitOne();
+                        //        var childReply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
 
-                                var childReplyModelID = RepliesService.AddChild(childReply, Globals.db.Connection);
+                        //        var childReplyModelID = RepliesService.AddChild(childReply, Globals.db.Connection);
 
-                                if (childReplyModelID != null)
-                                {
-                                    SendPacket(SignalsEnum.CreateReplyToReply, childReplyModelID);
-                                    Logging.LogSent(SignalsEnum.CreateReplyToReply, UID, User, ConsoleColor.Blue);
-                                }
-                                else
-                                {
-                                    Logging.Log("Error creating reply to reply", UID, User, ConsoleColor.Red);
-                                }
+                        //        if (childReplyModelID != null)
+                        //        {
+                        //            SendPacket(SignalsEnum.CreateReplyToReply, childReplyModelID);
+                        //            Logging.LogSent(SignalsEnum.CreateReplyToReply, UID, User, ConsoleColor.Blue);
+                        //        }
+                        //        else
+                        //        {
+                        //            Logging.Log("Error creating reply to reply", UID, User, ConsoleColor.Red);
+                        //        }
 
-                                mutex.ReleaseMutex();
-                                break;
-                            }
+                        //        mutex.ReleaseMutex();
+                        //        break;
+                        //    }
 
 
                         case (byte)SignalsEnum.GetUserChats:
@@ -491,6 +491,31 @@ namespace Server
 
                                 mutex.ReleaseMutex();
 
+                                break;
+                            }
+
+                        case (byte)SignalsEnum.BanUser:
+                            {
+                                mutex.WaitOne();
+
+                                var id = _packetReader.ReadPacket<uint>().Data;
+
+                                if(UsersService.Ban(id, Globals.db.Connection))
+                                {
+                                    var temp = UsersService.SelectById(id, Globals.db.Connection);
+
+                                    SendPacket(SignalsEnum.BanUser, temp);
+
+                                    Logging.Log($"moderator baned {temp.Username} ))))) ", UID, User, ConsoleColor.DarkMagenta);
+                                }
+                                else
+                                {
+                                    Logging.Log("Ban error", UID, User, ConsoleColor.Red);
+                                }
+
+                                
+
+                                mutex.ReleaseMutex();
                                 break;
                             }
 

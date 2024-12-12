@@ -69,7 +69,11 @@ namespace Server
         SignUpError,
         GetChildReplies,
         GetParentReplies,
-        CreateReplyToReply
+        CreateReplyToReply,
+        #endregion
+
+        #region  Moderator
+        BanUser
         #endregion
     }
 }

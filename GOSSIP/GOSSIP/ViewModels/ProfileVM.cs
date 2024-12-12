@@ -1,4 +1,5 @@
 ﻿
+using GOSSIP.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -69,7 +70,8 @@ namespace GOSSIP.ViewModels
 
         private void BanUserMethod(object obj)
         {
-            MessageBox.Show("Тут може бути ваша логіка.");
+           
+            Globals.server.SendPacket(SignalsEnum.BanUser, User.UserModel.ID);
         }
 
         private void UpdateUserInfo()
