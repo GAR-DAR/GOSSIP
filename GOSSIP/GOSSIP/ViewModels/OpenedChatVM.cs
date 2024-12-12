@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace GOSSIP.ViewModels
@@ -44,8 +45,25 @@ namespace GOSSIP.ViewModels
 
             MainVM.AuthorizedUserVM.PropertyChanged += AuthorizedUserVM_PropertyChanged;
 
+            Messages.CollectionChanged += (s, e) =>
+            {
+                ScrollToBottom();
+            };
+
             Messages.CollectionChanged += LastMessageUpdate;
             SendMessageCommand = new RelayCommand(SendMessageMethod);
+        }
+
+        private void ScrollToBottom()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var listBox = Application.Current.MainWindow?.FindName("MessagesListBox") as ListBox;
+                if (listBox != null && listBox.Items.Count > 0)
+                {
+                    listBox.ScrollIntoView(listBox.Items[^1]);
+                }
+            });
         }
 
         private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -75,6 +93,8 @@ namespace GOSSIP.ViewModels
                     });
                 }
             }
+
+            ScrollToBottom();
         }
 
         public string LastMessage
@@ -105,9 +125,9 @@ namespace GOSSIP.ViewModels
             _chat.AddMessage(message);
             Messages.Add(message);
             EnteredText = "";
-
-
             Globals.server.SendPacket(SignalsEnum.SendMessage, new MessageModelID(message));
+
+            UpdateMessages();
         }
 
         private void LastMessageUpdate(object sender, EventArgs args)
