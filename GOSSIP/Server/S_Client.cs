@@ -131,14 +131,12 @@ namespace Server
                         
                         case (byte)SignalsEnum.Login:
                             {
-
                                 mutex.WaitOne();
                                 var authUserModel = _packetReader.ReadPacket<AuthUserModelID>().Data;
                                 
                                 UserModelID userModel;
                                 if (authUserModel.Username == null && authUserModel.Email != null)
                                 {
-                                    
                                     userModel = UsersService.SignIn(authUserModel.Email, null, authUserModel.Password, Globals.db.Connection);
                                     
                                     if (userModel == null)
@@ -166,6 +164,7 @@ namespace Server
                                     }
                                     else
                                     {
+                                        User = userModel;
                                         SendPacket(SignalsEnum.Login, userModel);
                                         Logging.LogSent(SignalsEnum.Login, UID, User);
                                     }
@@ -386,7 +385,6 @@ namespace Server
                         case (byte)SignalsEnum.StartChat:
                             {
                                 mutex.WaitOne();
-
                                 var chat = _packetReader.ReadPacket<ChatModelID>().Data;
 
                                 ChatsService.Create(chat, Globals.db.Connection);
