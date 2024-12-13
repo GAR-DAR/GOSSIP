@@ -83,6 +83,7 @@ namespace GOSSIP.ViewModels
            
             Globals.server.Login(authUser);
             Globals.server.loginEvent += (user) => OnLoginSuccess(user);
+            Globals.server.loginErrorEvent += () => IsFailed = true;
         }
 
         public void OnUserLoggedIn(UserVM user)

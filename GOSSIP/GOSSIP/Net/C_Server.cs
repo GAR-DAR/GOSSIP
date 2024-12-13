@@ -47,6 +47,7 @@ namespace GOSSIP.Net
             public event Action<UserModel> signUpEvent;
             public event Action<UserModel> editUserEvent;
             public event Action logoutEvent;
+            public event Action loginErrorEvent;
             public event Action<UserModel> loginEvent;
             public event Action<List<TopicModel>> getTopicsEvent;
             public event Action<List<UserModel>> getBannedUsersEvent;
@@ -380,6 +381,14 @@ namespace GOSSIP.Net
                                     loginEvent?.Invoke(Globals.User_Cache);
 
                                     Debug.WriteLine($"User {user.Username} logged in");
+                                    break;
+                                }
+
+                            case (byte)SignalsEnum.LoginError:
+                                {
+                                    loginErrorEvent.Invoke();
+
+                                    Debug.WriteLine($"Login error");
                                     break;
                                 }
 
