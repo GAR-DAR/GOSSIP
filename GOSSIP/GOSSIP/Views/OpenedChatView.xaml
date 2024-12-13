@@ -41,7 +41,7 @@
                             <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
                         </Image.Clip>
                     </Image>
-                    <TextBlock Text="{Binding ChatName}" Foreground="White"  FontSize="20"/>
+                    <TextBlock Text="{Binding ChatName}" Margin="5 5 0 0" Foreground="White"  FontSize="20"/>
                 </WrapPanel>
             </Border>
 
@@ -88,11 +88,23 @@
                                     <Setter.Value>
                                         <ControlTemplate>
                                             <WrapPanel>
-                                                <Image Source="{Binding User.Photo}" Width="40" Height="40" Margin="3 0" Stretch="UniformToFill">
-                                                    <Image.Clip>
-                                                        <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
-                                                    </Image.Clip>
-                                                </Image>
+                                                <Button Command="{Binding DataContext.PhotoClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Cursor="Hand" Margin="3,0,0,0" Width="40" Height="40">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate>
+                                                                        <Image Source="{Binding User.Photo}" Width="40" Height="40" Stretch="UniformToFill">
+                                                                            <Image.Clip>
+                                                                                <EllipseGeometry RadiusX="20" RadiusY="20" Center="20,20"/>
+                                                                            </Image.Clip>
+                                                                        </Image>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
                                                 <Border MinWidth="100" MinHeight="40" MaxWidth="300" CornerRadius="10" BorderThickness="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="{StaticResource RegalBlue}">
                                                     <StackPanel>
                                                         <TextBlock Text="{Binding MessageText}" VerticalAlignment="Center" Margin="7 13 7 0" TextWrapping="Wrap" Foreground="White"/>

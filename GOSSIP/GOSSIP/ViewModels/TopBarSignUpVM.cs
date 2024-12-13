@@ -17,6 +17,19 @@ namespace GOSSIP.ViewModels
         public ICommand ShowLogInCommand { get; }
         public ICommand SubmitCommand { get; }
 
+        public event Action<string> SubmitEvent;
+
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged(nameof(SearchQuery));
+            }
+        }
+
         public TopBarSignUpVM(MainVM mainVM)
         {
             _mainVM = mainVM;
@@ -58,7 +71,7 @@ namespace GOSSIP.ViewModels
 
         private void SubmitMethod(object obj)
         {
-            MessageBox.Show("Тут може бути ваша логіка");
+            SubmitEvent?.Invoke(SearchQuery);
         }
     }
 }

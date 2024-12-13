@@ -15,8 +15,7 @@ namespace GOSSIP.ViewModels
     //Список постів. Поки сиро і плачевно
     public class TopicsListVM : ObservableObject
     {
-        //Колекція постів. Треба підключити до БД
-        public ObservableCollection<TopicVM> _topics = [];
+        private ObservableCollection<TopicVM> _topics = [];
         public ObservableCollection<TopicVM> Topics
         {
             get => _topics;
@@ -24,6 +23,17 @@ namespace GOSSIP.ViewModels
             {
                 _topics = value;
                 OnPropertyChanged(nameof(Topics));
+            }
+        }
+
+        private ObservableCollection<TopicVM> _filteredCollection;
+        public ObservableCollection<TopicVM> FilteredTopics
+        {
+            get => _filteredCollection;
+            set
+            {
+                _filteredCollection = value;
+                OnPropertyChanged(nameof(FilteredTopics));
             }
         }
 
@@ -53,11 +63,13 @@ namespace GOSSIP.ViewModels
                     Topics = new ObservableCollection<TopicVM>(topics.Select(x => new TopicVM(x)));
                     foreach (var topic in Topics)
                     {
+                        topic.ProfileSelectedEvent += _mainVM.OpenProfile;
                         foreach (var reply in topic.Topic.Replies)
                         {
                             reply.Topic = topic.Topic;
                         }
                     }
+                    FilteredTopics = Topics;
                 });
             };
         }
@@ -65,10 +77,20 @@ namespace GOSSIP.ViewModels
         public TopicsListVM(MainVM mainVM)
         {
             _mainVM = mainVM;
-
             DoubleClickCommand = new RelayCommand((obj) => OnItemDoubleClickedMethod(SelectedTopic));
             LoadMoreCommand = new RelayCommand(LoadMoreMethod);
             Task.Run(async () => await LoadTopicsAsync());
+        }
+
+        public void SearchMethod(string searchQuery)
+        {
+            if (string.IsNullOrEmpty(searchQuery))
+                FilteredTopics = Topics;
+            else
+                FilteredTopics = new ObservableCollection<TopicVM>(Topics.Where(topic =>
+                    topic.Content.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    topic.Title.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                    topic.Tags.Any(tag => tag.Contains(searchQuery, StringComparison.OrdinalIgnoreCase))));
         }
 
         private void LoadMoreMethod(object obj)

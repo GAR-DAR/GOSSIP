@@ -41,7 +41,7 @@ public class TopicModel
         Rating = topic.Rating;
         RepliesCount = topic.RepliesCount;
         IsDeleted = topic.IsDeleted;
-        
+        Tags = topic.Tags;
     }
 
 }

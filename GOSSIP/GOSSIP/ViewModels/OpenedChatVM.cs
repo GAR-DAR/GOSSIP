@@ -20,6 +20,8 @@ namespace GOSSIP.ViewModels
         private string _lastMessage;
         private string _enteredText = "";
 
+        public ICommand PhotoClickCommand { get; }
+
         //Містить копію моделі чатів
         private ChatModel _chat;
 
@@ -47,6 +49,16 @@ namespace GOSSIP.ViewModels
 
             Messages.CollectionChanged += LastMessageUpdate;
             SendMessageCommand = new RelayCommand(SendMessageMethod);
+
+            PhotoClickCommand = new RelayCommand(ProfileMethod);
+        }
+
+        private void ProfileMethod(object obj)
+        {
+            if(obj is MessageModel message)
+            {
+                MainVM.OpenProfile(new(message.User));
+            }
         }
 
         private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

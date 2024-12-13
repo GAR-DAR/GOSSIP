@@ -19,18 +19,17 @@
         <StackPanel Margin="0 5" Width="800" HorizontalAlignment="Left">
             <TextBlock Foreground="White" FontSize="20" Text="About" FontWeight="Bold"/>
             <Border Background="{DynamicResource PrussianBlueWithoutOpacity}" 
-        BorderBrush="{DynamicResource Danube}" 
-        BorderThickness="2" 
-        CornerRadius="20" 
-        Height="150">
+                    BorderBrush="{DynamicResource Danube}" 
+                    BorderThickness="2" 
+                    CornerRadius="20" 
+                    Height="auto">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock Text="{Binding UserInfo}" 
                    Foreground="White" 
-                   Background="{DynamicResource PrussianBlueWithoutOpacity}" 
                    TextWrapping="Wrap" 
                    TextAlignment="Left" 
                    VerticalAlignment="Center" 
-                   Margin="10,0,0,0"/>
+                   Margin="10"/>
                 </StackPanel>
             </Border>
         </StackPanel>

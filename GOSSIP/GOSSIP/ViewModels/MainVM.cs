@@ -119,15 +119,8 @@ namespace GOSSIP.ViewModels
             _topicListVM = new(this);
             _topBarSignUpVM = new(this);
             SelectedVM = _topicListVM;
-
-            if(AuthorizedUserVM != null)
-            {
-                SelectedTopBarVM = new TopBarLoggedInVM(this);
-            }
-            else
-            {
-                SelectedTopBarVM = _topBarSignUpVM;
-            }
+            SelectedTopBarVM = _topBarSignUpVM;
+            _topBarSignUpVM.SubmitEvent += _topicListVM.SearchMethod;
 
             ShowTopicsListCommand = new RelayCommand(ShowPostsListMethod);
             ShowChatsCommand = new RelayCommand(ShowChatsMethod);
@@ -194,8 +187,8 @@ namespace GOSSIP.ViewModels
 
                 Globals.server.SendPacket(SignalsEnum.GetUserChats, AuthorizedUserVM.UserModel.ID);
 
-                StackOfVMs.Add(SelectedVM);
                 SelectedVM = _chatsVM;
+                StackOfVMs.Add(SelectedVM);
                 TurnOffButtonsExcept("Chats");
             }
             else
@@ -247,18 +240,19 @@ namespace GOSSIP.ViewModels
         public void ShowSignUpMethod(object obj)
         {
             SignUpMainVM signUpMainVM = new();
-                SignUpWindow signUpView = new() { DataContext = signUpMainVM };
-                signUpMainVM.RequestClose += (user) => 
-                { 
-                    AuthorizedUserVM = user;
-                    signUpView.Dispatcher.Invoke(() =>
-                    {
-                        signUpView.Close();
-                    }); 
-                    SelectedTopBarVM = new TopBarLoggedInVM(this);
-                };
-                signUpView.ShowDialog();
+            SignUpWindow signUpView = new() { DataContext = signUpMainVM };
+            signUpMainVM.RequestClose += (user) =>
+            {
+                AuthorizedUserVM = user;
+                signUpView.Dispatcher.Invoke(() =>
+                {
+                    signUpView.Close();
+                });
+                SelectedTopBarVM = new TopBarLoggedInVM(this);
+            };
+            signUpView.ShowDialog();
         }
+
         public void ShowLogInMethod(object obj)
         {
             LogInVM logInVM = new(this);

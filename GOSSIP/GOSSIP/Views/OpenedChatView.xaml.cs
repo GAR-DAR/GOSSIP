@@ -1,6 +1,7 @@
 ﻿using GOSSIP.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,21 +25,23 @@ namespace GOSSIP.Views
         public OpenedChatView()
         {
             InitializeComponent();
-            //DataContextChanged += OnDataContextChanged;
+            Loaded += OpenedChatView_Loaded;
         }
 
-        //private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    OpenedChatVM vm = DataContext as OpenedChatVM;
+        private void OpenedChatView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (MessagesListBox.ItemsSource is INotifyCollectionChanged collection)
+            {
+                collection.CollectionChanged += Messages_CollectionChanged;
+            }
+        }
 
-        //    vm.Messages.CollectionChanged += (s, ev) => ScrollToBottom();
-
-
-        //    void ScrollToBottom()
-        //    {
-        //        MessagesListBox.SelectedIndex = MessagesListBox.Items.Count -1;
-        //        MessagesListBox.ScrollIntoView(MessagesListBox.SelectedItem) ;
-        //    }
-        //}
+        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (MessagesListBox.Items.Count > 0)
+            {
+                MessagesListBox.ScrollIntoView(MessagesListBox.Items[^1]);
+            }
+        }
     }
 }

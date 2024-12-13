@@ -26,7 +26,7 @@
 
             <Grid>
                 <StackPanel>
-                    <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding Topics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
+                    <ListBox Background="Transparent" Margin="20" ItemsSource="{Binding FilteredTopics}" SelectedItem="{Binding SelectedTopic}" BorderThickness="0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="#506393c9" Margin="0 0 0 5" Width="1170" Height="200" CornerRadius="20" BorderThickness="2" BorderBrush="{DynamicResource Danube}">
