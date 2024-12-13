@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -248,7 +249,9 @@ namespace GOSSIP.ViewModels
                 {
                     signUpView.Close();
                 });
-                SelectedTopBarVM = new TopBarLoggedInVM(this);
+                TopBarLoggedInVM topBarLoggedInVM = new TopBarLoggedInVM(this);
+                topBarLoggedInVM.SubmitEvent += _topicListVM.SearchMethod;
+                SelectedTopBarVM = topBarLoggedInVM;
             };
             signUpView.ShowDialog();
         }
@@ -291,7 +294,20 @@ namespace GOSSIP.ViewModels
 
         public void ChooseTopBar(UserVM user)
         {
-            _ = AuthorizedUserVM.Role == "Moderator" ? SelectedTopBarVM = new TopBarLoggedInModeratorVM(this) : SelectedTopBarVM = new TopBarLoggedInVM(this);
+            if (AuthorizedUserVM.Role == "Moderator")
+            {
+                TopBarLoggedInModeratorVM topBarLoggedInModeratorVM = new(this);
+                topBarLoggedInModeratorVM.SubmitEvent += _topicListVM.SearchMethod;
+
+                SelectedTopBarVM = topBarLoggedInModeratorVM;
+            }
+            else
+            {
+                TopBarLoggedInVM topBarLoggedInVM = new(this);
+                topBarLoggedInVM.SubmitEvent += _topicListVM.SearchMethod;
+
+                SelectedTopBarVM = topBarLoggedInVM;
+            }
         }
 
         public void ShowBannedUsersWindow(object obj)

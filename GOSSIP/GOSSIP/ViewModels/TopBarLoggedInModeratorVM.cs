@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -47,6 +48,8 @@ namespace GOSSIP.ViewModels
             }
         }
 
+        public event Action<string> SubmitEvent;
+
         public string Username
         {
             get => AuthorizedUserVM.Username;
@@ -87,7 +90,7 @@ namespace GOSSIP.ViewModels
 
         private void SubmitMethod(object obj)
         {
-            MessageBox.Show("Тут може бути ваша логіка");
+            SubmitEvent?.Invoke(SearchQuery);
         }
 
         private void LogoutMethod(object obj)

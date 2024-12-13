@@ -23,6 +23,8 @@ namespace GOSSIP.ViewModels
         public ICommand SubmitCommand { get; }
 
         public event Action ProfileOpeningEvent;
+        public event Action<string> SubmitEvent;
+        
 
         private bool _isMenuOpen;
         public bool IsMenuOpen
@@ -73,6 +75,7 @@ namespace GOSSIP.ViewModels
             }
         }
 
+
         public TopBarLoggedInVM(MainVM mainVM)
         {
             _mainVM = mainVM;
@@ -89,7 +92,7 @@ namespace GOSSIP.ViewModels
 
         private void SubmitMethod(object obj)
         {
-            MessageBox.Show("Тут може бути ваша логіка");
+            SubmitEvent?.Invoke(SearchQuery);
         }
 
         private void AuthorizedUserVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

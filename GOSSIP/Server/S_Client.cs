@@ -360,26 +360,26 @@ namespace Server
                                 break;
                             }
 
-                        //case (byte)SignalsEnum.CreateReplyToReply:
-                        //    {
-                        //        mutex.WaitOne();
-                        //        var childReply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
+                        case (byte)SignalsEnum.CreateReplyToReply:
+                            {
+                                mutex.WaitOne();
+                                var childReply = _packetReader.ReadPacket<ChildReplyModelID>().Data;
 
-                        //        var childReplyModelID = RepliesService.AddChild(childReply, Globals.db.Connection);
+                                var childReplyModelID = RepliesService.AddChild(childReply, Globals.db.Connection);
 
-                        //        if (childReplyModelID != null)
-                        //        {
-                        //            SendPacket(SignalsEnum.CreateReplyToReply, childReplyModelID);
-                        //            Logging.LogSent(SignalsEnum.CreateReplyToReply, UID, User, ConsoleColor.Blue);
-                        //        }
-                        //        else
-                        //        {
-                        //            Logging.Log("Error creating reply to reply", UID, User, ConsoleColor.Red);
-                        //        }
+                                if (childReplyModelID != null)
+                                {
+                                    SendPacket(SignalsEnum.CreateReplyToReply, childReplyModelID);
+                                    Logging.LogSent(SignalsEnum.CreateReplyToReply, UID, User, ConsoleColor.Blue);
+                                }
+                                else
+                                {
+                                    Logging.Log("Error creating reply to reply", UID, User, ConsoleColor.Red);
+                                }
 
-                        //        mutex.ReleaseMutex();
-                        //        break;
-                        //    }
+                                mutex.ReleaseMutex();
+                                break;
+                            }
 
 
                         case (byte)SignalsEnum.GetUserChats:
