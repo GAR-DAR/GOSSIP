@@ -43,7 +43,7 @@
 
                 <StackPanel Grid.Row="1" HorizontalAlignment="Left">
                     <TextBlock Text="Title" Foreground="White" FontSize="20" Margin="10,0,0,2"/>
-                    <TextBox Text="{Binding Title}" Width="500" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="16" Foreground="White" CaretBrush="White">
+                    <TextBox Text="{Binding Title}" Width="500" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="45" FontSize="16" Foreground="White" CaretBrush="White">
                         <TextBox.Template>
                             <ControlTemplate TargetType="TextBox">
                                 <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
@@ -57,7 +57,7 @@
                 <StackPanel Grid.Row="3" HorizontalAlignment="Left">
                     <TextBlock Text="Content" Foreground="White" FontSize="20" Margin="10,0,0,2"/>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <TextBox Text="{Binding Content}" Width="1000" TextWrapping="Wrap" Padding="10" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" MinHeight="400" FontSize="16" Foreground="White" CaretBrush="White">
+                        <TextBox Text="{Binding Content}" Width="1000" TextWrapping="Wrap"  Padding="5,5,10,10"  AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" MinHeight="400" FontSize="16" Foreground="White" CaretBrush="White">
                             <TextBox.Template>
                                 <ControlTemplate TargetType="TextBox">
                                     <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
@@ -103,7 +103,7 @@
                 <StackPanel Grid.Row="2">
                     <TextBlock Text="Tags" Foreground="White" FontSize="20" Margin="10,0,0,2"/>
                     
-                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" x:Name="SearchBox" Width="300" HorizontalAlignment="Left" Height="40" FontSize="16" Foreground="White" CaretBrush="White">
+                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" x:Name="SearchBox" Width="300" HorizontalAlignment="Left" Height="45" FontSize="16" Foreground="White" CaretBrush="White">
                         <TextBox.Template>
                             <ControlTemplate TargetType="TextBox">
                                 <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
@@ -118,16 +118,20 @@
                     <Popup IsOpen="{Binding IsEmpty}"
                            PlacementTarget="{Binding ElementName=SearchBox}"
                            Placement="Bottom"
-                           StaysOpen="False">       
-                        <Border Background="White">
+                           StaysOpen="False">
+                        <Border Background="Transparent" BorderBrush="{DynamicResource Danube}" BorderThickness="2">
                             <ListBox HorizontalAlignment="Left" 
                                      ItemsSource="{Binding FilteredTags}" 
                                      Width="300"
-                                     SelectedItem="{Binding SelectedTag}">      
-
+                                     SelectedItem="{Binding SelectedTag}" 
+                                     Background="Transparent" 
+                                     ClipToBounds="True" 
+                                     BorderBrush="Transparent" 
+                                     BorderThickness="0">
+                                <!-- Прибираємо товщину рамки -->
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0">
+                                        <Border Background="Gray" CornerRadius="5" Margin="5,0,0,0">
                                             <TextBlock Text="{Binding}" FontSize="12" Margin="5,0,5,0"/>
                                         </Border>
                                     </DataTemplate>
@@ -135,12 +139,15 @@
 
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel Orientation="Horizontal"/>
+                                        <WrapPanel Orientation="Horizontal"/>
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
                         </Border>
                     </Popup>
+
+
+
 
                     <ItemsControl ItemsSource="{Binding SelectedTags}">
                         <ItemsControl.ItemsPanel>
@@ -152,7 +159,20 @@
                             <DataTemplate>
                                 <Border Background="#80D9D9D9" CornerRadius="5" Margin="5,0,0,0" MinWidth="40">
                                     <WrapPanel>
-                                        <Button Width="20" Height="20" Content="x" Command="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"/>
+                                        <Button Background="Transparent" Width="20" Height="20" Content="x" Command="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <Image x:Name="Icon" Source="pack://application:,,,/Resources/Images/Close.png" Width="10" Height="10"/>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                     <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Icon" Property="Source" Value="pack://application:,,,/Resources/Images/ClosePrussian.png"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
                                         <TextBlock Text="{Binding}" FontSize="18" Margin="5,0,5,0" HorizontalAlignment="Center"/>
                                     </WrapPanel>
                                 </Border>
