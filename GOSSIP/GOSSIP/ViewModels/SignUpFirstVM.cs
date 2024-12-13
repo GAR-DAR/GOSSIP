@@ -80,12 +80,20 @@ namespace GOSSIP.ViewModels
         }
 
         public ICommand NextCommand { get; set; }
+        public ICommand HyperlinkCommand { get; set; }
+        public event Action HyperlinkEvent;
 
         public SignUpFirstVM(SignUpMainVM signUpMainVM)
         {
             _mainVM = signUpMainVM;
 
             NextCommand = new RelayCommand(NextMethod);
+            HyperlinkCommand = new RelayCommand(HyperlinkMethod);
+        }
+
+        private void HyperlinkMethod(object obj)
+        {
+            HyperlinkEvent?.Invoke();
         }
 
         //Команда переключення на наступне вікно. Потребує заповнення всіх полей. Інакше ArgumentException

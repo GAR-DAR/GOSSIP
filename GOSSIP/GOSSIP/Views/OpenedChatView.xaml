@@ -136,19 +136,17 @@
 
             <Border Grid.Row="2" Background="Transparent">
                 <WrapPanel>
-                    <TextBox Style="{StaticResource MessageInput}"
-                     Margin="20,0,0,10"
-                     Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     Width="750"
-                     MinHeight="40"
-                     MaxHeight="200"
-                     TextWrapping="Wrap"
-                     AcceptsReturn="True"
-                     VerticalAlignment="Top"
-                     VerticalContentAlignment="Top"
-                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                     >
-                    </TextBox>
+                    <TextBox x:Name="MessageInput" Style="{StaticResource MessageInput}"
+                             Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             Width="750"
+                             MinHeight="40"
+                             MaxHeight="200"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="False"
+                             VerticalAlignment="Top"
+                             VerticalContentAlignment="Top"
+                             Margin="20,0,0,10"
+                             KeyDown="MessageInput_KeyDown" />
                     <Button Style="{StaticResource SendMessageButton}" Margin="10,0,0,10" Command="{Binding SendMessageCommand}"/>
                 </WrapPanel>
             </Border>

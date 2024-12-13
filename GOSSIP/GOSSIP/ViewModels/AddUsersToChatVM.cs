@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using GOSSIP.Net;
 using System.Windows.Input;
+using System.Runtime.InteropServices;
 
 namespace GOSSIP.ViewModels
 {
@@ -14,9 +15,8 @@ namespace GOSSIP.ViewModels
 
         public AddUsersToChatVM()
         {
-
-            AllUsers = new (Globals.AllUsers_Cache.Select(x => new UserVM(x)).ToList());
-            
+            AllUsers = new(Globals.AllUsers_Cache.Select(x => new UserVM(x)).ToList());
+            FilteredUsers = AllUsers;
             CreateChatCommand = new RelayCommand(CreateChatMethod);
             CloseCommand = new RelayCommand(obj => RequestClose?.Invoke(false));
         }
@@ -28,16 +28,16 @@ namespace GOSSIP.ViewModels
         public event Action<bool?> RequestClose;
 
 
-    private void getUsers(List<UserModel> users)
-    {
-        Application.Current.Dispatcher.Invoke(() =>
+        private void getUsers(List<UserModel> users)
         {
-            AllUsers = new ObservableCollection<UserVM>(
-                users.Where(x => x.ID != MainVM.AuthorizedUserVM.UserModel.ID)
-                     .Select(x => new UserVM(x)));
-            OnPropertyChanged(nameof(AllUsers));
-        });
-    }
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                AllUsers = new ObservableCollection<UserVM>(
+                    users.Where(x => x.ID != MainVM.AuthorizedUserVM.UserModel.ID)
+                         .Select(x => new UserVM(x)));
+                OnPropertyChanged(nameof(AllUsers));
+            });
+        }
 
         private void CreateChatMethod(object obj)
         {
@@ -73,8 +73,8 @@ namespace GOSSIP.ViewModels
 
 
         private ObservableCollection<UserVM> _allUsers;
-        public ObservableCollection<UserVM> AllUsers 
-        { 
+        public ObservableCollection<UserVM> AllUsers
+        {
             get => _allUsers;
             set
             {
@@ -82,10 +82,20 @@ namespace GOSSIP.ViewModels
                 OnPropertyChanged(nameof(AllUsers));
             }
         }
-        public ObservableCollection<UserVM> FilteredUsers { get; set; } = new();
+
+        private ObservableCollection<UserVM> _filteredUsers;
+        public ObservableCollection<UserVM> FilteredUsers
+        {
+            get => _filteredUsers;
+            set
+            {
+                _filteredUsers = value;
+                OnPropertyChanged(nameof(FilteredUsers));
+            }
+        }
+
         public List<UserVM> SelectedUsers { get; set; } = new();
-		
-	
+
         private string _searchText;
         public string SearchText
         {
@@ -101,26 +111,11 @@ namespace GOSSIP.ViewModels
             }
         }
 
-        private bool _isPopupOpen;
-        public bool IsPopupOpen
-        {
-            get => _isPopupOpen;
-            set
-            {
-                if (_isPopupOpen != value)
-                {
-                    _isPopupOpen = value;
-                    OnPropertyChanged(nameof(IsPopupOpen));
-                }
-            }
-        }
-
         private void FilterUsers()
         {
             if (string.IsNullOrWhiteSpace(SearchText))
             {
-                FilteredUsers = new ObservableCollection<UserVM>();
-                IsPopupOpen = false;
+                FilteredUsers = AllUsers;
             }
             else
             {
@@ -128,7 +123,6 @@ namespace GOSSIP.ViewModels
                 FilteredUsers = new ObservableCollection<UserVM>(
                     AllUsers.Where(user => user.Username.ToLower().Contains(lowerSearchText)));
 
-                IsPopupOpen = FilteredUsers.Any();
             }
             OnPropertyChanged(nameof(FilteredUsers));
         }

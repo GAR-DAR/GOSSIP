@@ -116,10 +116,15 @@ namespace GOSSIP.ViewModels
 
         private void SendMessageMethod(object obj)
         {
+            if(string.IsNullOrEmpty(EnteredText))
+            {
+                return;
+            }
+
             MessageModel message = new MessageModel(1, _chat, MainVM.AuthorizedUserVM.UserModel, this.EnteredText, DateTime.Now, false, false);
             _chat.AddMessage(message);
             Messages.Add(message);
-            EnteredText = "";
+            EnteredText = string.Empty;
             Globals.server.SendPacket(SignalsEnum.SendMessage, new MessageModelID(message));
         }
 
@@ -129,6 +134,12 @@ namespace GOSSIP.ViewModels
             {
                 LastMessage = Messages.Last().MessageText;
             }
+        }
+
+        public void PasteEnter(TextBox textBox)
+        {
+            EnteredText += "\r\n";
+            textBox.CaretIndex = textBox.Text.Length;
         }
     }
 }

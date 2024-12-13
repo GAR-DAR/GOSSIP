@@ -40,6 +40,13 @@ namespace GOSSIP.ViewModels
             {
                 SignUpMainVM signUpMainVM = new();
                 SignUpWindow signUpView = new() { DataContext = signUpMainVM };
+                signUpMainVM.HyperlinkParentEvent += () =>
+                {
+                    signUpView.Close();
+                    ShowLogInCommand.Execute(null);
+                };
+
+
                 signUpMainVM.RequestClose += (user) => 
                 { 
                     MainVM.AuthorizedUserVM = user;
@@ -53,20 +60,28 @@ namespace GOSSIP.ViewModels
             {
                 LogInVM logInVM = new(_mainVM);
                 LogInWindow logInWindow = new() { DataContext = logInVM };
+
+                logInVM.HyperlinkEvent += () =>
+                {
+                    logInWindow.Close();
+                    ShowSignUpCommand.Execute(null);
+                };
+                
                 logInVM.RequestClose += (user) =>
                 {
 
                     MainVM.AuthorizedUserVM = user;
-                     Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        logInWindow.Close();
-                    });
-					
+                    Application.Current.Dispatcher.Invoke(() =>
+                   {
+                       logInWindow.Close();
+                   });
+
                     _mainVM.ChooseTopBar(user);
 
                 };
                 logInWindow.ShowDialog();
             });
+
         }
 
         private void SubmitMethod(object obj)

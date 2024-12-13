@@ -30,49 +30,10 @@
                 Style="{StaticResource InputField}" Width="340" Height="45"/>
 
                 <!-- Popup для списку результатів -->
-                <Popup IsOpen="{Binding IsPopupOpen}"
-       PlacementTarget="{Binding ElementName=SearchBox}" 
-       Placement="Bottom"
-       StaysOpen="False">
-                    <Border Background="{DynamicResource PrussianBlueWithoutOpacity}" BorderBrush="{DynamicResource Danube}" BorderThickness="2">
-                        <StackPanel>
-                            <ListBox ItemsSource="{Binding FilteredUsers}" 
-                     SelectionMode="Multiple"
-                     MinWidth="200"
-                     SelectionChanged="ListBox_SelectionChanged">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Username}" />
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="ListBoxItem">
-                                        <!-- Звичайний стан -->
-                                        <Setter Property="Background" Value="{DynamicResource PrussianBlueWithoutOpacity}"/>
-                                        <Setter Property="Foreground" Value="White"/>
-                                        <!-- Виділений стан -->
-                                        <Style.Triggers>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource Danube}"/>
-                                                <Setter Property="Foreground" Value="Black"/>
-                                            </Trigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource Danube}"/>
-                                                <Setter Property="Foreground" Value="Black"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                            </ListBox>
-                        </StackPanel>
-                    </Border>
-                </Popup>
-
-
             </StackPanel>
 
 
-            <ListView ItemsSource="{Binding AllUsers}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged" BorderBrush="{DynamicResource Danube}">
+            <ListView ItemsSource="{Binding FilteredUsers}" SelectionMode="Multiple" Grid.Row="2" Background="Transparent" SelectionChanged="UsersListView_SelectionChanged" BorderBrush="{DynamicResource Danube}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>

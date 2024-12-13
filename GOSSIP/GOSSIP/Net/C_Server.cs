@@ -24,12 +24,6 @@ namespace GOSSIP.Net
         public static List<TopicModel> Topics_Cache { get; set; } = [];
         public static TopicModel OpenedTopic_Cache { get; set; }
 
-        public static void RefreshUser()
-        {
-            server.SendPacket(SignalsEnum.GetAllUsers);
-            server.SendPacket(SignalsEnum.GetTopics);
-            server.SendPacket(SignalsEnum.RefreshUser);
-        }
 
         public class Server
         {
@@ -91,7 +85,7 @@ namespace GOSSIP.Net
                     Ira 172.24.237.81 
                     YurAAAAAAAAAAAAAAA 172.24.101.91
                     SACHJKO 172.24.251.137  */
-                _client.Connect("172.24.226.173", 7891);
+                _client.Connect("127.0.0.1", 7891);
                 packetReader = new PacketReader(_client.GetStream());
                 if (packetReader != null)
                 {

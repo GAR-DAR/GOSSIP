@@ -44,7 +44,6 @@ namespace GOSSIP.ViewModels
             get => _password;
             set
             {
-
                 _password = value;
                 OnPropertyChanged(nameof(Password));
             }
@@ -53,11 +52,14 @@ namespace GOSSIP.ViewModels
         public event Action<UserVM> RequestClose;
 
         public ICommand LogInCommand { get; set; }
+        public ICommand HyperlinkCommand { get; set; }
+        public event Action HyperlinkEvent;
 
         public LogInVM(MainVM mainVM)
         {
             _mainVM = mainVM;
             LogInCommand = new RelayCommand(LogInMethod);
+            HyperlinkCommand = new RelayCommand(obj => HyperlinkEvent?.Invoke());
         }
 
         private void LogInMethod(object obj)
@@ -68,7 +70,7 @@ namespace GOSSIP.ViewModels
                 Password = Password
             };
 
-            if (EmailOrUsername.Contains("@"))
+            if (EmailOrUsername.Contains('@'))
             {
                 authUser.Email = EmailOrUsername;
                 authUser.Username = null;
@@ -85,7 +87,6 @@ namespace GOSSIP.ViewModels
 
         public void OnUserLoggedIn(UserVM user)
         {
-
             MainVM.AuthorizedUserVM = user;
             _mainVM.SelectedTopBarVM = new TopBarLoggedInVM(_mainVM);
         }
@@ -105,6 +106,11 @@ namespace GOSSIP.ViewModels
                 OnUserLoggedIn(new UserVM(user));
                 RequestClose?.Invoke(new UserVM(user));
             }
+        }
+
+        public void UpdatePasswordField()
+        {
+            OnPropertyChanged(nameof(Password));
         }
     }
 }

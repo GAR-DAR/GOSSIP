@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GOSSIP.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,27 @@ namespace GOSSIP.Views
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void EmailOrUsername_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                PasswordTextBox.Focus();
+                e.Handled = true;
+            }
+        }
+
+        private void Password_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is LogInVM vm)
+            {
+                if (e.Key == Key.Enter)
+                {
+                    vm.UpdatePasswordField();
+                    vm.LogInCommand.Execute(null);
+                }
+            }
         }
     }
 }

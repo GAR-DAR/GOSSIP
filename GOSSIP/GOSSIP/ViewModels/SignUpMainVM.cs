@@ -42,13 +42,16 @@ namespace GOSSIP.ViewModels
 
         public SignUpFirstVM SignUpFirstVM { get; set; }
         public SignUpSecondVM SignUpSecondVM { get; set; }
+        public event Action HyperlinkParentEvent;
 
         public SignUpMainVM()
         {
-            SignUpFirstVM = new(this);
+            SignUpFirstVM signUpFirstVM = new(this);
+            signUpFirstVM.HyperlinkEvent += () => HyperlinkParentEvent?.Invoke();
+            SignUpFirstVM = signUpFirstVM;
             SignUpSecondVM = new(this);
             SignUpSecondVM.CloseDialog += RequestCloseMethod;
-            SelectedVM = new SignUpFirstVM(this);
+            SelectedVM = SignUpFirstVM;
         }
 
         public void RequestCloseMethod(UserVM User)

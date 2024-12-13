@@ -43,5 +43,23 @@ namespace GOSSIP.Views
                 MessagesListBox.ScrollIntoView(MessagesListBox.Items[^1]);
             }
         }
+
+        private void MessageInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            if (DataContext is OpenedChatVM vm && vm.SendMessageCommand.CanExecute(null))
+            {
+                if (e.Key == Key.Enter && Keyboard.Modifiers != ModifierKeys.Shift)
+                {
+                    vm.SendMessageCommand.Execute(null);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.Shift)
+                {
+                    vm.PasteEnter(textBox);
+                }
+            }
+        }
     }
 }

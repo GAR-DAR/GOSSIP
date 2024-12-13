@@ -38,7 +38,7 @@
 
             <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Email or username" Foreground="White" FontSize="20" VerticalAlignment="Bottom" Margin="50,0,0,0"/>
 
-            <TextBox Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding EmailOrUsername}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+            <TextBox Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding EmailOrUsername}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White" PreviewKeyDown="EmailOrUsername_PreviewKeyDown">
                 <TextBox.Template>
                     <ControlTemplate TargetType="TextBox">
                         <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
@@ -48,9 +48,10 @@
                 </TextBox.Template>
             </TextBox>
 
+
             <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="Password" Foreground="White" HorizontalAlignment="Left" FontSize="20" VerticalAlignment="Bottom" Margin="50,0,0,0"/>
 
-            <TextBox Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Password}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
+            <TextBox x:Name="PasswordTextBox" KeyDown="Password_KeyDown" Grid.Row="4" Grid.ColumnSpan="2" Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Width="250" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="40" FontSize="14" Foreground="White" CaretBrush="White">
                 <TextBox.Template>
                     <ControlTemplate TargetType="TextBox">
                         <Border Background="{DynamicResource PrussianBlue}" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource Danube}">
@@ -78,14 +79,14 @@
 
             <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="15">
                 <Run Text="Don't have an account? " Foreground="White" />
-                    <Hyperlink Foreground="{DynamicResource Danube}" TextDecorations="Underline">
+                    <Hyperlink Foreground="{DynamicResource Danube}" TextDecorations="Underline" Command="{Binding HyperlinkCommand}">
                         <Run Text="Sign up." />
                     </Hyperlink>
             </TextBlock>
 
             <Button Grid.Row="6" Grid.Column="1" Content="Log in" Command="{Binding LogInCommand}"
     Style="{StaticResource NextButton1}" Margin="30,0,0,10"/>
-            
+
         </Grid>
     </Border>
 

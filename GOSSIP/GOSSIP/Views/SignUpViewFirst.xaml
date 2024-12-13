@@ -101,7 +101,7 @@
 
         <TextBlock Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="15">
     <Run Text="Have an account? " Foreground="White"/>
-    <Hyperlink Command="{Binding ShowLogInCommand}" Foreground="{DynamicResource Danube}" TextDecorations="Underline">
+    <Hyperlink Command="{Binding HyperlinkCommand}" Foreground="{DynamicResource Danube}" TextDecorations="Underline">
         <Run Text="Log in." />
     </Hyperlink>
         </TextBlock>
