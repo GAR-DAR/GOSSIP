@@ -86,7 +86,7 @@ namespace GOSSIP.Net
                     Ira 172.24.237.81 
                     YurAAAAAAAAAAAAAAA 172.24.101.91
                     SACHJKO 172.24.251.137  */
-                _client.Connect("127.0.0.1", 7891);
+                _client.Connect("192.168.87.23", 7891);
                 packetReader = new PacketReader(_client.GetStream());
                 if (packetReader != null)
                 {
@@ -427,9 +427,9 @@ namespace GOSSIP.Net
                                     var temp = new ParentReplyModel(reply);
 
                                     temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
-                                    temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+                                    temp.Topic = Globals.OpenedTopic_Cache;
 
-                                    Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault().Replies.Add(temp);
+                                    Globals.OpenedTopic_Cache.Replies.Add(temp);
 
                                     getReplyOnTopic.Invoke(temp);
 
@@ -445,18 +445,21 @@ namespace GOSSIP.Net
                                     var temp = new ChildReplyModel(reply);
 
                                     temp.User = Globals.AllUsers_Cache.Where(user => user.ID == reply.UserID).FirstOrDefault();
-                                    temp.Topic = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault();
+                                    temp.Topic = Globals.OpenedTopic_Cache;
 
-                                    temp.ReplyTo = Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID)
-                                    .FirstOrDefault().Replies
+                                    temp.ReplyTo = Globals.OpenedTopic_Cache.Replies
                                     .Where(r => r.ID == reply.RootReplyID).Select(r => r.User).FirstOrDefault();
 
                                     temp.RootReply = temp.Topic.Replies
                                     .Where(parentReply => parentReply.ID == reply.RootReplyID)
                                     .FirstOrDefault();
 
-                                    Globals.Topics_Cache.Where(topic => topic.ID == reply.TopicID).FirstOrDefault().Replies
-                                    .Where(parentReply => parentReply.ID == reply.RootReplyID).FirstOrDefault().Replies.Add(temp);
+                                    var r = Globals.OpenedTopic_Cache.Replies
+                                    .Where(parentReply => parentReply.ID == reply.RootReplyID).FirstOrDefault().Replies;
+
+                                    if(r.Count == 0) r = [];
+                                   
+                                    r.Add(temp);
 
                                     getReplyOnReply.Invoke(temp);
 
